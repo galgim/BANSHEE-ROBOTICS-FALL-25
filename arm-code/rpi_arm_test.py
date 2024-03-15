@@ -52,38 +52,56 @@ def pullout():
     print("move 1")
     motor.simMotorRun([110, 223, 270, 47, 272], [0, 1, 2, 3, 4])  # resting
     checkMovement(MOVE_IDs)
+    print("move fin")
+    time.sleep(2)
 
     print("move 2")
     motor.simMotorRun([168], [2])  # back to pull down more
     checkMovement(MOVE_IDs)
+    print("move fin")
+    time.sleep(2)
 
     print("move 3")
     motor.simMotorRun([150, 84, 269], [2, 3, 4])
     checkMovement(MOVE_IDs)
+    print("move fin")
+    time.sleep(2)
 
     print("move 4")
     motor.simMotorRun([145, 122, 233], [2, 3, 4])
     checkMovement(MOVE_IDs)
+    print("move fin")
+    time.sleep(2)
 
     print("move 5")
     motor.simMotorRun([30], [0])
     checkMovement(MOVE_IDs)
+    print("move fin")
+    time.sleep(2)
 
     print("move 6")
     motor.simMotorRun([138, 75, 285], [2, 3, 4])
     checkMovement(MOVE_IDs)
+    print("move fin")
+    time.sleep(2)
 
     print("move 7")
     motor.simMotorRun([153, 50, 285], [2, 3, 4])
     checkMovement(MOVE_IDs)
+    print("move fin")
+    time.sleep(2)
 
     print("move 8")
     motor.simMotorRun([265, 47, 170], [2, 3, 4])
     checkMovement(MOVE_IDs)
+    print("move fin")
+    time.sleep(2)
 
     print("move 9")
     motor.simMotorRun([275], [4])
     checkMovement(MOVE_IDs)
+    print("move fin")
+    time.sleep(2)
 
 def pushin():
     print("Push In Start")
@@ -93,30 +111,44 @@ def pushin():
     print("move 1")
     motor.simMotorRun([170], [4])
     checkMovement(MOVE_IDs)
+    print("move fin")
+    time.sleep(2)
 
     print("move 2")
     motor.simMotorRun([153, 50, 285], [2, 3, 4])
     checkMovement(MOVE_IDs)
+    print("move fin")
+    time.sleep(2)
 
     print("move 3")
     motor.simMotorRun([138, 75, 285], [2, 3, 4])
     checkMovement(MOVE_IDs)
+    print("move fin")
+    time.sleep(2)
 
     print("move 4")
     motor.simMotorRun([145, 122, 233], [2, 3, 4])
     checkMovement(MOVE_IDs)
+    print("move fin")
+    time.sleep(2)
 
     print("move 5")
     motor.simMotorRun([110], [0])
     checkMovement(MOVE_IDs)
+    print("move fin")
+    time.sleep(2)
 
     print("move 6")
     motor.simMotorRun([145, 122, 233], [2, 3, 4])
     checkMovement(MOVE_IDs)
+    print("move fin")
+    time.sleep(2)
 
     print("move 7")
     motor.simMotorRun([150, 84, 269], [2, 3, 4])
     checkMovement(MOVE_IDs)
+    print("move fin")
+    time.sleep(2)
 
 while True:
     uin = int(input("Push(0) or Pull (1)"))
