@@ -1,3 +1,6 @@
+# Raspberry Pi Arm Test
+# Distance between GCS and BTP is 10 inches
+# Distance between BVM and BTP is 12.5 inches
 import math
 import motorctrl_v1 as motor
 import Movement_Calc_v2 as calculation
@@ -42,43 +45,76 @@ def checkMovement(ids):
         
     
 def pullout():
-        
     print("pull out start")
     motor.dxlSetVelo([30, 30, 30, 30, 30], [0, 1, 2, 3, 4])  # ALWAYS SET SPEED BEFORE ANYTHING
+    time.sleep(0.5)
+
+    print("move 1")
     motor.simMotorRun([110, 223, 270, 47, 272], [0, 1, 2, 3, 4])  # resting
     checkMovement(MOVE_IDs)
+
+    print("move 2")
     motor.simMotorRun([168], [2])  # back to pull down more
     checkMovement(MOVE_IDs)
+
+    print("move 3")
     motor.simMotorRun([150, 84, 269], [2, 3, 4])
     checkMovement(MOVE_IDs)
+
+    print("move 4")
     motor.simMotorRun([145, 122, 233], [2, 3, 4])
     checkMovement(MOVE_IDs)
+
+    print("move 5")
     motor.simMotorRun([30], [0])
     checkMovement(MOVE_IDs)
+
+    print("move 6")
     motor.simMotorRun([138, 75, 285], [2, 3, 4])
     checkMovement(MOVE_IDs)
+
+    print("move 7")
     motor.simMotorRun([153, 50, 285], [2, 3, 4])
     checkMovement(MOVE_IDs)
+
+    print("move 8")
     motor.simMotorRun([265, 47, 170], [2, 3, 4])
     checkMovement(MOVE_IDs)
+
+    print("move 9")
     motor.simMotorRun([275], [4])
     checkMovement(MOVE_IDs)
 
 def pushin():
     print("Push In Start")
     motor.dxlSetVelo([30, 30, 30, 30, 30], [0, 1, 2, 3, 4])  # ALWAYS SET SPEED BEFORE ANYTHING
+    time.sleep(0.5)
+
+    print("move 1")
     motor.simMotorRun([170], [4])
     checkMovement(MOVE_IDs)
+
+    print("move 2")
     motor.simMotorRun([153, 50, 285], [2, 3, 4])
     checkMovement(MOVE_IDs)
+
+    print("move 3")
     motor.simMotorRun([138, 75, 285], [2, 3, 4])
     checkMovement(MOVE_IDs)
+
+    print("move 4")
     motor.simMotorRun([145, 122, 233], [2, 3, 4])
     checkMovement(MOVE_IDs)
+
+    print("move 5")
     motor.simMotorRun([110], [0])
     checkMovement(MOVE_IDs)
+
+    print("move 6")
     motor.simMotorRun([145, 122, 233], [2, 3, 4])
     checkMovement(MOVE_IDs)
+
+    print("move 7")
     motor.simMotorRun([150, 84, 269], [2, 3, 4])
     checkMovement(MOVE_IDs)
 
