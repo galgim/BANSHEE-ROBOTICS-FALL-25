@@ -6,11 +6,11 @@ import time
 import serial
 import cv2
 import socket
-import RPi.GPIO as GPIO
+# import RPi.GPIO as GPIO
 
-GPIO.setmode(GPIO.BOARD)
-GPIO.setup(18, GPIO.OUT)
-GPIO.output(18, GPIO.LOW)
+# GPIO.setmode(GPIO.BOARD)
+# GPIO.setup(18, GPIO.OUT)
+# GPIO.output(18, GPIO.LOW)
 
 BASE_ID = 1
 BICEP_ID = 2
@@ -18,6 +18,45 @@ FOREARM_ID = 3
 WRIST_ID = 4
 CLAW_ID = 0
 
+cycle_type = ["half", "full"]
+connection_type = ["no devs", "arm", "cam", "arm and cam"]
+cycle_input = ""
+connection_input = ""
+while True:
+    if cycle_input == "h":
+        print("h")
+        break
+    elif cycle_input == "f":
+        print("f")
+        break
+    else:
+        cycle_input = input("Input half or full (h or f)")
+print(cycle_input)
+while True:
+    if cycle_input == "l":
+        print("h")
+        break
+    elif cycle_input == "w":
+        print("f")
+        break
+    else:
+        cycle_input = input("Input local or wireless (l or w)")
+while True:
+    if cycle_input == "n":
+        print("no devs")
+        break
+    elif cycle_input == "a":
+        print("arm")
+        break
+    elif cycle_input == "c":
+        print("cam")
+        break
+    elif cycle_input == "f":
+        print("full")
+        break
+    else:
+        cycle_input = input("Input arm, cam, no devices, or full (a, c, n, or f)")
+print(cycle_input)
 
 # PORT_NUM = '/dev/cu.usbserial-FT5NY9DI'  #for mac
 PORT_NUM = '/dev/ttyUSB0'  # for rpi
@@ -51,7 +90,6 @@ def checkMovement(ids):
         
     
 def pullout():
-        
     print("pull out start")
     motor.dxlSetVelo([20, 20, 20, 20, 20], [0, 1, 2, 3, 4])  # ALWAYS SET SPEED BEFORE ANYTHING
     motor.simMotorRun([110, 223, 270, 47, 272], [0, 1, 2, 3, 4])  # resting
@@ -106,7 +144,7 @@ while True:
 
 # Take Battery from GCS
 pullout()
-GPIO.output(18, GPIO.HIGH)
+# GPIO.output(18, GPIO.HIGH)
 time.sleep(8)
 ser.write(b'b')  # Tell Arduino it's good to go
 
@@ -151,4 +189,4 @@ pushin()
 # Tell GCS it's good to go
 message = 'Finished'
 client_socket.send(message.encode())
-GPIO.cleanup()
+# GPIO.cleanup()
