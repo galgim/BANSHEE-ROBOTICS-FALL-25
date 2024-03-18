@@ -26,6 +26,7 @@ motor.portInitialization(PORT_NUM, ALL_IDs)
 SERVER_HOST = '192.168.1.61'
 SERVER_PORT = 3300
 
+
 def checkMovement(ids):
     time.sleep(0.5)
     motorStatus = [0] * len(ids)
@@ -43,7 +44,7 @@ def checkMovement(ids):
             print("finished")
             break
         
-    
+# Function used to pull out the battery
 def pullout():
     print("pull out start")
     motor.dxlSetVelo([30, 30, 30, 30, 30], [0, 1, 2, 3, 4])  # ALWAYS SET SPEED BEFORE ANYTHING
