@@ -155,6 +155,12 @@ def pushin():
     print("move fin")
     time.sleep(2)
 
+    print("move 4.5")
+    motor.simMotorRun([140, 110, 233], [2, 3, 4])
+    checkMovement(MOVE_IDs)
+    print("move fin")
+    time.sleep(2)
+
     print("move 5")
     motor.simMotorRun([110], [0])
     checkMovement(MOVE_IDs)
