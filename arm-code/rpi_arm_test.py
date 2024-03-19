@@ -70,15 +70,15 @@ def pullout():
     print("move fin")
     time.sleep(2)
 
-    print("move 3.5")
-    motor.simMotorRun([150, 84, 269], [2, 3, 4])
+    print("move 3.25")
+    motor.simMotorRun([150, 142, 269], [2, 3, 4])
     checkMovement(MOVE_IDs)
     print("move fin")
     time.sleep(2)
 
     #reach out further
     print("move 3.5")
-    motor.simMotorRun([121, 84, 269], [2, 3, 4])
+    motor.simMotorRun([121, 142, 269], [2, 3, 4])
     checkMovement(MOVE_IDs)
     print("move fin")
     time.sleep(2)
