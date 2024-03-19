@@ -150,7 +150,7 @@ def pushin():
     time.sleep(2)
 
     print("move 4")
-    motor.simMotorRun([145, 122, 233], [2, 3, 4])
+    motor.simMotorRun([140, 122, 233], [2, 3, 4])
     checkMovement(MOVE_IDs)
     print("move fin")
     time.sleep(2)
