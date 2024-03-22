@@ -36,7 +36,7 @@ class DepthCamera:
         aligned_depth_frame = aligned_frames.get_depth_frame()
         color_frame = aligned_frames.get_color_frame()
 
-        if not aligned_depth_frame or not color_frame or not infrared_frame or not infrared_frame1:
+        if not aligned_depth_frame or not color_frame:
             return False, None, None, None, None
         #post processing to allow spatial resolution
         dtd_depth = self.dtd(aligned_depth_frame)
@@ -65,7 +65,7 @@ class DepthCamera:
 if __name__ == "__main__":
     dc = DepthCamera()
     while True:
-        ret, depth_frame, color_frame, infrared_frame, infrared_frame1 = dc.get_frame()
+        ret, depth_frame, color_frame= dc.get_frame()
         if not ret:
             break
 
