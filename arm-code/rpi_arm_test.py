@@ -43,7 +43,38 @@ def checkMovement(ids):
             print("finished")
             break
         
-    
+
+def pullout_gcs():
+    print("pull out start")
+    motor.dxlSetVelo([20, 20, 20, 20, 20], [0, 1, 2, 3, 4])  # ALWAYS SET SPEED BEFORE ANYTHING
+    motor.simMotorRun([110, 223, 270, 47, 272], [0, 1, 2, 3, 4])  # resting
+    time.sleep(.1)
+    checkMovement(MOVE_IDs)
+    motor.simMotorRun([168], [2])  # back to pull down more
+    time.sleep(.1)
+    checkMovement(MOVE_IDs)
+    motor.simMotorRun([150, 84, 269], [2, 3, 4])
+    time.sleep(.1)
+    checkMovement(MOVE_IDs)
+    motor.simMotorRun([145, 122, 233], [2, 3, 4])
+    time.sleep(.1)
+    checkMovement(MOVE_IDs)
+    motor.simMotorRun([30], [0])
+    time.sleep(.1)
+    checkMovement(MOVE_IDs)
+    motor.simMotorRun([138, 75, 285], [2, 3, 4])
+    time.sleep(.1)
+    checkMovement(MOVE_IDs)
+    motor.simMotorRun([153, 50, 285], [2, 3, 4])
+    time.sleep(.1)
+    checkMovement(MOVE_IDs)
+    motor.simMotorRun([265, 47, 170], [2, 3, 4])
+    time.sleep(.1)
+    checkMovement(MOVE_IDs)
+    motor.simMotorRun([275], [4])
+    time.sleep(.1)
+    checkMovement(MOVE_IDs)
+
 def pullout():
     print("pull out start")
     motor.dxlSetVelo([30, 30, 30, 30, 30], [0, 1, 2, 3, 4])  # ALWAYS SET SPEED BEFORE ANYTHING
@@ -202,4 +233,5 @@ while True:
     uin = int(input("Push(0) or Pull (1)"))
     if uin == 0: pushin()
     elif uin == 1: pullout()
+    elif uin == 2: pullout_gcs()
     else: print("Invalid Input")
