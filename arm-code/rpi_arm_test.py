@@ -188,6 +188,13 @@ def pullout():
     time.sleep(2)
 
     # Look up
+    print("move 8.9")
+    motor.simMotorRun([310], [2])
+    checkMovement(MOVE_IDs)
+    print("move fin")
+    time.sleep(2)
+
+    # Look up
     print("move 9")
     motor.simMotorRun([310, 260], [2, 4])
     checkMovement(MOVE_IDs)
