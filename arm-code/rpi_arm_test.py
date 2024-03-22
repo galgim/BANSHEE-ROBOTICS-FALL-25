@@ -99,8 +99,16 @@ def pullout():
     time.sleep(2)
 
     #pull down and back
+    print("move 6.25")
+    motor.simMotorRun([160], [2])
+    checkMovement(MOVE_IDs)
+    print("move fin")
+    time.sleep(2)
+
+
+    #pull down and back
     print("move 6.5")
-    motor.simMotorRun([180, 100, 285], [2, 3, 4])
+    motor.simMotorRun([180], [2])
     checkMovement(MOVE_IDs)
     print("move fin")
     time.sleep(2)
