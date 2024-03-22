@@ -138,11 +138,11 @@ def pullout():
 
 
     #pull down and back
-    print("move 6.5")
-    motor.simMotorRun([180], [2])
-    checkMovement(MOVE_IDs)
-    print("move fin")
-    time.sleep(2)
+    # print("move 6.5")
+    # motor.simMotorRun([180], [2])
+    # checkMovement(MOVE_IDs)
+    # print("move fin")
+    # time.sleep(2)
 
     #pull up
     print("move 7")
@@ -161,7 +161,7 @@ def pullout():
     motor.dxlSetVelo([50,5], [2,3])  # ALWAYS SET SPEED BEFORE ANYTHING    
     #pull all the way back
     print("move 8")
-    motor.simMotorRun([290, 70, 170], [2, 3, 4])
+    motor.simMotorRun([290, 55, 170], [2, 3, 4])
     checkMovement(MOVE_IDs)
     print("move fin")
     time.sleep(2)
