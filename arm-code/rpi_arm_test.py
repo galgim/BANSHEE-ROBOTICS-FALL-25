@@ -126,12 +126,12 @@ def pullout():
     print("move fin")
     time.sleep(2)
 
-    # Look up
-    print("move 9")
-    motor.simMotorRun([296, 240], [2, 4])
-    checkMovement(MOVE_IDs)
-    print("move fin")
-    time.sleep(2)
+    # # Look up
+    # print("move 9")
+    # motor.simMotorRun([296, 240], [2, 4])
+    # checkMovement(MOVE_IDs)
+    # print("move fin")
+    # time.sleep(2)
 
 def pushin():
     print("Push In Start")
