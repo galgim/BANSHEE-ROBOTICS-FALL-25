@@ -204,7 +204,7 @@ def pullout():
     #pull all the way back
     print("move 10")
     motor.simMotorRun([300], [2])
-    checkMovement(MOVE_IDs)
+    time.sleep(3)
     print("move fin")
     time.sleep(2)
 
