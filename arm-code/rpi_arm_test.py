@@ -27,7 +27,7 @@ SERVER_HOST = '192.168.1.61'
 SERVER_PORT = 3300
 
 def checkMovement(ids):
-    time.sleep(0.5)
+    time.sleep(0.75)
     motorStatus = [0] * len(ids)
     finished = [1] * len(ids)
     firstPosition = 0
@@ -35,7 +35,7 @@ def checkMovement(ids):
     while True:
         for id in (ids):
             firstPosition = motor.ReadMotorData(id, ADDR_PRESENT_POSITION)
-            time.sleep(.1)
+            time.sleep(.25)
             secondPosition = motor.ReadMotorData(id, ADDR_PRESENT_POSITION)
             if (abs(firstPosition - secondPosition) < 2):
                 motorStatus[id] = 1
