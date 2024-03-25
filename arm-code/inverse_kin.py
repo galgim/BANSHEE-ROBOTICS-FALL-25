@@ -54,25 +54,29 @@ time.sleep(0.5)
 print("Set up move")
 motor.simMotorRun(reset_angle, [1, 2, 3, 4])
 time.sleep(4)
+angle01 = [0, 0, 0]
+for i in range(len(angle01)):
+    if i not in 1:
+        angle01[i] = input("Enter Coord")
 
 print("move 1")
 motor.simMotorRun(angle0, [1, 2, 3, 4])
 time.sleep(4)
 
-print("move 2")
-motor.simMotorRun(angle01, [1, 2, 3, 4])
-time.sleep(4)
+# print("move 2")
+# motor.simMotorRun(angle01, [1, 2, 3, 4])
+# time.sleep(4)
 
-print("move 3")
-motor.simMotorRun(angle3, [1, 2, 3, 4])
-time.sleep(4)
+# print("move 3")
+# motor.simMotorRun(angle3, [1, 2, 3, 4])
+# time.sleep(4)
 
-print("move 4")
-motor.simMotorRun(angle4, [1, 2, 3, 4])
-time.sleep(4)
+# print("move 4")
+# motor.simMotorRun(angle4, [1, 2, 3, 4])
+# time.sleep(4)
 
-print("Set up move")
-motor.simMotorRun(reset_angle, [1, 2, 3, 4])
-time.sleep(4)
+# print("Set up move")
+# motor.simMotorRun(reset_angle, [1, 2, 3, 4])
+# time.sleep(4)
 
 
