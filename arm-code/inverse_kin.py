@@ -67,4 +67,8 @@ print("move 4")
 motor.simMotorRun(angle4, [1, 2, 3, 4])
 time.sleep(4)
 
+print("Set up move")
+motor.simMotorRun(reset_angle, [1, 2, 3, 4])
+time.sleep(4)
+
 
