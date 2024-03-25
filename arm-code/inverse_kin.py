@@ -42,9 +42,9 @@ angle4 = calculation.angle_Calc([140, 0, 220], 0)
 motor.dxlSetVelo([30, 30, 30, 30, 30], [0, 1, 2, 3, 4])  # ALWAYS SET SPEED BEFORE ANYTHING
 time.sleep(0.5)
 
-print("set up move")
-motor.simMotorRun([110, 223, 270, 47, 272], [0, 1, 2, 3, 4])  # Reset claw looking up
-time.sleep(2)
+# print("set up move")
+# motor.simMotorRun([110, 223, 270, 47, 272], [0, 1, 2, 3, 4])  # Reset claw looking up
+# time.sleep(2)
 
 print("move 1")
 motor.simMotorRun(angle0, [1, 2, 3, 4])
