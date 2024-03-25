@@ -6,6 +6,21 @@ import time
 import cv2
 import socket
 
+BASE_ID = 1
+BICEP_ID = 2
+FOREARM_ID = 3
+WRIST_ID = 4
+CLAW_ID = 0
+
+
+PORT_NUM = '/dev/ttyUSB0'  # for rpi
+MOVEARM_MODE = 1
+ADDR_PRESENT_POSITION = 132
+ALL_IDs = [BASE_ID, BICEP_ID, FOREARM_ID, WRIST_ID, CLAW_ID]
+MOVE_IDs = [BASE_ID, BICEP_ID, FOREARM_ID, WRIST_ID, CLAW_ID]
+
+motor.portInitialization(PORT_NUM, ALL_IDs)
+
 
 #angle for the rest position of the arm
 angle0 = calculation.angle_Calc([275, 0, 205], 0)
