@@ -27,7 +27,7 @@ reset_angle = calculation.angle_Calc([10, 0, 5], 0)
 angle0 = calculation.angle_Calc([275, 0, 205], 0)
 
 #angle for the rest position of the arm
-angle01 = calculation.angle_Calc([400, 0, 0], 0)
+angle01 = calculation.angle_Calc([350, 0, 0], 0)
 
 # Test coordinate #1: first quadrant, smaller x, higher z
 angle1 = calculation.angle_Calc([205, 0, 215], 0)
