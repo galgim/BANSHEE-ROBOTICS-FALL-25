@@ -27,7 +27,7 @@ reset_angle = calculation.angle_Calc([10, 0, 5], 0)
 angle0 = calculation.angle_Calc([275, 0, 205], 0)
 
 # Test coordinate #1: first quadrant, smaller x, higher z
-angle1 = calculation.angle_Calc([205, 0, 215], 1)
+angle1 = calculation.angle_Calc([205, 0, 215], 0)
 
 # Test coordinate #2: second quadrant, larger x, lower z
 angle2 = calculation.angle_Calc([295, 0, 195], 0)
