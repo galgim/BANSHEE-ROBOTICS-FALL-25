@@ -55,7 +55,7 @@ print("Set up move")
 motor.simMotorRun(reset_angle, [1, 2, 3, 4])
 time.sleep(4)
 test = [0, 0, 0]
-for i in range(len(angle01)):
+for i in range(len(test)):
     if i not in 1:
         test[i] = input("Enter Coord")
 
