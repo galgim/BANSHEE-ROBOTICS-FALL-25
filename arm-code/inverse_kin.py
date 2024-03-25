@@ -21,7 +21,7 @@ MOVE_IDs = [BASE_ID, BICEP_ID, FOREARM_ID, WRIST_ID, CLAW_ID]
 
 motor.portInitialization(PORT_NUM, ALL_IDs)
 
-reset_angle = calculation.angle_Calc([10, 0, 10], 0)
+reset_angle = calculation.angle_Calc([10, 0, 5], 0)
 
 #angle for the rest position of the arm
 angle0 = calculation.angle_Calc([275, 0, 205], 0)
