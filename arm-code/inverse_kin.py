@@ -21,12 +21,13 @@ MOVE_IDs = [BASE_ID, BICEP_ID, FOREARM_ID, WRIST_ID, CLAW_ID]
 
 motor.portInitialization(PORT_NUM, ALL_IDs)
 
+reset_angle = calculation.angle_Calc([0, 0, 0], 0)
 
 #angle for the rest position of the arm
 angle0 = calculation.angle_Calc([275, 0, 205], 0)
 
 # Test coordinate #1: first quadrant, smaller x, higher z
-angle1 = calculation.angle_Calc([205, 0, 215], 2)
+angle1 = calculation.angle_Calc([205, 0, 215], 1)
 
 # Test coordinate #2: second quadrant, larger x, lower z
 angle2 = calculation.angle_Calc([295, 0, 195], 0)
@@ -45,6 +46,10 @@ time.sleep(0.5)
 # print("set up move")
 # motor.simMotorRun([110, 223, 270, 47, 272], [0, 1, 2, 3, 4])  # Reset claw looking up
 # time.sleep(2)
+
+print("Set up move")
+motor.simMotorRun(reset_angle, [1, 2, 3, 4])
+time.sleep(4)
 
 print("move 1")
 motor.simMotorRun(angle0, [1, 2, 3, 4])
