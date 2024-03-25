@@ -68,7 +68,7 @@ motor.simMotorRun(angle0, [1, 2, 3, 4])
 time.sleep(4)
 
 
-angle01 = calculation.angle_Calc(test, 0)
+angle01 = calculation.angle_Calc(test, 2)
 print("move 2")
 motor.simMotorRun(angle01, [1, 2, 3, 4])
 time.sleep(4)
