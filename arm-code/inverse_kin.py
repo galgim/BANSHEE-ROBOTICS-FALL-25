@@ -26,10 +26,10 @@ motor.portInitialization(PORT_NUM, ALL_IDs)
 angle0 = calculation.angle_Calc([275, 0, 205], 0)
 
 # Test coordinate #1: first quadrant, smaller x, higher z
-angle1 = calculation.angle_Calc([205, -70, 215], 2)
+angle1 = calculation.angle_Calc([205, 0, 215], 2)
 
 # Test coordinate #2: second quadrant, larger x, lower z
-angle2 = calculation.angle_Calc([295, 70, 195], 0)
+angle2 = calculation.angle_Calc([295, 0, 195], 0)
 
 # Test coordinate #3: half x from rest, half z from rest, y=0
 angle3 = calculation.angle_Calc([140, 0, 150], 0)
