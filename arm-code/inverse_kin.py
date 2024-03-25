@@ -26,6 +26,9 @@ reset_angle = calculation.angle_Calc([10, 0, 5], 0)
 #angle for the rest position of the arm
 angle0 = calculation.angle_Calc([275, 0, 205], 0)
 
+#angle for the rest position of the arm
+angle01 = calculation.angle_Calc([300, 0, 0], 0)
+
 # Test coordinate #1: first quadrant, smaller x, higher z
 angle1 = calculation.angle_Calc([205, 0, 215], 0)
 
@@ -56,7 +59,7 @@ motor.simMotorRun(angle0, [1, 2, 3, 4])
 time.sleep(4)
 
 print("move 2")
-motor.simMotorRun(angle1, [1, 2, 3, 4])
+motor.simMotorRun(angle01, [1, 2, 3, 4])
 time.sleep(4)
 
 print("move 3")
