@@ -28,7 +28,7 @@ angle0 = calculation.angle_Calc([275, 0, 205], 0)
 
 #angle for the max length reaching out in the x pos
 max_length_angle = calculation.angle_Calc([375, 0, 50], 0)
-angle01 = calculation.angle_Calc([50, 0, 375], 0)
+# angle01 = calculation.angle_Calc([50, 0, 375], 0)
 
 # Test coordinate #1: first quadrant, smaller x, higher z
 angle1 = calculation.angle_Calc([205, 0, 215], 0)
@@ -54,19 +54,20 @@ time.sleep(0.5)
 print("Set up move")
 motor.simMotorRun(reset_angle, [1, 2, 3, 4])
 time.sleep(4)
-angle01 = [0, 0, 0]
+test = [0, 0, 0]
 for i in range(len(angle01)):
     if i not in 1:
-        angle01[i] = input("Enter Coord")
+        test[i] = input("Enter Coord")
 
 print("move 1")
 motor.simMotorRun(angle0, [1, 2, 3, 4])
 time.sleep(4)
 
-# print("move 2")
-# motor.simMotorRun(angle01, [1, 2, 3, 4])
-# time.sleep(4)
 
+angle01 = calculation.angle_Calc(test, 0)
+print("move 2")
+motor.simMotorRun(angle01, [1, 2, 3, 4])
+time.sleep(4)
 # print("move 3")
 # motor.simMotorRun(angle3, [1, 2, 3, 4])
 # time.sleep(4)
