@@ -54,24 +54,26 @@ time.sleep(0.5)
 print("Set up move")
 motor.simMotorRun(reset_angle, [1, 2, 3, 4])
 time.sleep(4)
-test = [0, 0, 0]
-for i in range(0,3):
-    if i == 1:
-        print("coord inputed")
-    else:
-        test[i] = int(input("Enter Coord"))
-
-print(test)
 
 print("move 1")
 motor.simMotorRun(angle0, [1, 2, 3, 4])
 time.sleep(4)
 
+while True:
+    test = [0, 0, 0]
+    for i in range(0,3):
+        if i == 1:
+            print("coord inputed")
+        else:
+            test[i] = int(input("Enter Coord: "))
 
-angle01 = calculation.angle_Calc(test, 2)
-print("move 2")
-motor.simMotorRun(angle01, [1, 2, 3, 4])
-time.sleep(4)
+    print(test)
+
+    angle01 = calculation.angle_Calc(test, 2)
+    print("move 2")
+    motor.simMotorRun(angle01, [1, 2, 3, 4])
+    time.sleep(4)
+
 # print("move 3")
 # motor.simMotorRun(angle3, [1, 2, 3, 4])
 # time.sleep(4)
