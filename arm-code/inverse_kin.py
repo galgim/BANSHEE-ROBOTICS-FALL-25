@@ -39,7 +39,7 @@ angle4 = calculation.angle_Calc([140, 0, 220], 0)
 
 #"[%s, %s, %s, %s]" % (int(baseTheta), int(shoulderTheta), int(elbowTheta), int(wristTheta))
 
-motor.dxlSetVelo([10, 10, 10, 10, 10], [0, 1, 2, 3, 4])  # ALWAYS SET SPEED BEFORE ANYTHING
+motor.dxlSetVelo([30, 30, 30, 30, 30], [0, 1, 2, 3, 4])  # ALWAYS SET SPEED BEFORE ANYTHING
 time.sleep(0.5)
 
 print("set up move")
