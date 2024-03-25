@@ -60,6 +60,8 @@ for i in range(0,3):
         print("coord inputed")
     else:
         test[i] = input("Enter Coord")
+        
+print(test)
 
 print("move 1")
 motor.simMotorRun(angle0, [1, 2, 3, 4])
