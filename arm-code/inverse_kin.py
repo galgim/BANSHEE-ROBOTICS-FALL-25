@@ -59,8 +59,8 @@ for i in range(0,3):
     if i == 1:
         print("coord inputed")
     else:
-        test[i] = input("Enter Coord")
-        
+        test[i] = int(input("Enter Coord"))
+
 print(test)
 
 print("move 1")
