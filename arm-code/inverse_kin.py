@@ -111,6 +111,9 @@ print("set up move")
 motor.simMotorRun([110, 223, 270, 47, 272], [0, 1, 2, 3, 4])  # Reset claw looking up
 time.sleep(2)
 
+motor.dxlSetVelo([15, 15, 15, 15, 15], [0, 1, 2, 3, 4])  # ALWAYS SET SPEED BEFORE ANYTHING
+time.sleep(0.5)
+
 print("move 1 move to chamber")
 motor.simMotorRun(max_length_angle, [1, 2, 3, 4])
 time.sleep(1.5)
