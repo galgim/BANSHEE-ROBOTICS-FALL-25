@@ -98,3 +98,7 @@ time.sleep(2)
 print("move 1")
 motor.simMotorRun(max_length_angle, [1, 2, 3, 4])
 time.sleep(4)
+
+print("set up move")
+motor.simMotorRun([200], [4])  # Reset claw looking up
+time.sleep(2)
