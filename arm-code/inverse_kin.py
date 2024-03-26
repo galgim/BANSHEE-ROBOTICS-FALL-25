@@ -184,7 +184,7 @@ time.sleep(7)
 #Push In Battery
 print("move back to chamber")
 motor.simMotorRun([180, 62], [2, 3])
-time.sleep(2)
+time.sleep(2.5)
 
 motor.dxlSetVelo([50, 50, 50, 50, 50], [0, 1, 2, 3, 4])  # ALWAYS SET SPEED BEFORE ANYTHING
 time.sleep(0.1)
