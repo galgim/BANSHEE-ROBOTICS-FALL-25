@@ -180,7 +180,7 @@ time.sleep(7)
 #Push In Battery
 print("move back to chamber")
 motor.simMotorRun([180, 55], [2, 3])
-time.sleep(2)
+time.sleep(4)
 
 
 push_in_angle = calculation.angle_Calc([310,0,65], 0)
