@@ -181,7 +181,10 @@ checkMovement(MOVE_IDs)
 motor.simMotorRun([180], [2])
 time.sleep(2)
 
+
+push_in_angle = calculation.angle_Calc([310,0,65], 0)
+print(push_in_angle)
 print("move back to chamber")
-motor.simMotorRun(pull_out_angle, [1, 2, 3, 4])
+motor.simMotorRun(push_in_angle, [1, 2, 3, 4])
 time.sleep(4)
 
