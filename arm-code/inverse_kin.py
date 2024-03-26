@@ -126,6 +126,13 @@ time.sleep(4)
 
 test_angle = calculation.angle_Calc([200,0,60], 0)
 print(test_angle)
-print("move 5 pull away more")
+print("move 6 pull away even more")
 motor.simMotorRun(test_angle, [1, 2, 3, 4])
 time.sleep(4)
+
+test_angle = calculation.angle_Calc([200,0,60], 0)
+print(test_angle)
+print("move 7 pull away even even more")
+motor.simMotorRun(test_angle, [1, 2, 3, 4])
+time.sleep(4)
+
