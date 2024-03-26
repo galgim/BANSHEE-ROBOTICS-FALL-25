@@ -179,7 +179,7 @@ time.sleep(7)
 
 #Push In Battery
 print("move back to chamber")
-motor.simMotorRun([180], [2])
+motor.simMotorRun([180, 55], [2, 3])
 time.sleep(2)
 
 
