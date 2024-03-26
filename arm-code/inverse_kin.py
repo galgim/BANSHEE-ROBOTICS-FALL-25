@@ -173,18 +173,17 @@ time.sleep(2)
 motor.simMotorRun([265, 47, 170], [2, 3, 4])
 time.sleep(2)
 motor.simMotorRun([275], [4])
-time.sleep(2)
+time.sleep(7)
 
-checkMovement(MOVE_IDs)
 #Push In Battery
-
+print("move back to chamber")
 motor.simMotorRun([180], [2])
 time.sleep(2)
 
 
 push_in_angle = calculation.angle_Calc([310,0,65], 0)
 print(push_in_angle)
-print("move back to chamber")
+print("push in to chamber")
 motor.simMotorRun(push_in_angle, [1, 2, 3, 4])
 time.sleep(4)
 
