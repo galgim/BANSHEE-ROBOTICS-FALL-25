@@ -171,7 +171,7 @@ time.sleep(1)
 # time.sleep(3)
 
 motor.dxlSetVelo([15, 15, 15, 15, 15], [0, 1, 2, 3, 4])  # ALWAYS SET SPEED BEFORE ANYTHING
-time.sleep(0.5)
+time.sleep(0.1)
 
 print("move 13 pull forearm back")
 motor.simMotorRun([265, 47, 170], [2, 3, 4])
@@ -187,7 +187,7 @@ motor.simMotorRun([180, 62], [2, 3])
 time.sleep(4)
 
 motor.dxlSetVelo([50, 50, 50, 50, 50], [0, 1, 2, 3, 4])  # ALWAYS SET SPEED BEFORE ANYTHING
-time.sleep(0.5)
+time.sleep(0.1)
 
 push_in_angle = calculation.angle_Calc([310,0,65], 0)
 print(push_in_angle)
