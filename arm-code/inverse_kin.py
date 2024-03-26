@@ -100,9 +100,15 @@ motor.simMotorRun(max_length_angle, [1, 2, 3, 4])
 time.sleep(4)
 
 print("move 2 pitch wrist")
-motor.simMotorRun([200], [4])  # Reset claw looking up
+motor.simMotorRun([195], [4])  # Reset claw looking up
 time.sleep(2)
 
-print("move 3 close grip")
-motor.simMotorRun([30], [0])  # Reset claw looking up
-time.sleep(2)
+# print("move 3 close grip")
+# motor.simMotorRun([30], [0])  # Reset claw looking up
+# time.sleep(2)
+
+test_angle = calculation.angle_Calc([150,0,50], 0)
+
+print("move 1 move to chamber")
+motor.simMotorRun(test_angle, [1, 2, 3, 4])
+time.sleep(4)
