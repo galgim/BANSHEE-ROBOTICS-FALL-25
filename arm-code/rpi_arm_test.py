@@ -46,34 +46,27 @@ def checkMovement(ids):
 
 def pullout_gcs():
     print("pull out start")
-    motor.dxlSetVelo([15, 15, 15, 15, 15], [0, 1, 2, 3, 4])  # ALWAYS SET SPEED BEFORE ANYTHING
+    motor.dxlSetVelo([20, 20, 20, 20, 20], [0, 1, 2, 3, 4])  # ALWAYS SET SPEED BEFORE ANYTHING
     motor.simMotorRun([110, 223, 270, 47, 272], [0, 1, 2, 3, 4])  # resting
-    time.sleep(.1)
     checkMovement(MOVE_IDs)
     motor.simMotorRun([168], [2])  # back to pull down more
-    time.sleep(.1)
     checkMovement(MOVE_IDs)
     motor.simMotorRun([150, 84, 269], [2, 3, 4])
-    time.sleep(.1)
+    time.sleep(1)
     checkMovement(MOVE_IDs)
     motor.simMotorRun([145, 122, 233], [2, 3, 4])
-    time.sleep(.1)
+    time.sleep(1)
     checkMovement(MOVE_IDs)
     motor.simMotorRun([30], [0])
-    time.sleep(.1)
-    checkMovement(MOVE_IDs)
+    time.sleep(1)
     motor.simMotorRun([138, 75, 285], [2, 3, 4])
-    time.sleep(.1)
-    checkMovement(MOVE_IDs)
+    time.sleep(2)
     motor.simMotorRun([153, 50, 285], [2, 3, 4])
-    time.sleep(.1)
-    checkMovement(MOVE_IDs)
+    time.sleep(2)
     motor.simMotorRun([265, 47, 170], [2, 3, 4])
-    time.sleep(.1)
-    checkMovement(MOVE_IDs)
+    time.sleep(2)
     motor.simMotorRun([275], [4])
-    time.sleep(.1)
-    checkMovement(MOVE_IDs)
+    time.sleep(2)
 
 def pullout():
     print("pull out start")
