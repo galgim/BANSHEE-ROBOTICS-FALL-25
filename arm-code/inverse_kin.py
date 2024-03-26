@@ -177,6 +177,10 @@ time.sleep(2)
 
 checkMovement(MOVE_IDs)
 #Push In Battery
+
+motor.simMotorRun([180], [2])
+time.sleep(2)
+
 print("move back to chamber")
 motor.simMotorRun(pull_out_angle, [1, 2, 3, 4])
 time.sleep(4)
