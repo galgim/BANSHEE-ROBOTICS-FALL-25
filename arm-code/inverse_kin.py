@@ -125,7 +125,7 @@ time.sleep(1)
 
 print("move 4 pull forearm back")
 motor.simMotorRun([160], [3])  # Reset claw looking up
-time.sleep(1.5)
+time.sleep(1)
 
 # test_angle = calculation.angle_Calc([150,0,100], 0) might work for return to home
 pull_out_angle = calculation.angle_Calc([300,0,60], 0)
