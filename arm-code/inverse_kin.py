@@ -67,28 +67,34 @@ time.sleep(0.5)
 #     time.sleep(4)
 
 
-print("Set up move")
-motor.simMotorRun(reset_angle, [1, 2, 3, 4])
-time.sleep(4)
+# print("Set up move")
+# motor.simMotorRun(reset_angle, [1, 2, 3, 4])
+# time.sleep(4)
+
+# print("move 1")
+# motor.simMotorRun(angle0, [1, 2, 3, 4])
+# time.sleep(4)
+
+# print("move 2")
+# motor.simMotorRun(max_length_angle, [1, 2, 3, 4])
+# time.sleep(4)
+
+# print("move 3")
+# motor.simMotorRun(angle3, [1, 2, 3, 4])
+# time.sleep(4)
+
+# print("move 4")
+# motor.simMotorRun(angle4, [1, 2, 3, 4])
+# time.sleep(4)
+
+# print("Set up move")
+# motor.simMotorRun(reset_angle, [1, 2, 3, 4])
+# time.sleep(4)
+
+print("set up move")
+motor.simMotorRun([110, 223, 270, 47, 272], [0, 1, 2, 3, 4])  # Reset claw looking up
+time.sleep(2)
 
 print("move 1")
-motor.simMotorRun(angle0, [1, 2, 3, 4])
-time.sleep(4)
-
-print("move 2")
 motor.simMotorRun(max_length_angle, [1, 2, 3, 4])
 time.sleep(4)
-
-print("move 3")
-motor.simMotorRun(angle3, [1, 2, 3, 4])
-time.sleep(4)
-
-print("move 4")
-motor.simMotorRun(angle4, [1, 2, 3, 4])
-time.sleep(4)
-
-print("Set up move")
-motor.simMotorRun(reset_angle, [1, 2, 3, 4])
-time.sleep(4)
-
-
