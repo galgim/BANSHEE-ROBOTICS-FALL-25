@@ -159,4 +159,7 @@ time.sleep(2)
 motor.simMotorRun([275], [4])
 time.sleep(2)
 
+print("move back to chamber")
+motor.simMotorRun(max_length_angle, [1, 2, 3, 4])
+time.sleep(4)
 
