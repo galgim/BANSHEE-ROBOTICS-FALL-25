@@ -162,13 +162,13 @@ print("move 10 pull forearm back")
 motor.simMotorRun([250], [2])  # Reset claw looking up
 time.sleep(2)
 
-print("move 11 pull forearm back")
-motor.simMotorRun([190], [4])  # Reset claw looking up
-time.sleep(3)
+# print("move 11 pull forearm back")
+# motor.simMotorRun([190], [4])  # Reset claw looking up
+# time.sleep(3)
 
-print("move 12 pull forearm back")
-motor.simMotorRun([290], [2])  # Reset claw looking up
-time.sleep(3)
+# print("move 12 pull forearm back")
+# motor.simMotorRun([290], [2])  # Reset claw looking up
+# time.sleep(3)
 
 motor.dxlSetVelo([15, 15, 15, 15, 15], [0, 1, 2, 3, 4])  # ALWAYS SET SPEED BEFORE ANYTHING
 time.sleep(0.5)
