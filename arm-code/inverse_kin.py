@@ -103,17 +103,23 @@ print("move 2 pitch wrist")
 motor.simMotorRun([190, 195], [3, 4])  # Reset claw looking up
 time.sleep(2)
 
-# print("move 3 close grip")
-# motor.simMotorRun([30], [0])  # Reset claw looking up
-# time.sleep(2)
+print("move 3 close grip")
+motor.simMotorRun([30], [0])  # Reset claw looking up
+time.sleep(2)
 
-print("move 2 pitch wrist")
+print("move 4 pull forearm back")
 motor.simMotorRun([160], [3])  # Reset claw looking up
 time.sleep(2)
 
 # test_angle = calculation.angle_Calc([150,0,100], 0) might work for return to home
-test_angle = calculation.angle_Calc([300,0,40], 0)
+pull_out_angle = calculation.angle_Calc([300,0,50], 0)
+print(pull_out_angle)
+print("move 4 pull away slight")
+motor.simMotorRun(pull_out_angle, [1, 2, 3, 4])
+time.sleep(4)
+
+test_angle = calculation.angle_Calc([250,0,50], 0)
 print(test_angle)
-print("move 4 pull away")
+print("move 4 pull away more")
 motor.simMotorRun(test_angle, [1, 2, 3, 4])
 time.sleep(4)
