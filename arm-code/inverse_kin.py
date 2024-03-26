@@ -178,7 +178,7 @@ motor.simMotorRun([265, 47, 170], [2, 3, 4])
 time.sleep(3)
 
 print("move 14 pull forearm back")
-motor.simMotorRun([275], [4])
+motor.simMotorRun([270], [4])
 time.sleep(7)
 
 #Push In Battery
