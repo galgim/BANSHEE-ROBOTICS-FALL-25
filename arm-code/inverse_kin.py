@@ -184,7 +184,7 @@ time.sleep(7)
 #Push In Battery
 print("move back to chamber")
 motor.simMotorRun([180, 62], [2, 3])
-time.sleep(4)
+time.sleep(2)
 
 motor.dxlSetVelo([50, 50, 50, 50, 50], [0, 1, 2, 3, 4])  # ALWAYS SET SPEED BEFORE ANYTHING
 time.sleep(0.1)
@@ -193,15 +193,15 @@ push_in_angle = calculation.angle_Calc([310,0,65], 0)
 print(push_in_angle)
 print("push in to chamber")
 motor.simMotorRun(push_in_angle, [1, 2, 3, 4])
-time.sleep(.75)
+time.sleep(.5)
 
 print("push all the way in to chamber")
 motor.simMotorRun(max_length_angle, [1, 2, 3, 4])
-time.sleep(.5)
+time.sleep(.25)
 
 print("open claw")
 motor.simMotorRun([110], [0])  # Reset claw looking up
-time.sleep(0.35)
+time.sleep(0.15)
 
 # test_angle = calculation.angle_Calc([150,0,100], 0) might work for return to home
 pull_out_angle = calculation.angle_Calc([300,0,60], 0)
