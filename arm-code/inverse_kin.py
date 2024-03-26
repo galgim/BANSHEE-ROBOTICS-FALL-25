@@ -51,6 +51,22 @@ time.sleep(0.5)
 # motor.simMotorRun([110, 223, 270, 47, 272], [0, 1, 2, 3, 4])  # Reset claw looking up
 # time.sleep(2)
 
+# while True:
+#     test = [0, 0, 0]
+#     for i in range(0,3):
+#         if i == 1:
+#             print("coord inputed")  
+#         else:
+#             test[i] = int(input("Enter Coord: "))
+
+#     print(test)
+
+#     angle01 = calculation.angle_Calc(test, 1)
+#     print("move 2")
+#     motor.simMotorRun(angle01, [1, 2, 3, 4])
+#     time.sleep(4)
+
+
 print("Set up move")
 motor.simMotorRun(reset_angle, [1, 2, 3, 4])
 time.sleep(4)
@@ -59,31 +75,20 @@ print("move 1")
 motor.simMotorRun(angle0, [1, 2, 3, 4])
 time.sleep(4)
 
-while True:
-    test = [0, 0, 0]
-    for i in range(0,3):
-        if i == 1:
-            print("coord inputed")
-        else:
-            test[i] = int(input("Enter Coord: "))
+print("move 2")
+motor.simMotorRun(max_length_angle, [1, 2, 3, 4])
+time.sleep(4)
 
-    print(test)
+print("move 3")
+motor.simMotorRun(angle3, [1, 2, 3, 4])
+time.sleep(4)
 
-    angle01 = calculation.angle_Calc(test, 1)
-    print("move 2")
-    motor.simMotorRun(angle01, [1, 2, 3, 4])
-    time.sleep(4)
+print("move 4")
+motor.simMotorRun(angle4, [1, 2, 3, 4])
+time.sleep(4)
 
-# print("move 3")
-# motor.simMotorRun(angle3, [1, 2, 3, 4])
-# time.sleep(4)
-
-# print("move 4")
-# motor.simMotorRun(angle4, [1, 2, 3, 4])
-# time.sleep(4)
-
-# print("Set up move")
-# motor.simMotorRun(reset_angle, [1, 2, 3, 4])
-# time.sleep(4)
+print("Set up move")
+motor.simMotorRun(reset_angle, [1, 2, 3, 4])
+time.sleep(4)
 
 
