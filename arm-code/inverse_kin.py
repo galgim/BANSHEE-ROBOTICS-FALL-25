@@ -115,9 +115,9 @@ print("move 1 move to chamber")
 motor.simMotorRun(max_length_angle, [1, 2, 3, 4])
 time.sleep(4)
 
-print("move 2 pitch wrist")
-motor.simMotorRun([190, 200], [3, 4])  # Reset claw looking up
-time.sleep(2)
+# print("move 2 pitch wrist")
+# motor.simMotorRun([190, 200], [3, 4])  # Reset claw looking up
+# time.sleep(2)
 
 print("move 3 close grip")
 motor.simMotorRun([30], [0])  # Reset claw looking up
@@ -160,19 +160,19 @@ time.sleep(2)
 
 print("move 10 pull forearm back")
 motor.simMotorRun([250], [2])  # Reset claw looking up
-time.sleep(2)
+time.sleep(3)
 
 print("move 11 pull forearm back")
 motor.simMotorRun([190], [4])  # Reset claw looking up
-time.sleep(2)
+time.sleep(3)
 
 print("move 12 pull forearm back")
 motor.simMotorRun([290], [2])  # Reset claw looking up
-time.sleep(2)
+time.sleep(3)
 
 print("move 13 pull forearm back")
 motor.simMotorRun([265, 47, 170], [2, 3, 4])
-time.sleep(2)
+time.sleep(3)
 print("move 14 pull forearm back")
 motor.simMotorRun([275], [4])
 time.sleep(7)
