@@ -44,7 +44,7 @@ angle4 = calculation.angle_Calc([140, 0, 220], 0)
 
 #"[%s, %s, %s, %s]" % (int(baseTheta), int(shoulderTheta), int(elbowTheta), int(wristTheta))
 
-motor.dxlSetVelo([15, 15, 15, 15, 15], [0, 1, 2, 3, 4])  # ALWAYS SET SPEED BEFORE ANYTHING
+motor.dxlSetVelo([25, 25, 25, 25, 25], [0, 1, 2, 3, 4])  # ALWAYS SET SPEED BEFORE ANYTHING
 time.sleep(0.5)
 
 def checkMovement(ids):
@@ -132,35 +132,35 @@ pull_out_angle = calculation.angle_Calc([300,0,60], 0)
 print(pull_out_angle)
 print("move 4 pull away slight")
 motor.simMotorRun(pull_out_angle, [1, 2, 3, 4])
-time.sleep(4)
+time.sleep(2.5)
 
 test_angle = calculation.angle_Calc([250,0,60], 0)
 print(test_angle)
 print("move 5 pull away more")
 motor.simMotorRun(test_angle, [1, 2, 3, 4])
-time.sleep(4)
+time.sleep(2.5)
 
 test_angle = calculation.angle_Calc([200,0,60], 0)
 print(test_angle)
 print("move 6 pull away even more")
 motor.simMotorRun(test_angle, [1, 2, 3, 4])
-time.sleep(4)
+time.sleep(3)
 
 print("move 7 pull forearm back")
 motor.simMotorRun([45], [3])  # Reset claw looking up
-time.sleep(2)
+time.sleep(1.5)
 
 print("move 8 pull forearm back")
 motor.simMotorRun([200], [2])  # Reset claw looking up
-time.sleep(2)
+time.sleep(1.5)
 
 print("move 9 pull forearm back")
 motor.simMotorRun([220], [4])  # Reset claw looking up
-time.sleep(2)
+time.sleep(1.5)
 
 print("move 10 pull forearm back")
 motor.simMotorRun([250], [2])  # Reset claw looking up
-time.sleep(3)
+time.sleep(2)
 
 print("move 11 pull forearm back")
 motor.simMotorRun([190], [4])  # Reset claw looking up
@@ -204,11 +204,11 @@ print("move 4 pull away slight")
 motor.simMotorRun(pull_out_angle, [1, 2, 3, 4])
 time.sleep(4)
 
-test_angle = calculation.angle_Calc([250,0,60], 0)
-print(test_angle)
-print("move 5 pull away more")
-motor.simMotorRun(test_angle, [1, 2, 3, 4])
-time.sleep(6)
+# test_angle = calculation.angle_Calc([250,0,60], 0)
+# print(test_angle)
+# print("move 5 pull away more")
+# motor.simMotorRun(test_angle, [1, 2, 3, 4])
+# time.sleep(6)
 
 print("set up move")
 motor.simMotorRun([110, 223, 270, 47, 272], [0, 1, 2, 3, 4])  # Reset claw looking up
