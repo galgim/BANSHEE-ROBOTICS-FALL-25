@@ -107,7 +107,7 @@ time.sleep(2)
 # motor.simMotorRun([30], [0])  # Reset claw looking up
 # time.sleep(2)
 
-test_angle = calculation.angle_Calc([150,0,75], 0)
+test_angle = calculation.angle_Calc([150,0,100], 0)
 print(test_angle)
 print("move 4 pull away")
 motor.simMotorRun(test_angle, [1, 2, 3, 4])
