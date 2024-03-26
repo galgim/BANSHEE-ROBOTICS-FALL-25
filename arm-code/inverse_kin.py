@@ -139,6 +139,10 @@ motor.simMotorRun([210], [2])  # Reset claw looking up
 time.sleep(2)
 
 print("move 9 pull forearm back")
+motor.simMotorRun([220], [4])  # Reset claw looking up
+time.sleep(2)
+
+print("move 10 pull forearm back")
 motor.simMotorRun([90], [3])  # Reset claw looking up
 time.sleep(2)
 
