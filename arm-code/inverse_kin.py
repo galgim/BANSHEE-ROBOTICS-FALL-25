@@ -170,6 +170,9 @@ print("move 12 pull forearm back")
 motor.simMotorRun([290], [2])  # Reset claw looking up
 time.sleep(3)
 
+motor.dxlSetVelo([15, 15, 15, 15, 15], [0, 1, 2, 3, 4])  # ALWAYS SET SPEED BEFORE ANYTHING
+time.sleep(0.5)
+
 print("move 13 pull forearm back")
 motor.simMotorRun([265, 47, 170], [2, 3, 4])
 time.sleep(3)
