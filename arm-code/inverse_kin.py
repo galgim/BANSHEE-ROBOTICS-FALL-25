@@ -108,7 +108,7 @@ time.sleep(2)
 # time.sleep(2)
 
 test_angle = calculation.angle_Calc([150,0,75], 0)
-
-print("move 1 move to chamber")
+print(test_angle)
+print("move 4 pull away")
 motor.simMotorRun(test_angle, [1, 2, 3, 4])
 time.sleep(4)
