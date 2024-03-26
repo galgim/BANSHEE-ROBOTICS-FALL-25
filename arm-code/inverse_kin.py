@@ -130,7 +130,7 @@ print("move 6 pull away even more")
 motor.simMotorRun(test_angle, [1, 2, 3, 4])
 time.sleep(4)
 
-print("move 4 pull forearm back")
-motor.simMotorRun([70], [3])  # Reset claw looking up
+print("move 7 pull forearm back")
+motor.simMotorRun([50], [3])  # Reset claw looking up
 time.sleep(2)
 
