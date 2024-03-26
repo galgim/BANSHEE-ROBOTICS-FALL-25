@@ -175,7 +175,7 @@ time.sleep(0.5)
 
 print("move 13 pull forearm back")
 motor.simMotorRun([265, 47, 170], [2, 3, 4])
-time.sleep(3)
+time.sleep(1.5)
 
 print("move 14 pull forearm back")
 motor.simMotorRun([270], [4])
@@ -193,15 +193,15 @@ push_in_angle = calculation.angle_Calc([310,0,65], 0)
 print(push_in_angle)
 print("push in to chamber")
 motor.simMotorRun(push_in_angle, [1, 2, 3, 4])
-time.sleep(1.5)
+time.sleep(1)
 
 print("push all the way in to chamber")
 motor.simMotorRun(max_length_angle, [1, 2, 3, 4])
-time.sleep(1)
+time.sleep(.75)
 
 print("open claw")
 motor.simMotorRun([110], [0])  # Reset claw looking up
-time.sleep(0.75)
+time.sleep(0.5)
 
 # test_angle = calculation.angle_Calc([150,0,100], 0) might work for return to home
 pull_out_angle = calculation.angle_Calc([300,0,60], 0)
