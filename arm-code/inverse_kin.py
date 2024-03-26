@@ -197,6 +197,9 @@ print("push all the way in to chamber")
 motor.simMotorRun(max_length_angle, [1, 2, 3, 4])
 time.sleep(4)
 
+motor.dxlSetVelo([50, 50, 50, 50, 50], [0, 1, 2, 3, 4])  # ALWAYS SET SPEED BEFORE ANYTHING
+time.sleep(0.5)
+
 print("open claw")
 motor.simMotorRun([110], [0])  # Reset claw looking up
 time.sleep(2)
