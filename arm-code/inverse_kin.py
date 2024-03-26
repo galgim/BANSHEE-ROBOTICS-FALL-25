@@ -47,6 +47,22 @@ angle4 = calculation.angle_Calc([140, 0, 220], 0)
 motor.dxlSetVelo([15, 15, 15, 15, 15], [0, 1, 2, 3, 4])  # ALWAYS SET SPEED BEFORE ANYTHING
 time.sleep(0.5)
 
+def checkMovement(ids):
+    motorStatus = [0] * len(ids)
+    finished = [1] * len(ids)
+    firstPosition = 0
+    secondPosition = 0
+    while True:
+        for id in (ids):
+            firstPosition = motor.ReadMotorData(id, ADDR_PRESENT_POSITION)
+            time.sleep(.1)
+            secondPosition = motor.ReadMotorData(id, ADDR_PRESENT_POSITION)
+            if (abs(firstPosition - secondPosition) < 5):
+                motorStatus[id] = 1
+        if (motorStatus == finished):
+            print("finished")
+            break
+
 # print("set up move")
 # motor.simMotorRun([110, 223, 270, 47, 272], [0, 1, 2, 3, 4])  # Reset claw looking up
 # time.sleep(2)
@@ -159,6 +175,7 @@ time.sleep(2)
 motor.simMotorRun([275], [4])
 time.sleep(2)
 
+checkMovement(MOVE_IDs)
 #Push In Battery
 print("move back to chamber")
 motor.simMotorRun(pull_out_angle, [1, 2, 3, 4])
