@@ -193,7 +193,7 @@ push_in_angle = calculation.angle_Calc([310,0,65], 0)
 print(push_in_angle)
 print("push in to chamber")
 motor.simMotorRun(push_in_angle, [1, 2, 3, 4])
-time.sleep(.25)
+time.sleep(.15)
 
 print("push all the way in to chamber")
 motor.simMotorRun(max_length_angle, [1, 2, 3, 4])
