@@ -1,12 +1,19 @@
 import cv2
-import pyrealsense2
 from realsense_depth import *
 import matplotlib.pyplot as plt     
 from cv2 import aruco
-import numpy
 import pyrealsense2
+import numpy as np
+import pickle
+import socket
 
 class ardetect:
+    s=socket.socket(socket.AF_INET, socket.SOCK_DGRAM)
+    s.setsockopt(socket.SOL_SOCKET,socket.SO_SNDBUF,1000000)
+
+    server_ip="127.0.0.1"
+    server_port=6666
+
     # 1. Load the ArUco dictionary
     aruco_dict = cv2.aruco.Dictionary_get(cv2.aruco.DICT_5X5_100)  # Choose your desired dictionary
     parameters = cv2.aruco.DetectorParameters_create()
@@ -17,7 +24,10 @@ class ardetect:
     while True:
         # 3. Capture a frame
         ret, depth_frame,color_frame = video_capture.get_frame()
-        # boolean to determine if arm is in right positiono with battery
+        ret, buffer=cv2.imencode(".jpg",color_frame,[int(cv2.IMWRITE_JPEG_QUALITY),30])
+        x_as_bytes=pickle.dumps(buffer)
+        s.sendto((x_as_bytes),(server_ip,server_port))
+        # boolean to determine if arm is in right position with battery
         armstart=False
         # Get frame dimensions
         height, width, _ = color_frame.shape
@@ -37,7 +47,6 @@ class ardetect:
         if ids is not None:
             for i in range(len(ids)):
                 
-
                 # Get the center of the first detected AR marker
                 marker_center = corners[0][0].mean(axis=0).astype(int)
 
@@ -48,12 +57,14 @@ class ardetect:
 
                 # Calculate the overlap between the middle box and ArUco marker detection box
                 middle_box = np.array([[box_x, box_y], [box_x + box_size, box_y + box_size]])
-                aruco_box = np.int0(corners[i][0])  # Convert corners to integer for calculations
+                # Convert corners to integer for calculations
+                aruco_box = np.int0(corners[i][0])  
+                #find intersection between ar marker and centerr box
                 intersection_area = cv2.contourArea(cv2.convexHull(np.concatenate([middle_box, aruco_box])))
+                #find area not within intersection
                 union_area = box_size**2 + cv2.contourArea(cv2.convexHull(aruco_box)) - intersection_area
+                #divide area in and area not in to find ratio
                 overlap_ratio = intersection_area / union_area
-                print(overlap_ratio)
-
                 # Display the confidence level between 0 and 100
                 if overlap_ratio<=1 and overlap_ratio>0:
                     #if confidence level hits at least 98%

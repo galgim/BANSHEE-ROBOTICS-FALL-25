@@ -1,7 +1,8 @@
-import math
 import motorctrl_v1 as motor
 import Movement_Calc_v2 as calculation
+import ardetectdistance as camera
 import numpy as np
+import math
 import time
 import serial
 import cv2
@@ -116,7 +117,7 @@ def pullout():
 def pushin():
     motor.simMotorRun([170], [4])
     time.sleep(4)
-    motor.simMotorRun([153, 50, 285], [2, 3, 4])
+    motor.simMotorRun([153, 50,w 285], [2, 3, 4])
     time.sleep(2)
     motor.simMotorRun([138, 75, 285], [2, 3, 4])
     time.sleep(2)

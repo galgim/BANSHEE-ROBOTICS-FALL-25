@@ -3,8 +3,16 @@ import pyrealsense2
 from realsense_depth import *
 import matplotlib.pyplot as plt     
 from cv2 import aruco
-import numpy
+import numpy as np
 import pyrealsense2
+import pickle
+import socket
+
+s=socket.socket(socket.AF_INET, socket.SOCK_DGRAM)
+s.setsockopt(socket.SOL_SOCKET,socket.SO_SNDBUF,1000000)
+
+server_ip="127.0.0.1"
+server_port=6666
 
 # 1. Load the ArUco dictionary
 aruco_dict = cv2.aruco.Dictionary_get(cv2.aruco.DICT_5X5_100)  # Choose your desired dictionary
@@ -13,19 +21,12 @@ parameters = cv2.aruco.DetectorParameters_create()
 # 2. Access video capture
 video_capture = cv2.VideoCapture(0)  # Use 0 for webcam, or file path for a video file
 
-# point = (400, 300)
-
-# def show_distance(event, x, y, args, params):
-#     global point
-#     point = (x, y)
-
-# Create mouse event
-# cv2.namedWindow("Color frame")
-# cv2.setMouseCallback("Color frame", show_distance)
-
-while True:
+while video_capture.isOpened():
     # 3. Capture a frame
     ret, frame = video_capture.read()
+    ret, buffer=cv2.imencode(".jpg",frame,[int(cv2.IMWRITE_JPEG_QUALITY),30])
+    x_as_bytes=pickle.dumps(buffer)
+    s.sendto((x_as_bytes),(server_ip,server_port))
     # boolean to determine if arm is in right positiono with battery
     armstart=False
     # Get frame dimensions
@@ -35,9 +36,6 @@ while True:
     box_size = 50
     box_x = int((width - box_size) / 2)
     box_y = int((height - box_size) / 2)
-
-    #cv2.circle(color_frame, point, 4, (0, 0, 255))
-    #distance = depth_frame[point[1], point[0]]
 
     # Draw the center box on the frame
     cv2.rectangle(frame, (box_x, box_y), (box_x + box_size, box_y + box_size), (0, 255, 0), 2)
