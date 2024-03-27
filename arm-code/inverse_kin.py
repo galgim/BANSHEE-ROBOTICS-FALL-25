@@ -197,7 +197,7 @@ time.sleep(.15)
 
 print("push all the way in to chamber")
 motor.simMotorRun(max_length_angle, [1, 2, 3, 4])
-time.sleep(.25)
+time.sleep(.15)
 
 print("open claw")
 motor.simMotorRun([110], [0])  # Reset claw looking up
