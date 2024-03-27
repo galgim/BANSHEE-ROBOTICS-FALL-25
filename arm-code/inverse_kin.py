@@ -113,7 +113,7 @@ time.sleep(2)
 
 print("move 1 move to chamber")
 motor.simMotorRun(max_length_angle, [1, 2, 3, 4])
-time.sleep(1.5)
+time.sleep(1)
 
 print("move 2 pitch wrist")
 motor.simMotorRun([200], [4])  # Reset claw looking up
@@ -152,11 +152,11 @@ time.sleep(1)
 
 print("move 8 pull forearm back")
 motor.simMotorRun([200], [2])  # Reset claw looking up
-time.sleep(0.6)
+time.sleep(0.35)
 
 print("move 9 pull forearm back")
 motor.simMotorRun([220], [4])  # Reset claw looking up
-time.sleep(1)
+time.sleep(0.75)
 
 # print("move 10 pull forearm back")
 # motor.simMotorRun([250], [2])  # Reset claw looking up
