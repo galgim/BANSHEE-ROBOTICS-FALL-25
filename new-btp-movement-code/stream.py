@@ -7,7 +7,7 @@ s.setsockopt(socket.SOL_SOCKET,socket.SO_SNDBUF,1000000)
 ip="127.0.0.1"
 port=6666
 
-cap=cv2.VideoCapture(1)
+cap=cv2.VideoCapture(0)
 cap.set(3,640)
 cap.set(4,480)
 
