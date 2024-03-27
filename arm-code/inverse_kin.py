@@ -113,7 +113,7 @@ time.sleep(2)
 
 print("move 1 move to chamber")
 motor.simMotorRun(max_length_angle, [1, 2, 3, 4])
-time.sleep(0.5)
+time.sleep(0.4)
 
 print("move 2 pitch wrist")
 motor.simMotorRun([200], [4])  # Reset claw looking up
@@ -132,7 +132,7 @@ pull_out_angle = calculation.angle_Calc([300,0,60], 0)
 print(pull_out_angle)
 print("move 4 pull away slight")
 motor.simMotorRun(pull_out_angle, [1, 2, 3, 4])
-time.sleep(0.25)
+time.sleep(0.15)
 
 test_angle = calculation.angle_Calc([250,0,60], 0)
 print(test_angle)
@@ -144,7 +144,7 @@ test_angle = calculation.angle_Calc([200,0,60], 0)
 print(test_angle)
 print("move 6 pull away even more")
 motor.simMotorRun(test_angle, [1, 2, 3, 4])
-time.sleep(0.7)
+time.sleep(0.6)
 
 print("move 7 pull forearm back")
 motor.simMotorRun([45], [3])  # Reset claw looking up
@@ -156,7 +156,7 @@ time.sleep(0.25)
 
 print("move 9 pull forearm back")
 motor.simMotorRun([220], [4])  # Reset claw looking up
-time.sleep(0.5)
+time.sleep(0.4)
 
 # print("move 10 pull forearm back")
 # motor.simMotorRun([250], [2])  # Reset claw looking up
