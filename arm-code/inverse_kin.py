@@ -59,6 +59,22 @@ def time_between_moves(velocity: list[int], ids: list[int], startAngles: list[in
     print("check time")
     print(check_time-start_time)
 
+def move(velocity: list[int], ids: list[int], startAngles: list[int], endAngles: list[int]) -> None:
+    motor.dxlSetVelo(velocity, ids)  # ALWAYS SET SPEED BEFORE ANYTHING
+    time.sleep(0.1)
+    print("Move 1")
+    motor.simMotorRun(startAngles, ids)  # Reset claw looking up
+    time.sleep(3)
+    print("Move 2")
+    motor.simMotorRun(endAngles, ids)
+
+    time.sleep(4)
+    print("Move 1.2")
+    motor.simMotorRun(startAngles, ids)  # Reset claw looking up
+    time.sleep(0.6)
+    print("Move 2.2")
+    motor.simMotorRun(endAngles, ids)
+
 def gcs_pullout():
     start_time = time.time()
     motor.dxlSetVelo([25, 25, 25, 25, 25], [0, 1, 2, 3, 4])  # ALWAYS SET SPEED BEFORE ANYTHING
