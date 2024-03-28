@@ -82,14 +82,14 @@ def portInitialization(portname, dxlIDs):
     for motorID in DXL_ID: # Enable Dynamixel Torque
         dxl_comm_result, dxl_error = packetHandler.write1ByteTxRx(
             portHandler, motorID, ADDR_TORQUE_ENABLE, TORQUE_ENABLE)
-        if dxl_comm_result != COMM_SUCCESS:
-            print("%s" % packetHandler.getTxRxResult(dxl_comm_result))
-        elif dxl_error != 0:
-            print("%s" % packetHandler.getRxPacketError(dxl_error))
-        else:
-            print("Dynamixel", motorID,
-                  "has been successfully connected")
-    print("-------------------------------------")
+    #     if dxl_comm_result != COMM_SUCCESS:
+    #         print("%s" % packetHandler.getTxRxResult(dxl_comm_result))
+    #     elif dxl_error != 0:
+    #         print("%s" % packetHandler.getRxPacketError(dxl_error))
+    #     else:
+    #         print("Dynamixel", motorID,
+    #               "has been successfully connected")
+    # print("-------------------------------------")
     
 
 def dxlPresAngle(dxlIDs):
