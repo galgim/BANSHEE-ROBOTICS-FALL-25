@@ -9,10 +9,9 @@ import socket
 
 class ardetect:
     s=socket.socket(socket.AF_INET, socket.SOCK_DGRAM)
-    s.setsockopt(socket.SOL_SOCKET,socket.SO_SNDBUF,1000000)
 
     server_ip="192.168.1.89"
-    server_port=6666
+    server_port=9998
 
     # 1. Load the ArUco dictionary
     aruco_dict = cv2.aruco.Dictionary_get(cv2.aruco.DICT_5X5_100)  # Choose your desired dictionary
@@ -43,12 +42,12 @@ class ardetect:
         cv2.rectangle(color_frame, (box_x, box_y), (box_x + box_size, box_y + box_size), (0, 255, 0), 2)
         # 4. Detect ArUco markers
         corners, ids, rejectedImgPoints = cv2.aruco.detectMarkers(color_frame, aruco_dict, parameters=parameters)
-        # senddata = {
-        #     "color_frame": color_frame,
-        #     "depth_frame": depth_frame,  # Assuming depth_frame is a numpy array
-        #     "aruco_markers": (corners, ids)  # Assuming you want to send ArUco marker data
-        # }
-        # serialized_data = pickle.dumps(senddata)
+        senddata = {
+            "color_frame": color_frame,
+            "depth_frame": depth_frame,  # Assuming depth_frame is a numpy array
+            "aruco_markers": (corners, ids)  # Assuming you want to send ArUco marker data
+        }
+        serialized_data = pickle.dumps(senddata)
         # s.sendto(serialized_data, (server_ip, server_port))
         # 5. Draw detected markers on the frame and calculate overlap
         # check to see if ar marker is being recognized
