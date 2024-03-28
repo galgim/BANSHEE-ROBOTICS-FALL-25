@@ -3,26 +3,20 @@ import numpy as np
 import pickle
 import socket
 
-s=socket.socket(socket.AF_INET, socket.SOCK_DGRAM)
+s=socket.socket(socket.AF_INET , socket.SOCK_DGRAM)
 ip="192.168.1.89"
 port=6666
-s.bind(('', port))
-
-# 1. Load the ArUco dictionary
-aruco_dict = cv2.aruco.Dictionary_get(cv2.aruco.DICT_5X5_100)  # Choose your desired dictionary
-parameters = cv2.aruco.DetectorParameters_create()
+s.bind((ip,port))
 
 while True:
     x=s.recvfrom(1000000)
-    clientip=x[1][0]
+    clientip = x[1][0]
     data=x[0]
-
+    print(data)
     data=pickle.loads(data)
-
-    img=cv2.imdecode(data,cv2.IMREAD_COLOR)
-    cv2.imshow('img server',img)
-   
-    key= cv2.waitKey(1)
-    if key==27:
+    print(type(data))
+    data = cv2.imdecode(data, cv2.IMREAD_COLOR)
+    cv2.imshow('server', data) #to open image
+    if cv2.waitKey(10) == 13:
         break
 cv2.destroyAllWindows()
