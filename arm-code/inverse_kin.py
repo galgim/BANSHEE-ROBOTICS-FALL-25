@@ -163,5 +163,5 @@ if __name__ == "__main__":
     velocity = [25, 25, 25, 25, 25]
     ids = ALL_IDs
     startAngles = [110, 223, 270, 47, 272]
-    endAngles = [40, 223, 270, 70, 180]
+    endAngles = [110, 223, 270, 70, 180]
     time_between_moves(velocity=velocity, ids=ids, startAngles=startAngles,endAngles=endAngles)
