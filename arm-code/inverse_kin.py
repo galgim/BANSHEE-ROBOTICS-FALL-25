@@ -75,17 +75,17 @@ def time_between_moves(velocity: list[int], ids: list[int], startAngles: list[in
     print(check_time2-check_time)
 
 def move(velocity: list[int], ids: list[int], startAngles: list[int], midAngles: list[int], endAngles: list[int]) -> None:
-    ctrl.dxlSetVelo(velocity, ids)  # ALWAYS SET SPEED BEFORE ANYTHING
-    time.sleep(0.1)
-    print("Sleep move")
-    print("Move 1")
-    ctrl.motorRun(startAngles, ids)  # Reset claw looking up
-    time.sleep(3)
-    print("Move 2")
-    ctrl.motorRun(midAngles, ids)
-    time.sleep(3)
-    print("Move 3")
-    ctrl.motorRun(endAngles, ids)
+    # ctrl.dxlSetVelo(velocity, ids)  # ALWAYS SET SPEED BEFORE ANYTHING
+    # time.sleep(0.1)
+    # print("Sleep move")
+    # print("Move 1")
+    # ctrl.motorRun(startAngles, ids)  # Reset claw looking up
+    # time.sleep(3)
+    # print("Move 2")
+    # ctrl.motorRun(midAngles, ids)
+    # time.sleep(3)
+    # print("Move 3")
+    # ctrl.motorRun(endAngles, ids)
 
     time.sleep(4)
     print("Optimized Move")
