@@ -37,9 +37,9 @@ def checkMovement(ids):
     secondPosition = 0
     while True:
         for id in (ids):
-            firstPosition = motor.ReadMotorData(id, ADDR_PRESENT_POSITION)
+            firstPosition = ctrl.ReadMotorData(id, ADDR_PRESENT_POSITION)
             time.sleep(.1)
-            secondPosition = motor.ReadMotorData(id, ADDR_PRESENT_POSITION)
+            secondPosition = ctrl.ReadMotorData(id, ADDR_PRESENT_POSITION)
             if (abs(firstPosition - secondPosition) < 5):
                 motorStatus[id] = 1
         if (motorStatus == finished):
