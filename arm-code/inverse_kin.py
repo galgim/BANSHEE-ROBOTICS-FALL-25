@@ -94,7 +94,7 @@ def move(velocity: list[int], ids: list[int], startAngles: list[int], midAngles:
     start_time = time.time()
     print("Move 2.2")
     ctrl.motorRun(midAngles, ids)
-    time.sleep(0.4)
+    time.sleep(0.1)
     print("Move 3.2")
     ctrl.motorRun(endAngles, ids)
     end_time = time.time()
