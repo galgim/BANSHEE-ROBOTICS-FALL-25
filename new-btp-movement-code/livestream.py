@@ -6,7 +6,7 @@ import socket
 s=socket.socket(socket.AF_INET, socket.SOCK_DGRAM)
 ip="192.168.1.89"
 port=6666
-s.bind((ip,port))
+s.bind(('', port))
 
 # 1. Load the ArUco dictionary
 aruco_dict = cv2.aruco.Dictionary_get(cv2.aruco.DICT_5X5_100)  # Choose your desired dictionary
