@@ -92,6 +92,15 @@ def portInitialization(portname, dxlIDs):
     # print("-------------------------------------")
     
 
+def dxlPresPos(dxlIDs: list[int])->list[int]:
+    idNum = len(dxlIDs)
+    dxl_present_position = [0] * idNum
+    print("DXL IDs being read: ", dxlIDs)
+    for id in range(idNum): #Reads the current position of the motor
+        dxl_present_position[id] = ReadMotorData(dxlIDs[id], ADDR_PRESENT_POSITION)
+    print("Present positions are: ", dxl_present_position)
+    return (dxl_present_position)
+
 def dxlPresAngle(dxlIDs):
     idNum = len(dxlIDs)
     dxl_present_position = [0] * idNum
