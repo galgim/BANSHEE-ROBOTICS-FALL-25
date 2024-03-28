@@ -181,4 +181,4 @@ if __name__ == "__main__":
     startAngles = [110, 223, 270, 47, 272]
     endAngles = [110, 223, 270, 47, 220]
     time_between_moves(velocity=velocity, ids=ids, startAngles=startAngles,endAngles=endAngles)
-    move()
+    move(velocity=velocity, ids=ids, startAngles=startAngles,endAngles=endAngles)
