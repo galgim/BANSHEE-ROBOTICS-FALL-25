@@ -22,6 +22,8 @@ ALL_IDs = [BASE_ID, BICEP_ID, FOREARM_ID, WRIST_ID, CLAW_ID]
 MOVE_IDs = [BASE_ID, BICEP_ID, FOREARM_ID, WRIST_ID, CLAW_ID]
 
 motor.portInitialization(PORT_NUM, ALL_IDs)
+ctrl.portInitialization(PORT_NUM, ALL_IDs)
+
 
 #angle for the max length reaching out in the x pos
 max_length_angle = calculation.angle_Calc([375, 0, 50], 0)
