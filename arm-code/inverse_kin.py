@@ -90,11 +90,11 @@ def move(velocity: list[int], ids: list[int], startAngles: list[int], midAngles:
     print("Optimized Move")
     print("Move 1.2")
     ctrl.motorRun(startAngles, ids)  # Reset claw looking up
-    time.sleep(0.5)
+    time.sleep(1)
     start_time = time.time()
     print("Move 2.2")
     ctrl.motorRun(midAngles, ids)
-    time.sleep(0.5)
+    time.sleep(0.4)
     print("Move 3.2")
     ctrl.motorRun(endAngles, ids)
     end_time = time.time()
