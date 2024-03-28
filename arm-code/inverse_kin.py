@@ -101,6 +101,18 @@ def move(velocity: list[int], ids: list[int], startAngles: list[int], midAngles:
     end_time = time.time()
     print(end_time)
 
+def sleepless_move(velocity: list[int], ids: list[int], startAngles: list[int], midAngles: list[int], endAngles: list[int]) -> None:
+    ctrl.dxlSetVelo(velocity, ids)  # ALWAYS SET SPEED BEFORE ANYTHING
+    time.sleep(0.1)
+    print("Sleepless move")
+    print("Move 1")
+    ctrl.motorRun(startAngles, ids)  # Reset claw looking up
+    print("Move 2")
+    ctrl.motorRun(midAngles, ids)
+    print("Move 3")
+    ctrl.motorRun(endAngles, ids)
+
+
 def gcs_pullout():
     start_time = time.time()
     motor.dxlSetVelo([25, 25, 25, 25, 25], [0, 1, 2, 3, 4])  # ALWAYS SET SPEED BEFORE ANYTHING
@@ -210,3 +222,5 @@ if __name__ == "__main__":
     time_between_moves(velocity=velocity, ids=ids, startAngles=startAngles, midAngles=midAngles, endAngles=endAngles)
     time.sleep(5)
     move(velocity=velocity, ids=ids, startAngles=startAngles, midAngles=midAngles, endAngles=endAngles)
+    time.sleep(5)
+    sleepless_move(velocity=velocity, ids=ids, startAngles=startAngles, midAngles=midAngles, endAngles=endAngles)
