@@ -161,7 +161,7 @@ def gcs_push_in():
 
 if __name__ == "__main__":
     velocity = [25, 25, 25, 25, 25]
-    ids = ALL_IDs
+    ids = [0, 1, 2, 3, 4]
     startAngles = [110, 223, 270, 47, 272]
     endAngles = [110, 223, 270, 47, 220]
     time_between_moves(velocity=velocity, ids=ids, startAngles=startAngles,endAngles=endAngles)
