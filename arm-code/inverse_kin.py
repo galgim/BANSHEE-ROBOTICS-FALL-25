@@ -46,37 +46,60 @@ def checkMovement(ids):
             print("finished")
             break
 
-def time_between_moves(velocity: list[int], ids: list[int], startAngles: list[int], endAngles: list[int]) -> None:
+def time_between_moves(velocity: list[int], ids: list[int], startAngles: list[int], midAngles: list[int], endAngles: list[int]) -> None:
     ctrl.dxlSetVelo(velocity, ids)  # ALWAYS SET SPEED BEFORE ANYTHING
     time.sleep(0.1)
     print("Move 1")
     ctrl.motorRun(startAngles, ids)  # Reset claw looking up
     start_time = time.time()
     checkMovement(ids)
+
     check_time = time.time()
+
     print("Move 2")
+    check_time2 = time.time()
+    ctrl.motorRun(midAngles, ids)
+    checkMovement(ids)
+
+    print("Move 3")
     ctrl.motorRun(endAngles, ids)
     end_time = time.time()
+
     print("total time")
     print(end_time-start_time)
     print("check time")
     print(check_time-start_time)
+    print("check2 time")
+    print(check_time2-start_time)
+    print("check to check time")
+    print(check_time2-check_time)
 
-def move(velocity: list[int], ids: list[int], startAngles: list[int], endAngles: list[int]) -> None:
+def move(velocity: list[int], ids: list[int], startAngles: list[int], midAngles: list[int], endAngles: list[int]) -> None:
     ctrl.dxlSetVelo(velocity, ids)  # ALWAYS SET SPEED BEFORE ANYTHING
     time.sleep(0.1)
+    print("Sleep move")
     print("Move 1")
     ctrl.motorRun(startAngles, ids)  # Reset claw looking up
     time.sleep(3)
     print("Move 2")
+    ctrl.motorRun(midAngles, ids)
+    time.sleep(3)
+    print("Move 3")
     ctrl.motorRun(endAngles, ids)
 
     time.sleep(4)
+    print("Optimized Move")
     print("Move 1.2")
     ctrl.motorRun(startAngles, ids)  # Reset claw looking up
     time.sleep(0.6)
+    start_time = time.time()
     print("Move 2.2")
+    ctrl.motorRun(midAngles, ids)
+    time.sleep(0.6)
+    print("Move 3.2")
     ctrl.motorRun(endAngles, ids)
+    end_time = time.time()
+    print(end_time)
 
 def gcs_pullout():
     start_time = time.time()
@@ -182,7 +205,8 @@ if __name__ == "__main__":
     velocity = [25, 25, 25, 25, 25]
     ids = [0, 1, 2, 3, 4]
     startAngles = [110, 223, 270, 47, 272]
-    endAngles = [110, 223, 270, 47, 220]
-    time_between_moves(velocity=velocity, ids=ids, startAngles=startAngles,endAngles=endAngles)
+    midAngles = [110, 223, 270, 47, 220]
+    endAngles = [110, 223, 270, 47, 190]
+    time_between_moves(velocity=velocity, ids=ids, startAngles=startAngles, midAngles=midAngles, endAngles=endAngles)
     time.sleep(5)
-    move(velocity=velocity, ids=ids, startAngles=startAngles,endAngles=endAngles)
+    move(velocity=velocity, ids=ids, startAngles=startAngles, midAngles=midAngles, endAngles=endAngles)
