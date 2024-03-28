@@ -52,7 +52,7 @@ def time_between_moves(velocity: list[int], ids: list[int], startAngles: list[in
     checkMovement(ids)
     check_time = time.time()
     print("Move 2")
-    motor.simMotorRun(startAngles, ids)
+    motor.simMotorRun(endAngles, ids)
     end_time = time.time()
     print("total time")
     print(end_time-start_time)
