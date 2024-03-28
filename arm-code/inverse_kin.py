@@ -216,9 +216,9 @@ def gcs_push_in():
 if __name__ == "__main__":
     velocity = [25, 25, 25, 25, 25]
     ids = [0, 1, 2, 3, 4]
-    startAngles = [110, 223, 270, 47, 272]
-    midAngles = [110, 223, 270, 47, 220]
-    endAngles = [110, 223, 270, 47, 160]
+    startAngles = [110, 223, 270, 47, 160]
+    midAngles = [110, 223, 250, 60, 220]
+    endAngles = [110, 223, 210, 80, 270]
     time_between_moves(velocity=velocity, ids=ids, startAngles=startAngles, midAngles=midAngles, endAngles=endAngles)
     time.sleep(5)
     move(velocity=velocity, ids=ids, startAngles=startAngles, midAngles=midAngles, endAngles=endAngles)
