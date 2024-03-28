@@ -8,8 +8,8 @@ ip="127.0.0.1"
 port=6666
 
 cap=cv2.VideoCapture(0)
-cap.set(3,640)
-cap.set(4,480)
+cap.set(3, 640)
+cap.set(4, 480)
 
 while cap.isOpened():
     ret, img = cap.read()

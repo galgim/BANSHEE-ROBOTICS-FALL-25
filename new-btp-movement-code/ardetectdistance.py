@@ -24,9 +24,11 @@ class ardetect:
     while True:
         # 3. Capture a frame
         ret, depth_frame,color_frame = video_capture.get_frame()
-        ret, buffer=cv2.imencode(".jpg",color_frame,[int(cv2.IMWRITE_JPEG_QUALITY),30])
-        x_as_bytes=pickle.dumps(buffer)
-        s.sendto((x_as_bytes),(server_ip,server_port))
+        
+        ret, buffer=cv2.imencode(".jpg",color_frame,[int(cv2.IMWRITE_JPEG_QUALITY),60])
+
+        data=pickle.dumps(buffer)
+        s.sendto((data),(server_ip,server_port))
         # boolean to determine if arm is in right position with battery
         armstart=False
         # Get frame dimensions
@@ -41,7 +43,13 @@ class ardetect:
         cv2.rectangle(color_frame, (box_x, box_y), (box_x + box_size, box_y + box_size), (0, 255, 0), 2)
         # 4. Detect ArUco markers
         corners, ids, rejectedImgPoints = cv2.aruco.detectMarkers(color_frame, aruco_dict, parameters=parameters)
-
+        # senddata = {
+        #     "color_frame": color_frame,
+        #     "depth_frame": depth_frame,  # Assuming depth_frame is a numpy array
+        #     "aruco_markers": (corners, ids)  # Assuming you want to send ArUco marker data
+        # }
+        # serialized_data = pickle.dumps(senddata)
+        # s.sendto(serialized_data, (server_ip, server_port))
         # 5. Draw detected markers on the frame and calculate overlap
         # check to see if ar marker is being recognized
         if ids is not None:
@@ -85,8 +93,6 @@ class ardetect:
 
         # 6. Display the frame
         cv2.imshow('ArUco Marker Detection with Confidence', color_frame)
-        #cv2.imshow("depth frame", depth_frame)
-        #cv2.imshow("Color frame", color_frame)
 
         key = cv2.waitKey(1)
         if key == 27:
