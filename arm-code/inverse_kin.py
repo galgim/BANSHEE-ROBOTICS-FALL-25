@@ -160,4 +160,8 @@ def gcs_push_in():
     print(end_time-start_time)
 
 if __name__ == "__main__":
-    time_between_moves()
+    velocity = [25, 25, 25, 25, 25]
+    ids = ALL_IDs
+    startAngles = [110, 223, 270, 47, 272]
+    endAngles = [40, 180, 270, 70, 180]
+    time_between_moves(velocity=velocity, ids=ids, startAngles=startAngles,endAngles=endAngles)
