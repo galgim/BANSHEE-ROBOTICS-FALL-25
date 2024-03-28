@@ -87,15 +87,14 @@ def move(velocity: list[int], ids: list[int], startAngles: list[int], midAngles:
     # print("Move 3")
     # ctrl.motorRun(endAngles, ids)
 
-    time.sleep(4)
     print("Optimized Move")
     print("Move 1.2")
     ctrl.motorRun(startAngles, ids)  # Reset claw looking up
-    time.sleep(2)
+    time.sleep(0.5)
     start_time = time.time()
     print("Move 2.2")
     ctrl.motorRun(midAngles, ids)
-    time.sleep(0.6)
+    time.sleep(0.5)
     print("Move 3.2")
     ctrl.motorRun(endAngles, ids)
     end_time = time.time()
@@ -222,5 +221,3 @@ if __name__ == "__main__":
     time_between_moves(velocity=velocity, ids=ids, startAngles=startAngles, midAngles=midAngles, endAngles=endAngles)
     time.sleep(5)
     move(velocity=velocity, ids=ids, startAngles=startAngles, midAngles=midAngles, endAngles=endAngles)
-    time.sleep(5)
-    sleepless_move(velocity=velocity, ids=ids, startAngles=startAngles, midAngles=midAngles, endAngles=endAngles)
