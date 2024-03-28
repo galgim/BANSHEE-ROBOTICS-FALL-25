@@ -6,6 +6,7 @@ import time
 import cv2
 import socket
 
+
 BASE_ID = 1
 BICEP_ID = 2
 FOREARM_ID = 3
@@ -42,10 +43,26 @@ def checkMovement(ids):
             print("finished")
             break
 
+def time_between_moves(velocity: list[int], ids: list[int], startAngles: list[int], endAngles: list[int]) -> None:
+    motor.dxlSetVelo(velocity, ids)  # ALWAYS SET SPEED BEFORE ANYTHING
+    time.sleep(0.1)
+    print("Move 1")
+    motor.simMotorRun(startAngles, ids)  # Reset claw looking up
+    start_time = time.time()
+    checkMovement(ids)
+    check_time = time.time()
+    print("Move 2")
+    motor.simMotorRun(startAngles, ids)
+    end_time = time.time()
+    print("total time")
+    print(end_time-start_time)
+    print("check time")
+    print(check_time-start_time)
 
 def gcs_pullout():
+    start_time = time.time()
     motor.dxlSetVelo([25, 25, 25, 25, 25], [0, 1, 2, 3, 4])  # ALWAYS SET SPEED BEFORE ANYTHING
-    time.sleep(0.5)
+    time.sleep(0.1)
     print("set up move")
     motor.simMotorRun([110, 223, 270, 47, 272], [0, 1, 2, 3, 4])  # Reset claw looking up
     time.sleep(2)
@@ -102,10 +119,12 @@ def gcs_pullout():
 
     print("move 14 pull forearm back")
     motor.simMotorRun([270], [4])
-    time.sleep(7)
+    end_time = time.time()
+    print(end_time-start_time)
 
 def gcs_push_in():
     #Push In Battery
+    start_time = time.time()
     motor.dxlSetVelo([15, 15, 15, 15, 15], [0, 1, 2, 3, 4])  # ALWAYS SET SPEED BEFORE ANYTHING
     time.sleep(0.1)
 
@@ -137,4 +156,8 @@ def gcs_push_in():
 
     print("set up move")
     motor.simMotorRun([110, 223, 270, 47, 272], [0, 1, 2, 3, 4])  # Reset claw looking up
-    time.sleep(2)
+    end_time = time.time()
+    print(end_time-start_time)
+
+if __name__ == "__main__":
+    time_between_moves()
