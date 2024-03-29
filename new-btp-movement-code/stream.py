@@ -5,7 +5,7 @@ import pickle
 s = socket.socket(socket.AF_INET, socket.SOCK_DGRAM)
 s.setsockopt(socket.SOL_SOCKET, socket.SO_SNDBUF, 10000000)
 serverip = "192.168.1.89"
-serverport = 9998  # Make sure this matches the port the server is listening on
+serverport = 9999  # Make sure this matches the port the server is listening on
 cap = cv2.VideoCapture(0)
 print("sending at:", s)
 while True:

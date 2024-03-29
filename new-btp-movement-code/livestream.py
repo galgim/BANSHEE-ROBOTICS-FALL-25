@@ -4,7 +4,7 @@ import pickle
 
 s = socket.socket(socket.AF_INET, socket.SOCK_DGRAM)
 ip = "192.168.1.89"
-port = 9998  # Change the port number
+port = 9999  # Change the port number
 s.bind(('', port))
 print("Listening at:", s)
 
