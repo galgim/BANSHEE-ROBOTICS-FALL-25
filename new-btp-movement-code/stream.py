@@ -3,6 +3,7 @@ import socket
 import pickle
 
 s = socket.socket(socket.AF_INET, socket.SOCK_DGRAM)
+s.setsockopt(socket.SOL_SOCKET, socket.SO_SNDBUF, 10000000)
 serverip = "192.168.1.89"
 serverport = 9998  # Make sure this matches the port the server is listening on
 cap = cv2.VideoCapture(0)
@@ -13,6 +14,10 @@ while True:
     ret, buffer = cv2.imencode(".jpg", photo, [int(cv2.IMWRITE_JPEG_QUALITY), 30])
     x_as_bytes = pickle.dumps(buffer)
     s.sendto(x_as_bytes, (serverip, serverport))
+    
+    # Introduce a delay of 30 milliseconds between sending frames
+    cv2.waitKey(30)
+    
     key = cv2.waitKey(1)
     if key == 27:
         break
