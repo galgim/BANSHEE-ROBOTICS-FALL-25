@@ -9,7 +9,7 @@ s.bind((ip, port))
 print("Listening at:", s)
 
 while True:
-      x = s.recvfrom(1024)
+      x = s.recvfrom(1000000)
       data = x[0]
       data = pickle.loads(data)
       data = cv2.imdecode(data, cv2.IMREAD_COLOR)
