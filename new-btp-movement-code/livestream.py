@@ -12,9 +12,9 @@ while True:
     try:
         x = s.recvfrom(1000000)
         data = x[0]
-        print("Streaming")
         data = pickle.loads(data)
         data = cv2.imdecode(data, cv2.IMREAD_COLOR)
+        print("data",data)
         cv2.imshow('server', data)
         
         key = cv2.waitKey(1)
