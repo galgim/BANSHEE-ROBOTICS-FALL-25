@@ -7,6 +7,8 @@ s.setsockopt(socket.SOL_SOCKET, socket.SO_SNDBUF, 10000000)
 serverip = "192.168.1.89"
 serverport = 9999  # Make sure this matches the port the server is listening on
 cap = cv2.VideoCapture(0)
+cap.set(3,640)
+cap.set(4,480)
 print("sending at:", s)
 while True:
     ret, photo = cap.read()
