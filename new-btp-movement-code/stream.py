@@ -3,10 +3,10 @@ import socket
 import pickle
 
 s = socket.socket(socket.AF_INET, socket.SOCK_DGRAM)
-serverip = "192.168.1.95"
+serverip = "192.168.1.89"
 serverport = 9998  # Make sure this matches the port the server is listening on
 cap = cv2.VideoCapture(0)
-
+print("sending at:", s)
 while True:
     ret, photo = cap.read()
     cv2.imshow('streaming', photo)
