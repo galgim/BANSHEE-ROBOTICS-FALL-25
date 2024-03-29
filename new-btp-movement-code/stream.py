@@ -3,7 +3,7 @@ import socket
 import pickle
 
 s = socket.socket(socket.AF_INET, socket.SOCK_DGRAM)
-s.setsockopt(socket.SOL_SOCKET, socket.SO_SNDBUF, 10000000)
+s.setsockopt(socket.SOL_SOCKET, socket.SO_SNDBUF, 1000000)
 serverip = "192.168.1.89"
 serverport = 9999  # Make sure this matches the port the server is listening on
 cap = cv2.VideoCapture(0)
@@ -13,7 +13,7 @@ print("sending at:", s)
 while True:
     ret, photo = cap.read()
     cv2.imshow('streaming', photo)
-    ret, buffer = cv2.imencode(".jpg", photo, [int(cv2.IMWRITE_JPEG_QUALITY), 30])
+    ret, buffer = cv2.imencode(".jpeg", photo, [int(cv2.IMWRITE_JPEG_QUALITY), 30])
     x_as_bytes = pickle.dumps(buffer)
     s.sendto(x_as_bytes, (serverip, serverport))
     
