@@ -289,12 +289,15 @@ def debug_gcs_push_in():
     print(end_time-start_time)
 
 if __name__ == "__main__":
-    velocity = [25, 25, 25, 25, 25]
-    ids = [0, 1, 2, 3, 4]
-    startAngles = [110, 223, 270, 47, 160]
-    midAngles = [110, 223, 250, 60, 220]
-    endAngles = [110, 223, 210, 80, 270]
+    # velocity = [25, 25, 25, 25, 25]
+    # ids = [0, 1, 2, 3, 4]
+    # startAngles = [110, 223, 270, 47, 160]
+    # midAngles = [110, 223, 250, 60, 220]
+    # endAngles = [110, 223, 210, 80, 270]
     # time_between_moves(velocity=velocity, ids=ids, startAngles=startAngles, midAngles=midAngles, endAngles=endAngles)
     # time.sleep(5)
     # move(velocity=velocity, ids=ids, startAngles=startAngles, midAngles=midAngles, endAngles=endAngles)
-    gcs_pullout()
+    # gcs_pullout()
+    debug_gcs_pullout()
+    time.sleep(5)
+    debug_gcs_push_in()
