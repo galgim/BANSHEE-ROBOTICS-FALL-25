@@ -213,7 +213,7 @@ arduinoinput = ''
 debug_gcs_pullout()
 
 print("Start Arduino Code")
-GPIO.output(18, GPIO.HIGH)
+GPIO.output(22, GPIO.HIGH)
 time.sleep(8)
 ser.write(b'b')  # Tell Arduino it's good to go
 
