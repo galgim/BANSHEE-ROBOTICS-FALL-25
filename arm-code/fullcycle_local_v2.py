@@ -99,60 +99,60 @@ def debug_gcs_pullout():
     motor.dxlSetVelo([25, 25, 25, 25, 25], [0, 1, 2, 3, 4])  # ALWAYS SET SPEED BEFORE ANYTHING
     time.sleep(0.1)
     print("set up move")
-    motor.motorRun([110, 223, 270, 47, 272], [0, 1, 2, 3, 4])  # Reset claw looking up
+    motor.simMotorRun([110, 223, 270, 47, 272], [0, 1, 2, 3, 4])  # Reset claw looking up
     time.sleep(2)
     motor.dxlPresPos([0, 1, 2, 3, 4])
 
     print("move 1 move to chamber")
-    motor.motorRun(max_length_angle, [1, 2, 3, 4])
+    motor.simMotorRun(max_length_angle, [1, 2, 3, 4])
     time.sleep(0.4)
     motor.dxlPresPos([0, 1, 2, 3, 4])
 
     print("move 2 pitch wrist")
-    motor.motorRun([200], [4])  # Reset claw looking up
+    motor.simMotorRun([200], [4])  # Reset claw looking up
     time.sleep(0.5)
     motor.dxlPresPos([0, 1, 2, 3, 4])
 
     print("move 3 close grip")
-    motor.motorRun([30], [0])  # Reset claw looking up
+    motor.simMotorRun([30], [0])  # Reset claw looking up
     time.sleep(0.1)
     motor.dxlPresPos([0, 1, 2, 3, 4])
 
     print("move 4 pull forearm back")
-    motor.motorRun([160], [3])  # Reset claw looking up
+    motor.simMotorRun([160], [3])  # Reset claw looking up
     time.sleep(0.15)
     motor.dxlPresPos([0, 1, 2, 3, 4])
 
     initial_pull_out_angle = calculation.angle_Calc([300,0,60], 0)
     print("move 4 pull away slight")
-    motor.motorRun(initial_pull_out_angle, [1, 2, 3, 4])
+    motor.simMotorRun(initial_pull_out_angle, [1, 2, 3, 4])
     time.sleep(0.15)
     motor.dxlPresPos([0, 1, 2, 3, 4])
 
     second_pull_out_angle = calculation.angle_Calc([250,0,60], 0)
     print("move 5 pull away more")
-    motor.motorRun(second_pull_out_angle, [1, 2, 3, 4])
+    motor.simMotorRun(second_pull_out_angle, [1, 2, 3, 4])
     time.sleep(0.3)
     motor.dxlPresPos([0, 1, 2, 3, 4])
 
     final_pull_out_angle = calculation.angle_Calc([200,0,60], 0)
     print("move 6 pull away even more")
-    motor.motorRun(final_pull_out_angle, [1, 2, 3, 4])
+    motor.simMotorRun(final_pull_out_angle, [1, 2, 3, 4])
     time.sleep(0.6)
     motor.dxlPresPos([0, 1, 2, 3, 4])
 
     print("move 7 pull forearm back")
-    motor.motorRun([45], [3])  # Reset claw looking up
+    motor.simMotorRun([45], [3])  # Reset claw looking up
     time.sleep(0.8)
     motor.dxlPresPos([0, 1, 2, 3, 4])
 
     print("move 8 pull forearm back")
-    motor.motorRun([200], [2])  # Reset claw looking up
+    motor.simMotorRun([200], [2])  # Reset claw looking up
     time.sleep(0.25)
     motor.dxlPresPos([0, 1, 2, 3, 4])
 
     print("move 9 pull forearm back")
-    motor.motorRun([220], [4])  # Reset claw looking up
+    motor.simMotorRun([220], [4])  # Reset claw looking up
     time.sleep(0.4)
     motor.dxlPresPos([0, 1, 2, 3, 4])
 
@@ -160,12 +160,12 @@ def debug_gcs_pullout():
     time.sleep(0.1)
 
     print("move 13 pull forearm back")
-    motor.motorRun([265, 47, 170], [2, 3, 4])
+    motor.simMotorRun([265, 47, 170], [2, 3, 4])
     time.sleep(0.8)
     motor.dxlPresPos([0, 1, 2, 3, 4])
 
     print("move 14 pull forearm back")
-    motor.motorRun([270], [4])
+    motor.simMotorRun([270], [4])
     motor.dxlPresPos([0, 1, 2, 3, 4])
     end_time = time.time()
     print(end_time-start_time)
