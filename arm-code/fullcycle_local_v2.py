@@ -30,6 +30,7 @@ ALL_IDs = [BASE_ID, BICEP_ID, FOREARM_ID, WRIST_ID, CLAW_ID]
 MOVE_IDs = [BASE_ID, BICEP_ID, FOREARM_ID, WRIST_ID, CLAW_ID]
 
 motor.portInitialization(PORT_NUM, ALL_IDs)
+max_length_angle = calculation.angle_Calc([375, 0, 50], 0)
 
 def debug_gcs_pullout():
     start_time = time.time()
