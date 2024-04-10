@@ -288,6 +288,18 @@ def debug_gcs_push_in():
     end_time = time.time()
     print(end_time-start_time)
 
+def debug_bvm_push_in():
+    start_time = time.time()
+    motor.dxlSetVelo([25, 25, 25, 25, 25], [0, 1, 2, 3, 4])  # ALWAYS SET SPEED BEFORE ANYTHING
+    time.sleep(0.1)
+    print("set up move")
+    motor.simMotorRun([110, 223, 270, 47, 272], [0, 1, 2, 3, 4])  # Reset claw looking up
+    time.sleep(2)
+
+    print("move 1 move to chamber")
+    motor.simMotorRun(max_length_angle, [1, 2, 3, 4])
+    time.sleep(0.4)
+
 if __name__ == "__main__":
     # velocity = [25, 25, 25, 25, 25]
     # ids = [0, 1, 2, 3, 4]
@@ -298,6 +310,7 @@ if __name__ == "__main__":
     # time.sleep(5)
     # move(velocity=velocity, ids=ids, startAngles=startAngles, midAngles=midAngles, endAngles=endAngles)
     # gcs_pullout()
-    debug_gcs_pullout()
-    time.sleep(5)
-    debug_gcs_push_in()
+    # debug_gcs_pullout()
+    # time.sleep(5)
+    # debug_gcs_push_in()
+    debug_bvm_push_in()
