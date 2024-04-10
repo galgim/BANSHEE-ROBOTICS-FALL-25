@@ -300,6 +300,14 @@ def debug_bvm_push_in():
     motor.simMotorRun(max_length_angle, [1, 2, 3, 4])
     time.sleep(0.4)
 
+    print("move 2 pitch wrist")
+    motor.simMotorRun([200], [4])  # Reset claw looking up
+    time.sleep(0.5)
+
+    print("move 3 close grip")
+    motor.simMotorRun([30], [0])  # Reset claw looking up
+    time.sleep(0.1)
+
 if __name__ == "__main__":
     # velocity = [25, 25, 25, 25, 25]
     # ids = [0, 1, 2, 3, 4]
