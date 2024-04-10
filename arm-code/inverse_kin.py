@@ -292,7 +292,7 @@ def debug_gcs_push_in():
 bvm_max_length_angle = calculation.angle_Calc([375, 0, 70], 0)
 
 
-def debug_bvm_push_in():
+def debug_bvm_pull_out():
     start_time = time.time()
     motor.dxlSetVelo([25, 25, 25, 25, 25], [0, 1, 2, 3, 4])  # ALWAYS SET SPEED BEFORE ANYTHING
     time.sleep(0.1)
@@ -362,6 +362,24 @@ def debug_bvm_push_in():
     # time.sleep(0.6)
     # ctrl.dxlPresPos([0, 1, 2, 3, 4])
 
+def debug_bvm_push_in():
+    #Push In Battery
+    start_time = time.time()
+    motor.dxlSetVelo([15, 15, 15, 15, 15], [0, 1, 2, 3, 4])  # ALWAYS SET SPEED BEFORE ANYTHING
+    time.sleep(0.1)
+
+    print("move back to chamber")
+    motor.simMotorRun([180, 62], [2, 3])
+    time.sleep(2.5)
+
+    motor.dxlSetVelo([50, 50, 50, 50, 50], [0, 1, 2, 3, 4])  # ALWAYS SET SPEED BEFORE ANYTHING
+    time.sleep(0.1)
+
+    gcs_push_in_angle = calculation.angle_Calc([310,0,65], 0)
+    print(gcs_push_in_angle)
+    print("push in to chamber")
+    motor.simMotorRun(gcs_push_in_angle, [1, 2, 3, 4])
+    time.sleep(0.15)
 
 if __name__ == "__main__":
     # velocity = [25, 25, 25, 25, 25]
@@ -376,4 +394,7 @@ if __name__ == "__main__":
     # debug_gcs_pullout()
     # time.sleep(5)
     # debug_gcs_push_in()
+    debug_bvm_pull_out()
+    time.sleep(3)
     debug_bvm_push_in()
+    
