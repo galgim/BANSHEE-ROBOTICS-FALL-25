@@ -10,8 +10,8 @@ import socket
 class ardetect:
     s=socket.socket(socket.AF_INET, socket.SOCK_DGRAM)
     #s.setsockopt(socket.SOL_SOCKET, socket.SO_SNDBUF, 1000000)
-    server_ip="10.110.141.161"
-    server_port=9998
+    server_ip="192.168.1.52"
+    server_port=3000
 
     # 1. Load the ArUco dictionary
     aruco_dict = cv2.aruco.Dictionary_get(cv2.aruco.DICT_5X5_100)  # Choose your desired dictionary
@@ -19,15 +19,21 @@ class ardetect:
 
     # 2. Access video capture
     video_capture = DepthCamera()  # Use 0 for webcam, or file path for a video file
+    message = b'Hello, UDP server!'
 
     while True:
         # 3. Capture a frame
+        print('Sending {!r}'.format(message))
         ret, depth_frame,color_frame = video_capture.get_frame()
         
         ret, buffer=cv2.imencode(".jpg",color_frame,[int(cv2.IMWRITE_JPEG_QUALITY),30])
 
         data=pickle.dumps(buffer)
         s.sendto((data),(server_ip,server_port))
+        print('Waiting to receive response')
+        data, server = s.recvfrom(4096)
+        print('Received {!r}'.format(data))
+
         # boolean to determine if arm is in right position with battery
         armstart=False
         # Get frame dimensions
