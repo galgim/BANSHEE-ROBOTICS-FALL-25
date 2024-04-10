@@ -369,8 +369,18 @@ def debug_bvm_push_in():
     time.sleep(0.1)
 
     print("move back to chamber")
+    motor.simMotorRun([220, 62], [2, 3])
+    time.sleep(2)
+
+    motor.simMotorRun([200, 62], [2, 3])
+    time.sleep(1)
+
+    motor.simMotorRun([190, 62], [2, 3])
+    time.sleep(1)
+
+    print("move back to chamber")
     motor.simMotorRun([180, 62], [2, 3])
-    time.sleep(2.5)
+    time.sleep(0.5)
 
     motor.dxlSetVelo([50, 50, 50, 50, 50], [0, 1, 2, 3, 4])  # ALWAYS SET SPEED BEFORE ANYTHING
     time.sleep(0.1)
