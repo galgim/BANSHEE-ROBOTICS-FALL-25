@@ -334,9 +334,14 @@ def debug_bvm_push_in():
     time.sleep(0.3)
     motor.dxlPresPos([0, 1, 2, 3, 4])
 
+    print("move 6 pull away more")
+    motor.simMotorRun([225, 180, 45, 269], [1, 2, 3, 4])
+    time.sleep(0.3)
+    motor.dxlPresPos([0, 1, 2, 3, 4])
+    
     for i in range(180,270):
         print("move 7 pull away more")
-        motor.simMotorRun([225, i, 40, 269], [1, 2, 3, 4])
+        motor.simMotorRun([225, i, 45, 269], [1, 2, 3, 4])
         time.sleep(0.05)
         motor.dxlPresPos([0, 1, 2, 3, 4])
 
