@@ -288,6 +288,10 @@ def debug_gcs_push_in():
     end_time = time.time()
     print(end_time-start_time)
 
+
+bvm_max_length_angle = calculation.angle_Calc([375, 0, 70], 0)
+
+
 def debug_bvm_push_in():
     start_time = time.time()
     motor.dxlSetVelo([25, 25, 25, 25, 25], [0, 1, 2, 3, 4])  # ALWAYS SET SPEED BEFORE ANYTHING
@@ -297,7 +301,7 @@ def debug_bvm_push_in():
     time.sleep(2)
 
     print("move 1 move to chamber")
-    motor.simMotorRun(max_length_angle, [1, 2, 3, 4])
+    motor.simMotorRun(bvm_max_length_angle, [1, 2, 3, 4])
     time.sleep(0.4)
 
     print("move 2 pitch wrist")
