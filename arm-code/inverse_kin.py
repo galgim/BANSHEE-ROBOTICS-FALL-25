@@ -334,10 +334,10 @@ def debug_bvm_push_in():
     time.sleep(0.3)
     motor.dxlPresPos([0, 1, 2, 3, 4])
 
-    for i in range(180,270,5):
+    for i in range(180,270):
         print("move 7 pull away more")
         motor.simMotorRun([225, i, 40, 269], [1, 2, 3, 4])
-        time.sleep(0.3)
+        time.sleep(0.05)
         motor.dxlPresPos([0, 1, 2, 3, 4])
 
     # final_pull_out_angle = calculation.angle_Calc([200,0,80], 0)
