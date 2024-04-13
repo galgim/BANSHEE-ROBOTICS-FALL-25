@@ -91,7 +91,7 @@ void oledDisplay(){
   display.print(direction);
   display.display();
   display.display();
-  delay(50);
+  delay(2);
 }
 
 //Main Looping Fucntion
@@ -120,20 +120,40 @@ void loop() {
   {
     digitalWrite(blue_led,HIGH);                //Turn on LED for forward movement state
     digitalWrite(green_led,LOW);                //Turn on LED for reverse movement state
+    servoLeft.write(midpoint);                    //Set left side motors postion to 90
+    servoRight.write(midpoint);
     while(true){
       distance = getdistance(trigFront,echoFront);
       distanceBack = getdistance(trigBack,echoBack);
       oledDisplay();
 
-      if(distanceBack > 90) move(forward_speed);
-      else if(distanceBack <= 90 && distanceBack > 25 ){
+      if(distanceBack > 220){
+        move(forward_speed);
+        distance = getdistance(trigFront,echoFront);
+        distanceBack = getdistance(trigBack,echoBack);
+      }
+      else if(distanceBack <= 220 && distanceBack > 25 ){
+        distance = getdistance(trigFront,echoFront);
+        distanceBack = getdistance(trigBack,echoBack);
         gradientControl(midpoint);                   //Set right side motors postion to 90
-        delay(500);
+        if(distanceBack<=70) delay(1000);
+        else if(distanceBack<=180) delay(500);
         gradientControl(forward_speed);
+        for(int i = 0; i <= 500; i++){
+          distance = getdistance(trigFront,echoFront);
+          distanceBack = getdistance(trigBack,echoBack);
+          delay(1);
+          if(distanceBack <= 180) break;
+        }
       }
       else if(distanceBack <= 25)                       //Check if the distance is less than or equal to 10 cm  from the front
       {
+        distance = getdistance(trigFront,echoFront);
+        distanceBack = getdistance(trigBack,echoBack);
         direction = 'S';                          //Set direction to none to trigger a stop
+        servoLeft.write(midpoint);                    //Set left side motors postion to 90
+        servoRight.write(midpoint);                   //Set right side motors postion to 90
+        // for(int i = 0; i <=10; i++){
         Serial.write('1');
         break;
       }
@@ -145,21 +165,40 @@ void loop() {
   {   
     digitalWrite(blue_led,LOW);                 //Turn on LED for reverse movement state
     digitalWrite(green_led,HIGH);               //Turn on LED for reverse movement state   
+    int toggle = 0;
     while(true){
       distance = getdistance(trigFront,echoFront);
       distanceBack = getdistance(trigBack,echoBack);
       oledDisplay();
-
-      if(distance > 90) gradientControl(reverse_speed);
-      if(distance <= 90 && distance > 25){
+      if(distance > 200){
+        if(toggle == 0){
+          gradientControl(midpoint);
+          delay(1000);
+          toggle = 1;
+        }
+        gradientControl(reverse_speed);
+        distance = getdistance(trigFront,echoFront);
+        distanceBack = getdistance(trigBack,echoBack);
+      }
+      else if(distance <= 200 && distance > 25){
+        distance = getdistance(trigFront,echoFront);
+        distanceBack = getdistance(trigBack,echoBack);
         gradientControl(midpoint);
         delay(500);
         gradientControl(reverse_speed);
+        for(int i = 0; i <= 500; i++){
+          distance = getdistance(trigFront,echoFront);
+          distanceBack = getdistance(trigBack,echoBack);
+          delay(1);
+          if(distance <= 130) break;
+        }
       }
       //reverse(reverse_speed);
       
       else if(distance <= 25)                           //Check if the distance is less than or equal to 10 cm from the back
       {
+        distance = getdistance(trigFront,echoFront);
+        distanceBack = getdistance(trigBack,echoBack);
         is_reverse = false;
         direction = 'S';                          //Set direction to none to trigger a stop
         Serial.write('1');

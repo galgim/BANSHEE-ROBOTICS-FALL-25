@@ -20,7 +20,7 @@ void default_mode(int distanceBack){
 
 double getdistance(int triggerPin,int echoPin){
     digitalWrite (triggerPin, HIGH);        //Turn on send trigger signal to back ultrasonic sensor
-    delay(50);                            //Delay for 0.05 seconds to 50 ms
+    delay(2);                            //Delay for 0.05 seconds to 50 ms
     digitalWrite(triggerPin, LOW);          //Turn off send trigger signal to back ultrasonic sensor
     duration = pulseIn(echoPin, HIGH);  //Set duration equal to the pulse reading from the echo of the back ultrasonic sensor
     double d = (duration/2)/29.1;         //Calculate the distance into cm
@@ -34,7 +34,7 @@ void move(int speed){
     {
       servoLeft.write(i);                  //Set left side motors postion to 82
       servoRight.write(i);                 //Set left side motors postion to 82
-      delay(250);
+      delay(200);
     }
   }
   else if(curr_speed < speed)
@@ -43,12 +43,14 @@ void move(int speed){
     {
       servoLeft.write(i);                  //Set left side motors postion to 82
       servoRight.write(i);                 //Set left side motors postion to 82
-      delay(250);
+      delay(200);
     }
   }
   else
   {
     curr_speed = speed;
+    servoLeft.write(curr_speed);                  //Set left side motors postion to 82
+    servoRight.write(curr_speed);                 //Set left side motors postion to 82
   }
 }
 

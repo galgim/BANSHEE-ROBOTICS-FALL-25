@@ -33,8 +33,8 @@ char direction;                            //direction var used to determine whi
 int midpoint = 91;
 int curr_speed = 90;
 int break_point = 85;
-int forward_speed = 101;                  //TO GCS
-int reverse_speed = 75;                   //TP BVM
+int forward_speed = 102;                  //TO GCS
+int reverse_speed = 74;                   //TP BVM
 bool is_reverse = false;
 
 String py_input;
