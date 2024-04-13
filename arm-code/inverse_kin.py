@@ -175,7 +175,7 @@ def debug_gcs_pullout():
     motor.simMotorRun([270], [4])
     end_time = time.time()
     print(end_time-start_time)
-
+    time.sleep(1.5);
     print("set up move")
     motor.simMotorRun([110, 223, 270, 47, 272], [0, 1, 2, 3, 4])  # Reset claw looking up
     end_time = time.time()
