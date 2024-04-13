@@ -176,6 +176,11 @@ def debug_gcs_pullout():
     end_time = time.time()
     print(end_time-start_time)
 
+    print("set up move")
+    motor.simMotorRun([110, 223, 270, 47, 272], [0, 1, 2, 3, 4])  # Reset claw looking up
+    end_time = time.time()
+    print(end_time-start_time)
+
 def gcs_pullout():
     start_time = time.time()
     ctrl.dxlSetVelo([25, 25, 25, 25, 25], [0, 1, 2, 3, 4])  # ALWAYS SET SPEED BEFORE ANYTHING
