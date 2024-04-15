@@ -78,7 +78,7 @@ async def read_frames():
                 cv2.rectangle(color_frame, (box_x, box_y), (box_x + box_size, box_y + box_size), (0, 255, 0), 2)
 
                 # 6. Display the frame
-                cv2.imshow('ArUco Marker Detection with Confidence', color_frame)
+                cv2.imshow('Livestream Client', color_frame)
 
                 key = cv2.waitKey(1)
                 if key == ord('q'):
