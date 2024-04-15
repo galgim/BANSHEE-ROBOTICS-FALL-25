@@ -6,7 +6,6 @@ import pyrealsense2
 import numpy as np
 import asyncio
 import websockets
-import time
 
 async def read_frames():
     # 1. Load the ArUco dictionary

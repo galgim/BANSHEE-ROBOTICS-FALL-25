@@ -19,11 +19,8 @@ class ardetect:
 
     # 2. Access video capture
     video_capture = DepthCamera()  # Use 0 for webcam, or file path for a video file
-    message = b'Hello, UDP server!'
 
-    while True:
-        # 3. Capture a frame
-        print('Sending {!r}'.format(message))
+    while True: 
         ret, depth_frame,color_frame = video_capture.get_frame()
         # boolean to determine if arm is in right position with battery
         armstart=False
@@ -31,7 +28,7 @@ class ardetect:
         height, width, _ = color_frame.shape
 
         #set middle box height and weight
-        box_size = 50
+        box_size = 150
         box_x = int((width - box_size) / 2)
         box_y = int((height - box_size) / 2)
 
