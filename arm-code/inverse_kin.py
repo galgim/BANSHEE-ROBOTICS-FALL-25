@@ -443,11 +443,11 @@ if __name__ == "__main__":
     # time.sleep(5)
     # move(velocity=velocity, ids=ids, startAngles=startAngles, midAngles=midAngles, endAngles=endAngles)
     # gcs_pullout()
-    debug_gcs_pullout()
-    # time.sleep(5)
-    # debug_gcs_push_in()
+    # debug_gcs_pullout()
+    # # time.sleep(5)
+    # # debug_gcs_push_in()
     
-    # debug_bvm_pull_out()
-    # time.sleep(3)
+    debug_bvm_pull_out()
+    time.sleep(3)
     # debug_bvm_push_in()
     
