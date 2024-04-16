@@ -356,12 +356,12 @@ def debug_bvm_pull_out():
     
     print("move 9 pull away more")
     motor.simMotorRun([225, 265, 60, 269], [1, 2, 3, 4])
-    time.sleep(0.3)
+    time.sleep(0.2)
     motor.dxlPresPos([0, 1, 2, 3, 4])
 
     print("move 10 pull away more")
     motor.simMotorRun([225, 265, 45, 269], [1, 2, 3, 4])
-    time.sleep(0.3)
+    time.sleep(0.2)
     motor.dxlPresPos([0, 1, 2, 3, 4])
 
     # final_pull_out_angle = calculation.angle_Calc([200,0,80], 0)
@@ -369,6 +369,10 @@ def debug_bvm_pull_out():
     # ctrl.motorRun(final_pull_out_angle, [1, 2, 3, 4])
     # time.sleep(0.6)
     # ctrl.dxlPresPos([0, 1, 2, 3, 4])
+
+    print("set up move")
+    motor.simMotorRun([30, 223, 270, 47, 272], [0, 1, 2, 3, 4])  # Reset claw looking up
+    time.sleep(2)
 
 def debug_bvm_push_in():
     #Push In Battery
