@@ -74,7 +74,7 @@ while video_capture.isOpened():
     cv2.rectangle(frame, (box_x, box_y), (box_x + box_size, box_y + box_size), (0, 255, 0), 2)
 
     # 6. Display the frame
-    cv2.imshow('ArUco Marker Detection with Confidence', frame)
+    # cv2.imshow('ArUco Marker Detection with Confidence', frame)
     #cv2.imshow("depth frame", depth_frame)
     #cv2.imshow("Color frame", color_frame)
     
