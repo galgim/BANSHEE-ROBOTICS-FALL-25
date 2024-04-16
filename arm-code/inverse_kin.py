@@ -342,24 +342,24 @@ def debug_bvm_pull_out():
     time.sleep(0.3)
     motor.dxlPresPos([0, 1, 2, 3, 4])
 
-    print("move 6 pull away more")
+    print("move 7 pull away more")
     motor.simMotorRun([225, 180, 60, 269], [1, 2, 3, 4])
     time.sleep(0.3)
     motor.dxlPresPos([0, 1, 2, 3, 4])
     
-    print("move 7 pull away more")
+    print("move 8 pull away more")
     for i in range(180,210,5):
         print(i)
         motor.simMotorRun([225, i, 60, 269], [1, 2, 3, 4])
         time.sleep(0.025)
         motor.dxlPresPos([0, 1, 2, 3, 4])
     
-    print("move 8 pull away more")
+    print("move 9 pull away more")
     motor.simMotorRun([225, 265, 60, 269], [1, 2, 3, 4])
     time.sleep(0.3)
     motor.dxlPresPos([0, 1, 2, 3, 4])
 
-    print("move 9 pull away more")
+    print("move 10 pull away more")
     motor.simMotorRun([225, 265, 45, 269], [1, 2, 3, 4])
     time.sleep(0.3)
     motor.dxlPresPos([0, 1, 2, 3, 4])
