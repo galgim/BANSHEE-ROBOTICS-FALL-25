@@ -11,8 +11,8 @@ frame_count = 0
 
 async def read_frames():
     global fps, start_time, frame_count
-    uri = "ws://172.233.146.163:3000/read_frames"  # Replace with your server address
-  #  uri = "ws://rgs.bansheeuav.tech:3000/read_frames"  # Replace with your server address
+    #uri = "ws://172.233.146.163:3000/read_frames"  # Replace with your server address
+    uri = "ws://rgs.bansheeuav.tech:3000/read_frames"  # Replace with your server address
     #uri = "ws://127.0.0.1:3000/read_frames"
     async with websockets.connect(uri) as websocket:
         print("Connected to WebSocket server for reading frames")
