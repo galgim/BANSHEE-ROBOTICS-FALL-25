@@ -6,6 +6,7 @@ import pyrealsense2
 import numpy as np
 import asyncio
 import websockets
+import time
 
 async def read_frames():
     # 1. Load the ArUco dictionary
@@ -78,7 +79,7 @@ async def read_frames():
                 cv2.rectangle(color_frame, (box_x, box_y), (box_x + box_size, box_y + box_size), (0, 255, 0), 2)
 
                 # 6. Display the frame
-                cv2.imshow('Livestream Client', color_frame)
+                cv2.imshow('ArUco Marker Detection with Confidence', color_frame)
 
                 key = cv2.waitKey(1)
                 if key == ord('q'):
