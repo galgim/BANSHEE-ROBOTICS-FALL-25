@@ -18,7 +18,7 @@ class ardetect:
     parameters = cv2.aruco.DetectorParameters_create()
 
     # 2. Access video capture
-    video_capture = DepthCamera('/dev/video0')  # Use 0 for webcam, or file path for a video file
+    video_capture = DepthCamera('/dev/video1')  # Use 0 for webcam, or file path for a video file
 
     while True: 
         ret, depth_frame,color_frame = video_capture.get_frame()
