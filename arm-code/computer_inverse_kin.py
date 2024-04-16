@@ -16,14 +16,14 @@ WRIST_ID = 4
 CLAW_ID = 0
 
 
-PORT_NUM = '/dev/ttyUSB0'  # for rpi
+PORT_NUM = 'COM10'  # for windows laptop
 MOVEARM_MODE = 1
 ADDR_PRESENT_POSITION = 132
 ALL_IDs = [BASE_ID, BICEP_ID, FOREARM_ID, WRIST_ID, CLAW_ID]
 MOVE_IDs = [BASE_ID, BICEP_ID, FOREARM_ID, WRIST_ID, CLAW_ID]
 
 motor.portInitialization(PORT_NUM, ALL_IDs)
-ctrl.portInitialization(PORT_NUM, ALL_IDs)
+# ctrl.portInitialization(PORT_NUM, ALL_IDs)
 
 
 #angle for the max length reaching out in the x pos
@@ -46,72 +46,6 @@ def checkMovement(ids):
         if (motorStatus == finished):
             print("finished")
             break
-
-def time_between_moves(velocity: list[int], ids: list[int], startAngles: list[int], midAngles: list[int], endAngles: list[int]) -> None:
-    ctrl.dxlSetVelo(velocity, ids)  # ALWAYS SET SPEED BEFORE ANYTHING
-    time.sleep(0.1)
-    print("Move 1")
-    ctrl.motorRun(startAngles, ids)  # Reset claw looking up
-    start_time = time.time()
-    checkMovement(ids)
-
-    check_time = time.time()
-
-    print("Move 2")
-    check_time2 = time.time()
-    ctrl.motorRun(midAngles, ids)
-    checkMovement(ids)
-
-    print("Move 3")
-    ctrl.motorRun(endAngles, ids)
-    end_time = time.time()
-
-    print("total time")
-    print(end_time-start_time)
-    print("check time")
-    print(check_time-start_time)
-    print("check2 time")
-    print(check_time2-start_time)
-    print("check to check time")
-    print(check_time2-check_time)
-
-def move(velocity: list[int], ids: list[int], startAngles: list[int], midAngles: list[int], endAngles: list[int]) -> None:
-    # ctrl.dxlSetVelo(velocity, ids)  # ALWAYS SET SPEED BEFORE ANYTHING
-    # time.sleep(0.1)
-    # print("Sleep move")
-    # print("Move 1")
-    # ctrl.motorRun(startAngles, ids)  # Reset claw looking up
-    # time.sleep(3)
-    # print("Move 2")
-    # ctrl.motorRun(midAngles, ids)
-    # time.sleep(3)
-    # print("Move 3")
-    # ctrl.motorRun(endAngles, ids)
-
-    print("Optimized Move")
-    print("Move 1.2")
-    ctrl.motorRun(startAngles, ids)  # Reset claw looking up
-    time.sleep(1)
-    start_time = time.time()
-    print("Move 2.2")
-    ctrl.motorRun(midAngles, ids)
-    time.sleep(0.1)
-    print("Move 3.2")
-    ctrl.motorRun(endAngles, ids)
-    end_time = time.time()
-    print(end_time)
-
-def sleepless_move(velocity: list[int], ids: list[int], startAngles: list[int], midAngles: list[int], endAngles: list[int]) -> None:
-    ctrl.dxlSetVelo(velocity, ids)  # ALWAYS SET SPEED BEFORE ANYTHING
-    time.sleep(0.1)
-    print("Sleepless move")
-    print("Move 1")
-    ctrl.motorRun(startAngles, ids)  # Reset claw looking up
-    print("Move 2")
-    ctrl.motorRun(midAngles, ids)
-    print("Move 3")
-    ctrl.motorRun(endAngles, ids)
-
 
 def debug_gcs_pullout():
     start_time = time.time()
@@ -183,81 +117,6 @@ def debug_gcs_pullout():
     end_time = time.time()
     print(end_time-start_time)
 
-def gcs_pullout():
-    start_time = time.time()
-    ctrl.dxlSetVelo([25, 25, 25, 25, 25], [0, 1, 2, 3, 4])  # ALWAYS SET SPEED BEFORE ANYTHING
-    time.sleep(0.1)
-    print("set up move")
-    ctrl.motorRun([110, 223, 270, 47, 272], [0, 1, 2, 3, 4])  # Reset claw looking up
-    time.sleep(2)
-    ctrl.dxlPresPos([0, 1, 2, 3, 4])
-
-    print("move 1 move to chamber")
-    ctrl.motorRun(max_length_angle, [1, 2, 3, 4])
-    time.sleep(0.4)
-    ctrl.dxlPresPos([0, 1, 2, 3, 4])
-
-    print("move 2 pitch wrist")
-    ctrl.motorRun([200], [4])  # Reset claw looking up
-    time.sleep(0.5)
-    ctrl.dxlPresPos([0, 1, 2, 3, 4])
-
-    print("move 3 close grip")
-    ctrl.motorRun([30], [0])  # Reset claw looking up
-    time.sleep(0.1)
-    ctrl.dxlPresPos([0, 1, 2, 3, 4])
-
-    print("move 4 pull forearm back")
-    ctrl.motorRun([160], [3])  # Reset claw looking up
-    time.sleep(0.15)
-    ctrl.dxlPresPos([0, 1, 2, 3, 4])
-
-    initial_pull_out_angle = calculation.angle_Calc([300,0,60], 0)
-    print("move 4 pull away slight")
-    ctrl.motorRun(initial_pull_out_angle, [1, 2, 3, 4])
-    time.sleep(0.15)
-    ctrl.dxlPresPos([0, 1, 2, 3, 4])
-
-    second_pull_out_angle = calculation.angle_Calc([250,0,60], 0)
-    print("move 5 pull away more")
-    ctrl.motorRun(second_pull_out_angle, [1, 2, 3, 4])
-    time.sleep(0.3)
-    ctrl.dxlPresPos([0, 1, 2, 3, 4])
-
-    final_pull_out_angle = calculation.angle_Calc([200,0,60], 0)
-    print("move 6 pull away even more")
-    ctrl.motorRun(final_pull_out_angle, [1, 2, 3, 4])
-    time.sleep(0.6)
-    ctrl.dxlPresPos([0, 1, 2, 3, 4])
-
-    print("move 7 pull forearm back")
-    ctrl.motorRun([45], [3])  # Reset claw looking up
-    time.sleep(0.8)
-    ctrl.dxlPresPos([0, 1, 2, 3, 4])
-
-    print("move 8 pull forearm back")
-    ctrl.motorRun([200], [2])  # Reset claw looking up
-    time.sleep(0.25)
-    ctrl.dxlPresPos([0, 1, 2, 3, 4])
-
-    print("move 9 pull forearm back")
-    ctrl.motorRun([220], [4])  # Reset claw looking up
-    time.sleep(0.4)
-    ctrl.dxlPresPos([0, 1, 2, 3, 4])
-
-    ctrl.dxlSetVelo([15, 15, 15, 15, 15], [0, 1, 2, 3, 4])  # ALWAYS SET SPEED BEFORE ANYTHING
-    time.sleep(0.1)
-
-    print("move 13 pull forearm back")
-    ctrl.motorRun([265, 47, 170], [2, 3, 4])
-    time.sleep(0.8)
-    ctrl.dxlPresPos([0, 1, 2, 3, 4])
-
-    print("move 14 pull forearm back")
-    ctrl.motorRun([270], [4])
-    ctrl.dxlPresPos([0, 1, 2, 3, 4])
-    end_time = time.time()
-    print(end_time-start_time)
 
 def debug_gcs_push_in():
     #Push In Battery
@@ -449,5 +308,5 @@ if __name__ == "__main__":
     
     debug_bvm_pull_out()
     time.sleep(3)
-    debug_bvm_push_in()
+    # debug_bvm_push_in()
     
