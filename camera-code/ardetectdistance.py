@@ -11,7 +11,7 @@ import socket
 s=socket.socket(socket.AF_INET, socket.SOCK_DGRAM)
 s.setsockopt(socket.SOL_SOCKET,socket.SO_SNDBUF,1000000)
 
-server_ip="192.168.1.52"
+server_ip="192.168.1.95"
 server_port= 3000
 
 # 1. Load the ArUco dictionary
