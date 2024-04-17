@@ -5,13 +5,13 @@ import time
 
 
 async def send_frames():
-    #uri = "ws://172.233.146.163:3000/sending_frames"  # WebSocket endpoint for reading frames
-    uri = "ws://rgs.bansheeuav.tech:3000/sending_frames"
+    uri = "ws://172.233.146.163:3000/sending_frames"  # WebSocket endpoint for reading frames
+    #uri = "ws://rgs.bansheeuav.tech:3000/sending_frames"
     #uri = "ws://127.0.0.1:3000/sending_frames"
     async with websockets.connect(uri) as websocket:
         print("Connected to WebSocket server for sending frames")
         cap = cv2.VideoCapture(0)
-        frame_rate = 10
+        frame_rate = 60
         prev = 0
         while True:
             try:

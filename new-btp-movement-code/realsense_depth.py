@@ -15,8 +15,8 @@ class DepthCamera:
         config = rs.config()
 
         #turn on camera using width and height
-        config.enable_stream(rs.stream.depth, self.DEPTH_WIDTH, self.DEPTH_HEIGHT, rs.format.z16, 10)
-        config.enable_stream(rs.stream.color, self.COLOR_WIDTH, self.COLOR_HEIGHT, rs.format.bgr8, 10)
+        config.enable_stream(rs.stream.depth, self.DEPTH_WIDTH, self.DEPTH_HEIGHT, rs.format.z16, 60)
+        config.enable_stream(rs.stream.color, self.COLOR_WIDTH, self.COLOR_HEIGHT, rs.format.bgr8, 60)
 
         # Start the pipeline and get the active profile
         self.pipeline.start(config)
