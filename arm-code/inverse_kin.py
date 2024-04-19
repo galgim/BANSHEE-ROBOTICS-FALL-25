@@ -303,7 +303,7 @@ bvm_max_length_angle = calculation.angle_Calc([370, 0, 75], 0)
 
 def debug_bvm_pull_out():
     start_time = time.time()
-    motor.dxlSetVelo([25, 25, 25, 25, 25], [0, 1, 2, 3, 4])  # ALWAYS SET SPEED BEFORE ANYTHING
+    motor.dxlSetVelo([25, 25, 40, 25, 25], [0, 1, 2, 3, 4])  # ALWAYS SET SPEED BEFORE ANYTHING
     time.sleep(0.1)
     print("set up move")
     motor.simMotorRun([110, 223, 270, 47, 272], [0, 1, 2, 3, 4])  # Reset claw looking up
@@ -453,7 +453,7 @@ def debug_bvm_push_in():
     time.sleep(0.5)
 
     print("set up move")
-    motor.simMotorRun([30, 223, 270, 47, 272], [0, 1, 2, 3, 4])  # Reset claw looking up
+    motor.simMotorRun([225, 223, 270, 47, 272], [0, 1, 2, 3, 4])  # Reset claw looking up
     time.sleep(2)
     
 
