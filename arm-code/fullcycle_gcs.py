@@ -94,7 +94,7 @@ def debug_gcs_pullout():
     time.sleep(0.6)
 
     print("move 7 pull forearm back")
-    motor.simMotorRun([45], [3])  # Reset claw looking up
+    motor.simMotorRun([49], [3])  # Reset claw looking up
     time.sleep(0.8)
 
     print("move 8 pull forearm back")
@@ -105,7 +105,7 @@ def debug_gcs_pullout():
     motor.simMotorRun([220], [4])  # Reset claw looking up
     time.sleep(0.4)
 
-    motor.dxlSetVelo([15, 15, 15, 15, 15], [0, 1, 2, 3, 4])  # ALWAYS SET SPEED BEFORE ANYTHING
+    motor.dxlSetVelo([15, 15, 30, 15, 15], [0, 1, 2, 3, 4])  # ALWAYS SET SPEED BEFORE ANYTHING
     time.sleep(0.1)
 
     print("move 13 pull forearm back")
@@ -122,15 +122,22 @@ def debug_gcs_push_in():
     start_time = time.time()
     motor.dxlSetVelo([15, 15, 15, 15, 15], [0, 1, 2, 3, 4])  # ALWAYS SET SPEED BEFORE ANYTHING
     time.sleep(0.1)
-
-    print("move back to chamber")
-    motor.simMotorRun([180, 62], [2, 3])
+    #265, 47, 170
+    print("move back to chamber1")
+    motor.simMotorRun([270, 54], [2, 3])
     time.sleep(2.5)
 
-    motor.dxlSetVelo([50, 50, 50, 50, 50], [0, 1, 2, 3, 4])  # ALWAYS SET SPEED BEFORE ANYTHING
+    print("move back to chamber2")
+    motor.simMotorRun([180, 56], [2, 3])
+    time.sleep(3)
+
+    print("move back to chamber2")
+    motor.simMotorRun([180, 62], [2, 3])
+    time.sleep(2.5)
+    motor.dxlSetVelo([40, 40, 40, 40, 40], [0, 1, 2, 3, 4])  # ALWAYS SET SPEED BEFORE ANYTHING
     time.sleep(0.1)
 
-    gcs_push_in_angle = calculation.angle_Calc([310,0,65], 0)
+    gcs_push_in_angle = calculation.angle_Calc([310,0,70], 0)
     print(gcs_push_in_angle)
     print("push in to chamber")
     motor.simMotorRun(gcs_push_in_angle, [1, 2, 3, 4])
@@ -154,6 +161,8 @@ def debug_gcs_push_in():
     end_time = time.time()
     print(end_time-start_time)
 
+
+bvm_max_length_angle = calculation.angle_Calc([370, 0, 75], 0)
 def debug_bvm_pull_out():
     start_time = time.time()
     motor.dxlSetVelo([25, 25, 25, 25, 25], [0, 1, 2, 3, 4])  # ALWAYS SET SPEED BEFORE ANYTHING
