@@ -260,7 +260,7 @@ def debug_gcs_push_in():
     time.sleep(0.1)
     #265, 47, 170
     print("move back to chamber")
-    motor.simMotorRun([256, 50], [2, 3])
+    motor.simMotorRun([256, 54], [2, 3])
     time.sleep(2.5)
 
     print("move back to chamber")
