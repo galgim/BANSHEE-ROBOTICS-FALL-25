@@ -258,6 +258,10 @@ def debug_gcs_push_in():
     start_time = time.time()
     motor.dxlSetVelo([15, 15, 15, 15, 15], [0, 1, 2, 3, 4])  # ALWAYS SET SPEED BEFORE ANYTHING
     time.sleep(0.1)
+    #265, 47, 170
+    print("move back to chamber")
+    motor.simMotorRun([200, 47], [2, 3])
+    time.sleep(2.5)
 
     print("move back to chamber")
     motor.simMotorRun([180, 62], [2, 3])
