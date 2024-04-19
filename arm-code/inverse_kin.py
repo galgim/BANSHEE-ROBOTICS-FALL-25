@@ -451,11 +451,11 @@ def debug_bvm_push_in():
     motor.simMotorRun([30, 225, 81, 236, 186], [0, 1, 2, 3, 4])
     time.sleep(0.5)
 
-    motor.simMotorRun([255], [0])
+    motor.simMotorRun([110], [0])
     time.sleep(0.5)
 
     print("set up move")
-    motor.simMotorRun([255, 223, 270, 47, 272], [0, 1, 2, 3, 4])  # Reset claw looking up
+    motor.simMotorRun([110, 223, 270, 47, 272], [0, 1, 2, 3, 4])  # Reset claw looking up
     time.sleep(2)
     
 
