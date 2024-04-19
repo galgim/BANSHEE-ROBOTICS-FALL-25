@@ -448,14 +448,14 @@ def debug_bvm_push_in():
     motor.simMotorRun(gcs_push_in_angle, [1, 2, 3, 4])
     time.sleep(0.5)
 
-    motor.simMotorRun([200, 225, 81, 236, 186], [0, 1, 2, 3, 4])
+    motor.simMotorRun([30, 225, 81, 236, 186], [0, 1, 2, 3, 4])
     time.sleep(0.5)
 
-    motor.simMotorRun([200], [0])
+    motor.simMotorRun([30], [0])
     time.sleep(0.5)
 
     print("set up move")
-    motor.simMotorRun([200, 223, 270, 47, 272], [0, 1, 2, 3, 4])  # Reset claw looking up
+    motor.simMotorRun([20, 223, 270, 47, 272], [0, 1, 2, 3, 4])  # Reset claw looking up
     time.sleep(2)
     
 
