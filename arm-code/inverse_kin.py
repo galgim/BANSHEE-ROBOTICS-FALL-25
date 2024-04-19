@@ -164,7 +164,7 @@ def debug_gcs_pullout():
     motor.simMotorRun([220], [4])  # Reset claw looking up
     time.sleep(0.4)
 
-    motor.dxlSetVelo([15, 15, 15, 15, 15], [0, 1, 2, 3, 4])  # ALWAYS SET SPEED BEFORE ANYTHING
+    motor.dxlSetVelo([15, 15, 30, 15, 15], [0, 1, 2, 3, 4])  # ALWAYS SET SPEED BEFORE ANYTHING
     time.sleep(0.1)
 
     print("move 13 pull forearm back")
@@ -265,7 +265,7 @@ def debug_gcs_push_in():
 
     print("move back to chamber2")
     motor.simMotorRun([180, 56], [2, 3])
-    time.sleep(2.5)
+    time.sleep(3)
 
     print("move back to chamber2")
     motor.simMotorRun([180, 62], [2, 3])
