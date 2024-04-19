@@ -170,18 +170,7 @@ def debug_gcs_pullout():
     print("move 13 pull forearm back")
     motor.simMotorRun([265, 47, 170], [2, 3, 4])
     time.sleep(0.8)
-    #remove after open house
-    print("move 14 pull forearm back")
-    motor.simMotorRun([270], [4])
-    time.sleep(0.8);
-    print("set up move")
-    motor.simMotorRun([30, 223, 270, 47, 272], [0, 1, 2, 3, 4])  # Reset claw looking up
 
-    time.sleep(1);
-    print("set up move")
-    motor.simMotorRun([110, 223, 270, 47, 272], [0, 1, 2, 3, 4])  # Reset claw looking up
-    end_time = time.time()
-    print(end_time-start_time)
 
 def gcs_pullout():
     start_time = time.time()
@@ -499,11 +488,11 @@ if __name__ == "__main__":
     # time.sleep(5)
     # move(velocity=velocity, ids=ids, startAngles=startAngles, midAngles=midAngles, endAngles=endAngles)
     # gcs_pullout()
-    # debug_gcs_pullout()
-    # # time.sleep(5)
-    # # debug_gcs_push_in()
+    debug_gcs_pullout()
+    time.sleep(5)
+    debug_gcs_push_in()
     
-    debug_bvm_pull_out()
-    time.sleep(3)
-    debug_bvm_push_in()
+    # debug_bvm_pull_out()
+    # time.sleep(3)
+    # debug_bvm_push_in()
     
