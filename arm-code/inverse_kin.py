@@ -259,12 +259,12 @@ def debug_gcs_push_in():
     motor.dxlSetVelo([15, 15, 15, 15, 15], [0, 1, 2, 3, 4])  # ALWAYS SET SPEED BEFORE ANYTHING
     time.sleep(0.1)
     #265, 47, 170
-    print("move back to chamber")
+    print("move back to chamber1")
     motor.simMotorRun([256, 54], [2, 3])
     time.sleep(2.5)
 
-    print("move back to chamber")
-    motor.simMotorRun([180, 62], [2, 3])
+    print("move back to chamber2")
+    motor.simMotorRun([180, 56], [2, 3])
     time.sleep(2.5)
 
     motor.dxlSetVelo([50, 50, 50, 50, 50], [0, 1, 2, 3, 4])  # ALWAYS SET SPEED BEFORE ANYTHING
