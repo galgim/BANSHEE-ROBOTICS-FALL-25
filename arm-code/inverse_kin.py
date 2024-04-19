@@ -172,7 +172,7 @@ def debug_gcs_pullout():
     time.sleep(0.8)
 
     print("move 14 pull forearm back")
-    motor.simMotorRun([260], [4])
+    motor.simMotorRun([265], [4])
     end_time = time.time()
     print(end_time-start_time)
 
