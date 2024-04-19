@@ -153,7 +153,7 @@ def debug_gcs_pullout():
     time.sleep(0.6)
 
     print("move 7 pull forearm back")
-    motor.simMotorRun([45], [3])  # Reset claw looking up
+    motor.simMotorRun([49], [3])  # Reset claw looking up
     time.sleep(0.8)
 
     print("move 8 pull forearm back")
