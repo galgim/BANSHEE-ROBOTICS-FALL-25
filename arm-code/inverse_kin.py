@@ -267,7 +267,7 @@ def debug_gcs_push_in():
     motor.simMotorRun([180, 56], [2, 3])
     time.sleep(2.5)
 
-    motor.dxlSetVelo([30, 30, 30, 30, 30], [0, 1, 2, 3, 4])  # ALWAYS SET SPEED BEFORE ANYTHING
+    motor.dxlSetVelo([40, 40, 40, 40, 40], [0, 1, 2, 3, 4])  # ALWAYS SET SPEED BEFORE ANYTHING
     time.sleep(0.1)
 
     gcs_push_in_angle = calculation.angle_Calc([310,0,65], 0)
