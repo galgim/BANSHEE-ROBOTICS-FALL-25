@@ -298,7 +298,7 @@ def debug_gcs_push_in():
     print(end_time-start_time)
 
 
-bvm_max_length_angle = calculation.angle_Calc([370, 0, 75], 0)
+bvm_max_length_angle = calculation.angle_Calc([370, 0, 70], 0)
 
 
 def debug_bvm_pull_out():
@@ -372,7 +372,7 @@ def debug_bvm_push_in():
     time.sleep(0.1)
 
     print("move back to chamber")
-    motor.simMotorRun([220, 62], [2, 3])
+    motor.simMotorRun([253,220, 62], [1,2, 3])
     time.sleep(2)
 
     motor.simMotorRun([200, 62], [2, 3])
@@ -382,7 +382,7 @@ def debug_bvm_push_in():
     time.sleep(1)
 
     print("move back to chamber")
-    motor.simMotorRun([251,180, 62], [1,2, 3])
+    motor.simMotorRun([180, 62], [2, 3])
     time.sleep(0.5)
 
     print("move back to chamber")
