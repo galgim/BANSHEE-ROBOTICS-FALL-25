@@ -320,20 +320,13 @@ def debug_bvm_pull_out():
     print("move 3 close grip")
     motor.simMotorRun([30], [0])  # Reset claw looking up
     time.sleep(0.1)
-    print("take out battery")
-    motor.simMotorRun([200,200,200],[2,3,4])
-
-    print("move 4 pull away slight")
-    motor.simMotorRun([225, 180, 199, 199], [1, 2, 3, 4])
-    time.sleep(0.15)
-    motor.dxlPresPos([0, 1, 2, 3, 4])
 
     for i in range(370,190,-10):
         print(i)
         initial_pull_out_angle = calculation.angle_Calc([i,0,67], 0)
         print("move 4 pull away slight")
         motor.simMotorRun(initial_pull_out_angle, [1, 2, 3, 4])
-        time.sleep(1)
+        time.sleep(0.3)
         motor.dxlPresPos([0, 1, 2, 3, 4])
 
     print("move 5 pull away more")
@@ -347,7 +340,7 @@ def debug_bvm_pull_out():
     motor.dxlPresPos([0, 1, 2, 3, 4])
 
     print("move 7 pull away more")
-    motor.simMotorRun([225, 179, 72, 269], [1, 2, 3, 4])
+    motor.simMotorRun([225, 179, 67, 269], [1, 2, 3, 4])
     time.sleep(0.5)
     motor.dxlPresPos([0, 1, 2, 3, 4])
     
@@ -357,24 +350,16 @@ def debug_bvm_pull_out():
         motor.simMotorRun([225, i, 60, 269], [1, 2, 3, 4])
         time.sleep(0.025)
         motor.dxlPresPos([0, 1, 2, 3, 4])
-
-    motor.dxlSetVelo([25, 25, 40, 25, 25], [0, 1, 2, 3, 4])  # ALWAYS SET SPEED BEFORE ANYTHING
-
+    
     print("move 9 pull away more")
     motor.simMotorRun([225, 265, 60, 269], [1, 2, 3, 4])
     time.sleep(0.2)
     motor.dxlPresPos([0, 1, 2, 3, 4])
 
     print("move 10 pull away more")
-    motor.simMotorRun([225, 265,55, 269], [1, 2, 3, 4])
+    motor.simMotorRun([225, 265, 45, 269], [1, 2, 3, 4])
     time.sleep(0.2)
     motor.dxlPresPos([0, 1, 2, 3, 4])
-
-    final_pull_out_angle = calculation.angle_Calc([200,0,80], 0)
-    print("move 6 pull away even more")
-    ctrl.motorRun(final_pull_out_angle, [1, 2, 3, 4])
-    time.sleep(0.6)
-    ctrl.dxlPresPos([0, 1, 2, 3, 4])
 
     print("set up move")
     motor.simMotorRun([30, 223, 270, 47, 272], [0, 1, 2, 3, 4])  # Reset claw looking up
