@@ -357,7 +357,7 @@ arduinoinput = ''
 client_socket.send("Mech".encode('utf-8'))
 while True:
     response = client_socket.recv(1024)
-    if response.decode() == 'Go':
+    if response.decode() == 'G':
         break
 
 # Take Battery from GCS
