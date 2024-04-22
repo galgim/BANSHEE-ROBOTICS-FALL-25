@@ -74,10 +74,10 @@ void oledDisplay(){
   display.setTextColor(SSD1306_WHITE);        // Draw white text
   display.setCursor(0,0);
   display.print(F("Movement Code V1.8.2"));
-  display.setCursor(0,6);
+  display.setCursor(0,8);
   display.print(F("Dist to BVM: "));
   display.print(front_dist);
-  display.setCursor(0,12);
+  display.setCursor(0,16);
   display.print(F("Dist to GCS: "));
   display.print(back_dist);
   display.setCursor(0,24); 
@@ -110,7 +110,7 @@ void loop() {
   {
     servoLeft.write(forward_speed);                    //Set left side motors postion to 90
     servoRight.write(forward_speed);
-    if(front_dist < 50){
+    if(back_dist < 30){
       direction = 'S';                          //Set direction to none to trigger a stop
       servoLeft.write(midpoint);                    //Set left side motors postion to 90
       servoRight.write(midpoint);                   //Set right side motors postion to 90
@@ -121,11 +121,11 @@ void loop() {
   {   
     servoLeft.write(reverse_speed);                    //Set left side motors postion to 90
     servoRight.write(reverse_speed);
-    if(back_dist < 50){
+    if(front_dist < 30){
       direction = 'S';                          //Set direction to none to trigger a stop
       servoLeft.write(midpoint);                    //Set left side motors postion to 90
       servoRight.write(midpoint);                   //Set right side motors postion to 90
-      Serial.write('s');      
+      Serial.write('s');
     }
   }
   else if(direction == 'S'){                                         //Check if direction not forward or backward

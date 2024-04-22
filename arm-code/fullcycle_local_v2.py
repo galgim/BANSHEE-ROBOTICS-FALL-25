@@ -288,7 +288,7 @@ while True:
     response = ser.readline().strip()
     print(arduinoinput)
     arduinoinput = response.decode()
-    if arduinoinput == '1':
+    if arduinoinput == 's':
         print("push battery into BVM!")
         break
 
@@ -314,7 +314,7 @@ print(response)
 while True:
     response = ser.readline().strip()
     arduinoinput = response.decode()
-    if arduinoinput == '1':
+    if arduinoinput == 's':
         print("push battery into GCS!")
         break
 
