@@ -154,7 +154,7 @@ void loop() {
         servoLeft.write(midpoint);                    //Set left side motors postion to 90
         servoRight.write(midpoint);                   //Set right side motors postion to 90
         // for(int i = 0; i <=10; i++){
-        Serial.write('1');
+        Serial.write('s');
         break;
       }
       // delay(50);
@@ -201,7 +201,7 @@ void loop() {
         distanceBack = getdistance(trigBack,echoBack);
         is_reverse = false;
         direction = 'S';                          //Set direction to none to trigger a stop
-        Serial.write('1');
+        Serial.write('s');
         break;
       }
       // delay(50);

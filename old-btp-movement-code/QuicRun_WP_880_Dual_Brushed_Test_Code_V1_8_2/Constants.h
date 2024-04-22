@@ -26,9 +26,8 @@ Servo servoRight;                         //Create servo object to control the B
 
 //Global Variable Decleration
 long duration;                            //duration var used for ultrasonic sensor calculations
-float distance;  
-long durationBack;                            //duration var used for ultrasonic sensor calculations
-float distanceBack;                             //distance var used for ultrasonic sensor calculations
+float front_dist;  
+float back_dist;                             //distance var used for ultrasonic sensor calculations
 char direction;                            //direction var used to determine which way the motors should spin
 int midpoint = 91;
 int curr_speed = 90;

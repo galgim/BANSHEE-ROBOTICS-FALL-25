@@ -273,7 +273,9 @@ def debug_bvm_push_in():
 arduinoinput = ''
 
 # Take Battery from GCS
-debug_gcs_pullout()
+# debug_gcs_pullout()
+print("GCS Pull Out")
+
 
 print("Start Arduino Code")
 GPIO.output(22, GPIO.HIGH)
@@ -294,12 +296,14 @@ while True:
 # Push battery into BVM
 ser.flush()
 time.sleep(3)
-debug_gcs_push_in()
+# debug_bvm_push_in()
+print("BVM Push in")
 
 time.sleep(5)  # let BVM cycle battery
 
 # Take battery out of BVM
-debug_gcs_pullout()
+# debug_bvm_pullout()
+print("BVM Pull Out")
 time.sleep(3)
 print("sending b to arduino")
 ser.write(b'g')  # Tell Arduino it's good to go
@@ -317,5 +321,7 @@ while True:
 
 # Push battery into GCS
 
-debug_gcs_push_in()
+# debug_gcs_push_in()
+print("GCS Push in")
+
 GPIO.cleanup()
