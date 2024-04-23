@@ -341,7 +341,7 @@ def debug_bvm_pull_out():
 def debug_bvm_push_in():
     #Push In Battery
     start_time = time.time()
-    motor.dxlSetVelo([15, 15, 15, 15, 15], [0, 1, 2, 3, 4])  # ALWAYS SET SPEED BEFORE ANYTHING
+    motor.dxlSetVelo([30, 30, 30, 30, 30], [0, 1, 2, 3, 4])  # ALWAYS SET SPEED BEFORE ANYTHING
     time.sleep(0.1)
     motor.simMotorRun([223],[1])
     time.sleep(.1)
@@ -365,7 +365,7 @@ def debug_bvm_push_in():
     # time.sleep(0.5)
 
     print("move back to chamber")
-    motor.simMotorRun([160, 62], [2, 3])
+    motor.simMotorRun([223,160, 62], [1,2, 3])
     time.sleep(10)
 
 
