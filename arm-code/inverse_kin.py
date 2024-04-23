@@ -298,7 +298,7 @@ def debug_gcs_push_in():
     print(end_time-start_time)
 
 
-bvm_max_length_angle = calculation.angle_Calc([370, -10, 70], 0)
+bvm_max_length_angle = calculation.angle_Calc([370, -6, 70], 0)
 
 
 def debug_bvm_pull_out():
@@ -315,9 +315,6 @@ def debug_bvm_pull_out():
     motor.simMotorRun(bvm_max_length_angle, [1,2, 3, 4])
     time.sleep(0.4)
 
-    print ("move little right")
-    motor.simMotorRun([222],[1])
-
     print("move 2 pitch wrist")
     motor.simMotorRun([200], [4])  # Reset claw looking up
     time.sleep(0.5)
@@ -331,23 +328,23 @@ def debug_bvm_pull_out():
         initial_pull_out_angle = calculation.angle_Calc([i,0,66], 0)
         print("move 4 pull away slight")
         motor.simMotorRun(initial_pull_out_angle, [1, 2, 3, 4])
-        time.sleep(.5)
+        time.sleep(.2)
         motor.dxlPresPos([0, 1, 2, 3, 4])
 
-    print("move 5 pull away more")
-    motor.simMotorRun([225, 162, 72, 269], [1, 2, 3, 4])
-    time.sleep(0.3)
-    motor.dxlPresPos([0, 1, 2, 3, 4])
+    # print("move 5 pull away more")
+    # motor.simMotorRun([225, 162, 72, 269], [1, 2, 3, 4])
+    # time.sleep(0.3)
+    # motor.dxlPresPos([0, 1, 2, 3, 4])
 
-    print("move 6 pull away more")
-    motor.simMotorRun([225, 175, 72, 269], [1, 2, 3, 4])
-    time.sleep(0.3)
-    motor.dxlPresPos([0, 1, 2, 3, 4])
+    # print("move 6 pull away more")
+    # motor.simMotorRun([225, 175, 72, 269], [1, 2, 3, 4])
+    # time.sleep(0.3)
+    # motor.dxlPresPos([0, 1, 2, 3, 4])
 
-    print("move 7 pull away more")
-    motor.simMotorRun([225, 179, 67, 269], [1, 2, 3, 4])
-    time.sleep(1)
-    motor.dxlPresPos([0, 1, 2, 3, 4])
+    # print("move 7 pull away more")
+    # motor.simMotorRun([225, 179, 67, 269], [1, 2, 3, 4])
+    # time.sleep(1)
+    # motor.dxlPresPos([0, 1, 2, 3, 4])
     
     # print("move 8 pull away more")
     # for i in range(180,220,10):
