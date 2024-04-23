@@ -300,7 +300,6 @@ def debug_gcs_push_in():
 
 bvm_max_length_angle = calculation.angle_Calc([370, -10, 70], 0)
 
-
 def debug_bvm_pull_out():
     start_time = time.time()
     motor.dxlSetVelo([30, 30, 30, 30, 30], [0, 1, 2, 3, 4])  # ALWAYS SET SPEED BEFORE ANYTHING
@@ -377,7 +376,7 @@ def debug_bvm_push_in():
     motor.simMotorRun([220, 62], [2, 3])
     time.sleep(2)
 
-    motor.simMotorRun([200],[2])
+    motor.simMotorRun([200,100],[2,3])
 
     # motor.simMotorRun([200, 62], [2, 3])
     # time.sleep(1)
