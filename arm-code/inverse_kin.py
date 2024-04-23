@@ -377,7 +377,7 @@ def debug_bvm_push_in():
     motor.simMotorRun([220, 62], [2, 3])
     time.sleep(2)
 
-    motor.simMotorRun([170],[1])
+    motor.simMotorRun([200],[2])
 
     # motor.simMotorRun([200, 62], [2, 3])
     # time.sleep(1)
