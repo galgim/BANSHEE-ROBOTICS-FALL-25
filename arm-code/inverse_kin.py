@@ -302,7 +302,7 @@ bvm_max_length_angle = calculation.angle_Calc([370, -6, 70], 0)
 
 def debug_bvm_pull_out():
     start_time = time.time()
-    motor.dxlSetVelo([40, 40, 40, 40, 40], [0, 1, 2, 3, 4])  # ALWAYS SET SPEED BEFORE ANYTHING
+    motor.dxlSetVelo([30, 30, 30, 30, 30], [0, 1, 2, 3, 4])  # ALWAYS SET SPEED BEFORE ANYTHING
     time.sleep(0.1)
 
     print("set up move")
@@ -347,8 +347,8 @@ def debug_bvm_push_in():
     time.sleep(.1)
     # print("move back to chamber")
     # #270, 47, 272
-    motor.simMotorRun([150,200,180],[2,3,4])
-    time.sleep(10)
+    # motor.simMotorRun([150,200,180],[2,3,4])
+    # time.sleep(10)
 
     # motor.simMotorRun([200, 62], [2, 3])
     # time.sleep(1)
