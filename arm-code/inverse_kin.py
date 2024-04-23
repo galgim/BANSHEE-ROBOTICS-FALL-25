@@ -321,7 +321,7 @@ def debug_bvm_pull_out():
     motor.simMotorRun([30], [0])  # Reset claw looking up
     time.sleep(0.5)
 
-    for i in range(280,180,-6):
+    for i in range(280,175,-8):
         print(i)
         initial_pull_out_angle = calculation.angle_Calc([i,0,70], 0)
         print("move 4 pull away slight")
@@ -377,46 +377,46 @@ def debug_bvm_push_in():
     # motor.simMotorRun([130, 130], [2, 3])
     # time.sleep(3)
 
-    # print("start pushing in")
-    # motor.simMotorRun()
-    # gcs_push_in_angle = calculation.angle_Calc([200,-6,60], 0)
-    # print(gcs_push_in_angle)
-    # print("push in to chamber")
-    # motor.simMotorRun(gcs_push_in_angle, [1, 2, 3, 4])
-    # time.sleep(0.5)
-    # #[225, 160, 78, 266]
-    # gcs_push_in_angle = calculation.angle_Calc([250,-6,60], 0)
-    # print(gcs_push_in_angle)
-    # print("push in to chamber")
-    # motor.simMotorRun(gcs_push_in_angle, [1, 2, 3, 4])
-    # time.sleep(0.5)
+    print("start pushing in")
+    motor.simMotorRun()
+    gcs_push_in_angle = calculation.angle_Calc([200,-6,60], 0)
+    print(gcs_push_in_angle)
+    print("push in to chamber")
+    motor.simMotorRun(gcs_push_in_angle, [1, 2, 3, 4])
+    time.sleep(0.5)
+    #[225, 160, 78, 266]
+    gcs_push_in_angle = calculation.angle_Calc([250,-6,60], 0)
+    print(gcs_push_in_angle)
+    print("push in to chamber")
+    motor.simMotorRun(gcs_push_in_angle, [1, 2, 3, 4])
+    time.sleep(0.5)
 
-    # #[225, 116, 191, 196]
-    # gcs_push_in_angle = calculation.angle_Calc([370,-6,70], 0)
-    # print(gcs_push_in_angle)
-    # print("push in to chamber")
-    # motor.simMotorRun(gcs_push_in_angle, [1, 2, 3, 4])
-    # time.sleep(0.5)
-    # motor.simMotorRun([],[2,3])
-    # gcs_push_in_angle = calculation.angle_Calc([375,-6,80], 0)
-    # print(gcs_push_in_angle)
-    # print("push in to chamber")
-    # motor.simMotorRun(gcs_push_in_angle, [1, 2, 3, 4])
-    # time.sleep(0.5)
+    #[225, 116, 191, 196]
+    gcs_push_in_angle = calculation.angle_Calc([370,-6,70], 0)
+    print(gcs_push_in_angle)
+    print("push in to chamber")
+    motor.simMotorRun(gcs_push_in_angle, [1, 2, 3, 4])
+    time.sleep(0.5)
+    motor.simMotorRun([],[2,3])
+    gcs_push_in_angle = calculation.angle_Calc([375,-6,80], 0)
+    print(gcs_push_in_angle)
+    print("push in to chamber")
+    motor.simMotorRun(gcs_push_in_angle, [1, 2, 3, 4])
+    time.sleep(0.5)
 
-    # motor.simMotorRun([30, 225, 81, 236, 186], [0, 1, 2, 3, 4])
-    # time.sleep(0.5)
+    motor.simMotorRun([30, 225, 81, 236, 186], [0, 1, 2, 3, 4])
+    time.sleep(0.5)
 
-    # motor.simMotorRun([100],[0])
-    # time.sleep(0.025)
-    # motor.simMotorRun([90],[4])
-    # time.sleep(0.025)
-    # motor.simMotorRun([110,270],[2,3])
-    # time.sleep(0.5)
+    motor.simMotorRun([100],[0])
+    time.sleep(0.025)
+    motor.simMotorRun([90],[4])
+    time.sleep(0.025)
+    motor.simMotorRun([110,270],[2,3])
+    time.sleep(0.5)
 
-    # print("set up move")
-    # motor.simMotorRun([95, 225, 270, 47, 272], [0, 1, 2, 3, 4])  # Reset claw looking up
-    # time.sleep(2)
+    print("set up move")
+    motor.simMotorRun([95, 225, 270, 47, 272], [0, 1, 2, 3, 4])  # Reset claw looking up
+    time.sleep(2)
     
 
 if __name__ == "__main__":
