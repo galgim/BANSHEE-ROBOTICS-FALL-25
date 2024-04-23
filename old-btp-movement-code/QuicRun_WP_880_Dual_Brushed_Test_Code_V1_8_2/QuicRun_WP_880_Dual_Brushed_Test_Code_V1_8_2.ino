@@ -59,13 +59,13 @@ void setup() {
   // Show initial display buffer contents on the screen --
   // the library initializes this with an Adafruit splash screen.
   display.display();
-  delay(1000); // Pause for 2 seconds
+  delay(500); // Pause for 2 seconds
 
   // Clear the buffer
   display.clearDisplay();
 
   display.display();
-  delay(1000);
+  delay(100);
 }
 
 void oledDisplay(){
@@ -124,7 +124,7 @@ void loop() {
       servoLeft.write(forward_speed);                    //Set left side motors postion to 90
       servoRight.write(forward_speed);
     }
-    if(back_dist < 3){
+    if(back_dist < 2.5){
       direction = 'S';                          //Set direction to none to trigger a stop
       servoLeft.write(midpoint);                    //Set left side motors postion to 90
       servoRight.write(midpoint);                   //Set right side motors postion to 90
@@ -149,7 +149,7 @@ void loop() {
       servoLeft.write(reverse_speed);                    //Set left side motors postion to 90
       servoRight.write(reverse_speed);
     }
-    if(front_dist < 3){
+    if(front_dist < 2.5){
       direction = 'S';                          //Set direction to none to trigger a stop
       servoLeft.write(midpoint);                    //Set left side motors postion to 90
       servoRight.write(midpoint);                   //Set right side motors postion to 90
