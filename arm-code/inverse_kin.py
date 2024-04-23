@@ -118,7 +118,7 @@ def debug_gcs_pullout():
     motor.dxlSetVelo([25, 25, 25, 25, 25], [0, 1, 2, 3, 4])  # ALWAYS SET SPEED BEFORE ANYTHING
     time.sleep(0.1)
     print("set up move")
-    motor.simMotorRun([110, 223, 270, 47, 272], [0, 1, 2, 3, 4])  # Reset claw looking up
+    motor.simMotorRun([93, 223, 270, 47, 272], [0, 1, 2, 3, 4])  # Reset claw looking up
     time.sleep(2)
 
     print("move 1 move to chamber")
@@ -182,7 +182,7 @@ def gcs_pullout():
     ctrl.dxlSetVelo([25, 25, 25, 25, 25], [0, 1, 2, 3, 4])  # ALWAYS SET SPEED BEFORE ANYTHING
     time.sleep(0.1)
     print("set up move")
-    ctrl.motorRun([110, 223, 270, 47, 272], [0, 1, 2, 3, 4])  # Reset claw looking up
+    ctrl.motorRun([93, 223, 270, 47, 272], [0, 1, 2, 3, 4])  # Reset claw looking up
     time.sleep(2)
     ctrl.dxlPresPos([0, 1, 2, 3, 4])
 
@@ -423,7 +423,7 @@ def debug_bvm_push_in():
     # motor.simMotorRun(gcs_push_in_angle, [1, 2, 3, 4])
     # time.sleep(0.5)
 
-    gcs_push_in_angle = calculation.angle_Calc([375,-6,65], 0)
+    gcs_push_in_angle = calculation.angle_Calc([375,-6,70], 0)
     print(gcs_push_in_angle)
     print("push in to chamber")
     motor.simMotorRun(gcs_push_in_angle, [1, 2, 3, 4])
