@@ -26,15 +26,14 @@ Servo servoRight;                         //Create servo object to control the B
 
 //Global Variable Decleration
 long duration;                            //duration var used for ultrasonic sensor calculations
-float distance;  
-long durationBack;                            //duration var used for ultrasonic sensor calculations
-float distanceBack;                             //distance var used for ultrasonic sensor calculations
+float front_dist;  
+float back_dist;                             //distance var used for ultrasonic sensor calculations
 char direction;                            //direction var used to determine which way the motors should spin
 int midpoint = 91;
 int curr_speed = 90;
 int break_point = 85;
-int forward_speed = 102;                  //TO GCS
-int reverse_speed = 73;                   //TP BVM
+int forward_speed = 102;                  //TO GCS change back to 102
+int reverse_speed = 72;                   //TP BVM change back to 73
 bool is_reverse = false;
 
 String py_input;
