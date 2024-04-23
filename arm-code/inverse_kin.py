@@ -347,7 +347,7 @@ def debug_bvm_push_in():
     time.sleep(.1)
     print("move back to chamber")
     #270, 47, 272
-    motor.simMotorRun([100,230,150],[2,3,4])
+    motor.simMotorRun([100,200,180],[2,3,4])
     time.sleep(10)
 
     # motor.simMotorRun([200, 62], [2, 3])
