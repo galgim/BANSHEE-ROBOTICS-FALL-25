@@ -66,14 +66,14 @@ def time_between_moves(velocity: list[int], ids: list[int], startAngles: list[in
     ctrl.motorRun(endAngles, ids)
     end_time = time.time()
 
-    print("total time")
-    print(end_time-start_time)
-    print("check time")
-    print(check_time-start_time)
-    print("check2 time")
-    print(check_time2-start_time)
-    print("check to check time")
-    print(check_time2-check_time)
+    # print("total time")
+    # print(end_time-start_time)
+    # print("check time")
+    # print(check_time-start_time)
+    # print("check2 time")
+    # print(check_time2-start_time)
+    # print("check to check time")
+    # print(check_time2-check_time)
 
 def move(velocity: list[int], ids: list[int], startAngles: list[int], midAngles: list[int], endAngles: list[int]) -> None:
     # ctrl.dxlSetVelo(velocity, ids)  # ALWAYS SET SPEED BEFORE ANYTHING
