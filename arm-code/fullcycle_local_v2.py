@@ -312,7 +312,7 @@ print("BVM Push in")
 time.sleep(5)  # let BVM cycle battery
 
 # Take battery out of BVM
-debug_bvm_pullout()
+debug_bvm_pull_out()
 print("sending b to arduino")
 ser.write(b'g')  # Tell Arduino it's good to go
 time.sleep(0.5)
