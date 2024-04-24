@@ -312,7 +312,7 @@ def debug_bvm_pull_out():
     motor.simMotorRun(bvm_max_length_angle, [1,2, 3, 4])
     time.sleep(1)
     print("move 2 pitch wrist")
-    motor.simMotorRun([123,200], [2,4])  # Reset claw looking up
+    motor.simMotorRun([122,200], [2,4])  # Reset claw looking up
     time.sleep(1)
 
     print("move 3 close grip")
@@ -341,7 +341,7 @@ def debug_bvm_push_in():
     start_time = time.time()
     motor.dxlSetVelo([30, 30, 15, 30, 30], [0, 1, 2, 3, 4])  # ALWAYS SET SPEED BEFORE ANYTHING
     time.sleep(0.1)
-    motor.simMotorRun([223,53],[1,3])
+    motor.simMotorRun([223,70],[1,3])
     time.sleep(.1)
 
     gcs_push_in_angle = calculation.angle_Calc([180,-2,70], 0)
