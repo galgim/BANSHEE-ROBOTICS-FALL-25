@@ -256,13 +256,13 @@ def portTermination():
     for motorID in DXL_ID:
         dxl_comm_result, dxl_error = packetHandler.write1ByteTxRx(
             portHandler, motorID, ADDR_TORQUE_ENABLE, TORQUE_DISABLE)
-        if dxl_comm_result != COMM_SUCCESS:
-            print("%s" % packetHandler.getTxRxResult(dxl_comm_result))
-        elif dxl_error != 0:
-            print("%s" % packetHandler.getRxPacketError(dxl_error))
-        else:
-            print("Dynamixel", motorID,
-                  "has been successfully disconnected")
+        # if dxl_comm_result != COMM_SUCCESS:
+        #     print("%s" % packetHandler.getTxRxResult(dxl_comm_result))
+        # elif dxl_error != 0:
+        #     print("%s" % packetHandler.getRxPacketError(dxl_error))
+        # else:
+        #     print("Dynamixel", motorID,
+        #           "has been successfully disconnected")
 
     # Close port
     portHandler.closePort()
@@ -285,10 +285,10 @@ def _map(x, in_min, in_max, out_min, out_max):
 def ReadMotorData(motorID, data_address):
     data_value, dxl_comm_result, dxl_error = packetHandler.read4ByteTxRx(
         portHandler, motorID, data_address)
-    if dxl_comm_result != COMM_SUCCESS:
-        print("%s" % packetHandler.getTxRxResult(dxl_comm_result))
-    elif dxl_error != 0:
-        print("%s" % packetHandler.getRxPacketError(dxl_error))
+    # if dxl_comm_result != COMM_SUCCESS:
+    #     print("%s" % packetHandler.getTxRxResult(dxl_comm_result))
+    # elif dxl_error != 0:
+    #     print("%s" % packetHandler.getRxPacketError(dxl_error))
     return data_value
 
 #Writes data to one motor at a given address. Dynamixel XM430-W350-R has most data in 4 bytes
