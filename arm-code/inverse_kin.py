@@ -369,10 +369,10 @@ def debug_bvm_push_in():
 
     motor.simMotorRun([100],[0])
     time.sleep(0.025)
-    motor.simMotorRun([230],[1])
 
-    motor.simMotorRun([218],[1])
-    motor.simMotorRun([150,180],[2,3])
+    motor.simMotorRun([210],[1])
+    time.sleep(.5)
+    motor.simMotorRun([223,150,180],[1,2,3])
     time.sleep(0.025)
     motor.simMotorRun([110,270],[2,3])
     time.sleep(0.5)
