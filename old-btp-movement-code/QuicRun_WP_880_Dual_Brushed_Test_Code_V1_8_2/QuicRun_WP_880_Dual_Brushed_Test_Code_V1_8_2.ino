@@ -108,11 +108,11 @@ void loop() {
   }
   if(direction == 'G')                          //Check if direction is set as forward
   {
-    if(back_dist < 30){
-      servoLeft.write(forward_speed-2);                    //Set left side motors postion to 90
-      servoRight.write(forward_speed-2);
+    if(back_dist < 50){
+      servoLeft.write(forward_speed-4);                    //Set left side motors postion to 90
+      servoRight.write(forward_speed-4);
     }
-    else if(back_dist < 50){
+    else if(back_dist < 70){
       servoLeft.write(forward_speed-2);                    //Set left side motors postion to 90
       servoRight.write(forward_speed-2);
     }
@@ -124,7 +124,7 @@ void loop() {
       servoLeft.write(forward_speed);                    //Set left side motors postion to 90
       servoRight.write(forward_speed);
     }
-    if(back_dist < 2.5){
+    if(back_dist < 3){
       direction = 'S';                          //Set direction to none to trigger a stop
       servoLeft.write(midpoint);                    //Set left side motors postion to 90
       servoRight.write(midpoint);                   //Set right side motors postion to 90
@@ -133,13 +133,13 @@ void loop() {
   }
   else if(direction == 'B')                     //Check if direction is set as backwards (GCS)
   { 
-    if(front_dist < 30){
-      servoLeft.write(reverse_speed+2);                    //Set left side motors postion to 90
-      servoRight.write(reverse_speed+2);
+    if(front_dist < 40){
+      servoLeft.write(reverse_speed+3);                    //Set left side motors postion to 90
+      servoRight.write(reverse_speed+3);
     }
     else if(front_dist < 50){
-      servoLeft.write(reverse_speed+1);                    //Set left side motors postion to 90
-      servoRight.write(reverse_speed+1);
+      servoLeft.write(reverse_speed+2);                    //Set left side motors postion to 90
+      servoRight.write(reverse_speed+2);
     }
     else if(front_dist < 100){
       servoLeft.write(reverse_speed+1);                    //Set left side motors postion to 90
@@ -149,7 +149,7 @@ void loop() {
       servoLeft.write(reverse_speed);                    //Set left side motors postion to 90
       servoRight.write(reverse_speed);
     }
-    if(front_dist < 2.5){
+    if(front_dist < 5){
       direction = 'S';                          //Set direction to none to trigger a stop
       servoLeft.write(midpoint);                    //Set left side motors postion to 90
       servoRight.write(midpoint);                   //Set right side motors postion to 90
