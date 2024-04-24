@@ -82,13 +82,13 @@ def portInitialization(portname, dxlIDs):
     for motorID in DXL_ID: # Enable Dynamixel Torque
         dxl_comm_result, dxl_error = packetHandler.write1ByteTxRx(
             portHandler, motorID, ADDR_TORQUE_ENABLE, TORQUE_ENABLE)
-        if dxl_comm_result != COMM_SUCCESS:
-            print("%s" % packetHandler.getTxRxResult(dxl_comm_result))
-        elif dxl_error != 0:
-            print("%s" % packetHandler.getRxPacketError(dxl_error))
-        else:
-            print("Dynamixel", motorID,
-                  "has been successfully connected")
+        # if dxl_comm_result != COMM_SUCCESS:
+        #     print("%s" % packetHandler.getTxRxResult(dxl_comm_result))
+        # elif dxl_error != 0:
+        #     print("%s" % packetHandler.getRxPacketError(dxl_error))
+        # else:
+        #     print("Dynamixel", motorID,
+        #           "has been successfully connected")
     print("-------------------------------------")
     
 
@@ -206,8 +206,8 @@ def simMotorRun(angle_inputs, dxlIDs):
             for id in range(idNum):
                 dxl_end_angle[id] = _map(dxl_end_position[id], 0, 4095, 0, 360)
             
-            for id in range(idNum):
-                print("Angle for Dynamixel:%03d is %03d ----------------------------" % (dxlIDs[id], dxl_end_angle[id]))
+            # for id in range(idNum):
+            #     print("Angle for Dynamixel:%03d is %03d ----------------------------" % (dxlIDs[id], dxl_end_angle[id]))
             # ------------------------------------------------------------------------------------------------------------------------------------------------------
             print("-------------------------------------")
             return movementStatus
