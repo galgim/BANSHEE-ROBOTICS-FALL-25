@@ -362,7 +362,7 @@ def debug_bvm_push_in():
     time.sleep(5)
   
     print("adjust")
-    motor.simMotorRun([130,151,187],[2,3,4])
+    motor.simMotorRun([130,151,191],[2,3,4])
     time.sleep(5)
     #[223, 115, 191, 197] 1 2 3 4 
 
@@ -373,7 +373,7 @@ def debug_bvm_push_in():
     motor.simMotorRun(gcs_push_in_angle, [1, 2, 3, 4])
     time.sleep(5)
 
-    motor.simMotorRun([30, 225, 100, 236, 186], [0, 1, 2, 3, 4])
+    motor.simMotorRun([30, 225, 100, 210, 186], [0, 1, 2, 3, 4])
     time.sleep(0.5)
 
     motor.simMotorRun([100],[0])
