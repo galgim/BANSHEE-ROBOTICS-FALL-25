@@ -341,8 +341,8 @@ def debug_bvm_pull_out():
 def debug_bvm_push_in():
     #Push In Battery
     start_time = time.time()
-    motor.dxlSetVelo([30, 30, 30, 30, 30], [0, 1, 2, 3, 4])  # ALWAYS SET SPEED BEFORE ANYTHING
-    time.sleep(0.1)
+    motor.dxlSetVelo([30, 30, 30, 36, 30], [0, 1, 2, 3, 4])  # ALWAYS SET SPEED BEFORE ANYTHING
+    time.sleep(0.1)s
     motor.simMotorRun([223],[1])
     time.sleep(.1)
     
