@@ -339,6 +339,8 @@ def debug_bvm_pull_out():
     time.sleep(2)
 
 def debug_bvm_push_in():
+    motor.simMotorRun([30, 223, 270, 47, 272], [0, 1, 2, 3, 4])  # Reset claw looking up
+    time.sleep(2)
     #Push In Battery
     start_time = time.time()
     motor.dxlSetVelo([30, 30, 30, 36, 30], [0, 1, 2, 3, 4])  # ALWAYS SET SPEED BEFORE ANYTHING
@@ -349,7 +351,9 @@ def debug_bvm_push_in():
     print("move back to chamber")
     motor.simMotorRun([223,185, 62], [1,2, 3])
     time.sleep(.5)
-    motor.simMotorRun([80],[3])
+    motor.simMotorRun([80,180],[3,4])
+    #[222, 168, 68, 268]
+
     gcs_push_in_angle = calculation.angle_Calc([180,-7,73], 0)
     print(gcs_push_in_angle)
     print("push in to chamber")
