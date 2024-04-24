@@ -343,7 +343,7 @@ def debug_bvm_push_in():
     time.sleep(2)
     #Push In Battery
     start_time = time.time()
-    motor.dxlSetVelo([30, 30, 30, 36, 30], [0, 1, 2, 3, 4])  # ALWAYS SET SPEED BEFORE ANYTHING
+    motor.dxlSetVelo([30, 30, 30, 30, 30], [0, 1, 2, 3, 4])  # ALWAYS SET SPEED BEFORE ANYTHING
     time.sleep(0.1)
     motor.simMotorRun([223],[1])
     time.sleep(.1)
@@ -359,16 +359,17 @@ def debug_bvm_push_in():
     print(gcs_push_in_angle)
     print("push in to chamber")
     motor.simMotorRun(gcs_push_in_angle, [1, 2, 3, 4])
-    time.sleep(.5)
+    time.sleep(5)
   
     print("adjust")
     motor.simMotorRun([80,180],[3,4])
+    time.sleep(5)
     #[222, 168, 68, 268]
     gcs_push_in_angle = calculation.angle_Calc([370,-7,73], 0)
     print(gcs_push_in_angle)
     print("push in to chamber")
     motor.simMotorRun(gcs_push_in_angle, [1, 2, 3, 4])
-    time.sleep(.5)
+    time.sleep(5)
 
     motor.simMotorRun([30, 225, 81, 236, 186], [0, 1, 2, 3, 4])
     time.sleep(0.5)
