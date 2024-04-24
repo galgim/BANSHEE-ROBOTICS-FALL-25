@@ -325,7 +325,7 @@ def debug_bvm_pull_out():
 
     for i in range(280,190,-10):
         print(i)
-        initial_pull_out_angle = calculation.angle_Calc([i,0,60], 0)
+        initial_pull_out_angle = calculation.angle_Calc([i,0,73], 0)
         print("move 4 pull away slight")
         motor.simMotorRun(initial_pull_out_angle, [1, 2, 3, 4])
         time.sleep(.2)
