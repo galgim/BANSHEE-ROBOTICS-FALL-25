@@ -357,23 +357,18 @@ def debug_bvm_push_in():
     print("move back in to chamber")
     motor.simMotorRun(gcs_push_in_angle, [1, 2, 3, 4])
     time.sleep(5)
+    #[223, 115, 191, 197] 1 2 3 4 
+    print("adjust")
+    for i in range(190,280,10):
+        print(i)
+        initial_push_angle = calculation.angle_Calc([i,0,73], 0)
+        print("push 4 slight")
+        motor.simMotorRun(initial_push_angle, [1, 2, 3, 4])
+        time.sleep(.2)
+        motor.dxlPresPos([0, 1, 2, 3, 4])
 
-    # print("adjust")
     # motor.simMotorRun([140,151,191],[2,3,4])
     # time.sleep(5)
-    # motor.simMotorRun([140,151,191],[2,3,4])
-    # time.sleep(5)
-    # motor.simMotorRun([140,151,191],[2,3,4])
-    # time.sleep(5)
-    # motor.simMotorRun([140,151,191],[2,3,4])
-    # time.sleep(5)
-    # motor.simMotorRun([140,151,191],[2,3,4])
-    # time.sleep(5)
-    # motor.simMotorRun([140,151,191],[2,3,4])
-    # time.sleep(5)
-    # motor.simMotorRun([140,151,191],[2,3,4])
-    # time.sleep(5)
-    # #[223, 115, 191, 197] 1 2 3 4 
 
 
     # # gcs_push_in_angle = calculation.angle_Calc([370,-7,73], 0)
