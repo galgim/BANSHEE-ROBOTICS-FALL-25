@@ -398,6 +398,6 @@ if __name__ == "__main__":
     # debug_gcs_push_in()
     
     debug_bvm_pull_out()
-    #time.sleep(3)
+    time.sleep(3)
     debug_bvm_push_in()
     
