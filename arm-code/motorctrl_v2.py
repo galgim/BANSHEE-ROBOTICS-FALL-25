@@ -206,8 +206,8 @@ def simMotorRun(angle_inputs, dxlIDs):
             for id in range(idNum):
                 dxl_end_angle[id] = _map(dxl_end_position[id], 0, 4095, 0, 360)
             
-            for id in range(idNum):
-                print("Angle for Dynamixel:%03d is %03d ----------------------------" % (dxlIDs[id], dxl_end_angle[id]))
+            # for id in range(idNum):
+            #     print("Angle for Dynamixel:%03d is %03d ----------------------------" % (dxlIDs[id], dxl_end_angle[id]))
             # ------------------------------------------------------------------------------------------------------------------------------------------------------
             print("-------------------------------------")
             return movementStatus
