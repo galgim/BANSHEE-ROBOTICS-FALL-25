@@ -298,7 +298,7 @@ def debug_gcs_push_in():
     print(end_time-start_time)
 
 
-bvm_max_length_angle = calculation.angle_Calc([370, -8, 70], 0)
+bvm_max_length_angle = calculation.angle_Calc([367, -6, 73], 0)
 
 def debug_bvm_pull_out():
     start_time = time.time()
@@ -398,4 +398,3 @@ if __name__ == "__main__":
     debug_bvm_pull_out()
     time.sleep(5)
     debug_bvm_push_in()
-    
