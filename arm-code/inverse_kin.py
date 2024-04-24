@@ -305,7 +305,7 @@ def debug_bvm_pull_out():
     time.sleep(0.1)
 
     print("set up move")
-    motor.simMotorRun([98, 225, 260, 50, 278], [0, 1, 2, 3, 4])  # Reset claw looking up
+    motor.simMotorRun([98, 225, 270, 50, 278], [0, 1, 2, 3, 4])  # Reset claw looking up
     time.sleep(2)
 
     print("move 1 move to chamber")
@@ -333,7 +333,7 @@ def debug_bvm_pull_out():
     # motor.dxlPresPos([0, 1, 2, 3, 4])
 
     print("set up move")
-    motor.simMotorRun([30, 222, 260, 47, 272], [0, 1, 2, 3, 4])  # Reset claw looking up
+    motor.simMotorRun([30, 222, 270, 47, 272], [0, 1, 2, 3, 4])  # Reset claw looking up
     time.sleep(2)
 
 def debug_bvm_push_in():
@@ -369,7 +369,7 @@ def debug_bvm_push_in():
     motor.simMotorRun([270,47,250],[2,3,4])
     time.sleep(0.5)
     print("set up move")
-    motor.simMotorRun([98, 225, 260, 47, 272], [0, 1, 2, 3, 4])  # Reset claw looking up
+    motor.simMotorRun([98, 225, 270, 47, 272], [0, 1, 2, 3, 4])  # Reset claw looking up
     time.sleep(2)
     
 
