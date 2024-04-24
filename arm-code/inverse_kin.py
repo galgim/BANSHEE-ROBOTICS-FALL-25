@@ -359,12 +359,12 @@ def debug_bvm_push_in():
     time.sleep(5)
     #[223, 115, 191, 197] 1 2 3 4 
     print("adjust")
-    for i in range(190,280,10):
+    for i in range(140,280,10):
         print(i)
         initial_push_angle = calculation.angle_Calc([i,0,73], 0)
         print("push 4 slight")
         motor.simMotorRun(initial_push_angle, [1, 2, 3, 4])
-        time.sleep(.2)
+        time.sleep(.8)
         motor.dxlPresPos([0, 1, 2, 3, 4])
 
     # motor.simMotorRun([140,151,191],[2,3,4])
