@@ -298,7 +298,7 @@ def debug_gcs_push_in():
     print(end_time-start_time)
 
 
-bvm_max_length_angle = calculation.angle_Calc([370, -6, 70], 0)
+bvm_max_length_angle = calculation.angle_Calc([370, -10, 70], 0)
 
 def debug_bvm_pull_out():
     start_time = time.time()
@@ -409,7 +409,7 @@ def debug_bvm_push_in():
 
     motor.simMotorRun([100],[0])
     time.sleep(0.025)
-    motor.simMotorRun([227],[1])
+    motor.simMotorRun([229],[1])
     time.sleep(1)
     motor.simMotorRun([223],[1])
     motor.simMotorRun([90],[4])
