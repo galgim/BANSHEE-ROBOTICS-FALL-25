@@ -312,6 +312,8 @@ def debug_bvm_pull_out():
     print("move 1 move to chamber")
     motor.simMotorRun(bvm_max_length_angle, [1,2, 3, 4])
     time.sleep(1)
+    motor.simMotorRun([100],[2])
+    time.sleep(1)
     print("move 2 pitch wrist")
     motor.simMotorRun([200], [4])  # Reset claw looking up
     time.sleep(0.5)
@@ -355,18 +357,18 @@ def debug_bvm_push_in():
     print("adjust")
     for i in range(190,380,10):
         print(i)
-        initial_push_angle = calculation.angle_Calc([i,-6,80], 0)
+        initial_push_angle = calculation.angle_Calc([i,-6,83], 0)
         print("push 4 slight")
         motor.simMotorRun(initial_push_angle, [1, 2, 3, 4])
         time.sleep(.8)
         motor.dxlPresPos([0, 1, 2, 3, 4])
 
-    motor.simMotorRun([30, 223, 110, 210, 186], [0, 1, 2, 3, 4])
+    motor.simMotorRun([30, 223, 113, 210, 186], [0, 1, 2, 3, 4])
     time.sleep(0.5)
 
     motor.simMotorRun([100],[0])
     time.sleep(0.025)
-    motor.simMotorRun([227],[1])
+    motor.simMotorRun([230],[1])
     time.sleep(1)
 
     motor.simMotorRun([223],[1])
