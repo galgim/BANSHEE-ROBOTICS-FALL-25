@@ -312,7 +312,7 @@ def debug_bvm_pull_out():
     motor.simMotorRun(bvm_max_length_angle, [1,2, 3, 4])
     time.sleep(1)
     print("move 2 pitch wrist")
-    motor.simMotorRun([123,200], [2,4])  # Reset claw looking up
+    motor.simMotorRun([124,200], [2,4])  # Reset claw looking up
     time.sleep(1)
 
     print("move 3 close grip")
