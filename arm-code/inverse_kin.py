@@ -341,8 +341,6 @@ def debug_bvm_push_in():
     start_time = time.time()
     motor.dxlSetVelo([30, 30, 30, 30, 30], [0, 1, 2, 3, 4])  # ALWAYS SET SPEED BEFORE ANYTHING
     time.sleep(0.1)
-    motor.simMotorRun([60],[3])
-    motor.simMotorRun([250],[2])
 
     gcs_push_in_angle = calculation.angle_Calc([180,-2,73], 0)
     print(gcs_push_in_angle)
@@ -390,6 +388,6 @@ if __name__ == "__main__":
     # time.sleep(5)
     # debug_gcs_push_in()
     
-    # debug_bvm_pull_out()
-    # time.sleep(5)
+    debug_bvm_pull_out()
+    time.sleep(5)
     debug_bvm_push_in()
