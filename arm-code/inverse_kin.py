@@ -362,7 +362,7 @@ def debug_bvm_push_in():
     time.sleep(5)
   
     print("adjust")
-    motor.simMotorRun([130,151,157],[2,3,4])
+    motor.simMotorRun([130,151,187],[2,3,4])
     time.sleep(5)
     #[223, 115, 191, 197] 1 2 3 4 
 
