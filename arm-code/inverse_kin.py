@@ -347,16 +347,13 @@ def debug_bvm_push_in():
     time.sleep(2)
     motor.simMotorRun([223],[1])
     time.sleep(.1)
-    
-    # print("move back to chamber")
-    # motor.simMotorRun([223,185, 62], [1,2, 3])
-    # time.sleep(5)
 
     gcs_push_in_angle = calculation.angle_Calc([180,-7,73], 0)
     print(gcs_push_in_angle)
     print("move back in to chamber")
     motor.simMotorRun(gcs_push_in_angle, [1, 2, 3, 4])
     time.sleep(5)
+
     #[223, 115, 191, 197] 1 2 3 4 
     print("adjust")
     for i in range(190,380,10):
@@ -367,16 +364,6 @@ def debug_bvm_push_in():
         time.sleep(.8)
         motor.dxlPresPos([0, 1, 2, 3, 4])
 
-    # motor.simMotorRun([140,151,191],[2,3,4])
-    # time.sleep(5)
-
-
-    # # gcs_push_in_angle = calculation.angle_Calc([370,-7,73], 0)
-    # # print(gcs_push_in_angle)
-    # # print("push in to chamber")
-    # # motor.simMotorRun(gcs_push_in_angle, [1, 2, 3, 4])
-    # # time.sleep(5)
-
     motor.simMotorRun([30, 223, 110, 210, 186], [0, 1, 2, 3, 4])
     time.sleep(0.5)
 
@@ -384,14 +371,12 @@ def debug_bvm_push_in():
     time.sleep(0.025)
     motor.simMotorRun([227],[1])
     time.sleep(1)
+
     motor.simMotorRun([223],[1])
-    motor.simMotorRun([90],[4])
-    time.sleep(0.025)
+    # motor.simMotorRun([90],[4])
+    # time.sleep(0.025)
     motor.simMotorRun([110,270],[2,3])
     time.sleep(0.5)
-    # print("push battery insecure")
-    # motor.simMotorRun([30, 223, 110, 130, 186], [0, 1, 2, 3, 4])
-    # time.sleep(0.5)
     print("set up move")
     motor.simMotorRun([95, 225, 270, 47, 272], [0, 1, 2, 3, 4])  # Reset claw looking up
     time.sleep(2)
