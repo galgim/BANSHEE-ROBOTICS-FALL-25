@@ -318,7 +318,7 @@ def debug_bvm_pull_out():
 
     motor.simMotorRun([120],[2])
     time.sleep(1)
-    
+
     print("move 3 close grip")
     motor.simMotorRun([30], [0])  # Reset claw looking up
     time.sleep(0.5)
@@ -372,7 +372,7 @@ def debug_bvm_push_in():
     motor.simMotorRun([230],[1])
     time.sleep(1)
 
-    motor.simMotorRun([220],[1])
+    motor.simMotorRun([218],[1])
 
     motor.simMotorRun([90],[4])
     time.sleep(0.025)
