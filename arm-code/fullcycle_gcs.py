@@ -98,7 +98,7 @@ def debug_gcs_push_in():
     print(end_time-start_time)
 
 
-def debug_gcs_pullout():
+def debug_gcs_pull_out():
     start_time = time.time()
     motor.dxlSetVelo([25, 25, 25, 25, 25], [0, 1, 2, 3, 4])  # ALWAYS SET SPEED BEFORE ANYTHING
     time.sleep(0.1)
