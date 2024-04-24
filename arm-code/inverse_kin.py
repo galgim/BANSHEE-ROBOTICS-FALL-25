@@ -359,7 +359,7 @@ def debug_bvm_push_in():
     time.sleep(5)
     #[223, 115, 191, 197] 1 2 3 4 
     print("adjust")
-    for i in range(150,370,10):
+    for i in range(160,370,10):
         print(i)
         initial_push_angle = calculation.angle_Calc([i,0,85], 0)
         print("push 4 slight")
