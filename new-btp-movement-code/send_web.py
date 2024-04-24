@@ -3,10 +3,12 @@ import websockets
 import cv2
 import numpy as np
 from realsense_depth import DepthCamera
+import ssl
 
 async def send_frames():
-    uri = "ws://172.233.146.163:3000/sending_frames"  # WebSocket endpoint for reading frames
-    async with websockets.connect(uri) as websocket:
+    uri = "wss://rgs.bansheeuav.tech:3000/sending_frames"  # WebSocket endpoint for sending frames
+    ssl_context = ssl.SSLContext(ssl.PROTOCOL_TLS)  # Create SSL context with TLS
+    async with websockets.connect(uri, ssl=ssl_context) as websocket:
         print("Connected to WebSocket server for sending frames")
         video_capture = DepthCamera()  # Use 0 for webcam, or file path for a video file
         while True:
