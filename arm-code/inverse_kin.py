@@ -297,7 +297,7 @@ def debug_gcs_pull_out():
     end_time = time.time()
     print(end_time-start_time)
 
-bvm_max_length_angle = calculation.angle_Calc([367, -3, 70], 0)
+bvm_max_length_angle = calculation.angle_Calc([367, -3, 73], 0)
 
 def debug_bvm_pull_out():
     start_time = time.time()
@@ -321,7 +321,7 @@ def debug_bvm_pull_out():
 
     for i in range(280,190,-10):
         print(i)
-        initial_pull_out_angle = calculation.angle_Calc([i,-3,70], 0)
+        initial_pull_out_angle = calculation.angle_Calc([i,-3,73], 0)
         print("move 4 pull away slight")
         motor.simMotorRun(initial_pull_out_angle, [1, 2, 3, 4])
         time.sleep(.2)
@@ -344,7 +344,7 @@ def debug_bvm_push_in():
     motor.simMotorRun([60],[3])
     motor.simMotorRun([250],[2])
 
-    gcs_push_in_angle = calculation.angle_Calc([180,-2,70], 0)
+    gcs_push_in_angle = calculation.angle_Calc([180,-2,73], 0)
     print(gcs_push_in_angle)
     print("move back in to chamber")
     motor.simMotorRun(gcs_push_in_angle, [1, 2, 3, 4])
@@ -354,7 +354,7 @@ def debug_bvm_push_in():
     print("adjust")
     for i in range(190,380,10):
         print(i)
-        initial_push_angle = calculation.angle_Calc([i,-3,70], 0)
+        initial_push_angle = calculation.angle_Calc([i,-3,73], 0)
         print("push 4 slight")
         motor.simMotorRun(initial_push_angle, [1, 2, 3, 4])
         time.sleep(.1)
