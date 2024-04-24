@@ -169,17 +169,14 @@ def debug_bvm_pull_out():
     time.sleep(0.1)
 
     print("set up move")
-    motor.simMotorRun([100, 225, 270, 50, 278], [0, 1, 2, 3, 4])  # Reset claw looking up
+    motor.simMotorRun([98, 225, 260, 50, 278], [0, 1, 2, 3, 4])  # Reset claw looking up
     time.sleep(2)
 
     print("move 1 move to chamber")
     motor.simMotorRun(bvm_max_length_angle, [1,2, 3, 4])
     time.sleep(1)
     print("move 2 pitch wrist")
-    motor.simMotorRun([200], [4])  # Reset claw looking up
-    time.sleep(0.5)
-
-    motor.simMotorRun([125],[2])
+    motor.simMotorRun([123,200], [2,4])  # Reset claw looking up
     time.sleep(1)
 
     print("move 3 close grip")
@@ -195,31 +192,29 @@ def debug_bvm_pull_out():
         motor.dxlPresPos([0, 1, 2, 3, 4])
 
     print("set up move")
-    motor.simMotorRun([30, 222, 270, 47, 272], [0, 1, 2, 3, 4])  # Reset claw looking up
+    motor.simMotorRun([30, 222, 260, 47, 272], [0, 1, 2, 3, 4])  # Reset claw looking up
     time.sleep(2)
 
 def debug_bvm_push_in():
     #Push In Battery
     start_time = time.time()
-    motor.dxlSetVelo([30, 30, 15, 30, 30], [0, 1, 2, 3, 4])  # ALWAYS SET SPEED BEFORE ANYTHING
+    motor.dxlSetVelo([30, 30, 30, 30, 30], [0, 1, 2, 3, 4])  # ALWAYS SET SPEED BEFORE ANYTHING
     time.sleep(0.1)
-    motor.simMotorRun([223],[1])
-    time.sleep(.1)
 
     gcs_push_in_angle = calculation.angle_Calc([180,-2,73], 0)
     print(gcs_push_in_angle)
     print("move back in to chamber")
     motor.simMotorRun(gcs_push_in_angle, [1, 2, 3, 4])
-    time.sleep(5)
+    time.sleep(1)
 
     #[223, 115, 191, 197] 1 2 3 4 
     print("adjust")
     for i in range(190,380,10):
         print(i)
-        initial_push_angle = calculation.angle_Calc([i,-3,78], 0)
+        initial_push_angle = calculation.angle_Calc([i,-3,73], 0)
         print("push 4 slight")
         motor.simMotorRun(initial_push_angle, [1, 2, 3, 4])
-        time.sleep(.2)
+        time.sleep(.1)
         motor.dxlPresPos([0, 1, 2, 3, 4])
 
     motor.simMotorRun([30, 223, 113, 210, 186], [0, 1, 2, 3, 4])
@@ -228,14 +223,14 @@ def debug_bvm_push_in():
     motor.simMotorRun([100],[0])
     time.sleep(0.025)
 
-    motor.simMotorRun([210],[1])
-    time.sleep(.5)
-    motor.simMotorRun([223,150,180],[1,2,3])
-    time.sleep(0.025)
-    motor.simMotorRun([110,270],[2,3])
+    motor.simMotorRun([200],[1])
+    motor.simMotorRun([240],[1])
+    time.sleep(1)
+    motor.simMotorRun([225],[1])
+    motor.simMotorRun([270,47,250],[2,3,4])
     time.sleep(0.5)
     print("set up move")
-    motor.simMotorRun([100, 225, 270, 47, 272], [0, 1, 2, 3, 4])  # Reset claw looking up
+    motor.simMotorRun([98, 225, 260, 47, 272], [0, 1, 2, 3, 4])  # Reset claw looking up
     time.sleep(2)
 
 client_socket = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
