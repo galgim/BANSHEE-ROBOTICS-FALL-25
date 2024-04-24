@@ -353,7 +353,7 @@ def debug_bvm_push_in():
     time.sleep(.5)
     # print("adjust")
     # motor.simMotorRun([80,180],[3,4])
-    # #[222, 168, 68, 268]
+    # #[222, 168, 68, 268] 1,2,3,4
 
     gcs_push_in_angle = calculation.angle_Calc([180,-7,73], 0)
     print(gcs_push_in_angle)
@@ -362,7 +362,7 @@ def debug_bvm_push_in():
     time.sleep(5)
   
     print("adjust")
-    motor.simMotorRun([80,180],[3,4])
+    motor.simMotorRun([148,80,180],[2,3,4])
     time.sleep(5)
     #[222, 168, 68, 268]
     gcs_push_in_angle = calculation.angle_Calc([370,-7,73], 0)
