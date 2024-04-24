@@ -343,8 +343,6 @@ def debug_bvm_push_in():
     start_time = time.time()
     motor.dxlSetVelo([30, 30, 30, 30, 30], [0, 1, 2, 3, 4])  # ALWAYS SET SPEED BEFORE ANYTHING
     time.sleep(0.1)
-    motor.simMotorRun([30, 223, 270, 47, 272], [0, 1, 2, 3, 4])  # Reset claw looking up
-    time.sleep(2)
     motor.simMotorRun([223],[1])
     time.sleep(.1)
 
@@ -397,7 +395,7 @@ if __name__ == "__main__":
     # time.sleep(5)
     # debug_gcs_push_in()
     
-    # debug_bvm_pull_out()
-    # time.sleep(3)
+    debug_bvm_pull_out()
+    time.sleep(3)
     debug_bvm_push_in()
     
