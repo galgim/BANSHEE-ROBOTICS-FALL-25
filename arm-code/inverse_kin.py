@@ -389,9 +389,9 @@ def debug_bvm_push_in():
     time.sleep(0.025)
     motor.simMotorRun([110,270],[2,3])
     time.sleep(0.5)
-    print("push battery insecure")
-    motor.simMotorRun([30, 223, 110, 130, 186], [0, 1, 2, 3, 4])
-    time.sleep(0.5)
+    # print("push battery insecure")
+    # motor.simMotorRun([30, 223, 110, 130, 186], [0, 1, 2, 3, 4])
+    # time.sleep(0.5)
     print("set up move")
     motor.simMotorRun([95, 225, 270, 47, 272], [0, 1, 2, 3, 4])  # Reset claw looking up
     time.sleep(2)
