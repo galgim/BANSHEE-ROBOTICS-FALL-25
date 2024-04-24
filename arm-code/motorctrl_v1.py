@@ -320,9 +320,9 @@ def simWrite(dxl_goal_inputs, dxlIDs):
     #Create parameter storage for present positions
     for id in range(idNum):
         dxl_addparam_result = motor_sync_read.addParam(dxlIDs[id])
-        if dxl_addparam_result != True:
-            print("[ID:%03d] groupSyncRead addparam failed" % dxlIDs[id])
-        #print("DXL_ADDPARAM_RESULT is " ,dxl_addparam_result)
+        # if dxl_addparam_result != True:
+        #     #print("[ID:%03d] groupSyncRead addparam failed" % dxlIDs[id])
+        # #print("DXL_ADDPARAM_RESULT is " ,dxl_addparam_result)
 
     param_goal_position = [0] * idNum
     #Allocate goal position values into 4-byte array for bicep and forearm motors. Dynamixel motors use either 2-bytes or 4-bytes
@@ -334,9 +334,9 @@ def simWrite(dxl_goal_inputs, dxlIDs):
     for id in range(idNum): 
     #Add goal position input values of bicep and forearm motors to Syncwrite parameter storage
         dxl_addparam_result = motor_sync_write.addParam(dxlIDs[id], param_goal_position[id])
-        if dxl_addparam_result != True:
-            print("[ID:%03d] groupSyncWrite addparam failed" % dxlIDs[id])
-        #print("groupSyncWrite for [ID:%03d] works" % (DXL_ID[device_index]))
+        # if dxl_addparam_result != True:
+        #     #print("[ID:%03d] groupSyncWrite addparam failed" % dxlIDs[id])
+        # #print("groupSyncWrite for [ID:%03d] works" % (DXL_ID[device_index]))
    
     #Syncwrite goal position to bicep and forearm motors
     dxl_comm_result = motor_sync_write.txPacket()
@@ -358,8 +358,8 @@ def simPosCheck(dxl_goal_inputs, dxlIDs):
         # Check if groupsyncread data of Dynamixel is available
         for motorID in dxlIDs:
             dxl_getdata_result = motor_sync_read.isAvailable(motorID, ADDR_PRESENT_POSITION, LEN_PRESENT_POSITION)
-            if dxl_getdata_result != True:
-                print("[ID:%03d] groupSyncRead getdata failed" % motorID)
+            # if dxl_getdata_result != True:
+            #     print("[ID:%03d] groupSyncRead getdata failed" % motorID)
 
         # Get Dynamixel present position value
         for id in range(idNum):
