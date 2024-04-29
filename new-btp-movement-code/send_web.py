@@ -29,7 +29,6 @@ async def send_frames():
             except Exception as e:
                 print(e)
                 break
-
             key = cv2.waitKey(1)
             if key == 27:
                 break
