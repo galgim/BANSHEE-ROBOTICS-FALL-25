@@ -12,6 +12,7 @@ class ardetect:
     #s.setsockopt(socket.SOL_SOCKET, socket.SO_SNDBUF, 1000000)
     server_ip="192.168.1.95"
     server_port=3000
+    dictionary = cv2.aruco.getPredefinedDictionary(cv2.aruco.DICT_4X4_250)
 
     # 1. Load the ArUco dictionary
     aruco_dict = cv2.aruco.Dictionary_get(cv2.aruco.DICT_5X5_100)  # Choose your desired dictionary

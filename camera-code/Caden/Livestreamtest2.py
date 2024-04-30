@@ -11,9 +11,7 @@ frame_count = 0
 
 async def read_frames():
     global fps, start_time, frame_count
-    #uri = "ws://172.233.146.163:3000/read_frames"  # Replace with your server address
-    uri = "ws://rgs.bansheeuav.tech:3000/read_frames"  # Replace with your server address
-    #uri = "ws://127.0.0.1:3000/read_frames"
+    uri = "wss://rgs.bansheeuav.tech:3000/read_frames"  # Replace with your server address
     async with websockets.connect(uri) as websocket:
         print("Connected to WebSocket server for reading frames")
         while True:
@@ -30,18 +28,18 @@ async def read_frames():
             elapsed_time = time.time() - start_time
 
             # Calculate FPS every second
-            #if elapsed_time >= 1:
+            if elapsed_time >= 1:
                 # Calculate FPS
-                #fps = frame_count / elapsed_time
+                fps = frame_count / elapsed_time
 
                 # Reset variables
-              #  start_time = time.time()
-                #frame_count = 0
+                start_time = time.time()
+                frame_count = 0
 
             # Display received video frame
             if frame is not None:
                 # Display FPS on the frame
-                #cv2.putText(frame, f'FPS: {int(fps)}', (10, 30), cv2.FONT_HERSHEY_SIMPLEX, 1, (0, 255, 0), 2)
+                cv2.putText(frame, f'FPS: {int(fps)}', (10, 30), cv2.FONT_HERSHEY_SIMPLEX, 1, (0, 255, 0), 2)
                 
                 # Display the frame
                 cv2.imshow("RECEIVING VIDEO", frame)
