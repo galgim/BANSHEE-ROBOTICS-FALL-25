@@ -27,7 +27,7 @@ ctrl.portInitialization(PORT_NUM, ALL_IDs)
 
 
 #angle for the max length reaching out in the x pos
-max_length_angle = calculation.angle_Calc([365, 0, 70], 0)
+max_length_angle = calculation.angle_Calc([375, 0, 70], 0)
 
 #"[%s, %s, %s, %s]" % (int(baseTheta), int(shoulderTheta), int(elbowTheta), int(wristTheta))
 
@@ -133,7 +133,7 @@ def debug_gcs_push_in():
     print("adjust")
     for i in range(190,380,10):
         print(i)
-        initial_push_angle = calculation.angle_Calc([i,-3,75], 0)
+        initial_push_angle = calculation.angle_Calc([i,-3,72], 0)
         print("push 4 slight")
         motor.simMotorRun(initial_push_angle, [1, 2, 3, 4])
         time.sleep(.1)
