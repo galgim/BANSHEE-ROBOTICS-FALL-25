@@ -153,7 +153,7 @@ def debug_gcs_push_in():
     time.sleep(1.5)
 
     print("set up move")
-    motor.simMotorRun([110, 223, 260, 47, 272], [0, 1, 2, 3, 4])  # Reset claw looking up
+    motor.simMotorRun([30, 223, 260, 47, 272], [0, 1, 2, 3, 4])  # Reset claw looking up
     end_time = time.time()
     print(end_time-start_time)
 
