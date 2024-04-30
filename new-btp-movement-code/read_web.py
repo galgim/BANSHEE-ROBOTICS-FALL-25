@@ -12,7 +12,8 @@ async def read_frames():
     # 1. Load the ArUco dictionary
     aruco_dict = cv2.aruco.Dictionary_get(cv2.aruco.DICT_5X5_100)  # Choose your desired dictionary
     parameters = cv2.aruco.DetectorParameters_create()
-    uri = "ws://rgs.bansheeuav.tech:3000/read_frames"
+    #uri = "ws://rgs.bansheeuav.tech:3000/read_frames"
+    uri = "192.168.1.95"
     async with websockets.connect(uri) as websocket:
         color_frame = None  # Initialize color_frame outside of the loop
         print("Connected to WebSocket server for reading frames")
