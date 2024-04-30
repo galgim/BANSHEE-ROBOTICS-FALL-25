@@ -8,7 +8,7 @@ async def send_frames():
     uri = "wss://rgs.bansheeuav.tech:3000/sending_frames"
     async with websockets.connect(uri) as websocket:
         print("Connected to WebSocket server for sending frames")
-        cap = cv2.VideoCapture(-1)
+        cap = cv2.VideoCapture(0)
         frame_rate = 60
         prev = 0
         while True:
