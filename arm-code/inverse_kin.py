@@ -116,12 +116,9 @@ def sleepless_move(velocity: list[int], ids: list[int], startAngles: list[int], 
 def debug_gcs_push_in():
     #Push In Battery
     start_time = time.time()
-    motor.dxlSetVelo([15, 15, 15, 15, 15], [0, 1, 2, 3, 4])  # ALWAYS SET SPEED BEFORE ANYTHING
+    motor.dxlSetVelo([30, 30, 30, 30, 30], [0, 1, 2, 3, 4])  # ALWAYS SET SPEED BEFORE ANYTHING
     time.sleep(0.1)
     #265, 47, 170
-    print("move back to chamber1")
-    motor.simMotorRun([270, 54], [2, 3])
-    time.sleep(2.5)
 
     print("move back to chamber2")
     motor.simMotorRun([180, 56], [2, 3])
@@ -133,11 +130,14 @@ def debug_gcs_push_in():
     motor.dxlSetVelo([40, 40, 40, 40, 40], [0, 1, 2, 3, 4])  # ALWAYS SET SPEED BEFORE ANYTHING
     time.sleep(0.1)
 
-    gcs_push_in_angle = calculation.angle_Calc([310,0,70], 0)
-    print(gcs_push_in_angle)
-    print("push in to chamber")
-    motor.simMotorRun(gcs_push_in_angle, [1, 2, 3, 4])
-    time.sleep(0.15)
+    print("adjust")
+    for i in range(190,380,10):
+        print(i)
+        initial_push_angle = calculation.angle_Calc([i,-3,78], 0)
+        print("push 4 slight")
+        motor.simMotorRun(initial_push_angle, [1, 2, 3, 4])
+        time.sleep(.1)
+        motor.dxlPresPos([0, 1, 2, 3, 4])
 
     print("push all the way in to chamber")
     motor.simMotorRun(max_length_angle, [1, 2, 3, 4])
