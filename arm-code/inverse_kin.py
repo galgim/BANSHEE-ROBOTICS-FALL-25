@@ -238,11 +238,9 @@ def debug_bvm_pull_out():
     print("move 2 pitch wrist")
     motor.simMotorRun([124,200], [2,4])  # Reset claw looking up
     time.sleep(1)
-    while True:
-        if(motor.dxlPresPos(1)==motor.simMotorRun([]))
-        print("move 3 close grip")
-        motor.simMotorRun([30], [0])  # Reset claw looking up
-        time.sleep(0.5)
+    print("move 3 close grip")
+    motor.simMotorRun([30], [0])  # Reset claw looking up
+    time.sleep(0.5)
 
     for i in range(280,190,-10):
         print(i)
@@ -261,18 +259,16 @@ def debug_bvm_push_in():
     start_time = time.time()
     motor.dxlSetVelo([30, 30, 30, 30, 30], [0, 1, 2, 3, 4])  # ALWAYS SET SPEED BEFORE ANYTHING
     time.sleep(0.1)
-    while True:
-        try:
-            gcs_push_in_angle = calculation.angle_Calc([180,-2,73], 0)
-            print(gcs_push_in_angle)
-            print("move back in to chamber")
-            motor.simMotorRun(gcs_push_in_angle, [1, 2, 3, 4])
-            time.sleep(1)
-            break
-        except:
-            print("set up move")
-            motor.simMotorRun([30, 222, 260, 47, 272], [0, 1, 2, 3, 4])  # Reset claw looking up
-            time.sleep(2)
+
+    gcs_push_in_angle = calculation.angle_Calc([180,-2,73], 0)
+    print(gcs_push_in_angle)
+    print("move back in to chamber")
+    motor.simMotorRun(gcs_push_in_angle, [1, 2, 3, 4])
+    time.sleep(1)
+    
+    print("set up move")
+    motor.simMotorRun([30, 222, 260, 47, 272], [0, 1, 2, 3, 4])  # Reset claw looking up
+    time.sleep(2)
 
 
     #[223, 115, 191, 197] 1 2 3 4 
