@@ -153,7 +153,7 @@ def debug_gcs_push_in():
     time.sleep(1.5)
 
     print("set up move")
-    motor.simMotorRun([30, 223, 260, 47, 272], [0, 1, 2, 3, 4])  # Reset claw looking up
+    motor.simMotorRun([110, 223, 260, 47, 272], [0, 1, 2, 3, 4])  # Reset claw looking up
     end_time = time.time()
     print(end_time-start_time)
 
@@ -222,8 +222,8 @@ def debug_gcs_pull_out():
     print(end_time-start_time)
 
     print("set up move")
-    motor.simMotorRun([98, 225, 260, 50, 278], [0, 1, 2, 3, 4])  # Reset claw looking up
-    time.sleep(2)
+    motor.simMotorRun([30, 222, 260, 47, 272], [0, 1, 2, 3, 4])  # Reset claw looking up
+    time.sleep(1)
 
 bvm_max_length_angle = calculation.angle_Calc([367, -3, 73], 0)
 
