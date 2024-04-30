@@ -153,9 +153,8 @@ def debug_gcs_push_in():
     time.sleep(1.5)
 
     print("set up move")
-    motor.simMotorRun([110, 223, 260, 47, 272], [0, 1, 2, 3, 4])  # Reset claw looking up
-    end_time = time.time()
-    print(end_time-start_time)
+    motor.simMotorRun([98, 225, 260, 47, 272], [0, 1, 2, 3, 4])  # Reset claw looking up
+    time.sleep(1)
 
 
 def debug_gcs_pull_out():
@@ -182,15 +181,15 @@ def debug_gcs_pull_out():
     motor.simMotorRun([160], [3])  # Reset claw looking up
     time.sleep(0.15)
 
-    inital_pull_out_angle = calculation.angle_Calc([300,0,60], 0)
-    print("move 4 pull away slight")
-    motor.simMotorRun(inital_pull_out_angle, [1, 2, 3, 4])
-    time.sleep(0.15)
+    # inital_pull_out_angle = calculation.angle_Calc([300,0,60], 0)
+    # print("move 4 pull away slight")
+    # motor.simMotorRun(inital_pull_out_angle, [1, 2, 3, 4])
+    # time.sleep(0.15)
 
-    second_pull_out_angle = calculation.angle_Calc([250,0,60], 0)
-    print("move 5 pull away more")
-    motor.simMotorRun(second_pull_out_angle, [1, 2, 3, 4])
-    time.sleep(0.3)
+    # second_pull_out_angle = calculation.angle_Calc([250,0,60], 0)
+    # print("move 5 pull away more")
+    # motor.simMotorRun(second_pull_out_angle, [1, 2, 3, 4])
+    # time.sleep(0.3)
 
     final_pull_out_angle = calculation.angle_Calc([200,0,60], 0)
     print("move 6 pull away even more")
