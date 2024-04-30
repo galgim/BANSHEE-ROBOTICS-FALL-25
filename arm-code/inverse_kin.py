@@ -131,7 +131,7 @@ def debug_gcs_push_in():
     time.sleep(0.1)
 
     print("adjust")
-    for i in range(190,380,10):
+    for i in range(190,390,10):
         print(i)
         initial_push_angle = calculation.angle_Calc([i,-3,78], 0)
         print("push 4 slight")
