@@ -133,7 +133,7 @@ def debug_gcs_push_in():
     print("adjust")
     for i in range(190,390,10):
         print(i)
-        initial_push_angle = calculation.angle_Calc([i,-3,78], 0)
+        initial_push_angle = calculation.angle_Calc([i,-3,75], 0)
         print("push 4 slight")
         motor.simMotorRun(initial_push_angle, [1, 2, 3, 4])
         time.sleep(.1)
