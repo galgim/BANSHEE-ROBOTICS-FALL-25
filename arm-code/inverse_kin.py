@@ -27,7 +27,7 @@ ctrl.portInitialization(PORT_NUM, ALL_IDs)
 
 
 #angle for the max length reaching out in the x pos
-max_length_angle = calculation.angle_Calc([380, 0, 70], 0)
+max_length_angle = calculation.angle_Calc([375, 0, 70], 0)
 
 #"[%s, %s, %s, %s]" % (int(baseTheta), int(shoulderTheta), int(elbowTheta), int(wristTheta))
 
