@@ -168,7 +168,8 @@ def debug_gcs_pull_out():
     print("move 1 move to chamber")
     motor.simMotorRun(max_length_angle, [1, 2, 3, 4])
     time.sleep(0.4)
-
+    motor.simMotorRun([30, 223, 113, 210, 186], [0, 1, 2, 3, 4])
+    time.sleep(0.5)
     print("move 2 pitch wrist")
     motor.simMotorRun([200], [4])  # Reset claw looking up
     time.sleep(0.5)
