@@ -4,7 +4,8 @@ from cv2 import aruco
 import numpy as np
 
 aruco_dict = cv2.aruco.getPredefinedDictionary(cv2.aruco.DICT_5X5_100)  # Choose your desired dictionary
-parameters = cv2.aruco.DetectorParameters()
+detector_parameters = cv2.aruco.DetectorParameters()
+refine_parameters = cv2.aruco.RefineParameters()
 
 cap = cv2.VideoCapture(0)
 if not cap.isOpened():
@@ -32,9 +33,9 @@ while cap.isOpened():
     cv2.rectangle(frame, (box_x, box_y), (box_x + box_size, box_y + box_size), (0, 255, 0), 2)
 
     # 4. Detect ArUco markers
-    corners, ids, rejectedImgPoints = cv2.aruco.ArucoDetector.detectMarkers(frame, aruco_dict, parameters=parameters)
+    detector = cv2.aruco.ArucoDetector(aruco_dict, detector_parameters, refine_parameters)
 
-    
+    corners, ids, rejectedImgPoints = detector.detectMarkers(frame, corners, ids, rejectedImgPoints)
     
     cv2.imshow("Camera live stream", frame)
 
