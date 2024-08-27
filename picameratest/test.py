@@ -35,7 +35,7 @@ while cap.isOpened():
     # 4. Detect ArUco markers
     detector = cv2.aruco.ArucoDetector(aruco_dict, detector_parameters, refine_parameters)
 
-    corners, ids, rejectedImgPoints = detector.detectMarkers(frame, corners, ids, rejectedImgPoints)
+    corners, ids, rejectedImgPoints = detector.detectMarkers(frame)
     
     cv2.imshow("Camera live stream", frame)
 
