@@ -6,11 +6,6 @@ import time
 import serial
 import cv2
 import socket
-import RPi.GPIO as GPIO
-
-GPIO.setmode(GPIO.BOARD)
-GPIO.setup(22, GPIO.OUT)
-GPIO.output(22, GPIO.LOW)
 
 BASE_ID = 1
 BICEP_ID = 2
