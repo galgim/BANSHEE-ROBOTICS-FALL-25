@@ -4,7 +4,7 @@ from cv2 import aruco
 import numpy as np
 
 aruco_dict = cv2.aruco.getPredefinedDictionary(cv2.aruco.DICT_5X5_100)  # Choose your desired dictionary
-parameters = cv2.aruco.DetectorParameters_create()
+parameters = cv2.aruco.DetectorParameters()
 
 cap = cv2.VideoCapture(0)
 if not cap.isOpened():
