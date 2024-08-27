@@ -1,12 +1,9 @@
 import cv2
-import pyrealsense2
-from realsense_depth import *
-import matplotlib.pyplot as plt     
-from cv2 import aruco
+# import pyrealsense2
+from realsense_depth import *  
 import numpy as np
-import pyrealsense2
-import pickle
-import socket
+# import pickle
+# import socket
 
 s=socket.socket(socket.AF_INET, socket.SOCK_DGRAM)
 s.setsockopt(socket.SOL_SOCKET,socket.SO_SNDBUF,1000000)
