@@ -1,11 +1,9 @@
 import cv2
-import pyrealsense2
 import matplotlib.pyplot as plt     
 from cv2 import aruco
 import numpy as np
-import pyrealsense2
 
-aruco_dict = cv2.aruco.Dictionary_get(cv2.aruco.DICT_5X5_100)  # Choose your desired dictionary
+aruco_dict = cv2.aruco.getPredefinedDictionary(cv2.aruco.DICT_5X5_100)  # Choose your desired dictionary
 parameters = cv2.aruco.DetectorParameters_create()
 
 cap = cv2.VideoCapture(0)
