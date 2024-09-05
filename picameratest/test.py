@@ -1,16 +1,13 @@
-# import cv2
-# import matplotlib.pyplot as plt     
-# from cv2 import aruco
-import numpy as np
 import asyncio
 import websockets
 import cv2
 import numpy as np
 from cv2 import aruco
 import ssl
+import io
 
-
-uri = "wss://rgs.bansheeuav.tech:3000/sending_frames" 
+# uri = "wss://rgs.bansheeuav.tech:3000/sending_frames" 
+uri = "ws://localhost:8080/sending_frames"
 ssl_context = ssl.SSLContext(ssl.PROTOCOL_TLS)
 
 async def send_frames():
@@ -85,7 +82,12 @@ async def send_frames():
         # Draw the center box on the frame
         cv2.rectangle(frame, (box_x, box_y), (box_x + box_size, box_y + box_size), (0, 255, 0), 2)
 
-        cv2.imshow("Camera live stream", frame)
+        # Encode the frame to JPEG
+        _, buffer = cv2.imencode('.jpg', frame)
+        frame_bytes = buffer.tobytes()
+
+        # Send the frame via WebSocket
+        await websocket.send(frame_bytes)
 
         if cv2.waitKey(1) == ord('q'):
             break
