@@ -7,17 +7,17 @@ import ssl
 import io
 
 # uri = "wss://rgs.bansheeuav.tech:3000/sending_frames" 
-uri = "ws://localhost:8080/sending_frames"
+#uri = "wss://localhost:8080/sending_frames"
 ssl_context = ssl.SSLContext(ssl.PROTOCOL_TLS)
 
 async def send_frames():
-    async with websockets.connect(uri, ssl=ssl_context) as websocket:
-        print("Connected to WebSocket server for sending frames")
-        cap = cv2.VideoCapture(0)
-        if not cap.isOpened():
-            print("Cannot open camera")
-            return
-        
+    # async with websockets.connect(uri, ssl=ssl_context) as websocket:
+    #     print("Connected to WebSocket server for sending frames")
+    #     cap = cv2.VideoCapture(0)
+    #     if not cap.isOpened():
+    #         print("Cannot open camera")
+    #         return
+    cap =cv2.VideoCapture(0)    
     aruco_dict = cv2.aruco.getPredefinedDictionary(cv2.aruco.DICT_5X5_100)  # Choose your desired dictionary
     detector_parameters = cv2.aruco.DetectorParameters()
     refine_parameters = cv2.aruco.RefineParameters()
