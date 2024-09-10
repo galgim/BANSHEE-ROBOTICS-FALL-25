@@ -60,8 +60,8 @@ def Hello():
     time.sleep(0.1)
     motor.simMotorRun([180], [4])
     time.sleep(0.2)
-    motor.simMotorRun([80], [0])
-    time.sleep(0.2)
+    motor.simMotorRun([50], [0])
+    time.sleep(0.9)
     motor.simMotorRun([130],[0])
 
 def Yes():
