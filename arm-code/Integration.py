@@ -1,11 +1,10 @@
 #!/usr/bin/env python3
 import math
-import Motorcontrol as motor
-import movementcalc as calculation
+import motorctrl_v2 as motor
+import Movement_Calc_v2 as calculation
 import numpy as np
 import time
 import cv2
-import rasptoarduino as hand
 # import rclpy
 # from rclpy.node import Node
 # from geometry_msgs.msg import Twist
