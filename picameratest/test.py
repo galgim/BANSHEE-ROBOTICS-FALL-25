@@ -121,8 +121,7 @@ while cap.isOpened():
     box_size = 50
     box_x = int((width - box_size) / 2)
     box_y = int((height - box_size) / 2)
-    # Draw the center box on the frame
-    cv2.rectangle(frame, (box_x, box_y), (box_x + box_size, box_y + box_size), (0, 255, 0), 2)
+
     # 4. Detect ArUco markers
     detector = cv2.aruco.ArucoDetector(aruco_dict, detector_parameters, refine_parameters)
 
@@ -142,6 +141,7 @@ while cap.isOpened():
                 corner1_x = aruco_box[0][0] # Top left x value
                 corner2_x = aruco_box[2][0] # Bottom right x value
 
+                distance1 = corner1_x - 
 
 
             intersection_area = cv2.contourArea(cv2.convexHull(np.concatenate([middle_box, aruco_box])))
@@ -164,6 +164,9 @@ while cap.isOpened():
 
         # Draw detected markers after calculating overlap
         cv2.aruco.drawDetectedMarkers(frame, marker_corners, marker_ids)
+
+        # Draw the center box on the frame
+        cv2.rectangle(frame, (box_x, box_y), (box_x + box_size, box_y + box_size), (0, 255, 0), 2)
 
     cv2.imshow("Camera live stream", frame)
 
