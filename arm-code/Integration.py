@@ -70,7 +70,7 @@ def Yes():
     start_time = time.time()
     print("Yes")
     motor.dxlSetVelo([30, 30, 30, 30, 55], [0, 1, 2, 3, 4])
-    motor.simMotorRun([360], [1])
+    motor.simMotorRun([70], [2])
    
 
 
