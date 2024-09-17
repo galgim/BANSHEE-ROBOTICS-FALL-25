@@ -70,9 +70,8 @@ def Yes():
     start_time = time.time()
     print("Yes")
     motor.dxlSetVelo([30, 30, 30, 30, 55], [0, 1, 2, 3, 4])
-    motor.simMotorRun([220, 85, 265], [3, 2, 4])
-    time.sleep(0.2)
-    motor.simMotorRun([270], [1])
+    motor.simMotorRun([360], [1])
+   
 
 
 def Fistbump():
