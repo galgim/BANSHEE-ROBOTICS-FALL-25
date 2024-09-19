@@ -71,7 +71,7 @@ def Yes():
     print("Yes")
     motor.dxlSetVelo([30, 30, 30, 40, 55], [0, 1, 2, 3, 4])
     motor.simMotorRun([100,100], [2,3])
-    time.sleep(3)
+    time.sleep(1)
    
 
 
