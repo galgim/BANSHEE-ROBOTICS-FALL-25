@@ -70,7 +70,7 @@ def Yes():
     start_time = time.time()
     print("Yes")
     motor.dxlSetVelo([30, 30, 30, 30, 55], [0, 1, 2, 3, 4])
-    motor.simMotorRun([-30,180], [2,3])
+    motor.simMotorRun([30,180], [2,3])
     time.sleep(0.2)
    
 
@@ -146,7 +146,7 @@ def startsetup():
     print("set up move")
     motor.dxlSetVelo([30, 30, 30, 30, 30], [0, 1, 2, 3, 4])
     motor.simMotorRun([112, 270, 50, 264, 270], [0, 1, 2, 3, 4])
-    time.sleep(1)
+    time.sleep(10)
 
 # Dictionary mapping commands to functions
 Command_dict = {
