@@ -69,9 +69,9 @@ def Hello():
 def Yes():
     start_time = time.time()
     print("Yes")
-    motor.dxlSetVelo([30, 30, 30, 30, 55], [0, 1, 2, 3, 4])
+    motor.dxlSetVelo([30, 30, 30, 25, 55], [0, 1, 2, 3, 4])
     motor.simMotorRun([60,100], [2,3])
-    time.sleep(1)
+    time.sleep(10)
    
 
 
