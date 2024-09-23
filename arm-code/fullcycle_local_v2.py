@@ -7,11 +7,11 @@ import serial
 import cv2
 import socket
 import RPi.GPIO as GPIO
-
+#wentbwet
 GPIO.setmode(GPIO.BOARD)
 GPIO.setup(22, GPIO.OUT)
 GPIO.output(22, GPIO.LOW)
-
+#hehrwerw
 BASE_ID = 1
 BICEP_ID = 2
 FOREARM_ID = 3
@@ -19,6 +19,10 @@ WRIST_ID = 4
 CLAW_ID = 0
 
 
+
+
+
+#test to see if pushing works
 # PORT_NUM = '/dev/cu.usbserial-FT5NY9DI'  #for mac
 PORT_NUM = '/dev/ttyUSB0'  # for rpi
 ser = serial.Serial('/dev/ttyUSB1', 9600, timeout=1)  # for rpi
