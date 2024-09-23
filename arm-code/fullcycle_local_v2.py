@@ -15,10 +15,10 @@ BICEP_ID = 2
 FOREARM_ID = 3
 WRIST_ID = 4
 CLAW_ID = 0
-
+233233
 PORT_NUM = '/dev/ttyUSB0'  # for rpi
 ser = serial.Serial('/dev/ttyUSB1', 9600, timeout=1)  # for rpi
-
+322332322332
 BAUDRATE = 1000000
 MOVEARM_MODE = 1
 ADDR_PRESENT_POSITION = 132
