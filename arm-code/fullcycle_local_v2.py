@@ -12,7 +12,11 @@ GPIO.setmode(GPIO.BOARD)
 GPIO.setup(22, GPIO.OUT)
 GPIO.output(22, GPIO.LOW)
 <<<<<<< HEAD
+<<<<<<< HEAD
 #hehrwerw
+=======
+#test
+>>>>>>> 9f14e48 (test)
 =======
 #test
 >>>>>>> 9f14e48 (test)
@@ -22,7 +26,10 @@ FOREARM_ID = 3
 WRIST_ID = 4
 CLAW_ID = 0
 #test
+<<<<<<< HEAD
 
+=======
+>>>>>>> 9f14e48 (test)
 
 
 
