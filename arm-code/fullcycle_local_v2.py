@@ -18,6 +18,7 @@ CLAW_ID = 0
 #test
 #test to see if pushing works
 # PORT_NUM = '/dev/cu.usbserial-FT5NY9DI'  #for mac
+#port number change to test git merge
 PORT_NUM = '/dev/ttyUSB0'  # for rpi
 ser = serial.Serial('/dev/ttyUSB1', 9600, timeout=1)  # for rpi
 
