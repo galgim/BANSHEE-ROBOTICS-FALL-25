@@ -7,7 +7,7 @@ import serial
 import cv2
 import socket
 import RPi.GPIO as GPIO
-
+#help me im going to die 
 GPIO.setmode(GPIO.BOARD)
 GPIO.setup(22, GPIO.OUT)
 GPIO.output(22, GPIO.LOW)
