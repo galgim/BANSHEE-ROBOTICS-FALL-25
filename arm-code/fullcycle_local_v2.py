@@ -18,7 +18,7 @@ CLAW_ID = 0
 
 PORT_NUM = '/dev/ttyUSB0'  # for rpi
 ser = serial.Serial('/dev/ttyUSB1', 9600, timeout=1)  # for rpi
-3333
+
 BAUDRATE = 1000000
 MOVEARM_MODE = 1
 ADDR_PRESENT_POSITION = 132
