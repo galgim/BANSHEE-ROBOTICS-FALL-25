@@ -16,15 +16,17 @@ FOREARM_ID = 3
 WRIST_ID = 4
 CLAW_ID = 0
 #test
+12351235
 #test to see if pushing works
+123512351235
 # PORT_NUM = '/dev/cu.usbserial-FT5NY9DI'  #for mac
 #port number change to test git merge
-
-
-fefwefwefwerweraweg aerwaewg
+wetwet2323gesgsdef
+12351235
 PORT_NUM = '/dev/ttyUSB0'  # for rpi
 ser = serial.Serial('/dev/ttyUSB1', 9600, timeout=1)  # for rpi
-
+235 235253
+123512352423
 BAUDRATE = 1000000
 MOVEARM_MODE = 1
 ADDR_PRESENT_POSITION = 132
