@@ -400,26 +400,26 @@ def simPosCheck(dxl_goal_inputs, dxlIDs):
 
 
 
-# if __name__ == "__main__":
-#     #portInitialization(portname, baudrate, baseID, bicepID, forearmID):
-#     portInitialization('COM4', [1,2,3,4])
+if __name__ == "__main__":
+    #portInitialization(portname, baudrate, baseID, bicepID, forearmID):
+    portInitialization('COM4', [1,2,3,4])
 
-#     # portInitialization('/dev/ttyUSB0', 1000000, 1, 3)
+    # portInitialization('/dev/ttyUSB0', 1000000, 1, 3)
 
-#     dxlSetVelo([30,30,30,30],  [1,2,3,4])
+    dxlSetVelo([30,30,30,30],  [1,2,3,4])
 
-#     #rest position, [275, 0, 205],  claw parallel, 
-#     motorRunWithInputs([225, 179, 145, 179],[1,2,3,4])
+    #rest position, [275, 0, 205],  claw parallel, 
+    motorRunWithInputs([225, 179, 145, 179],[1,2,3,4])
 
-#     # motorRunWithInputs([270], [4])
-#     # time.sleep(2)
+    # motorRunWithInputs([270], [4])
+    # time.sleep(2)
 
-#     motorRunWithInputs([225], [3])
-#     time.sleep(2)
+    motorRunWithInputs([225], [3])
+    time.sleep(2)
 
     
-#     motorRunWithInputs([90], [2])
-#     time.sleep(2)
+    motorRunWithInputs([90], [2])
+    time.sleep(2)
 
-#     motorRunWithInputs([270], [2])
-#     time.sleep(2)
+    motorRunWithInputs([270], [2])
+    time.sleep(2)

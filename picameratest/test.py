@@ -101,6 +101,7 @@ import cv2
 import matplotlib.pyplot as plt     
 from cv2 import aruco
 import numpy as np
+
 aruco_dict = cv2.aruco.getPredefinedDictionary(cv2.aruco.DICT_5X5_100)  # Choose your desired dictionary
 detector_parameters = cv2.aruco.DetectorParameters()
 refine_parameters = cv2.aruco.RefineParameters()
@@ -140,8 +141,6 @@ while cap.isOpened():
             if ids == id_needed:
                 corner1_x = aruco_box[0][0] # Top left x value
                 corner2_x = aruco_box[2][0] # Bottom right x value
-
-                distance1 = corner1_x - 
 
 
             intersection_area = cv2.contourArea(cv2.convexHull(np.concatenate([middle_box, aruco_box])))
