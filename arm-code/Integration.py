@@ -1,6 +1,6 @@
 #!/usr/bin/env python3
 import math
-import motorctrl_v2 as motor
+import motorctrl_v1 as motor
 import Movement_Calc_v2 as calculation
 import numpy as np
 import time
