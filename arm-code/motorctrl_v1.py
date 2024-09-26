@@ -398,15 +398,49 @@ def simPosCheck(dxl_goal_inputs, dxlIDs):
     
     return present_position, movement_status
 
-
+# Check movement of motors
+def checkMovement(ids):
+    motorStatus = [0] * len(ids)
+    finished = [1] * len(ids)
+    firstPosition = 0
+    secondPosition = 0
+    while True:
+        for id in ids:
+            firstPosition = ReadMotorData(id, ADDR_PRESENT_POSITION)
+            time.sleep(0.1)
+            secondPosition = ReadMotorData(id, ADDR_PRESENT_POSITION)
+            if abs(firstPosition - secondPosition) < 5:
+                motorStatus[id] = 1
+        if motorStatus == finished:
+            print("finished")
+            break
 
 if __name__ == "__main__":
-    #portInitialization(portname, baudrate, baseID, bicepID, forearmID):
-    portInitialization('COM4', [1,2,3,4])
+    # Define motor ID
+    BASE_ID = 1
+    BICEP_ID = 2
+    FOREARM_ID = 3
+    WRIST_ID = 4
+    CLAW_ID = 0
+
+    # Define port number for Raspberry Pi
+    PORT_NUM = '/dev/ttyUSB0'  # for rpi
+
+    # Define move mode and address for present position
+    MOVEARM_MODE = 1
+    ADDR_PRESENT_POSITION = 132
+
+    # List of all motor IDs
+    ALL_IDs = [BASE_ID, BICEP_ID, FOREARM_ID, WRIST_ID, CLAW_ID]
+    MOVE_IDs = [BASE_ID, BICEP_ID, FOREARM_ID, WRIST_ID, CLAW_ID]
+
+    # Initialize motor port
+    portInitialization(PORT_NUM, ALL_IDs)
+    # ctrl.portInitialization(PORT_NUM, ALL_IDs)
 
     # portInitialization('/dev/ttyUSB0', 1000000, 1, 3)
-
-    dxlSetVelo([30,30,30,30],  [1,2,3,4])
+    checkMovement(ALL_IDs)
+    dxlSetVelo([30,30,30,30,30],  ALL_IDs)
 
     #rest position, [275, 0, 205],  claw parallel, 
     motorRunWithInputs([225, 179, 145, 179],[1,2,3,4])
