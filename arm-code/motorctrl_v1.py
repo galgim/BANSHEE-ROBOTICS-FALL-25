@@ -50,6 +50,23 @@ TORQUE_ENABLE = 1
 #Baurate is the rate of information transfer via serial ports. Linux is 57600 and Windows is 1000000
 #Dynamixel motor IDs can be found by using the Dynamixel Wizard.
 #There is no output from this function
+MY_DXL = 'X_SERIES'       # X330 (5.0 V recommended), X430, X540, 2X430
+# MY_DXL = 'MX_SERIES'    # MX series with 2.0 firmware update.
+# MY_DXL = 'PRO_SERIES'   # H54, H42, M54, M42, L54, L42
+# MY_DXL = 'PRO_A_SERIES' # PRO series with (A) firmware update.
+# MY_DXL = 'P_SERIES'     # PH54, PH42, PM54
+# MY_DXL = 'XL320'        # [WARNING] Operating Voltage : 7.4V
+
+
+# Control table address
+if MY_DXL == 'X_SERIES' or MY_DXL == 'MX_SERIES':
+    ADDR_TORQUE_ENABLE          = 64
+    ADDR_GOAL_POSITION          = 116
+    ADDR_PRESENT_POSITION       = 132
+    DXL_MINIMUM_POSITION_VALUE  = 0         # Refer to the Minimum Position Limit of product eManual
+    DXL_MAXIMUM_POSITION_VALUE  = 4095      # Refer to the Maximum Position Limit of product eManual
+    BAUDRATE                    = 57600
+dxl_goal_position = [DXL_MINIMUM_POSITION_VALUE, DXL_MAXIMUM_POSITION_VALUE] 
 def portInitialization(portname, dxlIDs):
 
     global DEVICENAME
@@ -92,7 +109,6 @@ def portInitialization(portname, dxlIDs):
         #           "has been successfully connected")
     print("-------------------------------------")
     
-
 def dxlPresPos(dxlIDs: list[int])->list[int]:
     idNum = len(dxlIDs)
     dxl_present_position = [0] * idNum
@@ -417,44 +433,81 @@ def checkMovement(ids):
             break
 
 if __name__ == "__main__":
-    # Define motor ID
-    BASE_ID = 1
-    BICEP_ID = 2
-    FOREARM_ID = 3
-    WRIST_ID = 4
-    CLAW_ID = 0
+    while 1:
+        print("Press any key to continue! (or press ESC to quit!)")
+        if getch() == chr(0x1b):
+            break
 
-    # Define port number for Raspberry Pi
-    PORT_NUM = '/dev/ttyUSB0'  # for rpi
+        # Write goal position
+        if (MY_DXL == 'XL320'): # XL320 uses 2 byte Position Data, Check the size of data in your DYNAMIXEL's control table
+            dxl_comm_result, dxl_error = packetHandler.write2ByteTxRx(portHandler, DXL_ID, ADDR_GOAL_POSITION, dxl_goal_position[index])
+        else:
+            dxl_comm_result, dxl_error = packetHandler.write4ByteTxRx(portHandler, DXL_ID, ADDR_GOAL_POSITION, dxl_goal_position[index])
+        if dxl_comm_result != COMM_SUCCESS:
+            print("%s" % packetHandler.getTxRxResult(dxl_comm_result))
+        elif dxl_error != 0:
+            print("%s" % packetHandler.getRxPacketError(dxl_error))
 
-    # Define move mode and address for present position
-    MOVEARM_MODE = 1
-    ADDR_PRESENT_POSITION = 132
+        while 1:
+            # Read present position
+            if (MY_DXL == 'XL320'): # XL320 uses 2 byte Position Data, Check the size of data in your DYNAMIXEL's control table
+                dxl_present_position, dxl_comm_result, dxl_error = packetHandler.read2ByteTxRx(portHandler, DXL_ID, ADDR_PRESENT_POSITION)
+            else:
+                dxl_present_position, dxl_comm_result, dxl_error = packetHandler.read4ByteTxRx(portHandler, DXL_ID, ADDR_PRESENT_POSITION)
+            if dxl_comm_result != COMM_SUCCESS:
+                print("%s" % packetHandler.getTxRxResult(dxl_comm_result))
+            elif dxl_error != 0:
+                print("%s" % packetHandler.getRxPacketError(dxl_error))
 
-    # List of all motor IDs
-    ALL_IDs = [BASE_ID, BICEP_ID, FOREARM_ID, WRIST_ID, CLAW_ID]
-    MOVE_IDs = [BASE_ID, BICEP_ID, FOREARM_ID, WRIST_ID, CLAW_ID]
+            print("[ID:%03d] GoalPos:%03d  PresPos:%03d" % (DXL_ID, dxl_goal_position[index], dxl_present_position))
 
-    # Initialize motor port
-    portInitialization(PORT_NUM, ALL_IDs)
-    # ctrl.portInitialization(PORT_NUM, ALL_IDs)
+            if not abs(dxl_goal_position[index] - dxl_present_position) > DXL_MOVING_STATUS_THRESHOLD:
+                break
 
-    # portInitialization('/dev/ttyUSB0', 1000000, 1, 3)
-    checkMovement(ALL_IDs)
-    dxlSetVelo([30,30,30,30,30],  ALL_IDs)
+        # Change goal position
+        if index == 0:
+            index = 1
+        else:
+            index = 0
 
-    #rest position, [275, 0, 205],  claw parallel, 
-    motorRunWithInputs([225, 179, 145, 179],[1,2,3,4])
+    # # Define motor ID
+    # BASE_ID = 1
+    # BICEP_ID = 2
+    # FOREARM_ID = 3
+    # WRIST_ID = 4
+    # CLAW_ID = 0
 
-    # motorRunWithInputs([270], [4])
+    # # Define port number for Raspberry Pi
+    # PORT_NUM = '/dev/ttyUSB0'  # for rpi
+
+    # # Define move mode and address for present position
+    # MOVEARM_MODE = 1
+    # ADDR_PRESENT_POSITION = 132
+
+    # # List of all motor IDs
+    # ALL_IDs = [BASE_ID, BICEP_ID, FOREARM_ID, WRIST_ID, CLAW_ID]
+    # MOVE_IDs = [BASE_ID, BICEP_ID, FOREARM_ID, WRIST_ID, CLAW_ID]
+
+    # # Initialize motor port
+    # portInitialization(PORT_NUM, ALL_IDs)
+    # # ctrl.portInitialization(PORT_NUM, ALL_IDs)
+
+    # # portInitialization('/dev/ttyUSB0', 1000000, 1, 3)
+    # checkMovement(ALL_IDs)
+    # dxlSetVelo([30,30,30,30,30],  ALL_IDs)
+
+    # #rest position, [275, 0, 205],  claw parallel, 
+    # motorRunWithInputs([225, 179, 145, 179],[1,2,3,4])
+
+    # # motorRunWithInputs([270], [4])
+    # # time.sleep(2)
+
+    # motorRunWithInputs([225], [3])
     # time.sleep(2)
 
-    motorRunWithInputs([225], [3])
-    time.sleep(2)
-
     
-    motorRunWithInputs([90], [2])
-    time.sleep(2)
+    # motorRunWithInputs([90], [2])
+    # time.sleep(2)
 
-    motorRunWithInputs([270], [2])
-    time.sleep(2)
+    # motorRunWithInputs([270], [2])
+    # time.sleep(2)
