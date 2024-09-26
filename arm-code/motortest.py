@@ -26,6 +26,7 @@ MY_DXL = 'X_SERIES'  # X330 (5.0 V recommended), X430, X540, 2X430
 # Control table address
 if MY_DXL == 'X_SERIES' or MY_DXL == 'MX_SERIES':
     ADDR_TORQUE_ENABLE = 64
+    ADDR_PROFILE_VELOCITY = 112 #Address of the velocity of the motors
     ADDR_GOAL_POSITION = 116
     ADDR_PRESENT_POSITION = 132
     DXL_MINIMUM_POSITION_VALUE = 0  # Refer to the Minimum Position Limit of product eManual
@@ -53,6 +54,62 @@ portHandler = PortHandler(DEVICENAME)
 
 # Initialize PacketHandler instance
 packetHandler = PacketHandler(PROTOCOL_VERSION)
+def ReadMotorData(motorID, data_address):
+    data_value, dxl_comm_result, dxl_error = packetHandler.read4ByteTxRx(
+        portHandler, motorID, data_address)
+    # if dxl_comm_result != COMM_SUCCESS:
+    #     print("%s" % packetHandler.getTxRxResult(dxl_comm_result))
+    # elif dxl_error != 0:
+    #     print("%s" % packetHandler.getRxPacketError(dxl_error))
+    return data_value
+def WriteMotorData(motorID, data_address, data_inputs):
+    dxl_comm_result, dxl_error = packetHandler.write4ByteTxRx(
+    portHandler, motorID, data_address, data_inputs)
+def dxlPresPos(dxlIDs: list[int])->list[int]:
+    idNum = len(dxlIDs)
+    dxl_present_position = [0] * idNum
+    print("DXL IDs being read: ", dxlIDs)
+    for id in range(idNum): #Reads the current position of the motor
+        dxl_present_position[id] = ReadMotorData(dxlIDs[id], ADDR_PRESENT_POSITION)
+    print("Present positions are: ", dxl_present_position)
+    return (dxl_present_position)
+
+def dxlPresAngle(dxlIDs):
+    idNum = len(dxlIDs)
+    dxl_present_position = [0] * idNum
+    dxl_present_angle = [0] * idNum
+
+    print("DXL IDs being read: ", dxlIDs)
+    for id in range(idNum): #Reads the current position of the motor
+        dxl_present_position[id] = ReadMotorData(dxlIDs[id], ADDR_PRESENT_POSITION)
+    print("Present positions are: ", dxl_present_position)
+
+    for id in range(idNum): #Converts the position into angles
+        dxl_present_angle[id] = _map(dxl_present_position[id], 0, 4095, 0, 360)
+    print("Present angles are: ", dxl_present_angle)
+    print("-------------------------------------")
+    return (dxl_present_angle)
+
+
+def dxlSetVelo(vel_array, dxlIDs):
+    if (len(vel_array) == len(dxlIDs)):
+        idNum = len(dxlIDs)
+        for id in range(idNum):
+                    WriteMotorData(dxlIDs[id], ADDR_PROFILE_VELOCITY, vel_array[id])
+    else:
+        print("ERROR: Number of velocity inputs not matching with number of DXL ID inputs!")
+    print("-------------------------------------")
+    dxlGetVelo(dxlIDs)
+def dxlGetVelo(dxlIDs):
+    idNum = len(dxlIDs)
+    dxl_present_velocity = [0] * idNum
+
+    print("DXL IDs being read: ", dxlIDs)
+    for id in range(idNum):
+        dxl_present_velocity[id] = ReadMotorData(dxlIDs[id], ADDR_PROFILE_VELOCITY)
+    print("Velocities are ", dxl_present_velocity)
+    print("-------------------------------------")
+    return (dxl_present_velocity)
 
 # Open port
 if portHandler.openPort():
@@ -86,7 +143,7 @@ while 1:
     print("Press any key to continue! (or press ESC to quit!)")
     if getch() == chr(0x1b):
         break
-
+    dxlSetVelo({30,30,30,30},{1,2,3,4})
     # Write goal position for each motor
     for DXL_ID in DXL_IDs:
         dxl_comm_result, dxl_error = packetHandler.write4ByteTxRx(portHandler, DXL_ID, ADDR_GOAL_POSITION, dxl_goal_position[index])
