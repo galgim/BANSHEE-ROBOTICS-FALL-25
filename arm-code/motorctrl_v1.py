@@ -1,6 +1,7 @@
 #ALL IMPORTS
 from dynamixel_sdk import *  # Uses Dynamixel SDK library
 import os
+import time
 
 if os.name == 'nt':
     import msvcrt
@@ -402,7 +403,7 @@ def simPosCheck(dxl_goal_inputs, dxlIDs):
 
 if __name__ == "__main__":
     #portInitialization(portname, baudrate, baseID, bicepID, forearmID):
-    portInitialization('COM4', [1,2,3,4])
+    portInitialization('/dev/ttyUSB0', [1,2,3,4])
 
     # portInitialization('/dev/ttyUSB0', 1000000, 1, 3)
 
