@@ -143,7 +143,7 @@ while 1:
     print("Press any key to continue! (or press ESC to quit!)")
     if getch() == chr(0x1b):
         break
-    dxlSetVelo({30,30,30,30},{1,2,3,4})
+    dxlSetVelo([30,30,30,30],[1,2,3,4])
     # Write goal position for each motor
     for DXL_ID in DXL_IDs:
         dxl_comm_result, dxl_error = packetHandler.write4ByteTxRx(portHandler, DXL_ID, ADDR_GOAL_POSITION, dxl_goal_position[index])
