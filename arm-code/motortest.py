@@ -36,7 +36,7 @@ if MY_DXL == 'X_SERIES' or MY_DXL == 'MX_SERIES':
 PROTOCOL_VERSION = 2.0
 
 # Factory default IDs of the DYNAMIXEL motors
-DXL_IDs = [1, 2, 3]  # Add as many motor IDs as required
+DXL_IDs = [1, 2, 3,4]  # Add as many motor IDs as required
 
 # Use the actual port assigned to the U2D2
 DEVICENAME = '/dev/ttyUSB0'
