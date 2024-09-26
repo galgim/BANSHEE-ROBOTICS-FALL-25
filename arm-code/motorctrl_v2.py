@@ -484,7 +484,27 @@ def simPosCheck(dxl_goal_inputs, dxlIDs):
     
     return present_position, movement_status
 def main():
-    
-    return 0
+    # Define motor ID
+    BASE_ID = 1
+    BICEP_ID = 2
+    FOREARM_ID = 3
+    WRIST_ID = 4
+    CLAW_ID = 0
+
+    # Define port number for Raspberry Pi
+    PORT_NUM = '/dev/ttyUSB0'  # for rpi
+
+    # Define move mode and address for present position
+    MOVEARM_MODE = 1
+    ADDR_PRESENT_POSITION = 132
+
+    # List of all motor IDs
+    ALL_IDs = [BASE_ID, BICEP_ID, FOREARM_ID, WRIST_ID, CLAW_ID]
+    MOVE_IDs = [BASE_ID, BICEP_ID, FOREARM_ID, WRIST_ID, CLAW_ID]
+
+    # Initialize motor port
+    portInitialization(PORT_NUM, ALL_IDs)
+    # ctrl.portInitialization(PORT_NUM, ALL_IDs)
+
 if __name__ == "__main__":
     main()
