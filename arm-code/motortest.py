@@ -29,7 +29,7 @@ if MY_DXL == 'X_SERIES' or MY_DXL == 'MX_SERIES':
     ADDR_GOAL_POSITION = 116
     ADDR_PRESENT_POSITION = 132
     DXL_MINIMUM_POSITION_VALUE = 0  # Refer to the Minimum Position Limit of product eManual
-    DXL_MAXIMUM_POSITION_VALUE = 4095  # Refer to the Maximum Position Limit of product eManual
+    DXL_MAXIMUM_POSITION_VALUE = 180  # Refer to the Maximum Position Limit of product eManual
     BAUDRATE = 57600
 
 # DYNAMIXEL Protocol Version (1.0 / 2.0)
