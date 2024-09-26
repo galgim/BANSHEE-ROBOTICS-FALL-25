@@ -4,16 +4,12 @@ import os
 
 if os.name == 'nt':
     import msvcrt
-
     def getch():
         return msvcrt.getch().decode()
 else:
-    import sys
-    import tty
-    import termios
+    import sys, tty, termios
     fd = sys.stdin.fileno()
     old_settings = termios.tcgetattr(fd)
-
     def getch():
         try:
             tty.setraw(sys.stdin.fileno())
@@ -25,7 +21,7 @@ else:
 
 #********* DYNAMIXEL Model definition *********   
 PROTOCOL_VERSION = 2 #Dynamixel SDK has two operating modes: Protocol 1 or 2. This code uses 2
-BAUDRATE = 1000000
+BAUDRATE = 57600
 
     #List of all the addresses from the Control Table that is used for operation
 ADDR_PRESENT_POSITION = 132 #Address of the positions of the motors

@@ -1,6 +1,7 @@
 #ALL IMPORTS
 from dynamixel_sdk import *  # Uses Dynamixel SDK library
 import os
+import time
 
 if os.name == 'nt':
     import msvcrt
@@ -25,7 +26,7 @@ else:
 
 #********* DYNAMIXEL Model definition *********   
 PROTOCOL_VERSION = 2 #Dynamixel SDK has two operating modes: Protocol 1 or 2. This code uses 2
-BAUDRATE = 1000000
+BAUDRATE = 57600
 
     #List of all the addresses from the Control Table that is used for operation
 ADDR_PRESENT_POSITION = 132 #Address of the positions of the motors
