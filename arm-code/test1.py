@@ -124,18 +124,18 @@ def main():
     initialize_port()
     enable_torque()
 
-    # Define target angles for each motor
-    target_angles = [90, 180, 270, 360]  # Example: move motors to these angles
-    
-    print("Moving motors to target angles...")
-    move_to_angles(target_angles)
-
     while True:
+        print("Moving motors to target angles...")
+        move_to_angles(target_angles)
+        get_current_angles()
+        time.sleep(1)
+        target_angles=[180,90,270,350]
+        print("Moving motors to target angles...")
+        move_to_angles(target_angles)
+        get_current_angles()
         print("Press any key to check motor positions (ESC to quit)...")
         if getch() == chr(0x1b):  # ESC to quit
             break
-        # Get current motor angles
-        get_current_angles()
 
     # Disable torque and close port before exiting
     disable_torque()
