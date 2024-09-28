@@ -125,6 +125,7 @@ def main():
     enable_torque()
 
     while True:
+        target_angles=[90,200,100,200]
         print("Moving motors to target angles...")
         move_to_angles(target_angles)
         get_current_angles()
