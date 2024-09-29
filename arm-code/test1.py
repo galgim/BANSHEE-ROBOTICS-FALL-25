@@ -134,7 +134,6 @@ def main():
         print("Moving motors to target angles...")
         move_to_angles(target_angles)
         get_current_angles()
-        print("Press any key to check motor positions (ESC to quit)...")
         if getch() == chr(0x1b):  # ESC to quit
             break
 
