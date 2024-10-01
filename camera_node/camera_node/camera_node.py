@@ -60,38 +60,33 @@ class CameraNode(Node):
                         corner1_x = aruco_box[0][0] # Top left x value
                         corner2_x = aruco_box[2][0] # Bottom right x value
                         middle_x = (corner1_x + corner2_x) / 2
+                        distance = abs(middle_x - int(width / 2))
 
-                        print(int((width / 2) + 2))
-                        print(int((width / 2) - 2))
-                        print(middle_x)
+                        cv2.putText(frame, f"distance: {distance}", (10, 30),
+                         cv2.FONT_HERSHEY_SIMPLEX,1, (255, 255, 255), 2, cv2.LINE_AA)
 
-                    # intersection_area = cv2.contourArea(cv2.convexHull(np.concatenate([middle_box, aruco_box])))
-                    # union_area = box_size**2 + cv2.contourArea(cv2.convexHull(aruco_box)) - intersection_area
-                    # if union_area == 0:
-                    #     union_area = 0.01
-                    # overlap_ratio = intersection_area / union_area
-                    # print(overlap_ratio)
+                    intersection_area = cv2.contourArea(cv2.convexHull(np.concatenate([middle_box, aruco_box])))
+                    union_area = box_size**2 + cv2.contourArea(cv2.convexHull(aruco_box)) - intersection_area
+                    if union_area == 0:
+                        union_area = 0.01
+                    overlap_ratio = intersection_area / union_area
 
                     # Display the confidence level between 0 and 100
-                    # if overlap_ratio<=1 and overlap_ratio>0:
-                    #     #if confidence level hits at least 98%
-                    #     if overlap_ratio<=1 and overlap_ratio>=.98:
-                    #         #turn on arm
-                    #         armstart=True
-                    #     # print(armstart)
-                    #     #put text for ratio next to ar marker boxes
-                    #     cv2.putText(frame, f"Overlap Ratio: {overlap_ratio:.2%}",(int(corners[0][:, 0].mean()), int(corners[0][:, 1].mean()) + 10),
-                    #         cv2.FONT_HERSHEY_SIMPLEX, 0.5, (0, 255, 0), 2)     
+                    if overlap_ratio<=1 and overlap_ratio>0:
+                        #if confidence level hits at least 98%
+                        if overlap_ratio<=1 and overlap_ratio>=.98:
+                            #turn on arm
+                            armstart=True
+                        # print(armstart)
+                        #put text for ratio next to ar marker boxes
+                        cv2.putText(frame, f"Overlap Ratio: {overlap_ratio:.2%}",(int(corners[0][:, 0].mean()), int(corners[0][:, 1].mean()) + 10),
+                            cv2.FONT_HERSHEY_SIMPLEX, 0.5, (0, 255, 0), 2)     
 
                 # Draw detected markers after calculating overlap
                 cv2.aruco.drawDetectedMarkers(frame, marker_corners, marker_ids)
 
                 # Draw the center box on the frame
                 cv2.rectangle(frame, (box_x, box_y), (box_x + box_size, box_y + box_size), (0, 255, 0), 2)
-
-            if (middle_x <= int((width / 2) + 2)) and (middle_x >= int((width / 2) - 2)):
-                            self.x_values_equal = 1
-                            break
 
             cv2.imshow("Camera live stream", frame)
 
@@ -104,7 +99,6 @@ class CameraNode(Node):
 def main(args=None):
     rclpy.init(args=args)
     node = CameraNode()
-    rclpy.spin(node)
     rclpy.shutdown()
 
 if __name__ == '__main__':
