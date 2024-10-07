@@ -43,6 +43,52 @@ TORQUE_DISABLE = 0  # Disable torque
 # Initialize global variables for motor IDs and their positions
 DXL_IDs = [1, 2, 3, 4]  # Example motor IDs, you can add more motors here
 
+# -----------------------------------------------------------------------------
+
+def portInitialization(portname, dxlIDs):
+
+    global DEVICENAME
+    DEVICENAME = portname  # All the motors share the same port when connected in series  
+    global portHandler
+    portHandler = PortHandler(DEVICENAME) # Initialize PortHandler instance and PacketHandler instance
+    global packetHandler
+    packetHandler = PacketHandler(PROTOCOL_VERSION)
+
+    if portHandler.openPort(): #Enables communication between computer and motors
+        print("Succeeded to open the port")
+    else:
+        print("Failed to open the port")
+        getch()
+        quit()
+
+    # Set port baudrate
+    if portHandler.setBaudRate(BAUDRATE): #Sets rate of information transfer
+        print("Succeeded to change the baudrate")
+    else:
+        print("Failed to change the baudrate")
+        getch()
+        quit()
+
+
+    global DXL_ID # Set the motor ID for each dynamixel. ID 0,1,2 is base/bicep/forearm motors
+    DXL_ID = dxlIDs
+    global motorNum
+    motorNum = len(DXL_ID)
+
+    for motorID in DXL_ID: # Enable Dynamixel Torque
+        dxl_comm_result, dxl_error = packetHandler.write1ByteTxRx(
+            portHandler, motorID, ADDR_TORQUE_ENABLE, TORQUE_ENABLE)
+    #     if dxl_comm_result != COMM_SUCCESS:
+    #         print("%s" % packetHandler.getTxRxResult(dxl_comm_result))
+    #     elif dxl_error != 0:
+    #         print("%s" % packetHandler.getRxPacketError(dxl_error))
+    #     else:
+    #         print("Dynamixel", motorID,
+    #               "has been successfully connected")
+    # print("-------------------------------------")
+
+# -----------------------------------------------------------------------------------------
+
 # Initialize PortHandler and PacketHandler
 portHandler = PortHandler(DEVICENAME)
 packetHandler = PacketHandler(PROTOCOL_VERSION)
@@ -460,6 +506,28 @@ def close_port():
 
 # Main function
 def main():
+
+    # -------------------------------------------------------------------
+
+    # Define motor ID
+    CLAW_ID = 0
+    BASE_ID = 1
+    BICEP_ID = 2
+    FOREARM_ID = 3
+    WRIST_ID = 4
+
+    # List of all motor IDs
+    ALL_IDs = [BASE_ID, BICEP_ID, FOREARM_ID, WRIST_ID, CLAW_ID]
+    MOVE_IDs = [BASE_ID, BICEP_ID, FOREARM_ID, WRIST_ID, CLAW_ID]
+
+    # Define port number for Raspberry Pi
+    PORT_NUM = '/dev/ttyUSB0'  # for rpi
+
+    # Initialize motor port
+    portInitialization(PORT_NUM, ALL_IDs)
+
+    # -----------------------------------------------------------------------
+
     # Initialize port and enable torque
     initialize_port()
     enable_torque()
@@ -475,7 +543,7 @@ def main():
         move_to_angles(target_angles)
         get_current_angles()
         if getch() == chr(0x1b):  # ESC to quit
-            break
+            break 
 
     # Disable torque and close port before exiting
     disable_torque()
