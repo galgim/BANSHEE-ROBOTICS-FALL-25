@@ -2,11 +2,13 @@ import rclpy
 from rclpy.node import Node
 import cv2
 import numpy as np
+from std_msgs import String
 
 class CameraNode(Node):
     def __init__(self):
         super().__init__("camera_node")
         self.x_values_equal = 0
+        self.publisher_ = self.create_publisher(String, "arucoID", )
         self.cameraRun()
         self.get_logger().info("Camera node initialized and WebSocket task started")
 
@@ -97,6 +99,7 @@ class CameraNode(Node):
 def main(args=None):
     rclpy.init(args=args)
     node = CameraNode()
+
     rclpy.shutdown()
 
 if __name__ == '__main__':

@@ -4,10 +4,11 @@
   <name>camera_node</name>
   <version>0.0.0</version>
   <description>TODO: Package description</description>
-  <maintainer email="tinyjoshua28@gmail.com">ubuntu</maintainer>
+  <maintainer email="joshuacarrasco428@gmail.com">ubuntu</maintainer>
   <license>TODO: License declaration</license>
 
   <depend>rclpy</depend>
+  <depend>std_msgs</depend>
   <depend>websockets</depend>
   <depend>ssl</depend>
   <depend>asyncio</depend>

@@ -6,6 +6,7 @@ import websockets
 import ssl
 import asyncio
 import threading
+from std_msgs import String
 
 class CameraNode(Node):
     def __init__(self):
