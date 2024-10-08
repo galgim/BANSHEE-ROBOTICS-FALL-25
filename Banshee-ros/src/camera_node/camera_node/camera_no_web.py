@@ -43,7 +43,7 @@ class CameraNode(Node):
 
             marker_corners, marker_ids, rejectedImgPoints = detector.detectMarkers(frame)
 
-            id_needed = 2
+            id_needed = 0
 
             middle_x = 0
 
@@ -76,7 +76,7 @@ class CameraNode(Node):
                         if overlap_ratio<=1 and overlap_ratio>=.98:
                             #turn on arm
                             armstart=True
-                        # print(armstart)
+                        print(armstart)
                         #put text for ratio next to ar marker boxes
                         cv2.putText(frame, f"Overlap Ratio: {overlap_ratio:.2%}",(int(corners[0][:, 0].mean()), int(corners[0][:, 1].mean()) + 10),
                             cv2.FONT_HERSHEY_SIMPLEX, 0.5, (0, 255, 0), 2)     
