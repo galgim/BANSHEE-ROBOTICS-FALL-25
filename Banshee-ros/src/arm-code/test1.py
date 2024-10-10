@@ -219,6 +219,93 @@ def write(dxl_goal_inputs, dxlIDs):
     #Clear syncwrite parameter storage
     motor_sync_write.clearParam()
 
+def simPosCheck(dxl_goal_inputs, dxlIDs):
+    idNum = len(dxlIDs)
+    def simReadData():
+        dxl_present_position = [0] * idNum
+        # Syncread present position
+        dxl_comm_result = motor_sync_read.txRxPacket()
+        # if dxl_comm_result != COMM_SUCCESS:
+            # print("%s" % packetHandler.getTxRxResult(dxl_comm_result))
+
+        # Check if groupsyncread data of Dynamixel is available
+        for motorID in dxlIDs:
+            dxl_getdata_result = motor_sync_read.isAvailable(motorID, ADDR_PRESENT_POSITION, LEN_PRESENT_POSITION)
+            # if dxl_getdata_result != True:
+            #     print("[ID:%03d] groupSyncRead getdata failed" % motorID)
+
+        # Get Dynamixel present position value
+        for id in range(idNum):
+            dxl_present_position[id] = motor_sync_read.getData(dxlIDs[id], ADDR_PRESENT_POSITION, LEN_PRESENT_POSITION)
+            #print("ID:%03d, position = %03d" % (dxlIDs[motorIndex], dxl_present_position[motorIndex]))
+
+        return dxl_present_position
+    
+    print("Simultaneous position checking. DXL IDs being read: ", dxlIDs)
+    repetition_status = [0] * idNum
+    movement_status = [0] * idNum
+
+    present_position = simReadData()
+    kicker = 0
+    while (kicker == 0):
+        new_position = simReadData()
+        #Kicker method to prevent the infinite looping of the motor
+        for id in range(idNum):
+            if (abs(new_position[id] - present_position[id]) < 2) and movement_status[id] == 0:
+                repetition_status[id] += 1
+            else:
+                repetition_status[id] = 0
+            if repetition_status[id] >= 10:
+                kicker = 1
+        
+        present_position = new_position
+
+        movement_complete_count = 0
+        for id in range(idNum):
+            if (abs(dxl_goal_inputs[id]- present_position[id]) < DXL_MOVING_STATUS_THRESHOLD):
+                movement_complete_count += 1
+                movement_status[id] = 1
+        
+        if (movement_complete_count == idNum):
+            kicker = 1
+    
+    return present_position, movement_status
+
+def motor_check(motorIndex, goal_position):
+    motor_repetition_status = 0
+    motor_status = 0
+    
+    motor_present_position = ReadMotorData(motorIndex, ADDR_PRESENT_POSITION)
+    while 1:
+        #Read moving status of motor. If status = 1, motor is still moving. If status = 0, motor stopped moving
+        motor_new_position = ReadMotorData(motorIndex, ADDR_PRESENT_POSITION)
+
+        #print("[ID:%03d] PresPos:%03d  NewPos:%03d" %
+              #(DXL_ID[device_index], motor_present_position, motor_new_position))
+
+        if (abs(motor_new_position - motor_present_position) < 2):
+            motor_repetition_status += 1
+        else:
+            motor_repetition_status = 0
+        if motor_repetition_status >= 10:
+            break
+
+        motor_present_position = motor_new_position
+        #print("ID:%03d, motor_repetition_status: %03d" % (DXL_ID[device_index], motor_repetition_status))
+
+
+        #Checks the present position of the motor and compares it to the goal position
+        motor_check_value = abs(goal_position - motor_present_position)
+        if (motor_check_value > DXL_MOVING_STATUS_THRESHOLD):
+            motor_status = 0
+            #print("ID:%03d, motor_check_value:%03d and motor status:%03d " % (DXL_ID[device_index],motor_check_value, motor_status))
+        else:
+            motor_status = 1
+            #print("ID:%03d, motor_check_value:%03d and motor status:%03d " % (DXL_ID[device_index],motor_check_value, motor_status))
+            break   
+
+    return (motor_present_position, motor_status)
+
 #Equation used to convert from angle degrees to positional units and vice versa
 #To go from angles to step positions, order of values is 0, 360, 0, 4095
 #To go from step positions to degrees, order of values is 0, 4095, 0, 360
