@@ -523,7 +523,7 @@ def main():
     enable_torque()
 
     while True:
-        dxlSetVelo([10,10,10,10])
+        dxlSetVelo([10,10,10,10],[1,2,3,4])
         target_angles=[90,200,100,200] # [1,2,3,4]
         print("Moving motors to target angles...")
         move_to_angles(target_angles)
