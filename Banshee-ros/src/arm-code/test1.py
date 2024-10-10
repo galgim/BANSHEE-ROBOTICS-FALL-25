@@ -42,7 +42,7 @@ TORQUE_ENABLE = 1  # Enable torque
 TORQUE_DISABLE = 0  # Disable torque
 
 # Initialize global variables for motor IDs and their positions
-DXL_IDs = [1, 2, 3, 4]  # Example motor IDs, you can add more motors here
+DXL_IDs = [0, 1, 2, 3, 4]  # Example motor IDs, you can add more motors here
 
 # -----------------------------------------------------------------------------
 
@@ -523,12 +523,12 @@ def main():
     enable_torque()
 
     while True:
-        dxlSetVelo([10,10,10,10],[1,2,3,4])
-        simMotorRun([0,10,100,200],[1,2,3,4])
+        dxlSetVelo([10,10,10,10,10],[0,1,2,3,4])
+        simMotorRun([10,0,10,100,200],[0,1,2,3,4])
         print("Moving motors to target angles...")
         time.sleep(1)
-        dxlSetVelo([80,80,80,80],[1,2,3,4])
-        simMotorRun([200,100,10,0],[1,2,3,4])
+        dxlSetVelo([80,80,80,80],[0,1,2,3,4])
+        simMotorRun([0,200,100,10,0],[0,1,2,3,4])
         print("Moving motors to target angles...")
         time.sleep(1)
         if getch() == chr(0x1b):  # ESC to quit
