@@ -524,15 +524,9 @@ def main():
 
     while True:
         dxlSetVelo([10,10,10,10],[1,2,3,4])
-        target_angles=[90,200,100,200] # [1,2,3,4]
+        simMotorRun([90,200,100,200],[1,2,3,4])
         print("Moving motors to target angles...")
-        move_to_angles(target_angles)
-        get_current_angles()
         time.sleep(1)
-        target_angles=[180,90,270,350]
-        print("Moving motors to target angles...")
-        move_to_angles(target_angles)
-        get_current_angles()
         if getch() == chr(0x1b):  # ESC to quit
             break
 
