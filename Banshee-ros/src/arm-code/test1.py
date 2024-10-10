@@ -514,7 +514,7 @@ def close_port():
 
 def startsetup():
     print("set up move")
-    move_to_angles() = [100,100,100,100]
+    move_to_angles() == [100,100,100,100]
     time.sleep(1)
 
 # Main function
