@@ -512,11 +512,6 @@ def simMotorRun(angle_inputs, dxlIDs):
 def close_port():
     portHandler.closePort()
 
-def startsetup():
-    print("set up move")
-    move_to_angles(angle_targets = [100,100,100,100])
-    time.sleep(1)
-
 # Main function
 def main():
 
@@ -528,7 +523,7 @@ def main():
     enable_torque()
 
     while True:
-        startsetup()
+        dxlSetVelo([10,10,10,10])
         target_angles=[90,200,100,200] # [1,2,3,4]
         print("Moving motors to target angles...")
         move_to_angles(target_angles)
