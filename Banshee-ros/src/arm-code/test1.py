@@ -523,8 +523,8 @@ def main():
     enable_torque()
 
     while True:
-        dxlSetVelo([10,10,10,10],[1,2,3,4])
-        simMotorRun([0,10,100,200],[1,2,3,4])
+        dxlSetVelo([80,80,80,80],[1,2,3,4])
+        simMotorRun([0,10,100,1000],[1,2,3,4])
         print("Moving motors to target angles...")
         time.sleep(1)
         dxlSetVelo([80,80,80,80],[1,2,3,4])
