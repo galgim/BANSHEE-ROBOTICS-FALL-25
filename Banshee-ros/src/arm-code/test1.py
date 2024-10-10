@@ -103,7 +103,7 @@ packetHandler = PacketHandler(PROTOCOL_VERSION)
 
 # Helper function to convert angles to Dynamixel units
 def angle_to_position(angle):
-    return int((angle / 360.0) * 4095)
+    return int(angle * (360.0 / 4095))
 
 # Helper function to convert Dynamixel units to angles
 def position_to_angle(position):
@@ -436,11 +436,11 @@ def main():
 
     while True:
         dxlSetVelo([80,80,80,80],[1,2,3,4])
-        simMotorRun([0,10,100,200],[1,2,3,4])
+        simMotorRun([0,10,0,500],[1,2,3,4])
         print("Moving motors to target angles...")
         time.sleep(1)
         dxlSetVelo([80,80,80,80],[1,2,3,4])
-        simMotorRun([200,100,10,0],[1,2,3,4])
+        simMotorRun([0,100,10,0],[1,2,3,4])
         print("Moving motors to target angles...")
         time.sleep(1)
         if getch() == chr(0x1b):  # ESC to quit
