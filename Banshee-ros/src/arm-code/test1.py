@@ -4,6 +4,7 @@
 # Importing necessary libraries
 from dynamixel_sdk import *  # Uses Dynamixel SDK library
 import os
+import time
 
 # System-specific keyboard input management
 if os.name == 'nt':
@@ -400,7 +401,7 @@ def dxlGetVelo(dxlIDs):
 
 def motorRunWithInputs(angle_inputs, dxlIDs):
     idNum = len(dxlIDs)
-    movementStatus = [1] * idNum
+
     #Format is [base, bicep, forearm, wrist, claw]
     if (len(angle_inputs) == idNum):
         dxl_goal_angle = angle_inputs
@@ -504,36 +505,24 @@ def simMotorRun(angle_inputs, dxlIDs):
 def close_port():
     portHandler.closePort()
 
+def startsetup():
+    print("set up move")
+    move_to_angles() = [100,100,100,100]
+    time.sleep(1)
+
 # Main function
 def main():
 
-    # -------------------------------------------------------------------
-
-    # Define motor ID
-    CLAW_ID = 0
-    BASE_ID = 1
-    BICEP_ID = 2
-    FOREARM_ID = 3
-    WRIST_ID = 4
-
-    # List of all motor IDs
-    ALL_IDs = [BASE_ID, BICEP_ID, FOREARM_ID, WRIST_ID, CLAW_ID]
-    MOVE_IDs = [BASE_ID, BICEP_ID, FOREARM_ID, WRIST_ID, CLAW_ID]
-
     # Define port number for Raspberry Pi
     PORT_NUM = '/dev/ttyUSB0'  # for rpi
-
-    # Initialize motor port
-    portInitialization(PORT_NUM, ALL_IDs)
-
-    # -----------------------------------------------------------------------
 
     # Initialize port and enable torque
     initialize_port()
     enable_torque()
 
     while True:
-        target_angles=[90,200,100,200]
+        startsetup()
+        target_angles=[90,200,100,200] # [1,2,3,4]
         print("Moving motors to target angles...")
         move_to_angles(target_angles)
         get_current_angles()
@@ -543,7 +532,7 @@ def main():
         move_to_angles(target_angles)
         get_current_angles()
         if getch() == chr(0x1b):  # ESC to quit
-            break 
+            break
 
     # Disable torque and close port before exiting
     disable_torque()
