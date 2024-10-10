@@ -125,6 +125,26 @@ def initialize_port():
         getch()
         quit()
 
+# Enable torque for all motors
+def enable_torque():
+    for DXL_ID in DXL_IDs:
+        dxl_comm_result, dxl_error = packetHandler.write1ByteTxRx(portHandler, DXL_ID, ADDR_TORQUE_ENABLE, TORQUE_ENABLE)
+        if dxl_comm_result != COMM_SUCCESS:
+            print("%s" % packetHandler.getTxRxResult(dxl_comm_result))
+        elif dxl_error != 0:
+            print("%s" % packetHandler.getRxPacketError(dxl_error))
+        else:
+            print(f"Dynamixel ID:{DXL_ID} torque enabled")
+
+# Disable torque for all motors
+def disable_torque():
+    for DXL_ID in DXL_IDs:
+        dxl_comm_result, dxl_error = packetHandler.write1ByteTxRx(portHandler, DXL_ID, ADDR_TORQUE_ENABLE, TORQUE_DISABLE)
+        if dxl_comm_result != COMM_SUCCESS:
+            print("%s" % packetHandler.getTxRxResult(dxl_comm_result))
+        elif dxl_error != 0:
+            print("%s" % packetHandler.getRxPacketError(dxl_error))
+
 # Function to move motors to specified angles
 def move_to_angles(angle_targets):
     for i, DXL_ID in enumerate(DXL_IDs):
@@ -337,6 +357,32 @@ def WriteMotorData(motorID, data_address, data_inputs):
     # elif dxl_error != 0:
     #     print("%s" % packetHandler.getRxPacketError(dxl_error))
 
+def dxlPresPos(dxlIDs: list[int])->list[int]:
+    idNum = len(dxlIDs)
+    dxl_present_position = [0] * idNum
+    print("DXL IDs being read: ", dxlIDs)
+    for id in range(idNum): #Reads the current position of the motor
+        dxl_present_position[id] = ReadMotorData(dxlIDs[id], ADDR_PRESENT_POSITION)
+    print("Present positions are: ", dxl_present_position)
+    return (dxl_present_position)
+
+def dxlPresAngle(dxlIDs):
+    idNum = len(dxlIDs)
+    dxl_present_position = [0] * idNum
+    dxl_present_angle = [0] * idNum
+
+    print("DXL IDs being read: ", dxlIDs)
+    for id in range(idNum): #Reads the current position of the motor
+        dxl_present_position[id] = ReadMotorData(dxlIDs[id], ADDR_PRESENT_POSITION)
+    print("Present positions are: ", dxl_present_position)
+
+    for id in range(idNum): #Converts the position into angles
+        dxl_present_angle[id] = _map(dxl_present_position[id], 0, 4095, 0, 360)
+    print("Present angles are: ", dxl_present_angle)
+    print("-------------------------------------")
+    return (dxl_present_angle)
+
+
 def dxlSetVelo(vel_array, dxlIDs):
     if (len(vel_array) == len(dxlIDs)):
         idNum = len(dxlIDs)
@@ -358,6 +404,47 @@ def dxlGetVelo(dxlIDs):
     print("Velocities are ", dxl_present_velocity)
     print("-------------------------------------")
     return (dxl_present_velocity)
+
+
+def motorRunWithInputs(angle_inputs, dxlIDs):
+    idNum = len(dxlIDs)
+
+    #Format is [base, bicep, forearm, wrist, claw]
+    if (len(angle_inputs) == idNum):
+        dxl_goal_angle = angle_inputs
+        dxl_goal_inputs = [0] * idNum
+        dxl_end_position = [0] * idNum
+        dxl_end_angle = [0] * idNum
+        movementStatus = [0] * idNum
+
+        print("Motors are rotating. DXL ID: ", dxlIDs)
+        # ------------------Start to execute motor rotation------------------------
+        while 1:
+            #Convert angle inputs into step units for movement
+            for id in range(idNum):
+                dxl_goal_inputs[id] = _map(dxl_goal_angle[id], 0, 360, 0, 4095)
+            print("Goal angles are ", dxl_goal_angle)
+
+            #Write goal position for all motors (base, bicep, forearm, wrist, claw)
+            for id in range(idNum):
+                WriteMotorData(dxlIDs[id], ADDR_GOAL_POSITION, dxl_goal_inputs[id])
+
+                #Read position for each motor and set status of motor
+                dxl_end_position[id], movementStatus[id] = motor_check(dxlIDs[id], dxl_goal_inputs[id]) #Read position for the motor
+                dxl_end_angle[id] = _map(dxl_end_position[id], 0, 4095, 0, 360)
+            #print("Angle for Dynamixel:%03d is %03d" % (DXL_ID[device_index], dxl_end_angle[device_index]))
+
+            for id in range(idNum):
+                print("Angle for Dynamixels %03d after execution is %03d ----------------------------" % (dxlIDs[id], dxl_end_angle[id]))
+            # ------------------------------------------------------------------------------------------------------------------------------------------------------
+
+            #Motor movement completes and motor movement status to be sent out
+            # ------------------------------------------------------------------------------------------------------------------------------------------------------
+            print("-------------------------------------")
+            return movementStatus
+    else:
+        print("ERROR: Number of angle inputs not matching with number of DXL ID inputs")
+
 
 def simMotorRun(angle_inputs, dxlIDs):
     idNum = len(dxlIDs)
@@ -433,10 +520,11 @@ def main():
 
     # Initialize port and enable torque
     initialize_port()
+    enable_torque()
 
     while True:
-        dxlSetVelo([80,80,80,80],[1,2,3,4])
-        simMotorRun([0,10,100,500],[1,2,3,4])
+        dxlSetVelo([10,10,10,10],[1,2,3,4])
+        simMotorRun([0,10,100,200],[1,2,3,4])
         print("Moving motors to target angles...")
         time.sleep(1)
         dxlSetVelo([80,80,80,80],[1,2,3,4])
@@ -447,6 +535,7 @@ def main():
             break
 
     # Disable torque and close port before exiting
+    disable_torque()
     close_port()
 
 if __name__ == "__main__":
