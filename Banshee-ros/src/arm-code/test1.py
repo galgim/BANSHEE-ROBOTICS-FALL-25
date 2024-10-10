@@ -2,8 +2,9 @@
 # -*- coding: utf-8 -*-
 
 # Importing necessary libraries
-from dynamixel_sdk import *  # Uses Dynamixel SDK library
+from dynamixel_sdk import * # Uses Dynamixel SDK library
 import os
+import time
 
 # System-specific keyboard input management
 if os.name == 'nt':
@@ -41,43 +42,65 @@ TORQUE_ENABLE = 1  # Enable torque
 TORQUE_DISABLE = 0  # Disable torque
 
 # Initialize global variables for motor IDs and their positions
-DXL_IDs = [1, 2, 3, 4]  # Example motor IDs, you can add more motors here
+DXL_IDs = [0, 1, 2, 3, 4]  # Example motor IDs, you can add more motors here
+
+# Define motor ID
+BASE_ID = 1
+BICEP_ID = 2
+FOREARM_ID = 3
+WRIST_ID = 4
+CLAW_ID = 0
+
+# Define move mode and address for present position
+MOVEARM_MODE = 1
+ADDR_PRESENT_POSITION = 132
+
+# List of all motor IDs
+ALL_IDs = [BASE_ID, BICEP_ID, FOREARM_ID, WRIST_ID, CLAW_ID]
+MOVE_IDs = [BASE_ID, BICEP_ID, FOREARM_ID, WRIST_ID, CLAW_ID]
 
 # -----------------------------------------------------------------------------
 
-def portInitialization(portname, dxlIDs):
+# Define COMM_SUCCESS if not already defined
+COMM_SUCCESS = 0
+COMM_TX_FAIL = -1001
 
-    global DEVICENAME
-    DEVICENAME = portname  # All the motors share the same port when connected in series  
-    global portHandler
-    portHandler = PortHandler(DEVICENAME) # Initialize PortHandler instance and PacketHandler instance
-    global packetHandler
+def portInitialization(portname, dxlIDs):
+    global portHandler, packetHandler, DXL_ID, motorNum, DEVICENAME
+    
+    DEVICENAME = portname  # Portname should be passed in as an argument
+    DXL_ID = dxlIDs  # List of motor IDs
+    motorNum = len(DXL_ID)
+    
+    # Initialize PortHandler instance and PacketHandler instance
+    portHandler = PortHandler(DEVICENAME)
     packetHandler = PacketHandler(PROTOCOL_VERSION)
 
-    if portHandler.openPort(): #Enables communication between computer and motors
+    # Open port
+    if portHandler.openPort():
         print("Succeeded to open the port")
     else:
         print("Failed to open the port")
-        getch()
+        getch()  # Wait for user input if failed
         quit()
 
     # Set port baudrate
-    if portHandler.setBaudRate(BAUDRATE): #Sets rate of information transfer
+    if portHandler.setBaudRate(BAUDRATE):
         print("Succeeded to change the baudrate")
     else:
         print("Failed to change the baudrate")
-        getch()
+        getch()  # Wait for user input if failed
         quit()
 
-
-    global DXL_ID # Set the motor ID for each dynamixel. ID 0,1,2 is base/bicep/forearm motors
-    DXL_ID = dxlIDs
-    global motorNum
-    motorNum = len(DXL_ID)
-
-    for motorID in DXL_ID: # Enable Dynamixel Torque
-        dxl_comm_result, dxl_error = packetHandler.write1ByteTxRx(
-            portHandler, motorID, ADDR_TORQUE_ENABLE, TORQUE_ENABLE)
+    # Enable Dynamixel Torque for each motor
+    for motorID in DXL_ID:
+        dxl_comm_result, dxl_error = packetHandler.write1ByteTxRx(portHandler, motorID, ADDR_TORQUE_ENABLE, TORQUE_ENABLE)
+        if dxl_comm_result != COMM_SUCCESS:
+            print("%s" % packetHandler.getTxRxResult(dxl_comm_result))  # Handle communication failure
+        elif dxl_error != 0:
+            print("%s" % packetHandler.getRxPacketError(dxl_error))  # Handle errors from the motor
+        else:
+            print(f"Dynamixel ID:{motorID} torque enabled")
     #     if dxl_comm_result != COMM_SUCCESS:
     #         print("%s" % packetHandler.getTxRxResult(dxl_comm_result))
     #     elif dxl_error != 0:
@@ -507,43 +530,24 @@ def close_port():
 # Main function
 def main():
 
-    # -------------------------------------------------------------------
-
-    # Define motor ID
-    CLAW_ID = 0
-    BASE_ID = 1
-    BICEP_ID = 2
-    FOREARM_ID = 3
-    WRIST_ID = 4
-
-    # List of all motor IDs
-    ALL_IDs = [BASE_ID, BICEP_ID, FOREARM_ID, WRIST_ID, CLAW_ID]
-    MOVE_IDs = [BASE_ID, BICEP_ID, FOREARM_ID, WRIST_ID, CLAW_ID]
-
     # Define port number for Raspberry Pi
     PORT_NUM = '/dev/ttyUSB0'  # for rpi
-
-    # Initialize motor port
-    portInitialization(PORT_NUM, ALL_IDs)
-
-    # -----------------------------------------------------------------------
 
     # Initialize port and enable torque
     initialize_port()
     enable_torque()
 
     while True:
-        target_angles=[90,200,100,200]
+        dxlSetVelo([10,40,80,100],[1,2,3,4])
+        simMotorRun([0,10,100,1000],[1,2,3,4])
         print("Moving motors to target angles...")
-        move_to_angles(target_angles)
-        get_current_angles()
         time.sleep(1)
-        target_angles=[180,90,270,350]
+        dxlSetVelo([100,80,40,10],[1,2,3,4])
+        simMotorRun([200,100,10,0],[1,2,3,4])
         print("Moving motors to target angles...")
-        move_to_angles(target_angles)
-        get_current_angles()
+        time.sleep(1)
         if getch() == chr(0x1b):  # ESC to quit
-            break 
+            break
 
     # Disable torque and close port before exiting
     disable_torque()
