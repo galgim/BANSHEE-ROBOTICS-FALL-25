@@ -2,7 +2,7 @@
 # -*- coding: utf-8 -*-
 
 # Importing necessary libraries
-from dynamixel_sdk import *  # Uses Dynamixel SDK library
+from dynamixel_sdk import * # Uses Dynamixel SDK library
 import os
 import time
 
@@ -46,39 +46,46 @@ DXL_IDs = [1, 2, 3, 4]  # Example motor IDs, you can add more motors here
 
 # -----------------------------------------------------------------------------
 
-def portInitialization(portname, dxlIDs):
+# Define COMM_SUCCESS if not already defined
+COMM_SUCCESS = 0
+COMM_TX_FAIL = -1001
 
-    global DEVICENAME
-    DEVICENAME = portname  # All the motors share the same port when connected in series  
-    global portHandler
-    portHandler = PortHandler(DEVICENAME) # Initialize PortHandler instance and PacketHandler instance
-    global packetHandler
+def portInitialization(portname, dxlIDs):
+    global portHandler, packetHandler, DXL_ID, motorNum, DEVICENAME
+    
+    DEVICENAME = portname  # Portname should be passed in as an argument
+    DXL_ID = dxlIDs  # List of motor IDs
+    motorNum = len(DXL_ID)
+    
+    # Initialize PortHandler instance and PacketHandler instance
+    portHandler = PortHandler(DEVICENAME)
     packetHandler = PacketHandler(PROTOCOL_VERSION)
 
-    if portHandler.openPort(): #Enables communication between computer and motors
+    # Open port
+    if portHandler.openPort():
         print("Succeeded to open the port")
     else:
         print("Failed to open the port")
-        getch()
+        getch()  # Wait for user input if failed
         quit()
 
     # Set port baudrate
-    if portHandler.setBaudRate(BAUDRATE): #Sets rate of information transfer
+    if portHandler.setBaudRate(BAUDRATE):
         print("Succeeded to change the baudrate")
     else:
         print("Failed to change the baudrate")
-        getch()
+        getch()  # Wait for user input if failed
         quit()
 
-
-    global DXL_ID # Set the motor ID for each dynamixel. ID 0,1,2 is base/bicep/forearm motors
-    DXL_ID = dxlIDs
-    global motorNum
-    motorNum = len(DXL_ID)
-
-    for motorID in DXL_ID: # Enable Dynamixel Torque
-        dxl_comm_result, dxl_error = packetHandler.write1ByteTxRx(
-            portHandler, motorID, ADDR_TORQUE_ENABLE, TORQUE_ENABLE)
+    # Enable Dynamixel Torque for each motor
+    for motorID in DXL_ID:
+        dxl_comm_result, dxl_error = packetHandler.write1ByteTxRx(portHandler, motorID, ADDR_TORQUE_ENABLE, TORQUE_ENABLE)
+        if dxl_comm_result != COMM_SUCCESS:
+            print("%s" % packetHandler.getTxRxResult(dxl_comm_result))  # Handle communication failure
+        elif dxl_error != 0:
+            print("%s" % packetHandler.getRxPacketError(dxl_error))  # Handle errors from the motor
+        else:
+            print(f"Dynamixel ID:{motorID} torque enabled")
     #     if dxl_comm_result != COMM_SUCCESS:
     #         print("%s" % packetHandler.getTxRxResult(dxl_comm_result))
     #     elif dxl_error != 0:
