@@ -125,26 +125,6 @@ def initialize_port():
         getch()
         quit()
 
-# Enable torque for all motors
-def enable_torque():
-    for DXL_ID in DXL_IDs:
-        dxl_comm_result, dxl_error = packetHandler.write1ByteTxRx(portHandler, DXL_ID, ADDR_TORQUE_ENABLE, TORQUE_ENABLE)
-        if dxl_comm_result != COMM_SUCCESS:
-            print("%s" % packetHandler.getTxRxResult(dxl_comm_result))
-        elif dxl_error != 0:
-            print("%s" % packetHandler.getRxPacketError(dxl_error))
-        else:
-            print(f"Dynamixel ID:{DXL_ID} torque enabled")
-
-# Disable torque for all motors
-def disable_torque():
-    for DXL_ID in DXL_IDs:
-        dxl_comm_result, dxl_error = packetHandler.write1ByteTxRx(portHandler, DXL_ID, ADDR_TORQUE_ENABLE, TORQUE_DISABLE)
-        if dxl_comm_result != COMM_SUCCESS:
-            print("%s" % packetHandler.getTxRxResult(dxl_comm_result))
-        elif dxl_error != 0:
-            print("%s" % packetHandler.getRxPacketError(dxl_error))
-
 # Function to move motors to specified angles
 def move_to_angles(angle_targets):
     for i, DXL_ID in enumerate(DXL_IDs):
@@ -239,93 +219,6 @@ def write(dxl_goal_inputs, dxlIDs):
     #Clear syncwrite parameter storage
     motor_sync_write.clearParam()
 
-def simPosCheck(dxl_goal_inputs, dxlIDs):
-    idNum = len(dxlIDs)
-    def simReadData():
-        dxl_present_position = [0] * idNum
-        # Syncread present position
-        dxl_comm_result = motor_sync_read.txRxPacket()
-        # if dxl_comm_result != COMM_SUCCESS:
-            # print("%s" % packetHandler.getTxRxResult(dxl_comm_result))
-
-        # Check if groupsyncread data of Dynamixel is available
-        for motorID in dxlIDs:
-            dxl_getdata_result = motor_sync_read.isAvailable(motorID, ADDR_PRESENT_POSITION, LEN_PRESENT_POSITION)
-            # if dxl_getdata_result != True:
-            #     print("[ID:%03d] groupSyncRead getdata failed" % motorID)
-
-        # Get Dynamixel present position value
-        for id in range(idNum):
-            dxl_present_position[id] = motor_sync_read.getData(dxlIDs[id], ADDR_PRESENT_POSITION, LEN_PRESENT_POSITION)
-            #print("ID:%03d, position = %03d" % (dxlIDs[motorIndex], dxl_present_position[motorIndex]))
-
-        return dxl_present_position
-    
-    print("Simultaneous position checking. DXL IDs being read: ", dxlIDs)
-    repetition_status = [0] * idNum
-    movement_status = [0] * idNum
-
-    present_position = simReadData()
-    kicker = 0
-    while (kicker == 0):
-        new_position = simReadData()
-        #Kicker method to prevent the infinite looping of the motor
-        for id in range(idNum):
-            if (abs(new_position[id] - present_position[id]) < 2) and movement_status[id] == 0:
-                repetition_status[id] += 1
-            else:
-                repetition_status[id] = 0
-            if repetition_status[id] >= 10:
-                kicker = 1
-        
-        present_position = new_position
-
-        movement_complete_count = 0
-        for id in range(idNum):
-            if (abs(dxl_goal_inputs[id]- present_position[id]) < DXL_MOVING_STATUS_THRESHOLD):
-                movement_complete_count += 1
-                movement_status[id] = 1
-        
-        if (movement_complete_count == idNum):
-            kicker = 1
-    
-    return present_position, movement_status
-
-def motor_check(motorIndex, goal_position):
-    motor_repetition_status = 0
-    motor_status = 0
-    
-    motor_present_position = ReadMotorData(motorIndex, ADDR_PRESENT_POSITION)
-    while 1:
-        #Read moving status of motor. If status = 1, motor is still moving. If status = 0, motor stopped moving
-        motor_new_position = ReadMotorData(motorIndex, ADDR_PRESENT_POSITION)
-
-        #print("[ID:%03d] PresPos:%03d  NewPos:%03d" %
-              #(DXL_ID[device_index], motor_present_position, motor_new_position))
-
-        if (abs(motor_new_position - motor_present_position) < 2):
-            motor_repetition_status += 1
-        else:
-            motor_repetition_status = 0
-        if motor_repetition_status >= 10:
-            break
-
-        motor_present_position = motor_new_position
-        #print("ID:%03d, motor_repetition_status: %03d" % (DXL_ID[device_index], motor_repetition_status))
-
-
-        #Checks the present position of the motor and compares it to the goal position
-        motor_check_value = abs(goal_position - motor_present_position)
-        if (motor_check_value > DXL_MOVING_STATUS_THRESHOLD):
-            motor_status = 0
-            #print("ID:%03d, motor_check_value:%03d and motor status:%03d " % (DXL_ID[device_index],motor_check_value, motor_status))
-        else:
-            motor_status = 1
-            #print("ID:%03d, motor_check_value:%03d and motor status:%03d " % (DXL_ID[device_index],motor_check_value, motor_status))
-            break   
-
-    return (motor_present_position, motor_status)
-
 #Equation used to convert from angle degrees to positional units and vice versa
 #To go from angles to step positions, order of values is 0, 360, 0, 4095
 #To go from step positions to degrees, order of values is 0, 4095, 0, 360
@@ -357,32 +250,6 @@ def WriteMotorData(motorID, data_address, data_inputs):
     # elif dxl_error != 0:
     #     print("%s" % packetHandler.getRxPacketError(dxl_error))
 
-def dxlPresPos(dxlIDs: list[int])->list[int]:
-    idNum = len(dxlIDs)
-    dxl_present_position = [0] * idNum
-    print("DXL IDs being read: ", dxlIDs)
-    for id in range(idNum): #Reads the current position of the motor
-        dxl_present_position[id] = ReadMotorData(dxlIDs[id], ADDR_PRESENT_POSITION)
-    print("Present positions are: ", dxl_present_position)
-    return (dxl_present_position)
-
-def dxlPresAngle(dxlIDs):
-    idNum = len(dxlIDs)
-    dxl_present_position = [0] * idNum
-    dxl_present_angle = [0] * idNum
-
-    print("DXL IDs being read: ", dxlIDs)
-    for id in range(idNum): #Reads the current position of the motor
-        dxl_present_position[id] = ReadMotorData(dxlIDs[id], ADDR_PRESENT_POSITION)
-    print("Present positions are: ", dxl_present_position)
-
-    for id in range(idNum): #Converts the position into angles
-        dxl_present_angle[id] = _map(dxl_present_position[id], 0, 4095, 0, 360)
-    print("Present angles are: ", dxl_present_angle)
-    print("-------------------------------------")
-    return (dxl_present_angle)
-
-
 def dxlSetVelo(vel_array, dxlIDs):
     if (len(vel_array) == len(dxlIDs)):
         idNum = len(dxlIDs)
@@ -404,47 +271,6 @@ def dxlGetVelo(dxlIDs):
     print("Velocities are ", dxl_present_velocity)
     print("-------------------------------------")
     return (dxl_present_velocity)
-
-
-def motorRunWithInputs(angle_inputs, dxlIDs):
-    idNum = len(dxlIDs)
-
-    #Format is [base, bicep, forearm, wrist, claw]
-    if (len(angle_inputs) == idNum):
-        dxl_goal_angle = angle_inputs
-        dxl_goal_inputs = [0] * idNum
-        dxl_end_position = [0] * idNum
-        dxl_end_angle = [0] * idNum
-        movementStatus = [0] * idNum
-
-        print("Motors are rotating. DXL ID: ", dxlIDs)
-        # ------------------Start to execute motor rotation------------------------
-        while 1:
-            #Convert angle inputs into step units for movement
-            for id in range(idNum):
-                dxl_goal_inputs[id] = _map(dxl_goal_angle[id], 0, 360, 0, 4095)
-            print("Goal angles are ", dxl_goal_angle)
-
-            #Write goal position for all motors (base, bicep, forearm, wrist, claw)
-            for id in range(idNum):
-                WriteMotorData(dxlIDs[id], ADDR_GOAL_POSITION, dxl_goal_inputs[id])
-
-                #Read position for each motor and set status of motor
-                dxl_end_position[id], movementStatus[id] = motor_check(dxlIDs[id], dxl_goal_inputs[id]) #Read position for the motor
-                dxl_end_angle[id] = _map(dxl_end_position[id], 0, 4095, 0, 360)
-            #print("Angle for Dynamixel:%03d is %03d" % (DXL_ID[device_index], dxl_end_angle[device_index]))
-
-            for id in range(idNum):
-                print("Angle for Dynamixels %03d after execution is %03d ----------------------------" % (dxlIDs[id], dxl_end_angle[id]))
-            # ------------------------------------------------------------------------------------------------------------------------------------------------------
-
-            #Motor movement completes and motor movement status to be sent out
-            # ------------------------------------------------------------------------------------------------------------------------------------------------------
-            print("-------------------------------------")
-            return movementStatus
-    else:
-        print("ERROR: Number of angle inputs not matching with number of DXL ID inputs")
-
 
 def simMotorRun(angle_inputs, dxlIDs):
     idNum = len(dxlIDs)
@@ -520,7 +346,6 @@ def main():
 
     # Initialize port and enable torque
     initialize_port()
-    enable_torque()
 
     while True:
         dxlSetVelo([10,10,10,10],[1,2,3,4])
@@ -535,7 +360,6 @@ def main():
             break
 
     # Disable torque and close port before exiting
-    disable_torque()
     close_port()
 
 if __name__ == "__main__":
