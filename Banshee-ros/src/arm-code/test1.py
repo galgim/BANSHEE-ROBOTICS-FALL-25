@@ -400,7 +400,7 @@ def dxlGetVelo(dxlIDs):
 
 def motorRunWithInputs(angle_inputs, dxlIDs):
     idNum = len(dxlIDs)
-
+    movementStatus = [1] * idNum
     #Format is [base, bicep, forearm, wrist, claw]
     if (len(angle_inputs) == idNum):
         dxl_goal_angle = angle_inputs
