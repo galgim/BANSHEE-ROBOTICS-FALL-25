@@ -42,7 +42,7 @@ TORQUE_ENABLE = 1  # Enable torque
 TORQUE_DISABLE = 0  # Disable torque
 
 # Initialize global variables for motor IDs and their positions
-DXL_IDs = [0, 1, 2, 3, 4]  # Example motor IDs, you can add more motors here
+DXL_IDs = [1, 2, 3, 4]  # Example motor IDs, you can add more motors here
 
 # -----------------------------------------------------------------------------
 
@@ -513,6 +513,7 @@ def main():
     BICEP_ID = 2
     FOREARM_ID = 3
     WRIST_ID = 4
+    
     CLAW_ID = 0
 
     # Define move mode and address for present position
@@ -520,8 +521,8 @@ def main():
     ADDR_PRESENT_POSITION = 132
 
     # List of all motor IDs
-    ALL_IDs = [BASE_ID, BICEP_ID, FOREARM_ID, WRIST_ID, CLAW_ID]
-    MOVE_IDs = [BASE_ID, BICEP_ID, FOREARM_ID, WRIST_ID, CLAW_ID]
+    ALL_IDs = [BASE_ID, BICEP_ID, FOREARM_ID, WRIST_ID]
+    MOVE_IDs = [BASE_ID, BICEP_ID, FOREARM_ID, WRIST_ID]
     
     # Define port number for Raspberry Pi
     PORT_NUM = '/dev/ttyUSB0'  # for rpi
