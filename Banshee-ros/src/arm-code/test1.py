@@ -118,25 +118,6 @@ def initialize_port():
         getch()
         quit()
 
-# Enable torque for all motors
-def enable_torque():
-    for DXL_ID in DXL_IDs:
-        dxl_comm_result, dxl_error = packetHandler.write1ByteTxRx(portHandler, DXL_ID, ADDR_TORQUE_ENABLE, TORQUE_ENABLE)
-        if dxl_comm_result != COMM_SUCCESS:
-            print("%s" % packetHandler.getTxRxResult(dxl_comm_result))
-        elif dxl_error != 0:
-            print("%s" % packetHandler.getRxPacketError(dxl_error))
-        else:
-            print(f"Dynamixel ID:{DXL_ID} torque enabled")
-
-# Disable torque for all motors
-def disable_torque():
-    for DXL_ID in DXL_IDs:
-        dxl_comm_result, dxl_error = packetHandler.write1ByteTxRx(portHandler, DXL_ID, ADDR_TORQUE_ENABLE, TORQUE_DISABLE)
-        if dxl_comm_result != COMM_SUCCESS:
-            print("%s" % packetHandler.getTxRxResult(dxl_comm_result))
-        elif dxl_error != 0:
-            print("%s" % packetHandler.getRxPacketError(dxl_error))
 
 # Function to move motors to specified angles
 def move_to_angles(angle_targets):
@@ -496,7 +477,7 @@ def main():
 
     # Initialize port and enable torque
     initialize_port()
-    enable_torque()
+    
 
     while True:
         dxlSetVelo([100, 0, 0, 0],[1, 2, 3, 4])
@@ -511,7 +492,7 @@ def main():
             break
 
     # Disable torque and close port before exiting
-    disable_torque()
+    
     close_port()
 
 if __name__ == "__main__":
