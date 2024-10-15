@@ -57,16 +57,21 @@ MY_DXL = 'X_SERIES'       # X330 (5.0 V recommended), X430, X540, 2X430
 # MY_DXL = 'P_SERIES'     # PH54, PH42, PM54
 # MY_DXL = 'XL320'        # [WARNING] Operating Voltage : 7.4V
 
+# Define motor settings and control table addresses for XM series motors
+MY_DXL = 'X_SERIES'
+ADDR_GOAL_POSITION = 116
+ADDR_PRESENT_POSITION = 132
+ADDR_PROFILE_VELOCITY = 112
+DXL_MINIMUM_POSITION_VALUE = 0         # Minimum position (0 degrees)
+LEN_GOAL_POSITION = 4 #Byte Length of goal position
+LEN_PRESENT_POSITION = 4 #Byte length of present positiond
+DXL_MAXIMUM_POSITION_VALUE = 4095      # Maximum position (360 degrees)
+DXL_MOVING_STATUS_THRESHOLD = 10       # Threshold for considering movement as complete
+BAUDRATE = 57600
 
-# Control table address
-if MY_DXL == 'X_SERIES' or MY_DXL == 'MX_SERIES':
-    ADDR_TORQUE_ENABLE          = 64
-    ADDR_GOAL_POSITION          = 116
-    ADDR_PRESENT_POSITION       = 132
-    DXL_MINIMUM_POSITION_VALUE  = 0         # Refer to the Minimum Position Limit of product eManual
-    DXL_MAXIMUM_POSITION_VALUE  = 4095      # Refer to the Maximum Position Limit of product eManual
-    BAUDRATE                    = 57600
-dxl_goal_position = [DXL_MINIMUM_POSITION_VALUE, DXL_MAXIMUM_POSITION_VALUE] 
+PROTOCOL_VERSION = 2.0  # Protocol version for XM series motors
+DEVICENAME = '/dev/ttyUSB0'  # Port device name
+
 def portInitialization(portname, dxlIDs):
 
     global DEVICENAME
@@ -470,44 +475,44 @@ if __name__ == "__main__":
         else:
             index = 0
 
-    # # Define motor ID
-    # BASE_ID = 1
-    # BICEP_ID = 2
-    # FOREARM_ID = 3
-    # WRIST_ID = 4
-    # CLAW_ID = 0
+    # Define motor ID
+    BASE_ID = 1
+    BICEP_ID = 2
+    FOREARM_ID = 3
+    WRIST_ID = 4
+    CLAW_ID = 0
 
-    # # Define port number for Raspberry Pi
-    # PORT_NUM = '/dev/ttyUSB0'  # for rpi
+    # Define port number for Raspberry Pi
+    PORT_NUM = '/dev/ttyUSB0'  # for rpi
 
-    # # Define move mode and address for present position
-    # MOVEARM_MODE = 1
-    # ADDR_PRESENT_POSITION = 132
+    # Define move mode and address for present position
+    MOVEARM_MODE = 1
+    ADDR_PRESENT_POSITION = 132
 
-    # # List of all motor IDs
-    # ALL_IDs = [BASE_ID, BICEP_ID, FOREARM_ID, WRIST_ID, CLAW_ID]
-    # MOVE_IDs = [BASE_ID, BICEP_ID, FOREARM_ID, WRIST_ID, CLAW_ID]
+    # List of all motor IDs
+    ALL_IDs = [BASE_ID, BICEP_ID, FOREARM_ID, WRIST_ID, CLAW_ID]
+    MOVE_IDs = [BASE_ID, BICEP_ID, FOREARM_ID, WRIST_ID, CLAW_ID]
 
-    # # Initialize motor port
-    # portInitialization(PORT_NUM, ALL_IDs)
-    # # ctrl.portInitialization(PORT_NUM, ALL_IDs)
+    # Initialize motor port
+    portInitialization(PORT_NUM, ALL_IDs)
+    # ctrl.portInitialization(PORT_NUM, ALL_IDs)
 
-    # # portInitialization('/dev/ttyUSB0', 1000000, 1, 3)
-    # checkMovement(ALL_IDs)
-    # dxlSetVelo([30,30,30,30,30],  ALL_IDs)
+    # portInitialization('/dev/ttyUSB0', 1000000, 1, 3)
+    checkMovement(ALL_IDs)
+    dxlSetVelo([30,30,30,30,30],  ALL_IDs)
 
-    # #rest position, [275, 0, 205],  claw parallel, 
-    # motorRunWithInputs([225, 179, 145, 179],[1,2,3,4])
+    #rest position, [275, 0, 205],  claw parallel, 
+    motorRunWithInputs([225, 179, 145, 179],[1,2,3,4])
 
-    # # motorRunWithInputs([270], [4])
-    # # time.sleep(2)
-
-    # motorRunWithInputs([225], [3])
+    # motorRunWithInputs([270], [4])
     # time.sleep(2)
+
+    motorRunWithInputs([225], [3])
+    time.sleep(2)
 
     
-    # motorRunWithInputs([90], [2])
-    # time.sleep(2)
+    motorRunWithInputs([90], [2])
+    time.sleep(2)
 
-    # motorRunWithInputs([270], [2])
-    # time.sleep(2)
+    motorRunWithInputs([270], [2])
+    time.sleep(2)
