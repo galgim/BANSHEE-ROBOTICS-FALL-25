@@ -537,8 +537,8 @@ def main():
         simMotorRun([100, 0, 0, 0],[1, 2, 3, 4])
         print("Moving motors to target angles...")
         time.sleep(1)
-        dxlSetVelo([100,80,40,10],[1,2,3,4])
-        simMotorRun([200,100,10,0],[1,2,3,4])
+        dxlSetVelo([200, 0, 0, 0],[1, 2, 3, 4])
+        simMotorRun([200, 0, 0, 0],[1, 2, 3, 4])
         print("Moving motors to target angles...")
         time.sleep(1)
         if getch() == chr(0x1b):  # ESC to quit
