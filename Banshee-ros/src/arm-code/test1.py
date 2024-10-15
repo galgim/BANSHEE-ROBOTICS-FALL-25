@@ -534,11 +534,11 @@ def main():
 
     while True:
         dxlSetVelo([100, 40, 80, 100],[1, 2, 3, 4])
-        simMotorRun([1000, 10, 100, 1000],[1, 2, 3, 4])
+        simMotorRun([100, 10, 100, 1000],[1, 2, 3, 4])
         print("Moving motors to target angles...")
         time.sleep(1)
         dxlSetVelo([100,80,40,10],[1,2,3,4])
-        simMotorRun([2000,100,10,0],[1,2,3,4])
+        simMotorRun([200,100,10,0],[1,2,3,4])
         print("Moving motors to target angles...")
         time.sleep(1)
         if getch() == chr(0x1b):  # ESC to quit
