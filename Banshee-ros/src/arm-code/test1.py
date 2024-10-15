@@ -335,14 +335,16 @@ def dxlSetVelo(vel_array, dxlIDs):
 
 def dxlGetVelo(dxlIDs):
     idNum = len(dxlIDs)
-    dxl_present_velocity = [dxlIDs] * idNum
+    dxl_present_velocity = [0] * idNum  # Initialize with zeros for each motor
 
     print("DXL IDs being read: ", dxlIDs)
     for id in range(idNum):
+        # Assuming ReadMotorData retrieves velocity data from the motor
         dxl_present_velocity[id] = ReadMotorData(dxlIDs[id], ADDR_PROFILE_VELOCITY)
+    
     print("Velocities are ", dxl_present_velocity)
     print("-------------------------------------")
-    return (dxl_present_velocity)
+    return dxl_present_velocity
 
 
 def motorRunWithInputs(angle_inputs, dxlIDs):
