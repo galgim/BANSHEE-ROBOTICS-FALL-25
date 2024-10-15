@@ -284,40 +284,6 @@ def simPosCheck(dxl_goal_inputs, dxlIDs):
     
     return present_position, movement_status
 
-def motor_check(motorIndex, goal_position):
-    motor_repetition_status = 0
-    motor_status = 0
-    
-    motor_present_position = ReadMotorData(motorIndex, ADDR_PRESENT_POSITION)
-    while 1:
-        #Read moving status of motor. If status = 1, motor is still moving. If status = 0, motor stopped moving
-        motor_new_position = ReadMotorData(motorIndex, ADDR_PRESENT_POSITION)
-
-        #print("[ID:%03d] PresPos:%03d  NewPos:%03d" %
-              #(DXL_ID[device_index], motor_present_position, motor_new_position))
-
-        if (abs(motor_new_position - motor_present_position) < 2):
-            motor_repetition_status += 1
-        else:
-            motor_repetition_status = 0
-        if motor_repetition_status >= 10:
-            break
-
-        motor_present_position = motor_new_position
-        #print("ID:%03d, motor_repetition_status: %03d" % (DXL_ID[device_index], motor_repetition_status))
-
-
-        #Checks the present position of the motor and compares it to the goal position
-        motor_check_value = abs(goal_position - motor_present_position)
-        if (motor_check_value > DXL_MOVING_STATUS_THRESHOLD):
-            motor_status = 0
-            #print("ID:%03d, motor_check_value:%03d and motor status:%03d " % (DXL_ID[device_index],motor_check_value, motor_status))
-        else:
-            motor_status = 1
-            #print("ID:%03d, motor_check_value:%03d and motor status:%03d " % (DXL_ID[device_index],motor_check_value, motor_status))
-            break   
-
-    return (motor_present_position, motor_status)
 
 #Equation used to convert from angle degrees to positional units and vice versa
 #To go from angles to step positions, order of values is 0, 360, 0, 4095
@@ -513,7 +479,7 @@ def main():
     BICEP_ID = 2
     FOREARM_ID = 3
     WRIST_ID = 4
-    
+
     CLAW_ID = 0
 
     # Define move mode and address for present position
