@@ -1,0 +1,35 @@
+running egg_info
+creating ../../build/stepper_control/stepper_control.egg-info
+writing ../../build/stepper_control/stepper_control.egg-info/PKG-INFO
+writing dependency_links to ../../build/stepper_control/stepper_control.egg-info/dependency_links.txt
+writing entry points to ../../build/stepper_control/stepper_control.egg-info/entry_points.txt
+writing requirements to ../../build/stepper_control/stepper_control.egg-info/requires.txt
+writing top-level names to ../../build/stepper_control/stepper_control.egg-info/top_level.txt
+writing manifest file '../../build/stepper_control/stepper_control.egg-info/SOURCES.txt'
+reading manifest file '../../build/stepper_control/stepper_control.egg-info/SOURCES.txt'
+writing manifest file '../../build/stepper_control/stepper_control.egg-info/SOURCES.txt'
+running build
+running build_py
+creating /home/ubuntu/BANSHEE-Mechatronics-SPR24/Banshee-ros/build/stepper_control/build
+creating /home/ubuntu/BANSHEE-Mechatronics-SPR24/Banshee-ros/build/stepper_control/build/lib
+creating /home/ubuntu/BANSHEE-Mechatronics-SPR24/Banshee-ros/build/stepper_control/build/lib/stepper_control
+copying stepper_control/__init__.py -> /home/ubuntu/BANSHEE-Mechatronics-SPR24/Banshee-ros/build/stepper_control/build/lib/stepper_control
+copying stepper_control/stepper_node.py -> /home/ubuntu/BANSHEE-Mechatronics-SPR24/Banshee-ros/build/stepper_control/build/lib/stepper_control
+running install
+running install_lib
+creating /home/ubuntu/BANSHEE-Mechatronics-SPR24/Banshee-ros/install/stepper_control/lib/python3.10/site-packages/stepper_control
+copying /home/ubuntu/BANSHEE-Mechatronics-SPR24/Banshee-ros/build/stepper_control/build/lib/stepper_control/__init__.py -> /home/ubuntu/BANSHEE-Mechatronics-SPR24/Banshee-ros/install/stepper_control/lib/python3.10/site-packages/stepper_control
+copying /home/ubuntu/BANSHEE-Mechatronics-SPR24/Banshee-ros/build/stepper_control/build/lib/stepper_control/stepper_node.py -> /home/ubuntu/BANSHEE-Mechatronics-SPR24/Banshee-ros/install/stepper_control/lib/python3.10/site-packages/stepper_control
+byte-compiling /home/ubuntu/BANSHEE-Mechatronics-SPR24/Banshee-ros/install/stepper_control/lib/python3.10/site-packages/stepper_control/__init__.py to __init__.cpython-310.pyc
+byte-compiling /home/ubuntu/BANSHEE-Mechatronics-SPR24/Banshee-ros/install/stepper_control/lib/python3.10/site-packages/stepper_control/stepper_node.py to stepper_node.cpython-310.pyc
+running install_data
+creating /home/ubuntu/BANSHEE-Mechatronics-SPR24/Banshee-ros/install/stepper_control/share/ament_index
+creating /home/ubuntu/BANSHEE-Mechatronics-SPR24/Banshee-ros/install/stepper_control/share/ament_index/resource_index
+creating /home/ubuntu/BANSHEE-Mechatronics-SPR24/Banshee-ros/install/stepper_control/share/ament_index/resource_index/packages
+copying resource/stepper_control -> /home/ubuntu/BANSHEE-Mechatronics-SPR24/Banshee-ros/install/stepper_control/share/ament_index/resource_index/packages
+copying package.xml -> /home/ubuntu/BANSHEE-Mechatronics-SPR24/Banshee-ros/install/stepper_control/share/stepper_control
+running install_egg_info
+Copying ../../build/stepper_control/stepper_control.egg-info to /home/ubuntu/BANSHEE-Mechatronics-SPR24/Banshee-ros/install/stepper_control/lib/python3.10/site-packages/stepper_control-0.0.0-py3.10.egg-info
+running install_scripts
+Installing stepper_node script to /home/ubuntu/BANSHEE-Mechatronics-SPR24/Banshee-ros/install/stepper_control/lib/stepper_control
+writing list of installed files to '/home/ubuntu/BANSHEE-Mechatronics-SPR24/Banshee-ros/build/stepper_control/install.log'
