@@ -25,7 +25,6 @@ else:
 
 # Define motor settings and control table addresses for XM series motors
 MY_DXL = 'X_SERIES'
-ADDR_TORQUE_ENABLE = 64
 ADDR_GOAL_POSITION = 116
 ADDR_PRESENT_POSITION = 132
 ADDR_PROFILE_VELOCITY = 112
@@ -38,8 +37,6 @@ BAUDRATE = 57600
 
 PROTOCOL_VERSION = 2.0  # Protocol version for XM series motors
 DEVICENAME = '/dev/ttyUSB0'  # Port device name
-TORQUE_ENABLE = 1  # Enable torque
-TORQUE_DISABLE = 0  # Disable torque
 
 # Initialize global variables for motor IDs and their positions
 DXL_IDs = [1, 2, 3, 4]  # Example motor IDs, you can add more motors here
