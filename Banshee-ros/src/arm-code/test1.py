@@ -58,7 +58,6 @@ ADDR_PRESENT_POSITION = 132
 
 # List of all motor IDs
 ALL_IDs = [BASE_ID, BICEP_ID, FOREARM_ID, WRIST_ID]
-MOVE_IDs = [BASE_ID, BICEP_ID, FOREARM_ID, WRIST_ID, CLAW_ID]
 
 # -----------------------------------------------------------------------------
 
@@ -338,17 +337,14 @@ def dxlPresAngle(dxlIDs):
     return (dxl_present_angle)
 
 
-def dxlSetVelo(vel_array, dxlIDs):
-    if len(vel_array) == len(dxlIDs):
-        idNum = len(dxlIDs)
-        for id in range(idNum):
-            # Write velocity for each motor
-            WriteMotorData(dxlIDs[id], ADDR_PROFILE_VELOCITY, vel_array[id])
-    else:
-        print("ERROR: Number of velocity inputs not matching with number of DXL ID inputs!")
-    print("-------------------------------------")
-    # Call to read back the velocities
-    dxlGetVelo(dxlIDs)
+def dxlSetVelo(target_velocities, dxlIDs):
+    for i, motorID in enumerate(dxlIDs):
+        velocity_value = target_velocities[i]  # Assign separate velocity for each motor
+        dxl_comm_result, dxl_error = packetHandler.write4ByteTxRx(portHandler, motorID, ADDR_PROFILE_VELOCITY, velocity_value)
+        if dxl_comm_result != COMM_SUCCESS:
+            print(f"Error setting velocity for motor {motorID}: {packetHandler.getTxRxResult(dxl_comm_result)}")
+
+
 
 def dxlGetVelo(dxlIDs):
     idNum = len(dxlIDs)
@@ -406,32 +402,62 @@ def motorRunWithInputs(angle_inputs, dxlIDs):
 
 def simMotorRun(angle_inputs, dxlIDs):
     idNum = len(dxlIDs)
-    movementStatus = [1] * idNum  # Initialize movement status array
-    if len(angle_inputs) == idNum:
-        # Goal angles for each motor
+    movementStatus = [1] * idNum#Format is [base, bicep, forearm, wrist, claw]
+    if (len(angle_inputs) == idNum):
         dxl_goal_angle = angle_inputs
-        dxl_goal_inputs = [0] * idNum  # Initialize array for mapped values
+        dxl_goal_inputs = [0] * idNum
+        dxl_end_position = [0] * idNum
+        dxl_end_angle = [0] * idNum
+        movementStatus = [0] * idNum
 
         print("Motors are simultaneously rotating. DXL ID: ", dxlIDs)
-        
-        # Convert goal angles to step units and write to motors
-        for id in range(idNum):
-            dxl_goal_inputs[id] = _map(dxl_goal_angle[id], 0, 360, 0, 4095)  # Convert to step units
-            print(f"Setting motor {dxlIDs[id]} to goal angle {dxl_goal_angle[id]} (step unit {dxl_goal_inputs[id]})")
-        
-        # Send movement command to each motor
-        simWrite(dxl_goal_inputs, dxlIDs)
+        # ------------------Start to execute motor rotation------------------------
+        while 1:
+            #Convert angle inputs into step units for movement
+            for id in range(idNum):
+                dxl_goal_inputs[id] = _map(dxl_goal_angle[id], 0, 360, 0, 4095)
+            print("Goal angles are ", dxl_goal_angle)
 
-        # Check motor positions
-        dxl_end_position, movementStatus = simPosCheck(dxl_goal_inputs, dxlIDs)
-        
-        # Convert back to angles for feedback
-        dxl_end_angle = [_map(pos, 0, 4095, 0, 360) for pos in dxl_end_position]
-        for id in range(idNum):
-            print(f"Motor {dxlIDs[id]} reached angle {dxl_end_angle[id]}")
-        
-        print("-------------------------------------")
+            simWrite(dxl_goal_inputs, dxlIDs)
+            dxl_end_position, movementStatus = simPosCheck(dxl_goal_inputs, dxlIDs)
+            for id in range(idNum):
+                dxl_end_angle[id] = _map(dxl_end_position[id], 0, 4095, 0, 360)
+            
+            # for id in range(idNum):
+            #     print("Angle for Dynamixel:%03d is %03d ----------------------------" % (dxlIDs[id], dxl_end_angle[id]))
+            # ------------------------------------------------------------------------------------------------------------------------------------------------------
+            print("-------------------------------------")
+            return movementStatus
+    else:
+        print("ERROR: Number of angle inputs not matching with number of DXL ID inputs")
         return movementStatus
+
+    #Format is [base, bicep, forearm, wrist, claw]
+    if (len(angle_inputs) == idNum):
+        dxl_goal_angle = angle_inputs
+        dxl_goal_inputs = [0] * idNum
+        dxl_end_position = [0] * idNum
+        dxl_end_angle = [0] * idNum
+        movementStatus = [0] * idNum
+
+        print("Motors are simultaneously rotating. DXL ID: ", dxlIDs)
+        # ------------------Start to execute motor rotation------------------------
+        while 1:
+            #Convert angle inputs into step units for movement
+            for id in range(idNum):
+                dxl_goal_inputs[id] = _map(dxl_goal_angle[id], 0, 360, 0, 4095)
+            print("Goal angles are ", dxl_goal_angle)
+
+            simWrite(dxl_goal_inputs, dxlIDs)
+            dxl_end_position, movementStatus = simPosCheck(dxl_goal_inputs, dxlIDs)
+            for id in range(idNum):
+                dxl_end_angle[id] = _map(dxl_end_position[id], 0, 4095, 0, 360)
+            
+            # for id in range(idNum):
+            #     print("Angle for Dynamixel:%03d is %03d ----------------------------" % (dxlIDs[id], dxl_end_angle[id]))
+            # ------------------------------------------------------------------------------------------------------------------------------------------------------
+            print("-------------------------------------")
+            return movementStatus
     else:
         print("ERROR: Number of angle inputs not matching with number of DXL ID inputs")
         return movementStatus
