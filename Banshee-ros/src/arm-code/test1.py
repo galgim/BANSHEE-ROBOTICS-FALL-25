@@ -335,7 +335,7 @@ def dxlSetVelo(vel_array, dxlIDs):
 
 def dxlGetVelo(dxlIDs):
     idNum = len(dxlIDs)
-    dxl_present_velocity = [0] * idNum
+    dxl_present_velocity = [dxlIDs] * idNum
 
     print("DXL IDs being read: ", dxlIDs)
     for id in range(idNum):
