@@ -95,18 +95,6 @@ def portInitialization(portname, dxlIDs):
     global motorNum
     motorNum = len(DXL_ID)
 
-    for motorID in DXL_ID: # Enable Dynamixel Torque
-        dxl_comm_result, dxl_error = packetHandler.write1ByteTxRx(
-            portHandler, motorID, ADDR_TORQUE_ENABLE, TORQUE_ENABLE)
-    #     if dxl_comm_result != COMM_SUCCESS:
-    #         print("%s" % packetHandler.getTxRxResult(dxl_comm_result))
-    #     elif dxl_error != 0:
-    #         print("%s" % packetHandler.getRxPacketError(dxl_error))
-    #     else:
-    #         print("Dynamixel", motorID,
-    #               "has been successfully connected")
-    # print("-------------------------------------")
-
 # -----------------------------------------------------------------------------------------
 
 # Helper function to convert angles to Dynamixel units
@@ -337,13 +325,15 @@ def dxlPresAngle(dxlIDs):
     return (dxl_present_angle)
 
 
-def dxlSetVelo(target_velocities, dxlIDs):
-    for i, motorID in enumerate(dxlIDs):
-        velocity_value = target_velocities[i]  # Assign separate velocity for each motor
-        dxl_comm_result, dxl_error = packetHandler.write4ByteTxRx(portHandler, motorID, ADDR_PROFILE_VELOCITY, velocity_value)
-        if dxl_comm_result != COMM_SUCCESS:
-            print(f"Error setting velocity for motor {motorID}: {packetHandler.getTxRxResult(dxl_comm_result)}")
-
+def dxlSetVelo(vel_array, dxlIDs):
+    if (len(vel_array) == len(dxlIDs)):
+        idNum = len(dxlIDs)
+        for id in range(idNum):
+                    WriteMotorData(dxlIDs[id], ADDR_PROFILE_VELOCITY, vel_array[id])
+    else:
+        print("ERROR: Number of velocity inputs not matching with number of DXL ID inputs!")
+    print("-------------------------------------")
+    dxlGetVelo(dxlIDs)
 
 
 def dxlGetVelo(dxlIDs):
