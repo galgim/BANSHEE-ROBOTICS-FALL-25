@@ -463,6 +463,7 @@ def simPosCheck(dxl_goal_inputs, DXL_IDs):
             kicker = 1
     
     return present_position, movement_status
+
 # Main function
 def main():
     # Define motor ID
