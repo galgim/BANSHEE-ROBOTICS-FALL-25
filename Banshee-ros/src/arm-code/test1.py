@@ -488,10 +488,6 @@ def main():
 
     portInitialization(PORT_NUM,ALL_IDs)
 
-    # Initialize port and enable torque
-    initialize_port()
-    
-
     while True:
         dxlSetVelo([0, 100, 0, 0, 0],[0, 1, 2, 3, 4])
         simMotorRun([0, 100, 0, 0, 0],[0, 1, 2, 3, 4])
@@ -505,8 +501,6 @@ def main():
             break
 
     # Disable torque and close port before exiting
-    
-    close_port()
 
 if __name__ == "__main__":
     main()
