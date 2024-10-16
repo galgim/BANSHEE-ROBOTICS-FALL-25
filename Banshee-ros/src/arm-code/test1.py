@@ -38,23 +38,10 @@ BAUDRATE = 57600
 PROTOCOL_VERSION = 2.0  # Protocol version for XM series motors
 DEVICENAME = '/dev/ttyUSB0'  # Port device name
 
-# Initialize global variables for motor IDs and their positions
-DXL_IDs = [1, 2, 3, 4]  # Example motor IDs, you can add more motors here
-
-# Define motor ID
-BASE_ID = 1
-BICEP_ID = 2
-FOREARM_ID = 3
-WRIST_ID = 4
-
-CLAW_ID = 0
-
-# Define move mode and address for present position
-MOVEARM_MODE = 1
-ADDR_PRESENT_POSITION = 132
-
-# List of all motor IDs
-ALL_IDs = [BASE_ID, BICEP_ID, FOREARM_ID, WRIST_ID]
+global DXL_ID # Set the motor ID for each dynamixel. ID 0,1,2 is base/bicep/forearm motors
+DXL_ID = dxlIDs
+global motorNum
+motorNum = len(DXL_ID)
 
 # -----------------------------------------------------------------------------
 
@@ -85,13 +72,6 @@ def portInitialization(portname, dxlIDs):
         print("Failed to change the baudrate")
         getch()
         quit()
-
-
-    global DXL_ID # Set the motor ID for each dynamixel. ID 0,1,2 is base/bicep/forearm motors
-    DXL_ID = dxlIDs
-    global motorNum
-    motorNum = len(DXL_ID)
-
 # -----------------------------------------------------------------------------------------
 
 # Helper function to convert angles to Dynamixel units
@@ -119,20 +99,10 @@ def initialize_port():
         quit()
 
 
-# Function to move motors to specified angles
-def move_to_angles(angle_targets):
-    for i, DXL_ID in enumerate(DXL_IDs):
-        goal_position = angle_to_position(angle_targets[i])
-        dxl_comm_result, dxl_error = packetHandler.write4ByteTxRx(portHandler, DXL_ID, ADDR_GOAL_POSITION, goal_position)
-        if dxl_comm_result != COMM_SUCCESS:
-            print("%s" % packetHandler.getTxRxResult(dxl_comm_result))
-        elif dxl_error != 0:
-            print("%s" % packetHandler.getRxPacketError(dxl_error))
-
 # Function to get current motor angles
 def get_current_angles():
     angles = []
-    for DXL_ID in DXL_IDs:
+    for DXL_ID in dxLIDs:
         dxl_present_position, dxl_comm_result, dxl_error = packetHandler.read4ByteTxRx(portHandler, DXL_ID, ADDR_PRESENT_POSITION)
         if dxl_comm_result != COMM_SUCCESS:
             print("%s" % packetHandler.getTxRxResult(dxl_comm_result))
@@ -455,7 +425,24 @@ def close_port():
 
 # Main function
 def main():
-    
+    # Define motor ID
+    BASE_ID = 1
+    BICEP_ID = 2
+    FOREARM_ID = 3
+    WRIST_ID = 4
+    CLAW_ID = 0
+
+    # Define port number for Raspberry Pi
+    PORT_NUM = '/dev/ttyUSB0'  # for rpi
+
+    # Define move mode and address for present position
+    MOVEARM_MODE = 1
+    ADDR_PRESENT_POSITION = 132
+
+    # List of all motor IDs
+    ALL_IDs = [BASE_ID, BICEP_ID, FOREARM_ID, WRIST_ID, CLAW_ID]
+    MOVE_IDs = [BASE_ID, BICEP_ID, FOREARM_ID, WRIST_ID, CLAW_ID]
+
     # Define port number for Raspberry Pi
     PORT_NUM = '/dev/ttyUSB0'  # for rpi
 
@@ -466,12 +453,12 @@ def main():
     
 
     while True:
-        dxlSetVelo([100, 0, 0, 0],[1, 2, 3, 4])
-        simMotorRun([100, 0, 0, 0],[1, 2, 3, 4])
+        dxlSetVelo([0, 100, 0, 0, 0],[0, 1, 2, 3, 4])
+        simMotorRun([0, 100, 0, 0, 0],[0, 1, 2, 3, 4])
         print("Moving motors to target angles...")
         time.sleep(1)
-        dxlSetVelo([200, 0, 0, 0],[1, 2, 3, 4])
-        simMotorRun([200, 0, 0, 0],[1, 2, 3, 4])
+        dxlSetVelo([0, 200, 0, 0, 0],[0, 1, 2, 3, 4])
+        simMotorRun([0, 200, 0, 0, 0],[0, 1, 2, 3, 4])
         print("Moving motors to target angles...")
         time.sleep(1)
         if getch() == chr(0x1b):  # ESC to quit
