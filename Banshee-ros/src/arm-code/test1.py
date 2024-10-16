@@ -43,6 +43,30 @@ DXL_IDs = [0,1,2,3,4]
 global motorNum
 motorNum = len(DXL_IDs)
 
+def portInitialization(portname, dxlIDs):
+
+    global DEVICENAME
+    DEVICENAME = portname  # All the motors share the same port when connected in series  
+    global portHandler
+    portHandler = PortHandler(DEVICENAME) # Initialize PortHandler instance and PacketHandler instance
+    global packetHandler
+    packetHandler = PacketHandler(PROTOCOL_VERSION)
+
+    if portHandler.openPort(): #Enables communication between computer and motors
+        print("Succeeded to open the port")
+    else:
+        print("Failed to open the port")
+        getch()
+        quit()
+
+    # Set port baudrate
+    if portHandler.setBaudRate(BAUDRATE): #Sets rate of information transfer
+        print("Succeeded to change the baudrate")
+    else:
+        print("Failed to change the baudrate")
+        getch()
+        quit()
+
 
 def dxlPresPos(DXL_IDs: list[int])->list[int]:
     idNum = len(DXL_IDs)
