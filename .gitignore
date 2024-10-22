@@ -173,5 +173,4 @@ cython_debug/
 # colcon/CMake output
 **/Banshee-ros/build/
 **/Banshee-ros/install/
-**/Banshee-ros/log/
-**/Banshee-ros/log/lastest_build/
+**/Banshee-ros/log/*
