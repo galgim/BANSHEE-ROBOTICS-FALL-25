@@ -11,6 +11,10 @@ setup.py
 resource/stepper_control
 stepper_control/__init__.py
 stepper_control/stepper_node.py
-test/test_copyright.py
-test/test_flake8.py
-test/test_pep257.py
+stepper_control.egg-info/PKG-INFO
+stepper_control.egg-info/SOURCES.txt
+stepper_control.egg-info/dependency_links.txt
+stepper_control.egg-info/entry_points.txt
+stepper_control.egg-info/requires.txt
+stepper_control.egg-info/top_level.txt
+stepper_control.egg-info/zip-safe

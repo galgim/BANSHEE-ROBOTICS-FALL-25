@@ -10,7 +10,11 @@ setup.py
 ../../build/publisherID/publisherID.egg-info/zip-safe
 publisherID/__init__.py
 publisherID/sendarucoID.py
+publisherID.egg-info/PKG-INFO
+publisherID.egg-info/SOURCES.txt
+publisherID.egg-info/dependency_links.txt
+publisherID.egg-info/entry_points.txt
+publisherID.egg-info/requires.txt
+publisherID.egg-info/top_level.txt
+publisherID.egg-info/zip-safe
 resource/publisherID
-test/test_copyright.py
-test/test_flake8.py
-test/test_pep257.py
