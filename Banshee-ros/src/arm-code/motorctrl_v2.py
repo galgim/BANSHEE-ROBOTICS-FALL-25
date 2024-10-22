@@ -4,12 +4,16 @@ import os
 
 if os.name == 'nt':
     import msvcrt
+
     def getch():
         return msvcrt.getch().decode()
 else:
-    import sys, tty, termios
+    import sys
+    import tty
+    import termios
     fd = sys.stdin.fileno()
     old_settings = termios.tcgetattr(fd)
+
     def getch():
         try:
             tty.setraw(sys.stdin.fileno())
@@ -21,7 +25,7 @@ else:
 
 #********* DYNAMIXEL Model definition *********   
 PROTOCOL_VERSION = 2 #Dynamixel SDK has two operating modes: Protocol 1 or 2. This code uses 2
-BAUDRATE = 57600
+BAUDRATE = 1000000
 
     #List of all the addresses from the Control Table that is used for operation
 ADDR_PRESENT_POSITION = 132 #Address of the positions of the motors
@@ -179,35 +183,7 @@ def motorRunWithInputs(angle_inputs, dxlIDs):
 
 def simMotorRun(angle_inputs, dxlIDs):
     idNum = len(dxlIDs)
-    movementStatus = [1] * idNum#Format is [base, bicep, forearm, wrist, claw]
-    if (len(angle_inputs) == idNum):
-        dxl_goal_angle = angle_inputs
-        dxl_goal_inputs = [0] * idNum
-        dxl_end_position = [0] * idNum
-        dxl_end_angle = [0] * idNum
-        movementStatus = [0] * idNum
-
-        print("Motors are simultaneously rotating. DXL ID: ", dxlIDs)
-        # ------------------Start to execute motor rotation------------------------
-        while 1:
-            #Convert angle inputs into step units for movement
-            for id in range(idNum):
-                dxl_goal_inputs[id] = _map(dxl_goal_angle[id], 0, 360, 0, 4095)
-            print("Goal angles are ", dxl_goal_angle)
-
-            simWrite(dxl_goal_inputs, dxlIDs)
-            dxl_end_position, movementStatus = simPosCheck(dxl_goal_inputs, dxlIDs)
-            for id in range(idNum):
-                dxl_end_angle[id] = _map(dxl_end_position[id], 0, 4095, 0, 360)
-            
-            # for id in range(idNum):
-            #     print("Angle for Dynamixel:%03d is %03d ----------------------------" % (dxlIDs[id], dxl_end_angle[id]))
-            # ------------------------------------------------------------------------------------------------------------------------------------------------------
-            print("-------------------------------------")
-            return movementStatus
-    else:
-        print("ERROR: Number of angle inputs not matching with number of DXL ID inputs")
-        return movementStatus
+    movementStatus = [1] * idNum
 
     #Format is [base, bicep, forearm, wrist, claw]
     if (len(angle_inputs) == idNum):
@@ -483,28 +459,3 @@ def simPosCheck(dxl_goal_inputs, dxlIDs):
             kicker = 1
     
     return present_position, movement_status
-def main():
-    # Define motor ID
-    BASE_ID = 1
-    BICEP_ID = 2
-    FOREARM_ID = 3
-    WRIST_ID = 4
-    CLAW_ID = 0
-
-    # Define port number for Raspberry Pi
-    PORT_NUM = '/dev/ttyUSB0'  # for rpi
-
-    # Define move mode and address for present position
-    MOVEARM_MODE = 1
-    ADDR_PRESENT_POSITION = 132
-
-    # List of all motor IDs
-    ALL_IDs = [BASE_ID, BICEP_ID, FOREARM_ID, WRIST_ID, CLAW_ID]
-    MOVE_IDs = [BASE_ID, BICEP_ID, FOREARM_ID, WRIST_ID, CLAW_ID]
-
-    # Initialize motor port
-    portInitialization(PORT_NUM, ALL_IDs)
-    # ctrl.portInitialization(PORT_NUM, ALL_IDs)
-
-if __name__ == "__main__":
-    main()
