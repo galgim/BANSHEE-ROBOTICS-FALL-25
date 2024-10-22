@@ -1,2 +1,0 @@
-[console_scripts]
-stepper_node = stepper_control.stepper_node:main
