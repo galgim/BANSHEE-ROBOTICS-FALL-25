@@ -174,3 +174,4 @@ cython_debug/
 **/Banshee-ros/build/
 **/Banshee-ros/install/
 **/Banshee-ros/log/
+**/Banshee-ros/log/lastest_build/
