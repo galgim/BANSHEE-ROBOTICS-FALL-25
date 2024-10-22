@@ -108,7 +108,7 @@ TORQUE_DISABLE              = 0     # Value for disabling the torque
 DXL_MOVING_STATUS_THRESHOLD = 20    # Dynamixel moving status threshold
 
 index = 0
-dxl_goal_position = [DXL_MINIMUM_POSITION_VALUE, DXL_MAXIMUM_POSITION_VALUE]         # Goal position
+dxl_goal_position = [DXL_MINIMUM_POSITION_VALUE, DXL_MAXIMUM_POSITION_VALUE/360]         # Goal position
 
 
 # Initialize PortHandler instance
