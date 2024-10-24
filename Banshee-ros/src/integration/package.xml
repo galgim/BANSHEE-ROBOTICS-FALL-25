@@ -1,15 +1,17 @@
 <?xml version="1.0"?>
 <?xml-model href="http://download.ros.org/schema/package_format3.xsd" schematypens="http://www.w3.org/2001/XMLSchema"?>
 <package format="3">
-  <name>stepper_control</name>
+  <name>integration</name>
   <version>0.0.0</version>
   <description>TODO: Package description</description>
-  <maintainer email="rosalesmichael502@gmail.com">ubuntu</maintainer>
+  <maintainer email="mherrera1@cpp.edu">ubuntu</maintainer>
   <license>TODO: License declaration</license>
 
   <depend>rclpy</depend>
-  <depend>sts_msgs</depend>
-  <depend>RPi.GPIO</depend> 
+  <depend>python3-numpy</depend>
+  <depend>opencv-python</depend>
+  <depend>motorctrl_v2</depend> 
+  <depend>Movement_Calc_v2</depend> 
 
   <test_depend>ament_copyright</test_depend>
   <test_depend>ament_flake8</test_depend>
