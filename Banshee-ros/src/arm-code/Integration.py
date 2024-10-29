@@ -141,9 +141,8 @@ def Goodbye():
 def startsetup():
     print("set up move")
     motor.dxlSetVelo([30, 10, 10, 30, 10], [0, 1, 2, 3, 4])
-    motor.simMotorRun([112, 222, 347,144], [0, 2, 3, 4])
+    motor.simMotorRun([112, 222, 330,144], [0, 2, 3, 4])
     time.sleep(1)
-    motor.simMotorRun([54], [4])
     # motor.simMotorRun([112, 270, 218, 264, 270], [0, 1, 2, 3, 4])
     time.sleep(3)
 
