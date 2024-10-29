@@ -55,15 +55,9 @@ def checkMovement(ids):
 def Hello():
     start_time = time.time()
     print("Hello")
-    motor.dxlSetVelo([45, 55, 30, 30, 30], [0, 1, 2, 3, 4])
-    motor.simMotorRun([180, 30, 265], [3, 2, 4])
+    motor.dxlSetVelo([10, 10, 10, 10, 10], [0, 1, 2, 3, 4])
+    motor.simMotorRun([180], [2])
     time.sleep(0.1)
-    motor.simMotorRun([180], [4])
-    time.sleep(0.2)
-    motor.simMotorRun([45], [0])
-    time.sleep(0.9)
-    motor.simMotorRun([112],[0])
-    time.sleep(0.9)
 
 
 def Yes():
