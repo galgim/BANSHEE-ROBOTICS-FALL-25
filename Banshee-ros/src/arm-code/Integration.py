@@ -56,6 +56,8 @@ def Hello():
     start_time = time.time()
     print("Hello")
     motor.dxlSetVelo([10, 10, 10, 10, 10], [0, 1, 2, 3, 4])
+
+    motor.simMotorRun([180], [3])
     motor.simMotorRun([180], [2])
     time.sleep(0.1)
 
@@ -138,8 +140,9 @@ def Goodbye():
 # Setup initial motor positions
 def startsetup():
     print("set up move")
-    motor.dxlSetVelo([30, 30, 30, 30, 30], [0, 1, 2, 3, 4])
-    motor.simMotorRun([112, 270, 218, 264, 270], [0, 1, 2, 3, 4])
+    motor.dxlSetVelo([30, 10, 10, 10, 10], [0, 1, 2, 3, 4])
+    motor.simMotorRun([112, 218, 264, 270], [0, 2, 3, 4])
+    # motor.simMotorRun([112, 270, 218, 264, 270], [0, 1, 2, 3, 4])
     time.sleep(1)
 
 # Dictionary mapping commands to functions
