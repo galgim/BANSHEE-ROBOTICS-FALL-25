@@ -141,12 +141,10 @@ def Goodbye():
 def startsetup():
     print("set up move")
     motor.dxlSetVelo([30, 10, 10, 30, 10], [0, 1, 2, 3, 4])
-    motor.simMotorRun([45], [0])
-    time.sleep(1)
     motor.simMotorRun([112], [0])
     # motor.simMotorRun([112, 132, 257, 144], [0, 2, 3, 4])
     # motor.simMotorRun([112, 270, 218, 264, 270], [0, 1, 2, 3, 4])
-    time.sleep(1)
+    time.sleep(10)
 
 # Dictionary mapping commands to functions
 Command_dict = {
@@ -167,9 +165,9 @@ def main(args=None):
     while True:
         command = input("Enter a command: ")
         if command in Command_dict:
-            startsetup()
+            # startsetup()
             Command_dict[command]()
-            startsetup()
+            # startsetup()
         elif command == "exit":
             print("Exiting program.")
             break
