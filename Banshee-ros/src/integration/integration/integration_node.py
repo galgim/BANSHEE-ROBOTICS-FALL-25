@@ -206,6 +206,7 @@ Command_dict = {
   "goodbye": Goodbye,
   "yes": Yes,
   "fistbump": Fistbump,
+  "setup" : startsetup,
 }
 
 
