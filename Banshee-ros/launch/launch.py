@@ -5,8 +5,8 @@ def generate_launch_description():
     return LaunchDescription([
         Node(
             package='stepper_package',  
-            executable='stepper_motor_node',
-            name='stepper_motor',
+            executable='stepper_node',
+            name='stepper_control',
             parameters=[
                 {"done_signal_topic": "/stepper/done"} 
             ]
