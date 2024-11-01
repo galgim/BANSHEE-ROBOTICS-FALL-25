@@ -4,7 +4,7 @@ from launch_ros.actions import Node
 def generate_launch_description():
     return LaunchDescription([
         Node(
-            package='stepper_package',  
+            package='stepper_control',  
             executable='stepper_node',
             name='stepper_control',
             parameters=[
@@ -12,7 +12,7 @@ def generate_launch_description():
             ]
         ),
         Node(
-            package='integration_package',  
+            package='integration',  
             executable='integration_node',  
             name='integration',
             parameters=[
