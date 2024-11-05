@@ -8,7 +8,6 @@ from time import sleep
 DIR = 10  # Direction Pin (Dir+)
 STEP = 8  # Step Pin (Pul+)
 
-# Direction Constants
 CW = 1   # Clockwise Rotation
 CCW = 0  # Counter Clockwise Rotation
 
@@ -21,24 +20,24 @@ class StepperMotorNode(Node):
         GPIO.setup(STEP, GPIO.OUT)
         GPIO.output(DIR, CW)
         
-        # ROS2 Publisher
+        # ROS2 Publisher and Subscriber
         self.done_publisher = self.create_publisher(Bool, '/stepper/done', 10)
+        self.command_subscriber = self.create_subscription(Bool, '/stepper/command', self.run_motor_cycle, 10)
         
-        self.run_motor_cycle()
-        
-        self.get_logger().info('Stepper Motor Node has been started.')
+        self.get_logger().info('Stepper Motor Node has been started and is ready for commands.')
 
-    def run_motor_cycle(self):
+    def run_motor_cycle(self, msg):
+        if not msg.data:
+            return 
         try:
-
             GPIO.output(DIR, CW)
             
             # Rotate Motor for 2000 steps in CW
             for _ in range(2000):
                 GPIO.output(STEP, GPIO.HIGH)
-                sleep(0.0001)  # Speed control
+                sleep(0.001) 
                 GPIO.output(STEP, GPIO.LOW)
-                sleep(0.0001)  # Speed control
+                sleep(0.001)
             
             # Change direction to CCW
             GPIO.output(DIR, CCW)
@@ -46,9 +45,9 @@ class StepperMotorNode(Node):
             # Rotate Motor for 200 steps in CCW
             for _ in range(200):
                 GPIO.output(STEP, GPIO.HIGH)
-                sleep(0.0001)  # Speed control
+                sleep(0.001)
                 GPIO.output(STEP, GPIO.LOW)
-                sleep(0.0001)  # Speed control
+                sleep(0.001)
             
             # Publish cycle complete signal
             self.get_logger().info('Cycle complete, publishing signal to begin integration')
