@@ -1,6 +1,7 @@
 import rclpy
 from rclpy.node import Node
 from std_msgs.msg import Bool
+from std_msgs.msg import Bool
 import RPi.GPIO as GPIO
 from time import sleep
 
@@ -14,6 +15,7 @@ CCW = 0  # Counter Clockwise Rotation
 class StepperMotorNode(Node):
     def __init__(self):
         super().__init__('stepper_motor_node')
+        
         
         GPIO.setmode(GPIO.BOARD)
         GPIO.setup(DIR, GPIO.OUT)
@@ -67,13 +69,20 @@ def main(args=None):
     
     stepper_motor_node = StepperMotorNode()
     
+    
+    stepper_motor_node = StepperMotorNode()
+    
     try:
+        rclpy.spin(stepper_motor_node)
         rclpy.spin(stepper_motor_node)
     except KeyboardInterrupt:
         stepper_motor_node.cleanup()
+        stepper_motor_node.cleanup()
     finally:
         stepper_motor_node.destroy_node()
+        stepper_motor_node.destroy_node()
         rclpy.shutdown()
+
 
 
 if __name__ == '__main__':
