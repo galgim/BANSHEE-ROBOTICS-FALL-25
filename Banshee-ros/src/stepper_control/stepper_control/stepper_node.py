@@ -103,7 +103,9 @@ def main():
         # Move the motor 200 steps clockwise, a little faster
         for _ in range(200):
             GPIO.output(STEP, GPIO.HIGH)
+            sleep(0.005)  # Faster speed with reduced sleep time
             GPIO.output(STEP, GPIO.LOW)
+            sleep(0.005)
         
         # Change direction to counterclockwise
         GPIO.output(DIR, CCW)
@@ -112,7 +114,9 @@ def main():
         # Move the motor 200 steps counterclockwise, same speed
         for _ in range(200):
             GPIO.output(STEP, GPIO.HIGH)
+            sleep(0.005)  # Same speed as before
             GPIO.output(STEP, GPIO.LOW)
+            sleep(0.005)
         
         print("Motion complete.")
         
