@@ -99,7 +99,7 @@ def main():
         GPIO.output(DIR, CW)
         
         print("Stepper motor moving clockwise...")
-        
+        sleep(5)
         # Move the motor 200 steps clockwise, a little faster
         for _ in range(500):
             GPIO.output(STEP, GPIO.HIGH)
