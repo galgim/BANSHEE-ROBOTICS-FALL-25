@@ -98,14 +98,25 @@ def main():
         # Set direction to clockwise
         GPIO.output(DIR, CW)
         
-        print("Stepper motor moving slowly...")
+        print("Stepper motor moving clockwise...")
         
-        # Move the motor slowly in a loop
+        # Move the motor 200 steps clockwise, a little faster
         for _ in range(200):
             GPIO.output(STEP, GPIO.HIGH)
-            sleep(0.05)  # Increase the sleep time to slow down
+            sleep(0.02)  # Faster speed with reduced sleep time
             GPIO.output(STEP, GPIO.LOW)
-            sleep(0.05)  # Increase the sleep time to slow down
+            sleep(0.02)
+        
+        # Change direction to counterclockwise
+        GPIO.output(DIR, CCW)
+        print("Stepper motor moving counterclockwise...")
+        
+        # Move the motor 200 steps counterclockwise, same speed
+        for _ in range(200):
+            GPIO.output(STEP, GPIO.HIGH)
+            sleep(0.02)  # Same speed as before
+            GPIO.output(STEP, GPIO.LOW)
+            sleep(0.02)
         
         print("Motion complete.")
         
