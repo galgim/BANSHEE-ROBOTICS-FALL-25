@@ -110,7 +110,7 @@ def main():
         # Change direction to counterclockwise
         GPIO.output(DIR, CCW)
         print("Stepper motor moving counterclockwise...")
-        
+        sleep(1)
         # Move the motor 200 steps counterclockwise, same speed
         for _ in range(500):
             GPIO.output(STEP, GPIO.HIGH)
