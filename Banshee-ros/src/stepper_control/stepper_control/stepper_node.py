@@ -15,7 +15,6 @@ class StepperMotorNode(Node):
     def __init__(self):
         super().__init__('stepper_motor_node')
         
-        
         GPIO.setmode(GPIO.BOARD)
         GPIO.setup(DIR, GPIO.OUT)
         GPIO.setup(STEP, GPIO.OUT)
@@ -68,20 +67,13 @@ def main(args=None):
     
     stepper_motor_node = StepperMotorNode()
     
-    
-    stepper_motor_node = StepperMotorNode()
-    
     try:
-        rclpy.spin(stepper_motor_node)
         rclpy.spin(stepper_motor_node)
     except KeyboardInterrupt:
         stepper_motor_node.cleanup()
-        stepper_motor_node.cleanup()
     finally:
         stepper_motor_node.destroy_node()
-        stepper_motor_node.destroy_node()
         rclpy.shutdown()
-
 
 
 if __name__ == '__main__':
