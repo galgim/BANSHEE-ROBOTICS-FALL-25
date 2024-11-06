@@ -1,6 +1,83 @@
-import rclpy
-from rclpy.node import Node
-from std_msgs.msg import Bool
+# import rclpy
+# from rclpy.node import Node
+# from std_msgs.msg import Bool
+# import RPi.GPIO as GPIO
+# from time import sleep
+
+# # Pin Definitions
+# DIR = 10  # Direction Pin (Dir+)
+# STEP = 8  # Step Pin (Pul+)
+
+# CW = 1   # Clockwise Rotation
+# CCW = 0  # Counter Clockwise Rotation
+
+# class StepperMotorNode(Node):
+#     def __init__(self):
+#         super().__init__('stepper_motor_node')
+        
+#         GPIO.setmode(GPIO.BOARD)
+#         GPIO.setup(DIR, GPIO.OUT)
+#         GPIO.setup(STEP, GPIO.OUT)
+#         GPIO.output(DIR, CW)
+        
+#         # ROS2 Publisher and Subscriber
+#         self.done_publisher = self.create_publisher(Bool, '/stepper/done', 10)
+#         self.command_subscriber = self.create_subscription(Bool, '/stepper/command', self.run_motor_cycle, 10)
+        
+#         self.get_logger().info('Stepper Motor Node has been started and is ready for commands.')
+
+#     def run_motor_cycle(self, msg):
+#         if not msg.data:
+#             return 
+#         try:
+#             GPIO.output(DIR, CW)
+            
+#             # Rotate Motor for 2000 steps in CW
+#             for _ in range(200):
+#                 GPIO.output(STEP, GPIO.HIGH)
+#                 sleep(0.01) 
+#                 GPIO.output(STEP, GPIO.LOW)
+#                 sleep(0.01)
+            
+#             # Change direction to CCW
+#             GPIO.output(DIR, CCW)
+            
+#             # Rotate Motor for 200 steps in CCW
+#             for _ in range(200):
+#                 GPIO.output(STEP, GPIO.HIGH)
+#                 sleep(0.01)
+#                 GPIO.output(STEP, GPIO.LOW)
+#                 sleep(0.01)
+            
+#             # Publish cycle complete signal
+#             self.get_logger().info('Cycle complete, publishing signal to begin integration')
+#             cycle_complete_msg = Bool()
+#             cycle_complete_msg.data = True
+#             self.done_publisher.publish(cycle_complete_msg)
+#         except KeyboardInterrupt:
+#             self.cleanup()
+
+#     def cleanup(self):
+#         self.get_logger().info('Cleaning up...')
+#         GPIO.cleanup()
+
+
+# def main(args=None):
+#     rclpy.init(args=args)
+    
+#     stepper_motor_node = StepperMotorNode()
+    
+#     try:
+#         rclpy.spin(stepper_motor_node)
+#     except KeyboardInterrupt:
+#         stepper_motor_node.cleanup()
+#     finally:
+#         stepper_motor_node.destroy_node()
+#         rclpy.shutdown()
+
+
+# if __name__ == '__main__':
+#     main()
 import RPi.GPIO as GPIO
 from time import sleep
 
@@ -11,70 +88,33 @@ STEP = 8  # Step Pin (Pul+)
 CW = 1   # Clockwise Rotation
 CCW = 0  # Counter Clockwise Rotation
 
-class StepperMotorNode(Node):
-    def __init__(self):
-        super().__init__('stepper_motor_node')
-        
-        GPIO.setmode(GPIO.BOARD)
-        GPIO.setup(DIR, GPIO.OUT)
-        GPIO.setup(STEP, GPIO.OUT)
-        GPIO.output(DIR, CW)
-        
-        # ROS2 Publisher and Subscriber
-        self.done_publisher = self.create_publisher(Bool, '/stepper/done', 10)
-        self.command_subscriber = self.create_subscription(Bool, '/stepper/command', self.run_motor_cycle, 10)
-        
-        self.get_logger().info('Stepper Motor Node has been started and is ready for commands.')
-
-    def run_motor_cycle(self, msg):
-        if not msg.data:
-            return 
-        try:
-            GPIO.output(DIR, CW)
-            
-            # Rotate Motor for 2000 steps in CW
-            for _ in range(200):
-                GPIO.output(STEP, GPIO.HIGH)
-                sleep(0.01) 
-                GPIO.output(STEP, GPIO.LOW)
-                sleep(0.01)
-            
-            # Change direction to CCW
-            GPIO.output(DIR, CCW)
-            
-            # Rotate Motor for 200 steps in CCW
-            for _ in range(200):
-                GPIO.output(STEP, GPIO.HIGH)
-                sleep(0.01)
-                GPIO.output(STEP, GPIO.LOW)
-                sleep(0.01)
-            
-            # Publish cycle complete signal
-            self.get_logger().info('Cycle complete, publishing signal to begin integration')
-            cycle_complete_msg = Bool()
-            cycle_complete_msg.data = True
-            self.done_publisher.publish(cycle_complete_msg)
-        except KeyboardInterrupt:
-            self.cleanup()
-
-    def cleanup(self):
-        self.get_logger().info('Cleaning up...')
-        GPIO.cleanup()
-
-
-def main(args=None):
-    rclpy.init(args=args)
-    
-    stepper_motor_node = StepperMotorNode()
+def main():
+    # Setup GPIO
+    GPIO.setmode(GPIO.BOARD)
+    GPIO.setup(DIR, GPIO.OUT)
+    GPIO.setup(STEP, GPIO.OUT)
     
     try:
-        rclpy.spin(stepper_motor_node)
+        # Set direction to clockwise
+        GPIO.output(DIR, CW)
+        
+        print("Stepper motor moving slowly...")
+        
+        # Move the motor slowly in a loop
+        for _ in range(200):
+            GPIO.output(STEP, GPIO.HIGH)
+            sleep(0.05)  # Increase the sleep time to slow down
+            GPIO.output(STEP, GPIO.LOW)
+            sleep(0.05)  # Increase the sleep time to slow down
+        
+        print("Motion complete.")
+        
     except KeyboardInterrupt:
-        stepper_motor_node.cleanup()
+        print("Interrupted!")
+        
     finally:
-        stepper_motor_node.destroy_node()
-        rclpy.shutdown()
-
+        print("Cleaning up...")
+        GPIO.cleanup()
 
 if __name__ == '__main__':
     main()
