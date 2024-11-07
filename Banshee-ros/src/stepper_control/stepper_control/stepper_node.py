@@ -19,8 +19,6 @@ class StepperMotorNode(Node):
         GPIO.setup(DIR, GPIO.OUT)
         GPIO.setup(STEP, GPIO.OUT)
         
-        self.run_motor_cycle()
-        
         # ROS2 Publisher and Subscriber
         self.done_publisher = self.create_publisher(Bool, '/stepper/done', 10)
         # self.command_subscriber = self.create_subscription(Bool, '/stepper/command', self.run_motor_cycle, 10)
