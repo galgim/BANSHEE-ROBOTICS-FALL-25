@@ -215,11 +215,6 @@ class IntegrationNode(Node):
         self.get_logger().info("Received 'done' signal from Stepper Node. Integration Node is now ready to execute commands.")
         self.start_signal_received = True
 
-    def done_callback(self, msg):
-        if msg.data:
-            self.get_logger().info("Received 'done' signal from Stepper Node. Integration Node is now ready to execute commands.")
-            self.start_signal_received = True  
-
     def run(self):
       while rclpy.ok():
         self.get_logger().info("Waiting for 'done' signal from Stepper Node...")
