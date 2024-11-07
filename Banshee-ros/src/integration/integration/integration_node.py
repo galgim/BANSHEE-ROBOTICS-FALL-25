@@ -221,6 +221,7 @@ class IntegrationNode(Node):
         rclpy.spin_once(self)  
         
         if self.start_signal_received:
+            self.get_logger().info("Reached received statement")
             # Proceed to command execution after receiving 'done' signal
             command = input("Enter a command: ")
             if command in Command_dict:
