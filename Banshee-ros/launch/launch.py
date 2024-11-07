@@ -15,8 +15,8 @@ def generate_launch_description():
             package='integration',  
             executable='integration_node',  
             name='integration',
-            parameters=[
-                {"start_signal_topic": "/stepper/done"}  
-            ]
+            # parameters=[
+            #     {"start_signal_topic": "/stepper/done"}  
+            # ]
         ),
     ])
