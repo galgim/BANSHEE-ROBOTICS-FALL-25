@@ -18,17 +18,18 @@ class StepperMotorNode(Node):
         GPIO.setmode(GPIO.BOARD)
         GPIO.setup(DIR, GPIO.OUT)
         GPIO.setup(STEP, GPIO.OUT)
-        GPIO.output(DIR, CW)
+        
+        self.run_motor_cycle()
         
         # ROS2 Publisher and Subscriber
         self.done_publisher = self.create_publisher(Bool, '/stepper/done', 10)
-        self.command_subscriber = self.create_subscription(Bool, '/stepper/command', self.run_motor_cycle, 10)
+        # self.command_subscriber = self.create_subscription(Bool, '/stepper/command', self.run_motor_cycle, 10)
         
+        self.run_motor_cycle()
+
         self.get_logger().info('Stepper Motor Node has been started and is ready for commands.')
 
-    def run_motor_cycle(self, msg):
-        if not msg.data:
-            return 
+    def run_motor_cycle(self):
         try:
             GPIO.output(DIR, CW)
             
