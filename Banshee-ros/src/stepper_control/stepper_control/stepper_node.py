@@ -40,7 +40,7 @@ class StepperMotorNode(Node):
             
             # Change direction to CCW
             GPIO.output(DIR, CCW)
-            sleep(1000)
+            sleep(1)
             # Rotate Motor for 200 steps in CCW
             for _ in range(1000):
                 GPIO.output(STEP, GPIO.HIGH)
