@@ -32,7 +32,7 @@ class StepperMotorNode(Node):
             GPIO.output(DIR, CW)
             
             # Rotate Motor for 2000 steps in CW
-            for _ in range(500):
+            for _ in range(1000):
                 GPIO.output(STEP, GPIO.HIGH)
                 sleep(0.0009) 
                 GPIO.output(STEP, GPIO.LOW)
@@ -42,7 +42,7 @@ class StepperMotorNode(Node):
             GPIO.output(DIR, CCW)
             
             # Rotate Motor for 200 steps in CCW
-            for _ in range(500):
+            for _ in range(1000):
                 GPIO.output(STEP, GPIO.HIGH)
                 sleep(0.0009)
                 GPIO.output(STEP, GPIO.LOW)
