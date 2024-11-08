@@ -34,19 +34,19 @@ class StepperMotorNode(Node):
             # Rotate Motor for 2000 steps in CW
             for _ in range(1000):
                 GPIO.output(STEP, GPIO.HIGH)
-                sleep(0.0009) 
+                sleep(0.0004) 
                 GPIO.output(STEP, GPIO.LOW)
-                sleep(0.0009)
+                sleep(0.0004)
             
             # Change direction to CCW
             GPIO.output(DIR, CCW)
-            
+            sleep(1000)
             # Rotate Motor for 200 steps in CCW
             for _ in range(1000):
                 GPIO.output(STEP, GPIO.HIGH)
-                sleep(0.0009)
+                sleep(0.0004)
                 GPIO.output(STEP, GPIO.LOW)
-                sleep(0.0009)
+                sleep(0.0004)
             
             # Publish cycle complete signal
             self.get_logger().info('Cycle complete, publishing signal to begin integration')
