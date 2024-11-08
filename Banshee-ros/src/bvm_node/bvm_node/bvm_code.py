@@ -1,6 +1,6 @@
 import rclpy
 from rclpy.node import Node
-from std_msgs.msg import String
+from std_msgs.msg import Bool, Int8
 
 class BVMNode(Node):
     def __init__(self):
@@ -13,14 +13,14 @@ class BVMNode(Node):
 
 
         self.arucoPublisher = self.create_publisher(
-            String,
+            Int8,
             'arucoID',
             10
         )
         self.get_logger().info("ArucoID Publisher started")
 
         self.armSubscriber = self.create_subscription(
-            String,
+            Bool,
             'modeComplete',
             self.subscriber_node,
             10
@@ -29,7 +29,7 @@ class BVMNode(Node):
         self.arucoPublisher()
     
     def arucoPublisher(self):
-        msg = String()
+        msg = Int8()
         msg.data = input("Input Aruco Marker: ")
         self.arucoPublisher.publish(msg)
         self.get_logger().info('Sent marker: "%s"' % msg.data)
