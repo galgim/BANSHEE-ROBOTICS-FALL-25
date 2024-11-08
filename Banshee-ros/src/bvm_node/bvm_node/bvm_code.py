@@ -10,6 +10,10 @@ class BVMNode(Node):
         # Mode 1 = Begin battery transfer from drone to BVM
         # Mode 2 = Begin battery transfer from BVM to drone (Will go back to mode 1 if multiple batteries are detected)
         self.mode = 0
+        self.done = 0 # flag for each mode
+        self.modeComplete = False
+        self.batteries = 0
+        self.batteriesDone = 0
 
 
         self.arucoPublisher = self.create_publisher(
@@ -22,20 +26,51 @@ class BVMNode(Node):
         self.armSubscriber = self.create_subscription(
             Bool,
             'modeComplete',
-            self.subscriber_node,
+            self.modeComplete,
             10
         )
 
-        self.arucoPublisher()
+        self.cameraSubscriber= self.create_subscription(
+            Int8,
+            'batteryAmount',
+            self.modeComplete,
+            10
+        )
+
+        self.arucoID()
+
+        # Uncomment line and delete arucoID() once finished with the rest of the system
+        # self.bvmLogic()
     
-    def arucoPublisher(self):
+    def arucoID(self):
         msg = Int8()
-        msg.data = input("Input Aruco Marker: ")
+        msg.data = int(input("Input Aruco Marker: "))
         self.arucoPublisher.publish(msg)
         self.get_logger().info('Sent marker: "%s"' % msg.data)
     
     def modeComplete(self, msg):
-        pass
+        self.mode += 1
+    
+    def bvmLogic(self):
+        if self.batteries > self.batteriesDone:
+            if self.mode == 0:
+                pass
+            elif self.mode == 1 and self.done == 0:
+                # Get BVM aruco ID needed
+                arucoID = Int8() 
+                arucoID.data = None # Figure out how to get it from website
+                self.arucoPublisher.publish(arucoID)
+                self.get_logger().info('Sent marker: "%s"' % arucoID.data)
+                self.done = 1
+            elif self.mode == 2 and self.done == 1:
+                arucoID = Int8()
+                
+                if self.batteriesDone == 0 and self.batteries > 1:
+                    pass # will finish later
+
+                self.arucoPublisher
+
+
 
     
 def main(args=None):

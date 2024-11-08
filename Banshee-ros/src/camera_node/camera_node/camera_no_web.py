@@ -6,20 +6,19 @@ import threading
 import asyncio
 import ssl
 import websockets
-from std_msgs.msg import String
+from std_msgs.msg import Int8
 
 class CameraNode(Node):
     def __init__(self):
         super().__init__("camera_node")
         self.x_values_equal = 0
         self.arucoID = None
-        self.websocket = None  # Initialize websocket attribute
 
         # ROS 2 subscription
         self.subscription = self.create_subscription(
-            String, 
+            Int8, 
             'arucoID', 
-            self.subscriberNode, 
+            self.arucoSubscriber, 
             10
         )
 
@@ -27,19 +26,13 @@ class CameraNode(Node):
         self.camera_thread = threading.Thread(target=self.cameraRun)
         self.camera_thread.start()
 
-        # Start the WebSocket thread
-        self.websocket_thread = threading.Thread(target=self.start_websocket)
-        self.websocket_thread.start()
+        self.get_logger().info("Camera node initialized")
 
-        self.get_logger().info("Camera node initialized and camera & WebSocket threads started")
-
-    def subscriberNode(self, msg):
-        """ROS 2 subscriber callback to update arucoID from messages."""
+    def arucoSubscriber(self, msg):
         self.arucoID = int(msg.data)
         self.get_logger().info(f"Received Aruco ID: {self.arucoID}")
 
     def cameraRun(self):
-        """Run the camera loop in a separate thread."""
         aruco_dict = cv2.aruco.getPredefinedDictionary(cv2.aruco.DICT_5X5_100)
         detector_parameters = cv2.aruco.DetectorParameters()
         refine_parameters = cv2.aruco.RefineParameters()
@@ -99,12 +92,6 @@ class CameraNode(Node):
                 cv2.aruco.drawDetectedMarkers(frame, marker_corners, marker_ids)
             cv2.rectangle(frame, (box_x, box_y), (box_x + box_size, box_y + box_size), (0, 255, 0), 2)
 
-            # Send frame over WebSocket (if connection is active)
-            if self.websocket is not None:
-                _, buffer = cv2.imencode('.jpg', frame)
-                frame_bytes = buffer.tobytes()
-                asyncio.run(self.websocket.send(frame_bytes))  # Send frame bytes to WebSocket
-
             # Display the frame
             cv2.imshow("Camera live stream", frame)
 
@@ -115,33 +102,14 @@ class CameraNode(Node):
         cap.release()
         cv2.destroyAllWindows()
 
-    async def websocket_handler(self):
-        """WebSocket connection handler."""
-        uri = "wss://rgs.bansheeuav.tech/ws"  # Replace with your WebSocket endpoint
-        ssl_context = ssl.SSLContext(ssl.PROTOCOL_TLS)
-
-        async with websockets.connect(uri, ping_interval=30, ping_timeout=20, ssl=ssl_context) as websocket:
-            self.websocket = websocket  # Set websocket attribute once connection is established
-            self.get_logger().info("Connected to WebSocket server for sending frames")
-            while True:
-                await asyncio.sleep(1)  # Keep connection alive
-
-    def start_websocket(self):
-        """Start the asyncio event loop for WebSocket communication."""
-        loop = asyncio.new_event_loop()
-        asyncio.set_event_loop(loop)
-        loop.run_until_complete(self.websocket_handler())
 
 def main(args=None):
     rclpy.init(args=args)
     node = CameraNode()
     try:
         rclpy.spin(node)  # Keep the node alive
-    except KeyboardInterrupt:
-        pass
     finally:
         node.camera_thread.join()  # Wait for the camera thread to finish
-        node.websocket_thread.join()  # Wait for the WebSocket thread to finish
         rclpy.shutdown()
 
 if __name__ == '__main__':

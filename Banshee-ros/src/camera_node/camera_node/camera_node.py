@@ -6,7 +6,7 @@ import asyncio
 import threading
 import ssl
 import websockets
-from std_msgs.msg import String
+from std_msgs.msg import Int8
 
 class CameraNode(Node):
     def __init__(self):
@@ -16,9 +16,9 @@ class CameraNode(Node):
         self.websocket = None
         
         self.subscription = self.create_subscription(
-            String, 
+            Int8, 
             'arucoID', 
-            self.subscriberNode, 
+            self.arucoSubscriber, 
             10
         )
         
@@ -32,7 +32,7 @@ class CameraNode(Node):
 
         self.get_logger().info("Camera node initialized and WebSocket task started")
 
-    def subscriberNode(self, msg):
+    def arucoSubscriber(self, msg):
         self.arucoID = int(msg.data)
         self.get_logger().info(f"Received Aruco ID: {self.arucoID}")
 
