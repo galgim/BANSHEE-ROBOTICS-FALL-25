@@ -241,7 +241,7 @@ class IntegrationNode(Node):
 def main(args=None):
     rclpy.init(args=args)
     node = IntegrationNode()
-    rclpy.spin(node)
+    rclpy.spin(node.run)
     rclpy.shutdown()
 
 
