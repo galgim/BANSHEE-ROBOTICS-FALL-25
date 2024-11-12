@@ -205,7 +205,7 @@ class IntegrationNode(Node):
         
         # Subscriber for 'ConfirmPosition' signal from Camera node
         self.subscription = self.create_subscription(
-            Bool,'CameraConfirm', self.done_callback, 10)
+            Bool,'DestinationConfirm', self.done_callback, 10)
         
         self.armFinished = self.create_publisher(
            Bool, 'ArmDone', 10)
