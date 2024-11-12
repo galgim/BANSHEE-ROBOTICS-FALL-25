@@ -36,7 +36,7 @@ class CameraNode(Node):
         aruco_dict = cv2.aruco.getPredefinedDictionary(cv2.aruco.DICT_5X5_100)
         detector_parameters = cv2.aruco.DetectorParameters()
         refine_parameters = cv2.aruco.RefineParameters()
-        cap = cv2.VideoCapture(0)
+        cap = cv2.VideoCapture('/dev/ttyUSB1')
 
         if not cap.isOpened():
             self.get_logger().error("Cannot open camera")
