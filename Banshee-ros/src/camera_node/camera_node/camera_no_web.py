@@ -74,7 +74,7 @@ class CameraNode(Node):
                         distance = abs(middle_x - int(width / 2))
                                                 
                         if (distance < 1):
-                            self.cameraConfirm.publish(True)
+                            self.destinationTrue.publish(True)
                         else:
                             pass
 
