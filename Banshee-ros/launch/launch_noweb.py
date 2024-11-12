@@ -21,18 +21,18 @@ def generate_launch_description():
         # ),
         Node(
             package='camera_node',  
-            executable='camera_node',  
+            executable='camera_no_web',  
             name='camera',
             parameters=[
                 {"start_signal_topic": "ArucoID"}  
             ]
         ),
-        # Node(
-        #     package='bvm_node',  
-        #     executable='bvm_node',  
-        #     name='bvm',
-        #     parameters=[
-        #         {"done_signal_topic": "ArucoID"}  
-        #     ]
-        # ),
+        Node(
+            package='bvm_node',  
+            executable='bvm_node',  
+            name='bvm',
+            parameters=[
+                {"done_signal_topic": "ArucoID"}  
+            ]
+        ),
     ])

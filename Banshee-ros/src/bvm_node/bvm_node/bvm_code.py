@@ -11,7 +11,7 @@ class BVMNode(Node):
         # Mode 2 = Begin battery transfer from BVM to drone (Will go back to mode 1 if multiple batteries are detected)
         self.mode = 0
         self.done = 0 # flag for each mode
-        self.modeComplete = False
+        self.checkModeComplete = False
         self.batteries = 0
         self.batteriesDone = 0
 
@@ -39,7 +39,7 @@ class BVMNode(Node):
 
         self.arucoID()
 
-        # Uncomment line and delete arucoID() once finished with the rest of the system
+        # Uncomment line and delete arucoID() once finished with GCS node
         # self.bvmLogic()
     
     def arucoID(self):
@@ -49,7 +49,11 @@ class BVMNode(Node):
         self.get_logger().info('Sent marker: "%s"' % msg.data)
     
     def modeComplete(self, msg):
-        self.mode += 1
+        if msg.data:
+            self.mode += 1
+    
+    def batteryAmount(self, msg):
+        self.batteries = msg.data
     
     def bvmLogic(self):
         if self.batteries > self.batteriesDone:
@@ -63,14 +67,11 @@ class BVMNode(Node):
                 self.get_logger().info('Sent marker: "%s"' % arucoID.data)
                 self.done = 1
             elif self.mode == 2 and self.done == 1:
-                arucoID = Int8()
                 
                 if self.batteriesDone == 0 and self.batteries > 1:
-                    pass # will finish later
-
-                self.arucoPublisher
-
-
+                    self.mode = 1
+                else:
+                    self.mode = 0
 
     
 def main(args=None):
