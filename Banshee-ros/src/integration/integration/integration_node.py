@@ -213,6 +213,8 @@ class IntegrationNode(Node):
         # Flag to indicate if the node has received the signal to start
         self.start_signal_received = False
 
+        self.run()
+
     def done_callback(self, msg):
       self.get_logger().info("Callback triggered, message received.")
       if msg.data:
@@ -241,7 +243,7 @@ class IntegrationNode(Node):
 def main(args=None):
     rclpy.init(args=args)
     node = IntegrationNode()
-    rclpy.spin(node.run)
+    rclpy.spin(node)
     rclpy.shutdown()
 
 
