@@ -74,7 +74,10 @@ class CameraNode(Node):
                         distance = abs(middle_x - int(width / 2))
                                                 
                         if (distance < 1):
-                            self.destinationTrue.publish(Bool(True))
+                            msg = Bool()
+                            msg.data = True
+                            self.destinationTrue.publish(msg)
+                            self.arucoID = None
                         else:
                             pass
 
