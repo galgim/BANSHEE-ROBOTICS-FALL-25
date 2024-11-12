@@ -86,7 +86,6 @@ class CameraNode(Node):
                         
                         if (distance < 1):
                             self.cameraConfirm.publish(True)
-                            
                         else:
                             pass
                         
