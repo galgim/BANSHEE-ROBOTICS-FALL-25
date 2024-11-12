@@ -1,6 +1,6 @@
 import rclpy
 from rclpy.node import Node
-from std_msgs.msg import Bool
+from std_msgs.msg import Bool, Int8
 import RPi.GPIO as GPIO
 from time import sleep
 
@@ -22,10 +22,16 @@ class StepperMotorNode(Node):
         # ROS2 Publisher and Subscriber
         self.done_publisher = self.create_publisher(Bool, '/stepper/done', 10)
         # self.command_subscriber = self.create_subscription(Bool, '/stepper/command', self.run_motor_cycle, 10)
+
+        self.distanceSubscriber = self.create_subscription(
+        Int8, 'DestinationFalse', self.distanceSubscriber, 10)
         
         self.run_motor_cycle()
 
         self.get_logger().info('Stepper Motor Node has been started and is ready for commands.')
+    
+    def distanceSubscriber(self, msg):
+        pass
 
     def run_motor_cycle(self):
         try:
@@ -34,9 +40,9 @@ class StepperMotorNode(Node):
             # Max steps in CW
             for _ in range(4050):                   
                 GPIO.output(STEP, GPIO.HIGH)
-                sleep(0.0004) 
+                sleep(0.0007) 
                 GPIO.output(STEP, GPIO.LOW)
-                sleep(0.0004)
+                sleep(0.0007)
             
             # Max steps in CCW
             GPIO.output(DIR, CCW)
@@ -44,9 +50,9 @@ class StepperMotorNode(Node):
             # Rotate Motor for 200 steps in CCW
             for _ in range(4050):
                 GPIO.output(STEP, GPIO.HIGH)
-                sleep(0.0004)
+                sleep(0.0007)
                 GPIO.output(STEP, GPIO.LOW)
-                sleep(0.0004)
+                sleep(0.0007)
             
             # Publish cycle complete signal
             self.get_logger().info('Cycle complete, publishing signal to begin integration')

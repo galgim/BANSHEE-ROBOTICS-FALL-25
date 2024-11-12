@@ -6,7 +6,7 @@ import asyncio
 import threading
 import ssl
 import websockets
-from std_msgs.msg import String
+from std_msgs.msg import Int8, Bool
 
 class CameraNode(Node):
     def __init__(self):
@@ -16,11 +16,17 @@ class CameraNode(Node):
         self.websocket = None
         
         self.subscription = self.create_subscription(
-            String, 
+            Int8, 
             'arucoID', 
-            self.subscriberNode, 
+            self.arucoSubscriber, 
             10
         )
+
+        self.destinationTrue = self.create_publisher(
+        Bool, 'DestinationConfirm', 10)
+
+        self.destinationFalse = self.create_publisher(
+        Int8, 'DestinationFalse', 10)
         
         # Start the camera thread
         self.camera_thread = threading.Thread(target=self.cameraRun)
@@ -32,7 +38,7 @@ class CameraNode(Node):
 
         self.get_logger().info("Camera node initialized and WebSocket task started")
 
-    def subscriberNode(self, msg):
+    def arucoSubscriber(self, msg):
         self.arucoID = int(msg.data)
         self.get_logger().info(f"Received Aruco ID: {self.arucoID}")
 
@@ -77,6 +83,13 @@ class CameraNode(Node):
                         corner2_x = aruco_box[2][0] # Bottom right x value
                         middle_x = (corner1_x + corner2_x) / 2
                         distance = abs(middle_x - int(width / 2))
+                        
+                        if (distance < 1):
+                            self.cameraConfirm.publish(True)
+                        else:
+                            pass
+                        
+                        
 
                         cv2.putText(frame, f"distance: {distance}", (10, 30),
                         cv2.FONT_HERSHEY_SIMPLEX,1, (255, 255, 255), 2, cv2.LINE_AA)

@@ -20,6 +20,7 @@ setup(
     tests_require=['pytest'],
     entry_points={
         'console_scripts': [
+            "bvm_node = bvm_node.bvm_code:main"
         ],
     },
 )

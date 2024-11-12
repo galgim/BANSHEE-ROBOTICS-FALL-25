@@ -200,11 +200,15 @@ Command_dict = {
 class IntegrationNode(Node):
     def __init__(self):
         super().__init__('Integration_Node')
+        self.mode = 0
         self.get_logger().info("Integration Node has started.")
         
-        # Subscriber for 'done' signal from stepper node
+        # Subscriber for 'ConfirmPosition' signal from Camera node
         self.subscription = self.create_subscription(
-            Bool,'/stepper/done', self.done_callback, 10)
+            Bool,'CameraConfirm', self.done_callback, 10)
+        
+        self.armFinished = self.create_publisher(
+           Bool, 'ArmDone', 10)
         
         # Flag to indicate if the node has received the signal to start
         self.start_signal_received = False
@@ -216,19 +220,28 @@ class IntegrationNode(Node):
         self.start_signal_received = True
 
     def run(self):
-      while rclpy.ok():
-        self.get_logger().info("Waiting for 'done' signal from Stepper Node...")
-        rclpy.spin_once(self)  
-        
-        if self.start_signal_received:
-            # Proceed to command execution after receiving 'done' signal
-            Command_dict["hello"]()
+      self.get_logger().info("Waiting for 'done' signal from Stepper Node...")  
+      
+      if self.start_signal_received and self.mode == 0:
+        # Proceed to command execution after receiving 'done' signal
+        Command_dict["grab"]()
+        self.mode = 1
+        self.start_signal_received = False
+        self.armFinished.publish(True)
+
+      elif self.start_signal_received and self.mode == 1:
+        # Proceed to command execution after receiving 'done' signal
+        Command_dict["place"]()
+        self.mode = 0
+        self.start_signal_received = False
+        self.armFinished.publish(True)
+         
 
 
 def main(args=None):
     rclpy.init(args=args)
     node = IntegrationNode()
-    node.run()
+    rclpy.spin(node)
     rclpy.shutdown()
 
 
