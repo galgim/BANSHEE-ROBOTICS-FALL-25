@@ -31,14 +31,14 @@ class StepperMotorNode(Node):
         try:
             GPIO.output(DIR, CW)
             
-            # Rotate Motor for 2000 steps in CW
-            for _ in range(4050):
+            # Max steps in CW
+            for _ in range(4050):                   
                 GPIO.output(STEP, GPIO.HIGH)
                 sleep(0.0004) 
                 GPIO.output(STEP, GPIO.LOW)
                 sleep(0.0004)
             
-            # Change direction to CCW
+            # Max steps in CCW
             GPIO.output(DIR, CCW)
             sleep(1)
             # Rotate Motor for 200 steps in CCW
