@@ -226,7 +226,7 @@ class IntegrationNode(Node):
 
       if self.start_signal_received and self.mode == 0:
         # Proceed to command execution after receiving 'done' signal
-        Command_dict["grab"]()
+        Command_dict["hello"]()
         self.mode = 1
         self.start_signal_received = False
         self.armFinished.publish(True)
