@@ -224,6 +224,8 @@ class IntegrationNode(Node):
     def run(self):
       self.get_logger().info("Waiting for 'done' signal from Stepper Node...")  
       
+      Command_dict["hello"]()
+
       if self.start_signal_received and self.mode == 0:
         # Proceed to command execution after receiving 'done' signal
         Command_dict["grab"]()
