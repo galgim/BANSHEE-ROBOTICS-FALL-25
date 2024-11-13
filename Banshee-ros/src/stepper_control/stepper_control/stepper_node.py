@@ -45,13 +45,13 @@ class StepperMotorNode(Node):
                 sleep(0.0007)
             
             # Max steps in CCW 4050
-            GPIO.output(DIR, CCW)
-            sleep(1)
-            for _ in range(1000):
-                GPIO.output(STEP, GPIO.HIGH)
-                sleep(0.0007)
-                GPIO.output(STEP, GPIO.LOW)
-                sleep(0.0007)
+            # GPIO.output(DIR, CCW)
+            # sleep(1)
+            # for _ in range(1000):
+            #     GPIO.output(STEP, GPIO.HIGH)
+            #     sleep(0.0007)
+            #     GPIO.output(STEP, GPIO.LOW)
+            #     sleep(0.0007)
             
             # Publish cycle complete signal
             self.get_logger().info('Cycle complete, publishing signal to begin integration')
