@@ -88,7 +88,7 @@ def Close():
     start_time = time.time()
     print("close claw")
     motor.dxlSetVelo([30, 30, 10, 10, 10], [0, 1, 2, 3, 4])
-    motor.simMotorRun([112],[0])
+    motor.simMotorRun([110],[0])
 
 # Setup initial motor positions
 def startsetup():
