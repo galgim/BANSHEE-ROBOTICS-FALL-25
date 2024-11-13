@@ -68,9 +68,6 @@ def Grab_high():
 
     time.sleep(0.1)
 
-    startsetup()
-    # return to starting position with battery
-
 def Grab_low():
     start_time = time.time()
     print("Grabbing low")
@@ -86,11 +83,6 @@ def Grab_low():
     # grabbing battery
 
     time.sleep(0.1)
-
-    startsetup()
-    # return to starting position with battery
-
-
 
 # Setup initial motor positions
 def startsetup():
