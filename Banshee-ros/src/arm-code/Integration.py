@@ -72,7 +72,7 @@ def Grab_low():
     start_time = time.time()
     print("Grabbing low")
     motor.dxlSetVelo([30, 30, 10, 10, 10], [0, 1, 2, 3, 4])
-    motor.simMotorRun([45, 132, 300, 54],[0, 2, 3, 4])
+    motor.simMotorRun([44, 132, 330, 54],[0, 2, 3, 4])
     # 2 and 4 is at a 90 degree angle from starting
     # adjust 3 for height
     # probably have to adjust 4 to be parallel with battery
@@ -87,7 +87,7 @@ def Grab_low():
 def Close():
     start_time = time.time()
     print("close claw")
-    motor.dxlSetVelo([30, 30, 10, 10, 10], [0, 1, 2, 3, 4])
+    motor.dxlSetVelo([30, 30, 30, 30, 10], [0, 1, 2, 3, 4])
     motor.simMotorRun([108],[0])
     time.sleep(1)
     # motor.simMotorRun([134],[1])
