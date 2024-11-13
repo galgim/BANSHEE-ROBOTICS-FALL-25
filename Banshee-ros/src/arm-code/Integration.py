@@ -84,6 +84,12 @@ def Grab_low():
 
     time.sleep(0.1)
 
+def Open():
+    start_time = time.time()
+    print("open claw")
+    motor.dxlSetVelo([30, 30, 10, 10, 10], [0, 1, 2, 3, 4])
+    motor.simMotorRun([100],[0])
+
 # Setup initial motor positions
 def startsetup():
     print("setting up")
@@ -95,6 +101,7 @@ def startsetup():
 Command_dict = {
     "grab high": Grab_high,
     "grab low": Grab_low,
+    "open": Open,
     "setup": startsetup,
 }
 
