@@ -88,7 +88,7 @@ def Open():
     start_time = time.time()
     print("open claw")
     motor.dxlSetVelo([30, 30, 10, 10, 10], [0, 1, 2, 3, 4])
-    motor.simMotorRun([100],[0])
+    motor.simMotorRun([45],[0])
 
 # Setup initial motor positions
 def startsetup():
