@@ -56,7 +56,7 @@ def Grab_high():
     start_time = time.time()
     print("Grabbing high")
     motor.dxlSetVelo([30, 30, 10, 10, 10], [0, 1, 2, 3, 4])
-    motor.simMotorRun([44, 170, 330, 54],[0, 2, 3, 4])
+    motor.simMotorRun([44, 170, 330, 110],[0, 2, 3, 4])
     # 2 and 4 is at a 90 degree angle from starting
     # adjust 3 for height
     # probably have to adjust 4 to be parallel with battery
