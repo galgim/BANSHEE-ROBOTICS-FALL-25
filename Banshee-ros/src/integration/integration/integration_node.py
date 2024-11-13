@@ -205,13 +205,15 @@ class IntegrationNode(Node):
         
         # Subscriber for 'ConfirmPosition' signal from Camera node
         self.subscription = self.create_subscription(
-            Bool,'CameraConfirm', self.done_callback, 10)
+            Bool,'DestinationConfirm', self.done_callback, 10)
         
         self.armFinished = self.create_publisher(
            Bool, 'ArmDone', 10)
         
         # Flag to indicate if the node has received the signal to start
         self.start_signal_received = False
+
+        self.run()
 
     def done_callback(self, msg):
       self.get_logger().info("Callback triggered, message received.")
@@ -221,10 +223,10 @@ class IntegrationNode(Node):
 
     def run(self):
       self.get_logger().info("Waiting for 'done' signal from Stepper Node...")  
-      
+
       if self.start_signal_received and self.mode == 0:
         # Proceed to command execution after receiving 'done' signal
-        Command_dict["grab"]()
+        Command_dict["hello"]()
         self.mode = 1
         self.start_signal_received = False
         self.armFinished.publish(True)
