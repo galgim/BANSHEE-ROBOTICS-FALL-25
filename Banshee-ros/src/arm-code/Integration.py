@@ -51,112 +51,58 @@ def checkMovement(ids):
             print("finished")
             break
 
-# Define various hand movements
-def Hello():
+# Define various arm movements
+def Grab_high():
     start_time = time.time()
-    print("Hello")
+    print("Grabbing high")
     motor.dxlSetVelo([10, 10, 10, 10, 10], [0, 1, 2, 3, 4])
+    motor.simMotorRun([112, 132, 250, 54],[0, 2, 3, 4])
+    # 2 and 4 is at a 90 degree angle from starting
+    # adjust 3 for height
+    # probably have to adjust 4 to be parallel with battery
 
-    motor.simMotorRun([180], [3])
-    motor.simMotorRun([180], [2])
     time.sleep(0.1)
 
+    motor.simMotorRun([45],[0])
+    # grabbing battery
 
-def Yes():
-    start_time = time.time()
-    print("Yes")
-    motor.dxlSetVelo([30, 30, 40, 40, 55], [0, 1, 2, 3, 4])
-    motor.simMotorRun([60,100], [2,3])
-    time.sleep(10)
-   
-
-
-def Fistbump():
-    start_time = time.time()
-    print("fistbump")
-    motor.dxlSetVelo([30, 30, 30, 30, 55], [0, 1, 2, 3, 4])
-    motor.simMotorRun([200, 80, 180], [3, 2, 4])
-    motor.dxlSetVelo([55, 55, 55], [2, 3, 4])
     time.sleep(0.1)
-    motor.simMotorRun([60, 180, 172], [2, 3, 4])
-    time.sleep(0.3)
-    motor.simMotorRun([200, 80, 180], [3, 2, 4])
-    
-    
-def Highfive():
-    start_time = time.time()
-    print("Highfive")
-    motor.dxlSetVelo([30, 30, 30, 30, 65], [0, 1, 2, 3, 4])
-    motor.simMotorRun([265, 160, 40], [4, 3, 2])
-    motor.dxlSetVelo([30, 30, 50, 50, 50], [0, 1, 2, 3, 4])
-    motor.simMotorRun([20, 135, 245], [2, 3, 4])
-    time.sleep(0.2)
-    motor.simMotorRun([40, 160, 265], [2, 3, 4])
 
-def Handshake():
+    startsetup()
+    # return to starting position with battery
+
+def Grab_low():
     start_time = time.time()
-    print("Handshake")
-    motor.dxlSetVelo([40, 40, 40, 40, 40], [0, 1, 2, 3, 4])
-    motor.simMotorRun([185, 65, 0, 150], [3, 2, 0, 4])
-    time.sleep(0.5)
-    motor.dxlSetVelo([55, 55, 55, 55, 55], [0, 1, 2, 3, 4])
-    motor.simMotorRun([155, 175], [4, 3])
+    print("Grabbing low")
+    motor.dxlSetVelo([10, 10, 10, 10, 10], [0, 1, 2, 3, 4])
+    motor.simMotorRun([112, 132, 300, 54],[0, 2, 3, 4])
+    # 2 and 4 is at a 90 degree angle from starting
+    # adjust 3 for height
+    # probably have to adjust 4 to be parallel with battery
+
     time.sleep(0.1)
-    motor.simMotorRun([195, 205], [4, 3])
+
+    motor.simMotorRun([45],[0])
+    # grabbing battery
+
     time.sleep(0.1)
-    motor.simMotorRun([155, 175], [4, 3])
-    time.sleep(0.1)
-    motor.simMotorRun([195, 205], [4, 3])
-    
 
-def Thankyou():
-    start_time = time.time()
-    print("Thank you")
-    motor.dxlSetVelo([60, 60, 60, 60, 60], [0, 1, 2, 3, 4])
-    motor.simMotorRun([130,180],[2,3])
-    time.sleep(0.01)
-    motor.simMotorRun([180],[4])
-    time.sleep(0.01)
-    motor.simMotorRun([230],[3])
-    time.sleep(0.01)
-    motor.simMotorRun([180],[3])
-    time.sleep(0.01)
-    motor.simMotorRun([230],[3])
-    time.sleep(0.01)
-    motor.simMotorRun([180],[3])
+    startsetup()
+    # return to starting position with battery
 
-def No():
-    start_time = time.time()
-    print("No")
-    motor.dxlSetVelo([30, 30, 30, 30, 55], [0, 1, 2, 3, 4])
-    motor.simMotorRun([220, 85, 265], [3, 2, 4])
 
-def Goodbye():
-    start_time = time.time()
-    print("Goodbye")
-    motor.dxlSetVelo([30, 30, 30, 30, 55], [0, 1, 2, 3, 4])
-    motor.simMotorRun([220, 85, 265], [3, 2, 4])
 
 # Setup initial motor positions
 def startsetup():
-    print("set up move")
+    print("setting up")
     motor.dxlSetVelo([30, 10, 10, 30, 10], [0, 1, 2, 3, 4])
-    motor.simMotorRun([45],[1])
-    # motor.simMotorRun([112, 222, 347,144], [0, 2, 3, 4])
+    motor.simMotorRun([45, 45, 222, 347, 144], [0, 1, 2, 3, 4])
     time.sleep(1)
-    # motor.simMotorRun([112, 270, 218, 264, 270], [0, 1, 2, 3, 4])
-    time.sleep(3)
 
 # Dictionary mapping commands to functions
 Command_dict = {
-    "hello": Hello,
-    "no": No,
-    "thankyou": Thankyou,
-    "handshake": Handshake,
-    "highfive": Highfive,
-    "goodbye": Goodbye,
-    "yes": Yes,
-    "fistbump": Fistbump,
+    "grab high": Grab_high,
+    "grab low": Grab_low,
     "setup": startsetup,
 }
 
