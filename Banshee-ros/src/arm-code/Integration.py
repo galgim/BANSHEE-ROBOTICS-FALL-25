@@ -55,7 +55,7 @@ def checkMovement(ids):
 def Grab_high():
     start_time = time.time()
     print("Grabbing high")
-    motor.dxlSetVelo([10, 10, 10, 10, 10], [0, 1, 2, 3, 4])
+    motor.dxlSetVelo([30, 30, 10, 10, 10], [0, 1, 2, 3, 4])
     motor.simMotorRun([112, 132, 250, 54],[0, 2, 3, 4])
     # 2 and 4 is at a 90 degree angle from starting
     # adjust 3 for height
@@ -71,7 +71,7 @@ def Grab_high():
 def Grab_low():
     start_time = time.time()
     print("Grabbing low")
-    motor.dxlSetVelo([10, 10, 10, 10, 10], [0, 1, 2, 3, 4])
+    motor.dxlSetVelo([30, 30, 10, 10, 10], [0, 1, 2, 3, 4])
     motor.simMotorRun([112, 132, 300, 54],[0, 2, 3, 4])
     # 2 and 4 is at a 90 degree angle from starting
     # adjust 3 for height
@@ -87,7 +87,7 @@ def Grab_low():
 # Setup initial motor positions
 def startsetup():
     print("setting up")
-    motor.dxlSetVelo([30, 10, 10, 30, 10], [0, 1, 2, 3, 4])
+    motor.dxlSetVelo([30, 30, 10, 30, 10], [0, 1, 2, 3, 4])
     motor.simMotorRun([45, 222, 222, 347, 144], [0, 1, 2, 3, 4])
     time.sleep(1)
 
