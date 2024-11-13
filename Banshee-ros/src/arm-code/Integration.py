@@ -89,12 +89,14 @@ def Close():
     print("close claw")
     motor.dxlSetVelo([30, 30, 10, 10, 10], [0, 1, 2, 3, 4])
     motor.simMotorRun([108],[0])
+    time.sleep(1)
+    motor.simMotorRun([134],[1])
 
 # Setup initial motor positions
 def startsetup():
     print("setting up")
     motor.dxlSetVelo([30, 30, 10, 30, 10], [0, 1, 2, 3, 4])
-    motor.simMotorRun([47, 222, 222, 345, 138], [0, 1, 2, 3, 4])
+    motor.simMotorRun([44, 224, 222, 345, 138], [0, 1, 2, 3, 4])
     time.sleep(1)
 
 # Dictionary mapping commands to functions
