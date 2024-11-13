@@ -56,14 +56,14 @@ def Grab_high():
     start_time = time.time()
     print("Grabbing high")
     motor.dxlSetVelo([30, 30, 10, 10, 10], [0, 1, 2, 3, 4])
-    motor.simMotorRun([112, 132, 250, 54],[0, 2, 3, 4])
+    motor.simMotorRun([45, 132, 250, 54],[0, 2, 3, 4])
     # 2 and 4 is at a 90 degree angle from starting
     # adjust 3 for height
     # probably have to adjust 4 to be parallel with battery
 
     time.sleep(0.1)
 
-    motor.simMotorRun([45],[0])
+    motor.simMotorRun([112],[0])
     # grabbing battery
 
     time.sleep(0.1)
@@ -72,21 +72,21 @@ def Grab_low():
     start_time = time.time()
     print("Grabbing low")
     motor.dxlSetVelo([30, 30, 10, 10, 10], [0, 1, 2, 3, 4])
-    motor.simMotorRun([112, 132, 300, 54],[0, 2, 3, 4])
+    motor.simMotorRun([45, 132, 300, 54],[0, 2, 3, 4])
     # 2 and 4 is at a 90 degree angle from starting
     # adjust 3 for height
     # probably have to adjust 4 to be parallel with battery
 
     time.sleep(0.1)
 
-    motor.simMotorRun([45],[0])
+    motor.simMotorRun([112],[0])
     # grabbing battery
 
     time.sleep(0.1)
 
-def Open():
+def Close():
     start_time = time.time()
-    print("open claw")
+    print("close claw")
     motor.dxlSetVelo([30, 30, 10, 10, 10], [0, 1, 2, 3, 4])
     motor.simMotorRun([112],[0])
 
@@ -94,14 +94,14 @@ def Open():
 def startsetup():
     print("setting up")
     motor.dxlSetVelo([30, 30, 10, 30, 10], [0, 1, 2, 3, 4])
-    motor.simMotorRun([45, 222, 222, 347, 144], [0, 1, 2, 3, 4])
+    motor.simMotorRun([45, 222, 222, 345, 144], [0, 1, 2, 3, 4])
     time.sleep(1)
 
 # Dictionary mapping commands to functions
 Command_dict = {
     "grab high": Grab_high,
     "grab low": Grab_low,
-    "open": Open,
+    "close": Close,
     "setup": startsetup,
 }
 
