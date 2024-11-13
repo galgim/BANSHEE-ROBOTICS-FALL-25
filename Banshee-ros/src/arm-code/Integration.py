@@ -90,7 +90,7 @@ def Close():
     motor.dxlSetVelo([30, 30, 10, 10, 10], [0, 1, 2, 3, 4])
     motor.simMotorRun([108],[0])
     time.sleep(1)
-    motor.simMotorRun([134],[1])
+    # motor.simMotorRun([134],[1])
 
 # Setup initial motor positions
 def startsetup():

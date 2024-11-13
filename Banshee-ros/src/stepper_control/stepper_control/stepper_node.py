@@ -35,19 +35,19 @@ class StepperMotorNode(Node):
 
     def run_motor_cycle(self):
         try:
-            # GPIO.output(DIR, CW)
+            GPIO.output(DIR, CW)
             
-            # # Max steps in CW 4050
-            # for _ in range(1000):                   
-            #     GPIO.output(STEP, GPIO.HIGH)
-            #     sleep(0.0007) 
-            #     GPIO.output(STEP, GPIO.LOW)
-            #     sleep(0.0007)
+            # Max steps in CW 4050
+            for _ in range(1000):                   
+                GPIO.output(STEP, GPIO.HIGH)
+                sleep(0.0007) 
+                GPIO.output(STEP, GPIO.LOW)
+                sleep(0.0007)
             
             # Max steps in CCW 4050
-            GPIO.output(DIR, CW)
+            GPIO.output(DIR, CCW)
             sleep(1)
-            for _ in range(372):
+            for _ in range(1000):
                 GPIO.output(STEP, GPIO.HIGH)
                 sleep(0.0007)
                 GPIO.output(STEP, GPIO.LOW)
