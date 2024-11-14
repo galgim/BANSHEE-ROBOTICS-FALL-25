@@ -128,12 +128,12 @@ def push_in(dev):
         print("INVALID")
 
 try:
-    action = int(input("Enter action (0 for pull_out, 1 for push_in): "))
+    mode = int(input("Enter action (0 for pull_out, 1 for push_in): "))
     device = int(input("Enter device (0 for TOP_BVM, 1 for BOT_BVM, 2 for DRONE_BAT): "))
 
-    if action == 0:
+    if mode == 0:
         pull_out(device)
-    elif action == 1:
+    elif mode == 1:
         push_in(device)
     else:
         print("Invalid action")
