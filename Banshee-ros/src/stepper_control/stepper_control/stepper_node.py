@@ -25,14 +25,13 @@ class StepperMotorNode(Node):
         self.done_publisher = self.create_publisher(Bool, 'stepperDone', 10)
 
         self.distanceSubscriber = self.create_subscription(
-        Int8, 'DestinationFalse', self.run_motor_cycle, 10)
+        Int8, 'DestinationFalse', self.distanceSubscriber, 10)
 
         self.get_logger().info('Stepper Motor Node has been started and is ready for commands.')
     
     def distanceSubscriber(self, msg):
-        pass
-
-        self.get_logger().info(f"Received Aruco ID: {self.arucoID}")
+        self.distance = msg.data
+        self.get_logger().info(f"Received distance: {self.distance}")
 
     def run_motor_cycle(self):
         try:
