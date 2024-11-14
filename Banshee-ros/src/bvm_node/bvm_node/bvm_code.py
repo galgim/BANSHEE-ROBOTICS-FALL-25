@@ -36,6 +36,8 @@ class BVMNode(Node):
         msg.data = int(input("Input Aruco Marker: "))
         self.arucoPublisher.publish(msg)
         self.get_logger().info('Sent marker: "%s"' % msg.data)
+
+        self.arucoIDPublisher()
     
     def modeComplete(self, msg):
         if msg.data:
