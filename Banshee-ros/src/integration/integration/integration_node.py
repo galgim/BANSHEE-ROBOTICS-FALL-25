@@ -106,18 +106,17 @@ class IntegrationNode(Node):
 
       if self.start_signal_received and self.mode == 0:
         # Proceed to command execution after receiving 'done' signal
-        pull_out(self.mode)
+        pull_out(type)
         self.mode = 1
         self.start_signal_received = False
         self.armFinished.publish(True)
 
       elif self.start_signal_received and self.mode == 1:
         # Proceed to command execution after receiving 'done' signal
-        push_in(self.mode)
+        push_in(type)
         self.mode = 0
         self.start_signal_received = False
         self.armFinished.publish(True)
-        
 
 def main(args=None):
     rclpy.init(args=args)
