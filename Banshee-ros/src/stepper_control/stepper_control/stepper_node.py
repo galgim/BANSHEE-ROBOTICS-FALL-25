@@ -38,6 +38,8 @@ class StepperMotorNode(Node):
 
         self.get_logger().info('Stepper Motor Node has been started and is ready for commands.')
 
+        self.run_motor_cycle(self)
+
     def initialSubscriber(self, msg):
         self.arucoID = msg.data
 
@@ -48,7 +50,7 @@ class StepperMotorNode(Node):
         self.distance = msg.data
         self.get_logger().info(f"Received distance: {self.distance}")
 
-    def run_motor_cycle(self, distance):
+    def run_motor_cycle(self):
         try:
             GPIO.output(DIR, CW)
             
@@ -69,7 +71,7 @@ class StepperMotorNode(Node):
                 sleep(0.0007)
             
             # Publish cycle complete signal
-            self.get_logger().info('Cycle complete, publishing signal to begin integration')
+            self.get_logger().info('Cycle complete, publishing signal to camera')
             cycle_complete_msg = Bool()
             cycle_complete_msg.data = True
             self.done_publisher.publish(cycle_complete_msg)
