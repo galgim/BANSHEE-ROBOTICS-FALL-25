@@ -16,15 +16,11 @@ class CameraNode(Node):
         self.sendFrame = False
 
         # ROS 2 subscription
-        self.subscription = self.create_subscription(
-            Int8, 
-            'arucoID', 
-            self.arucoSubscriber, 
-            10
-        )
+        self.arucoSent = self.create_subscription(
+        Int8, 'arucoID', self.arucoSubscriber, 10)
 
-        self.stepperSubscriber = self.create_subscription(
-        Bool, '')
+        self.stepperDone = self.create_subscription(
+        Bool, 'stepperDone', self.stepperSubscriber, 10)
 
         self.destinationTrue = self.create_publisher(
         Bool, 'DestinationConfirm', 10)
@@ -41,6 +37,11 @@ class CameraNode(Node):
     def arucoSubscriber(self, msg):
         self.arucoID = int(msg.data)
         self.get_logger().info(f"Received Aruco ID: {self.arucoID}")
+
+    def stepperSubscriber(self, msg):
+        if msg.data == True:
+            self.sendFrame = True
+            self.get_logger().info("Stepper finished moving")
 
     def cameraRun(self):
         aruco_dict = cv2.aruco.getPredefinedDictionary(cv2.aruco.DICT_5X5_100)
