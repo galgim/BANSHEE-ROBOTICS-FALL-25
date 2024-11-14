@@ -8,47 +8,34 @@ class BVMNode(Node):
 
         # Mode 0 = standby
         # Mode 1 = Begin battery transfer from drone to BVM
-        # Mode 2 = Begin battery transfer from BVM to drone (Will go back to mode 1 if multiple batteries are detected)
+        # Mode 2 = Begin battery transfer from BVM to drone
+        # Mode 3 = Done with Battery, set every value back to default standby value (If another battery, go back to mode 1)
         self.mode = 0
         self.done = 0 # flag for each mode
         self.checkModeComplete = False
-        self.batteries = 0
-        self.batteriesDone = 0
+        self.DroneMarkers = [7, 8]
+        self.currentID = None
+        self.previousID = None
+
 
 
         self.arucoPublisher = self.create_publisher(
-            Int8,
-            'arucoID',
-            10
-        )
+        Int8, 'arucoID', 10)
         self.get_logger().info("ArucoID Publisher started")
 
         self.armSubscriber = self.create_subscription(
-            Bool,
-            'modeComplete',
-            self.modeComplete,
-            10
-        )
+        Bool, 'modeComplete', self.modeComplete, 10)
 
-        self.cameraSubscriber= self.create_subscription(
-            Int8,
-            'batteryAmount',
-            self.modeComplete,
-            10
-        )
-
-        self.arucoID()
+        self.arucoIDPublisher()
 
         # Uncomment line and delete arucoID() once finished with GCS node
         # self.bvmLogic()
     
-    def arucoID(self):
+    def arucoIDPublisher(self):
         msg = Int8()
         msg.data = int(input("Input Aruco Marker: "))
         self.arucoPublisher.publish(msg)
         self.get_logger().info('Sent marker: "%s"' % msg.data)
-
-        self.arucoID()
     
     def modeComplete(self, msg):
         if msg.data:
@@ -58,7 +45,7 @@ class BVMNode(Node):
         self.batteries = msg.data
     
     def bvmLogic(self):
-        if self.batteries > self.batteriesDone:
+        if len(self.DroneMarkers) > 0:
             if self.mode == 0:
                 pass
             elif self.mode == 1 and self.done == 0:
@@ -70,16 +57,20 @@ class BVMNode(Node):
                 self.done = 1
             elif self.mode == 2 and self.done == 1:
                 
-                if self.batteriesDone == 0 and self.batteries > 1:
-                    self.mode = 1
-                else:
-                    self.mode = 0
+                self.done = 2
+            elif self.mode == 3:
+                self.previousID = arucoID
+
 
     
 def main(args=None):
     rclpy.init(args=args)
     node = BVMNode()
-    rclpy.spin(node)
-    rclpy.shutdown()
+    try:
+        rclpy.spin(node)
+    except:
+        KeyboardInterrupt
+    finally:
+        rclpy.shutdown()
 if __name__ == '__main__':
     main()
