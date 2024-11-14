@@ -11,6 +11,10 @@ STEP = 8  # Step Pin (Pul+)
 CW = 1   # Clockwise Rotation
 CCW = 0  # Counter Clockwise Rotation
 
+# Set Positions in BTP
+
+
+
 class StepperMotorNode(Node):
     def __init__(self):
         super().__init__('stepper_motor_node')
@@ -18,22 +22,33 @@ class StepperMotorNode(Node):
         GPIO.setmode(GPIO.BOARD)
         GPIO.setup(DIR, GPIO.OUT)
         GPIO.setup(STEP, GPIO.OUT)
-
-        self.distance = None
         
-        # ROS2 Publisher and Subscriber
-        self.done_publisher = self.create_publisher(Bool, 'stepperDone', 10)
+        self.arucoID = None
+        self.distance = None
+        self.position = 0
+        
+        # ROS2 Publisher and Subscribers
+        self.initialSubscription = self.create_subscription(
+        Int8, 'arucoID', self.initialSubscriber, 10)
 
-        self.distanceSubscriber = self.create_subscription(
+        self.distanceSubscription = self.create_subscription(
         Int8, 'DestinationFalse', self.distanceSubscriber, 10)
 
+        self.done_publisher = self.create_publisher(Bool, 'stepperDone', 10)
+
         self.get_logger().info('Stepper Motor Node has been started and is ready for commands.')
-    
+
+    def initialSubscriber(self, msg):
+        self.arucoID = msg.data
+
+
+        pass # Move to initial position
+
     def distanceSubscriber(self, msg):
         self.distance = msg.data
         self.get_logger().info(f"Received distance: {self.distance}")
 
-    def run_motor_cycle(self):
+    def run_motor_cycle(self, distance):
         try:
             GPIO.output(DIR, CW)
             
