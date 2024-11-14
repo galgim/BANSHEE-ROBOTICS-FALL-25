@@ -31,93 +31,112 @@ MOVE_IDs = [BASE_ID, BICEP_ID, FOREARM_ID, WRIST_ID, CLAW_ID]
 motor.portInitialization(PORT_NUM, ALL_IDs)
 # ctrl.portInitialization(PORT_NUM, ALL_IDs)
 
-# Calculate the angle for the max length reaching out in the x position
-max_length_angle = calculation.angle_Calc([375, 0, 73], 0)
+# # Define Motor Movements
 
-# Check movement of motors
-def checkMovement(ids):
-    motorStatus = [0] * len(ids)
-    finished = [1] * len(ids)
-    firstPosition = 0
-    secondPosition = 0
-    while True:
-        for id in ids:
-            firstPosition = motor.ReadMotorData(id, ADDR_PRESENT_POSITION)
-            time.sleep(0.1)
-            secondPosition = motor.ReadMotorData(id, ADDR_PRESENT_POSITION)
-            if abs(firstPosition - secondPosition) < 5:
-                motorStatus[id] = 1
-        if motorStatus == finished:
-            print("finished")
-            break
+# # Grab high
+# def Grab_high():
+#     start_time = time.time()
+#     print("Grabbing high")
+#     motor.dxlSetVelo([30, 30, 10, 10, 10], [0, 1, 2, 3, 4])
+#     motor.simMotorRun([170, 330, 90],[2, 3, 4])
+#     time.sleep(0.1)
 
-# Define Motor Movements
+# # Grab low
+# def Grab_low():
+#     start_time = time.time()
+#     print("Grabbing low")
+#     motor.dxlSetVelo([30, 30, 10, 10, 10], [0, 1, 2, 3, 4])
+#     motor.simMotorRun([132, 347, 54],[2, 3, 4])
+#     time.sleep(0.1)
 
-# Grab high
-def Grab_high():
-    start_time = time.time()
-    print("Grabbing high")
-    motor.dxlSetVelo([30, 30, 10, 10, 10], [0, 1, 2, 3, 4])
-    motor.simMotorRun([170, 330, 90],[2, 3, 4])
-    time.sleep(0.1)
+# def Drone_grab():
+#     start_time = time.time()
+#     print("Grabbing drone")
+#     motor.dxlSetVelo([30, 30, 10, 10, 10], [0, 1, 2, 3, 4])
+#     motor.simMotorRun([132, 347, 54],[2, 3, 4])
+#     time.sleep(0.1)
 
-# Grab low
-def Grab_low():
-    start_time = time.time()
-    print("Grabbing low")
-    motor.dxlSetVelo([30, 30, 10, 10, 10], [0, 1, 2, 3, 4])
-    motor.simMotorRun([132, 347, 54],[2, 3, 4])
-    time.sleep(0.1)
 
-# Close Claw
-def Close():
-    start_time = time.time()
-    print("close claw")
-    motor.dxlSetVelo([30, 30, 30, 30, 10], [0, 1, 2, 3, 4])
-    motor.simMotorRun([108],[0])
-    time.sleep(1)
-    # motor.simMotorRun([134],[1])
+# # Close Claw
+# def Close():
+#     start_time = time.time()
+#     print("close claw")
+#     motor.dxlSetVelo([30, 30, 30, 30, 10], [0, 1, 2, 3, 4])
+#     motor.simMotorRun([108],[0])
+#     time.sleep(1)
+#     # motor.simMotorRun([134],[1])
 
-#Open Claw
-def Open():
-    start_time = time.time()
-    print("open claw")
-    motor.dxlSetVelo([30, 30, 30, 30, 10], [0, 1, 2, 3, 4])
-    motor.simMotorRun([45],[0])
-    time.sleep(1)
+# #Open Claw
+# def Open():
+#     start_time = time.time()
+#     print("open claw")
+#     motor.dxlSetVelo([30, 30, 30, 30, 10], [0, 1, 2, 3, 4])
+#     motor.simMotorRun([45],[0])
+#     time.sleep(1)
 
-# Setup initial motor positions
-def startsetup():
-    print("setting up")
-    motor.dxlSetVelo([30, 30, 10, 30, 10], [0, 1, 2, 3, 4])
-    motor.simMotorRun([224, 222, 347, 135], [1, 2, 3, 4])
-    time.sleep(1)
+# # Setup initial motor positions
+# def startsetup():
+#     print("setting up")
+#     motor.dxlSetVelo([30, 30, 10, 30, 10], [0, 1, 2, 3, 4])
+#     motor.simMotorRun([224, 222, 347, 135], [1, 2, 3, 4])
+#     time.sleep(1)
 
-# Dictionary mapping commands to functions
-Command_dict = {
-    "grab high": Grab_high,
-    "grab low": Grab_low,
-    "close": Close,
-    "open": Open,
-    "setup": startsetup,
-}
+# # Dictionary mapping commands to functions
+# Command_dict = {
+#     "grab high": Grab_high,
+#     "grab low": Grab_low,
+#     "drone": Drone_grab,
+#     "close": Close,
+#     "open": Open,
+#     "setup": startsetup,
+# }
 
-def main(args=None):
-    # rclpy.init(args=args)
-    # node = MyNode()
-    while True:
-        command = input("Enter a command: ")
-        if command in Command_dict:
-            # startsetup()
-            Command_dict[command]()
-            # startsetup()
-        elif command == "exit":
-            print("Exiting program.")
-            break
-        else:
-            print("Invalid command. Please try again.")
-    # rclpy.shutdown()
+TOP_BVM = 0
+BOT_BVM = 1
+DRONE_BAT = 2
 
-# Run the main function
-if __name__ == '__main__':
-    main()
+def pull_out(dev):
+    if dev == 0:
+        motor.dxlSetVelo([30, 30, 30, 30, 10], [0, 1, 2, 3, 4])
+        # motor.simMotorRun([x,x,x,x,x],[0,1,2,3,4])
+        time.sleep(1)
+    elif dev == 1:
+        motor.dxlSetVelo([30, 30, 30, 30, 10], [0, 1, 2, 3, 4])
+        # motor.simMotorRun([x,x,x,x,x],[0,1,2,3,4])
+        time.sleep(1)
+    elif dev == 2:
+        motor.dxlSetVelo([30, 30, 30, 30, 10], [0, 1, 2, 3, 4])
+        # motor.simMotorRun([x,x,x,x,x],[0,1,2,3,4])
+        time.sleep(1)
+    else:
+        print("INVALID")
+
+def push_in(dev):
+    if dev == 0:
+        motor.dxlSetVelo([30, 30, 30, 30, 10], [0, 1, 2, 3, 4])
+        # motor.simMotorRun([x,x,x,x,x],[0,1,2,3,4])
+        time.sleep(1)
+    elif dev == 1:
+        motor.dxlSetVelo([30, 30, 30, 30, 10], [0, 1, 2, 3, 4])
+        # motor.simMotorRun([x,x,x,x,x],[0,1,2,3,4])
+        time.sleep(1)
+    elif dev == 2:
+        motor.dxlSetVelo([30, 30, 30, 30, 10], [0, 1, 2, 3, 4])
+        # motor.simMotorRun([x,x,x,x,x],[0,1,2,3,4])
+        time.sleep(1)
+    else:
+        print("INVALID")
+
+try:
+    action = int(input("Enter action (0 for pull_out, 1 for push_in): "))
+    device = int(input("Enter device (0 for TOP_BVM, 1 for BOT_BVM, 2 for DRONE_BAT): "))
+
+    if action == 0:
+        pull_out(device)
+    elif action == 1:
+        push_in(device)
+    else:
+        print("Invalid action")
+
+except ValueError:
+    print("Invalid input. Please enter numeric values only.")
