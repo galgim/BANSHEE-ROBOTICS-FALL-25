@@ -18,20 +18,20 @@ class StepperMotorNode(Node):
         GPIO.setmode(GPIO.BOARD)
         GPIO.setup(DIR, GPIO.OUT)
         GPIO.setup(STEP, GPIO.OUT)
+
+        self.distance = None
         
         # ROS2 Publisher and Subscriber
-        self.done_publisher = self.create_publisher(Bool, '/stepper/done', 10)
-        # self.command_subscriber = self.create_subscription(Bool, '/stepper/command', self.run_motor_cycle, 10)
+        self.done_publisher = self.create_publisher(Bool, 'stepperDone', 10)
 
         self.distanceSubscriber = self.create_subscription(
         Int8, 'DestinationFalse', self.distanceSubscriber, 10)
-        
-        self.run_motor_cycle()
 
         self.get_logger().info('Stepper Motor Node has been started and is ready for commands.')
     
     def distanceSubscriber(self, msg):
-        pass
+        self.distance = msg.data
+        self.get_logger().info(f"Received distance: {self.distance}")
 
     def run_motor_cycle(self):
         try:

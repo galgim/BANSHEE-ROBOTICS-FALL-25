@@ -13,14 +13,14 @@ class CameraNode(Node):
         super().__init__("camera_node")
         self.x_values_equal = 0
         self.arucoID = None
+        self.sendFrame = False
 
         # ROS 2 subscription
-        self.subscription = self.create_subscription(
-            Int8, 
-            'arucoID', 
-            self.arucoSubscriber, 
-            10
-        )
+        self.arucoSent = self.create_subscription(
+        Int8, 'arucoID', self.arucoSubscriber, 10)
+
+        self.stepperDone = self.create_subscription(
+        Bool, 'stepperDone', self.stepperSubscriber, 10)
 
         self.destinationTrue = self.create_publisher(
         Bool, 'DestinationConfirm', 10)
@@ -37,6 +37,11 @@ class CameraNode(Node):
     def arucoSubscriber(self, msg):
         self.arucoID = int(msg.data)
         self.get_logger().info(f"Received Aruco ID: {self.arucoID}")
+
+    def stepperSubscriber(self, msg):
+        if msg.data == True:
+            self.sendFrame = True
+            self.get_logger().info("Stepper finished moving")
 
     def cameraRun(self):
         aruco_dict = cv2.aruco.getPredefinedDictionary(cv2.aruco.DICT_5X5_100)
@@ -72,14 +77,19 @@ class CameraNode(Node):
                         corner2_x = int(corners[0][2][0])
                         middle_x = (corner1_x + corner2_x) // 2
                         distance = abs(middle_x - int(width / 2))
-                                                
-                        if (distance < 1):
-                            msg = Bool()
-                            msg.data = True
-                            self.destinationTrue.publish(msg)
-                            self.arucoID = None
-                        else:
-                            pass
+
+                        # Publisher logic
+                        if self.sendFrame:
+                            if distance <= 1:
+                                msg = Bool()
+                                msg.data = True
+                                self.destinationTrue.publish(msg)
+                                self.arucoID = None
+                            else:
+                                msg = Int8()
+                                msg.data = distance
+                                self.destinationFalse.publish(msg)
+                            self.sendFrame = False
 
                         cv2.putText(frame, f"distance: {distance}", (10, 30),
                                     cv2.FONT_HERSHEY_SIMPLEX, 1, (255, 255, 255), 2, cv2.LINE_AA)
@@ -110,8 +120,9 @@ class CameraNode(Node):
             cv2.imshow("Camera live stream", frame)
 
             if cv2.waitKey(1) == ord('q'):
-                exit()
-                break
+                # exit()
+                # break
+                self.sendFrame = True
 
         cap.release()
         cv2.destroyAllWindows()
