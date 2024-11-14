@@ -51,29 +51,25 @@ def checkMovement(ids):
             print("finished")
             break
 
-# Define various arm movements
+# Define Motor Movements
+
+# Grab high
 def Grab_high():
     start_time = time.time()
     print("Grabbing high")
     motor.dxlSetVelo([30, 30, 10, 10, 10], [0, 1, 2, 3, 4])
     motor.simMotorRun([170, 330, 90],[2, 3, 4])
-    # 2 and 4 is at a 90 degree angle from starting
-    # adjust 3 for height
-    # probably have to adjust 4 to be parallel with battery
-
     time.sleep(0.1)
 
+# Grab low
 def Grab_low():
     start_time = time.time()
     print("Grabbing low")
     motor.dxlSetVelo([30, 30, 10, 10, 10], [0, 1, 2, 3, 4])
     motor.simMotorRun([132, 347, 54],[2, 3, 4])
-    # 2 and 4 is at a 90 degree angle from starting
-    # adjust 3 for height
-    # probably have to adjust 4 to be parallel with battery
-
     time.sleep(0.1)
 
+# Close Claw
 def Close():
     start_time = time.time()
     print("close claw")
@@ -82,6 +78,7 @@ def Close():
     time.sleep(1)
     # motor.simMotorRun([134],[1])
 
+#Open Claw
 def Open():
     start_time = time.time()
     print("open claw")
