@@ -85,12 +85,11 @@ class CameraNode(Node):
                                 msg.data = True
                                 self.destinationTrue.publish(msg)
                                 self.arucoID = None
-                                self.sendFrame = False
                             else:
                                 msg = Int8()
                                 msg.data = distance
                                 self.destinationFalse.publish(msg)
-                                self.sendFrame = False
+                            self.sendFrame = False
 
                         cv2.putText(frame, f"distance: {distance}", (10, 30),
                                     cv2.FONT_HERSHEY_SIMPLEX, 1, (255, 255, 255), 2, cv2.LINE_AA)
