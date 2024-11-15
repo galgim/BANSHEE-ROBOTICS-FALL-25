@@ -97,7 +97,7 @@ class IntegrationNode(Node):
 
     def done_callback(self, msg):
       self.get_logger().info("Callback triggered, message received.")
-      self.start_signal_received = msg.data
+      self.start_signal_received = bool(msg.data)
       if self.start_signal_received:
           self.get_logger().info("Received 'done' signal from Camera Node. Integration Node is now ready to execute commands.")
 
