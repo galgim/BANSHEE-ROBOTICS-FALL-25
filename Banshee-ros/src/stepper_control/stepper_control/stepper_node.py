@@ -57,9 +57,15 @@ class StepperMotorNode(Node):
             # Max steps in CW 4050
             for _ in range(500):                   
                 GPIO.output(STEP, GPIO.HIGH)
-                sleep(0.0007) 
+                sleep(0.001) 
                 GPIO.output(STEP, GPIO.LOW)
-                sleep(0.0007)
+                sleep(0.001)
+
+            for _ in range(500):                   
+                GPIO.output(STEP, GPIO.HIGH)
+                sleep(0.001) 
+                GPIO.output(STEP, GPIO.LOW)
+                sleep(0.001)
             
             # Publish cycle complete signal
             self.get_logger().info('Cycle complete, publishing signal to camera')
