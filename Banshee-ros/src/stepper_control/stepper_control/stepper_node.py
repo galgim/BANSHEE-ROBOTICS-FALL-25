@@ -53,6 +53,24 @@ class StepperMotorNode(Node):
         self.run_motor_cycle()
         self.steps = abs(round(1000/296 * self.distance))
 
+    def initial_movement(self):
+        try:
+            GPIO.output(DIR, CW)
+            for _ in range(100):                   
+                    GPIO.output(STEP, GPIO.HIGH)
+                    sleep(0.01) 
+                    GPIO.output(STEP, GPIO.LOW)
+                    sleep(0.01)
+            self.get_logger().info('Cycle complete, publishing signal to camera')
+            cycle_complete_msg = Bool()
+            cycle_complete_msg.data = True
+            self.done_publisher.publish(cycle_complete_msg)
+
+        except KeyboardInterrupt:
+            self.cleanup()
+
+
+
     def run_motor_cycle(self):
         try:
             if self.distance != None:
