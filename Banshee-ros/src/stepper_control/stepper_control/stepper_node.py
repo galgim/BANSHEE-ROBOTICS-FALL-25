@@ -42,7 +42,7 @@ class StepperMotorNode(Node):
 
     def initialSubscriber(self, msg):
         self.arucoID = msg.data
-
+        self.get_logger().info(f"Received Aruco ID: {self.arucoID}")
 
         pass # Move to initial position
 
@@ -58,15 +58,6 @@ class StepperMotorNode(Node):
             for _ in range(500):                   
                 GPIO.output(STEP, GPIO.HIGH)
                 sleep(0.0007) 
-                GPIO.output(STEP, GPIO.LOW)
-                sleep(0.0007)
-            
-            # Max steps in CCW 4050
-            GPIO.output(DIR, CCW)
-            sleep(1)
-            for _ in range(500):
-                GPIO.output(STEP, GPIO.HIGH)
-                sleep(0.0007)
                 GPIO.output(STEP, GPIO.LOW)
                 sleep(0.0007)
             
