@@ -116,12 +116,10 @@ class IntegrationNode(Node):
         self.start_signal_received = False
         self.armFinished.publish(True)
 
-      self.run()
-
 def main(args=None):
     rclpy.init(args=args)
     node = IntegrationNode()
-    rclpy.spin(node)
+    rclpy.spin(node.run())
     rclpy.shutdown()
 
 
