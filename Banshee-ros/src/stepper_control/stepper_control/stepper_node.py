@@ -71,8 +71,6 @@ class StepperMotorNode(Node):
         except KeyboardInterrupt:
             self.cleanup()
 
-
-
     def run_motor_cycle(self):
         try:
             if self.distance != None:
@@ -95,7 +93,7 @@ class StepperMotorNode(Node):
                 cycle_complete_msg = Bool()
                 cycle_complete_msg.data = True
                 self.done_publisher.publish(cycle_complete_msg)
-            self.distance = None
+                self.distance = None
         except KeyboardInterrupt:
             self.cleanup()
 
