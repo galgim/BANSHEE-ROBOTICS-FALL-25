@@ -83,7 +83,7 @@ class CameraNode(Node):
                                 self.destinationTrue.publish(msg)
                                 self.arucoID = None
                             else:
-                                msg = Int8()
+                                msg = Int32()
                                 msg.data = distance
                                 self.destinationFalse.publish(msg)
                             self.sendFrame = False
