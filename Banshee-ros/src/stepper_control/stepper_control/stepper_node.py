@@ -39,7 +39,7 @@ class StepperMotorNode(Node):
 
         self.get_logger().info('Stepper Motor Node has been started and is ready for commands.')
 
-        self.run_motor_cycle()
+        self.initial_movement()
 
     def initialSubscriber(self, msg):
         self.arucoID = msg.data
