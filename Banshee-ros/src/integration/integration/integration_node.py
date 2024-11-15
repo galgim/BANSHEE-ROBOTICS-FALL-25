@@ -107,13 +107,17 @@ class IntegrationNode(Node):
         pull_out(type)
         self.mode = 1
         self.start_signal_received = False
-        self.armFinished.publish(True)
+        msg = Bool()
+        msg.data = True
+        self.armFinished.publish(msg)
 
       elif self.start_signal_received and self.mode == 1:
         # Proceed to command execution after receiving 'done' signal
         push_in(type)
         self.mode = 0
         self.start_signal_received = False
+        msg = Bool()
+        msg.data = True
         self.armFinished.publish(True)
 
 def main(args=None):
