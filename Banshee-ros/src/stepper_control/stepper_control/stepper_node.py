@@ -49,6 +49,7 @@ class StepperMotorNode(Node):
     def distanceSubscriber(self, msg):
         self.distance = msg.data
         self.get_logger().info(f"Received distance: {self.distance}")
+        self.run_motor_cycle()
 
     def run_motor_cycle(self):
         try:

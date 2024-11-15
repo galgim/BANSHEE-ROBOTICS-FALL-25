@@ -16,11 +16,7 @@ class CameraNode(Node):
         self.websocket = None
         
         self.subscription = self.create_subscription(
-            Int8, 
-            'arucoID', 
-            self.arucoSubscriber, 
-            10
-        )
+        Int8, 'arucoID', self.arucoSubscriber, 10)
 
         self.destinationTrue = self.create_publisher(
         Bool, 'DestinationConfirm', 10)
