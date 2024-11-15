@@ -3,9 +3,6 @@ from rclpy.node import Node
 import cv2
 import numpy as np
 import threading
-import asyncio
-import ssl
-import websockets
 from std_msgs.msg import Int8, Bool
 
 class CameraNode(Node):
@@ -81,7 +78,8 @@ class CameraNode(Node):
                         # Publisher logic
                         if self.sendFrame:
                             if abs(distance) <= 1:
-                                msg = Bool(True)
+                                msg = Bool()
+                                msg.data = True
                                 self.destinationTrue.publish(msg)
                                 self.arucoID = None
                             else:
