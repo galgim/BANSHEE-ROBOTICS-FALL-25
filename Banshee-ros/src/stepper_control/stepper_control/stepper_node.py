@@ -52,7 +52,7 @@ class StepperMotorNode(Node):
 
     def run_motor_cycle(self):
         try:
-            GPIO.output(DIR, CCW)
+            GPIO.output(DIR, CW)
             
             # Max steps in CW 4050
             for _ in range(500):                   
@@ -60,6 +60,8 @@ class StepperMotorNode(Node):
                 sleep(0.001) 
                 GPIO.output(STEP, GPIO.LOW)
                 sleep(0.001)
+
+            GPIO.output(DIR, CCW)
 
             for _ in range(500):                   
                 GPIO.output(STEP, GPIO.HIGH)
