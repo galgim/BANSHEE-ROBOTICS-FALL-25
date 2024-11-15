@@ -98,12 +98,10 @@ class IntegrationNode(Node):
     def done_callback(self, msg):
       self.get_logger().info("Callback triggered, message received.")
       if msg.data:
-        self.get_logger().info("Received 'done' signal from Stepper Node. Integration Node is now ready to execute commands.")
+        self.get_logger().info("Received 'done' signal from Camera Node. Integration Node is now ready to execute commands.")
         self.start_signal_received = True
 
-    def run(self):
-      self.get_logger().info("Waiting for 'done' signal from Stepper Node...")  
-
+    def run(self): 
       if self.start_signal_received and self.mode == 0:
         # Proceed to command execution after receiving 'done' signal
         pull_out(type)
@@ -117,6 +115,8 @@ class IntegrationNode(Node):
         self.mode = 0
         self.start_signal_received = False
         self.armFinished.publish(True)
+
+      self.run()
 
 def main(args=None):
     rclpy.init(args=args)

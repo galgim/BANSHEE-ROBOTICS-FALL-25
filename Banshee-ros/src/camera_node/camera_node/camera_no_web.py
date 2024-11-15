@@ -76,11 +76,11 @@ class CameraNode(Node):
                         corner1_x = int(corners[0][0][0])
                         corner2_x = int(corners[0][2][0])
                         middle_x = (corner1_x + corner2_x) // 2
-                        distance = middle_x - int(width / 2)
+                        distance = (middle_x - int(width / 2)) * -1
 
                         # Publisher logic
                         if self.sendFrame:
-                            if distance <= 1:
+                            if abs(distance) <= 1:
                                 msg = Bool()
                                 msg.data = True
                                 self.destinationTrue.publish(msg)
