@@ -81,8 +81,7 @@ class CameraNode(Node):
                         # Publisher logic
                         if self.sendFrame:
                             if abs(distance) <= 1:
-                                msg = Bool()
-                                msg.data = True
+                                msg = Bool(True)
                                 self.destinationTrue.publish(msg)
                                 self.arucoID = None
                             else:
