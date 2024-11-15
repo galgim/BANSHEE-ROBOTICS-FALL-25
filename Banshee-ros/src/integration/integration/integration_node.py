@@ -102,6 +102,7 @@ class IntegrationNode(Node):
           self.get_logger().info("Received 'done' signal from Camera Node. Integration Node is now ready to execute commands.")
 
     def run(self): 
+      self.get_logger().info("test")
       if self.start_signal_received and self.mode == 0:
         # Proceed to command execution after receiving 'done' signal
         pull_out(type)
