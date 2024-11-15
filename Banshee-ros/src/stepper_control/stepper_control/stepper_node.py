@@ -1,6 +1,6 @@
 import rclpy
 from rclpy.node import Node
-from std_msgs.msg import Bool, Int8
+from std_msgs.msg import Bool, Int32, Int8
 import RPi.GPIO as GPIO
 from time import sleep
 
@@ -33,7 +33,7 @@ class StepperMotorNode(Node):
         Int8, 'arucoID', self.initialSubscriber, 10)
 
         self.distanceSubscription = self.create_subscription(
-        Int8, 'DestinationFalse', self.distanceSubscriber, 10)
+        Int32, 'DestinationFalse', self.distanceSubscriber, 10)
 
         self.done_publisher = self.create_publisher(Bool, 'stepperDone', 10)
 
