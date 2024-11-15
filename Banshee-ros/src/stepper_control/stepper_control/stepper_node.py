@@ -25,7 +25,7 @@ class StepperMotorNode(Node):
         
         self.arucoID = None
         self.distance = None
-        self.steps = 0
+        self.stepCoefficient = 1000/296
         self.position = 0
         
         # ROS2 Publisher and Subscribers
@@ -50,7 +50,6 @@ class StepperMotorNode(Node):
     def distanceSubscriber(self, msg):
         self.distance = msg.data
         self.get_logger().info(f"Received distance: {self.distance}")
-        self.steps = abs(round(1000/296 * self.distance))
         self.run_motor_cycle()
 
     def initial_movement(self):
@@ -80,7 +79,8 @@ class StepperMotorNode(Node):
                     GPIO.output(DIR, CCW)
                 
                 # Max steps in CW 4050
-                for _ in range(self.steps):                   
+                steps = round(abs(self.stepCoefficient * self.distance))
+                for _ in range(steps):                   
                     GPIO.output(STEP, GPIO.HIGH)
                     sleep(0.003) 
                     GPIO.output(STEP, GPIO.LOW)
