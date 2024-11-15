@@ -64,9 +64,9 @@ class StepperMotorNode(Node):
                 # Max steps in CW 4050
                 for _ in range(self.steps):                   
                     GPIO.output(STEP, GPIO.HIGH)
-                    sleep(0.001) 
+                    sleep(0.01) 
                     GPIO.output(STEP, GPIO.LOW)
-                    sleep(0.001)
+                    sleep(0.01)
                 
 
                 sleep(1)
