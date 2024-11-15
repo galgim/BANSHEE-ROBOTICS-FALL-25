@@ -25,6 +25,7 @@ class StepperMotorNode(Node):
         
         self.arucoID = None
         self.distance = None
+        self.steps = 0
         self.position = 0
         
         # ROS2 Publisher and Subscribers
@@ -50,33 +51,31 @@ class StepperMotorNode(Node):
         self.distance = msg.data
         self.get_logger().info(f"Received distance: {self.distance}")
         self.run_motor_cycle()
+        self.steps = abs(round(1000/296 * self.distance))
 
     def run_motor_cycle(self):
         try:
-            GPIO.output(DIR, CW)
-            
-            # Max steps in CW 4050
-            for _ in range(500):                   
-                GPIO.output(STEP, GPIO.HIGH)
-                sleep(0.001) 
-                GPIO.output(STEP, GPIO.LOW)
-                sleep(0.001)
+            if self.distance != None:
+                if self.distance > 0:
+                    GPIO.output(DIR, CW)
+                else:
+                    GPIO.output(DIR, CCW)
+                
+                # Max steps in CW 4050
+                for _ in range(self.steps):                   
+                    GPIO.output(STEP, GPIO.HIGH)
+                    sleep(0.001) 
+                    GPIO.output(STEP, GPIO.LOW)
+                    sleep(0.001)
+                
 
-            GPIO.output(DIR, CCW)
-
-            for _ in range(500):                   
-                GPIO.output(STEP, GPIO.HIGH)
-                sleep(0.001) 
-                GPIO.output(STEP, GPIO.LOW)
-                sleep(0.001)
-            
-
-            sleep(1)
-            # Publish cycle complete signal
-            self.get_logger().info('Cycle complete, publishing signal to camera')
-            cycle_complete_msg = Bool()
-            cycle_complete_msg.data = True
-            self.done_publisher.publish(cycle_complete_msg)
+                sleep(1)
+                # Publish cycle complete signal
+                self.get_logger().info('Cycle complete, publishing signal to camera')
+                cycle_complete_msg = Bool()
+                cycle_complete_msg.data = True
+                self.done_publisher.publish(cycle_complete_msg)
+            self.distance = None
         except KeyboardInterrupt:
             self.cleanup()
 
