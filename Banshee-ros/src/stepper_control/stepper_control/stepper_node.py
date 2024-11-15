@@ -61,6 +61,8 @@ class StepperMotorNode(Node):
                     sleep(0.01) 
                     GPIO.output(STEP, GPIO.LOW)
                     sleep(0.01)
+
+            sleep(1)
             self.get_logger().info('Cycle complete, publishing signal to camera')
             cycle_complete_msg = Bool()
             cycle_complete_msg.data = True
