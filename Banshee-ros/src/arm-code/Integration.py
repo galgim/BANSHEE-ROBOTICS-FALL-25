@@ -108,7 +108,7 @@ Command_dict = {
 
 def main(args=None):
     startsetup()
-    Open()
+    Push_low()
 
 
 if __name__ == '__main__':
