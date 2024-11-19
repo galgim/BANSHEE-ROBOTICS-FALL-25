@@ -12,8 +12,12 @@ CW = 1   # Clockwise Rotation
 CCW = 0  # Counter Clockwise Rotation
 
 # Set Positions in BTP
+COLUMN1 = 463
+COLUMN2 = 1481
+COLUMN3 = 2492
+COLUMN4 = 3510
 
-
+DELAY = 0.003
 
 class StepperMotorNode(Node):
     def __init__(self):
@@ -55,12 +59,37 @@ class StepperMotorNode(Node):
     def initial_movement(self):
         try:
             GPIO.output(DIR, CW)
-            for _ in range(500):                   
+            for _ in range(COLUMN1):                #Column 1           
                     GPIO.output(STEP, GPIO.HIGH)
-                    sleep(0.003) 
+                    sleep(DELAY) 
                     GPIO.output(STEP, GPIO.LOW)
-                    sleep(0.003)
-
+                    sleep(DELAY)
+            sleep(0.5)
+            for _ in range(COLUMN2):                #Column 2           
+                    GPIO.output(STEP, GPIO.HIGH)
+                    sleep(DELAY) 
+                    GPIO.output(STEP, GPIO.LOW)
+                    sleep(DELAY)
+            sleep(0.5)
+            for _ in range(COLUMN3):                #Column 3           
+                    GPIO.output(STEP, GPIO.HIGH)
+                    sleep(DELAY) 
+                    GPIO.output(STEP, GPIO.LOW)
+                    sleep(DELAY)
+            sleep(0.5)
+            for _ in range(COLUMN4):                #Column 4           
+                    GPIO.output(STEP, GPIO.HIGH)
+                    sleep(DELAY) 
+                    GPIO.output(STEP, GPIO.LOW)
+                    sleep(DELAY)
+            sleep(1)
+            GPIO.output(DIR, CCW)
+            for _ in range(COLUMN4):                # Go back to origin       
+                    GPIO.output(STEP, GPIO.HIGH)
+                    sleep(DELAY) 
+                    GPIO.output(STEP, GPIO.LOW)
+                    sleep(DELAY)
+            
             sleep(1)
             self.get_logger().info('Cycle complete, publishing signal to camera')
             cycle_complete_msg = Bool()
@@ -82,9 +111,9 @@ class StepperMotorNode(Node):
                 steps = round(abs(self.stepCoefficient * self.distance))
                 for _ in range(steps):                   
                     GPIO.output(STEP, GPIO.HIGH)
-                    sleep(0.003) 
+                    sleep(DELAY) 
                     GPIO.output(STEP, GPIO.LOW)
-                    sleep(0.003)
+                    sleep(DELAY)
                 
 
                 sleep(1)
