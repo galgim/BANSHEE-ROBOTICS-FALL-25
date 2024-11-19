@@ -78,7 +78,7 @@ def Open():
 def startsetup():
     print("setting up")
     motor.dxlSetVelo([30, 30, 10, 30, 10], [0, 1, 2, 3, 4])
-    motor.simMotorRun([224, 222, 347, 135], [1, 2, 3, 4])
+    motor.simMotorRun([224, 222, 347, 144], [1, 2, 3, 4])
     time.sleep(1)
 
 # Dictionary mapping commands to functions
@@ -93,8 +93,6 @@ Command_dict = {
 
 def main(args=None):
     startsetup()
-    Open()
-    time.sleep(3)
     Close()
 
 
