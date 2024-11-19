@@ -108,7 +108,7 @@ Command_dict = {
 }
 
 def main(args=None):
-    
+    startsetup()
     Push_low()
 
 
