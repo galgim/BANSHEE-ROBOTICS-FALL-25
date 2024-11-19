@@ -33,110 +33,110 @@ motor.portInitialization(PORT_NUM, ALL_IDs)
 
 # # Define Motor Movements
 
-# # Grab high
-# def Grab_high():
-#     start_time = time.time()
-#     print("Grabbing high")
-#     motor.dxlSetVelo([30, 30, 10, 10, 10], [0, 1, 2, 3, 4])
-#     motor.simMotorRun([170, 330, 90],[2, 3, 4])
-#     time.sleep(0.1)
+# Grab high
+def Grab_high():
+    start_time = time.time()
+    print("Grabbing high")
+    motor.dxlSetVelo([30, 30, 10, 10, 10], [0, 1, 2, 3, 4])
+    motor.simMotorRun([170, 330, 90],[2, 3, 4])
+    time.sleep(0.1)
 
-# # Grab low
-# def Grab_low():
-#     start_time = time.time()
-#     print("Grabbing low")
-#     motor.dxlSetVelo([30, 30, 10, 10, 10], [0, 1, 2, 3, 4])
-#     motor.simMotorRun([132, 347, 54],[2, 3, 4])
-#     time.sleep(0.1)
+# Grab low
+def Grab_low():
+    start_time = time.time()
+    print("Grabbing low")
+    motor.dxlSetVelo([30, 30, 10, 10, 10], [0, 1, 2, 3, 4])
+    motor.simMotorRun([132, 347, 54],[2, 3, 4])
+    time.sleep(0.1)
 
-# def Drone_grab():
-#     start_time = time.time()
-#     print("Grabbing drone")
-#     motor.dxlSetVelo([30, 30, 10, 10, 10], [0, 1, 2, 3, 4])
-#     motor.simMotorRun([132, 347, 54],[2, 3, 4])
-#     time.sleep(0.1)
+def Drone_grab():
+    start_time = time.time()
+    print("Grabbing drone")
+    motor.dxlSetVelo([30, 30, 10, 10, 10], [0, 1, 2, 3, 4])
+    motor.simMotorRun([132, 347, 54],[2, 3, 4])
+    time.sleep(0.1)
 
 
-# # Close Claw
-# def Close():
-#     start_time = time.time()
-#     print("close claw")
-#     motor.dxlSetVelo([30, 30, 30, 30, 10], [0, 1, 2, 3, 4])
-#     motor.simMotorRun([108],[0])
-#     time.sleep(1)
-#     # motor.simMotorRun([134],[1])
+# Close Claw
+def Close():
+    start_time = time.time()
+    print("close claw")
+    motor.dxlSetVelo([30, 30, 30, 30, 10], [0, 1, 2, 3, 4])
+    motor.simMotorRun([108],[0])
+    time.sleep(1)
+    # motor.simMotorRun([134],[1])
 
-# #Open Claw
-# def Open():
-#     start_time = time.time()
-#     print("open claw")
-#     motor.dxlSetVelo([30, 30, 30, 30, 10], [0, 1, 2, 3, 4])
-#     motor.simMotorRun([45],[0])
-#     time.sleep(1)
+#Open Claw
+def Open():
+    start_time = time.time()
+    print("open claw")
+    motor.dxlSetVelo([30, 30, 30, 30, 10], [0, 1, 2, 3, 4])
+    motor.simMotorRun([45],[0])
+    time.sleep(1)
 
-# # Setup initial motor positions
-# def startsetup():
-#     print("setting up")
-#     motor.dxlSetVelo([30, 30, 10, 30, 10], [0, 1, 2, 3, 4])
-#     motor.simMotorRun([224, 222, 347, 135], [1, 2, 3, 4])
-#     time.sleep(1)
+# Setup initial motor positions
+def startsetup():
+    print("setting up")
+    motor.dxlSetVelo([30, 30, 10, 30, 10], [0, 1, 2, 3, 4])
+    motor.simMotorRun([224, 222, 347, 135], [1, 2, 3, 4])
+    time.sleep(1)
 
-# # Dictionary mapping commands to functions
-# Command_dict = {
-#     "grab high": Grab_high,
-#     "grab low": Grab_low,
-#     "drone": Drone_grab,
-#     "close": Close,
-#     "open": Open,
-#     "setup": startsetup,
-# }
+# Dictionary mapping commands to functions
+Command_dict = {
+    "grab high": Grab_high,
+    "grab low": Grab_low,
+    "drone": Drone_grab,
+    "close": Close,
+    "open": Open,
+    "setup": startsetup,
+}
 
-TOP_BVM = 0
-BOT_BVM = 1
-DRONE_BAT = 2
+# TOP_BVM = 0
+# BOT_BVM = 1
+# DRONE_BAT = 2
 
-def pull_out(dev):
-    if dev == 0:
-        motor.dxlSetVelo([30, 30, 30, 30, 10], [0, 1, 2, 3, 4])
-        # motor.simMotorRun([x,x,x,x,x],[0,1,2,3,4])
-        time.sleep(1)
-    elif dev == 1:
-        motor.dxlSetVelo([30, 30, 30, 30, 10], [0, 1, 2, 3, 4])
-        # motor.simMotorRun([x,x,x,x,x],[0,1,2,3,4])
-        time.sleep(1)
-    elif dev == 2:
-        motor.dxlSetVelo([30, 30, 30, 30, 10], [0, 1, 2, 3, 4])
-        # motor.simMotorRun([x,x,x,x,x],[0,1,2,3,4])
-        time.sleep(1)
-    else:
-        print("INVALID")
+# def pull_out(dev):
+#     if dev == 0:
+#         motor.dxlSetVelo([30, 30, 30, 30, 10], [0, 1, 2, 3, 4])
+#         # motor.simMotorRun([x,x,x,x,x],[0,1,2,3,4])
+#         time.sleep(1)
+#     elif dev == 1:
+#         motor.dxlSetVelo([30, 30, 30, 30, 10], [0, 1, 2, 3, 4])
+#         # motor.simMotorRun([x,x,x,x,x],[0,1,2,3,4])
+#         time.sleep(1)
+#     elif dev == 2:
+#         motor.dxlSetVelo([30, 30, 30, 30, 10], [0, 1, 2, 3, 4])
+#         # motor.simMotorRun([x,x,x,x,x],[0,1,2,3,4])
+#         time.sleep(1)
+#     else:
+#         print("INVALID")
 
-def push_in(dev):
-    if dev == 0:
-        motor.dxlSetVelo([30, 30, 30, 30, 10], [0, 1, 2, 3, 4])
-        # motor.simMotorRun([x,x,x,x,x],[0,1,2,3,4])
-        time.sleep(1)
-    elif dev == 1:
-        motor.dxlSetVelo([30, 30, 30, 30, 10], [0, 1, 2, 3, 4])
-        # motor.simMotorRun([x,x,x,x,x],[0,1,2,3,4])
-        time.sleep(1)
-    elif dev == 2:
-        motor.dxlSetVelo([30, 30, 30, 30, 10], [0, 1, 2, 3, 4])
-        # motor.simMotorRun([x,x,x,x,x],[0,1,2,3,4])
-        time.sleep(1)
-    else:
-        print("INVALID")
+# def push_in(dev):
+#     if dev == 0:
+#         motor.dxlSetVelo([30, 30, 30, 30, 10], [0, 1, 2, 3, 4])
+#         # motor.simMotorRun([x,x,x,x,x],[0,1,2,3,4])
+#         time.sleep(1)
+#     elif dev == 1:
+#         motor.dxlSetVelo([30, 30, 30, 30, 10], [0, 1, 2, 3, 4])
+#         # motor.simMotorRun([x,x,x,x,x],[0,1,2,3,4])
+#         time.sleep(1)
+#     elif dev == 2:
+#         motor.dxlSetVelo([30, 30, 30, 30, 10], [0, 1, 2, 3, 4])
+#         # motor.simMotorRun([x,x,x,x,x],[0,1,2,3,4])
+#         time.sleep(1)
+#     else:
+#         print("INVALID")
 
-try:
-    mode = int(input("Enter action (0 for pull_out, 1 for push_in): "))
-    device = int(input("Enter device (0 for TOP_BVM, 1 for BOT_BVM, 2 for DRONE_BAT): "))
+# try:
+#     mode = int(input("Enter action (0 for pull_out, 1 for push_in): "))
+#     device = int(input("Enter device (0 for TOP_BVM, 1 for BOT_BVM, 2 for DRONE_BAT): "))
 
-    if mode == 0:
-        pull_out(device)
-    elif mode == 1:
-        push_in(device)
-    else:
-        print("Invalid action")
+#     if mode == 0:
+#         pull_out(device)
+#     elif mode == 1:
+#         push_in(device)
+#     else:
+#         print("Invalid action")
 
-except ValueError:
-    print("Invalid input. Please enter numeric values only.")
+# except ValueError:
+#     print("Invalid input. Please enter numeric values only.")
