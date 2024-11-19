@@ -2,7 +2,7 @@
 
 import rclpy
 from rclpy.node import Node
-from std_msgs.msg import Bool  # Import message type for the 'done' signal
+from std_msgs.msg import Bool, Int8  # Import message type for the 'done' signal
 import math
 from integration import motorctrl_v2 as motor
 from integration import Movement_calc_v2 as calculation
@@ -85,26 +85,29 @@ class IntegrationNode(Node):
         
         # Subscriber for 'ConfirmPosition' signal from Camera node
         self.subscription = self.create_subscription(
-          Bool,'DestinationConfirm', self.done_callback, 10)
+          Int8,'DestinationConfirm', self.done_callback, 10)
         
         self.armFinished = self.create_publisher(
           Bool, 'ArmDone', 10)
         
         # Flag to indicate if the node has received the signal to start
         self.start_signal_received = False
+        self.batteryLevel = None
 
         self.run_timer = self.create_timer(0.1, self.run)
 
     def done_callback(self, msg):
       self.get_logger().info("Callback triggered, message received.")
-      self.start_signal_received = msg.data
+      self.start_signal_received = True
+      self.batteryLevel = msg.data
+
       if self.start_signal_received:
           self.get_logger().info("Received 'done' signal from Camera Node. Integration Node is now ready to execute commands.")
 
     def run(self): 
       if self.start_signal_received and self.mode == 0:
         # Proceed to command execution after receiving 'done' signal
-        pull_out(0)
+        pull_out(self.batteryLevel)
         self.mode = 1
         self.start_signal_received = False
         msg = Bool()
@@ -113,7 +116,7 @@ class IntegrationNode(Node):
 
       elif self.start_signal_received and self.mode == 1:
         # Proceed to command execution after receiving 'done' signal
-        push_in(0)
+        push_in(self.batteryLevel)
         self.mode = 0
         self.start_signal_received = False
         msg = Bool()
