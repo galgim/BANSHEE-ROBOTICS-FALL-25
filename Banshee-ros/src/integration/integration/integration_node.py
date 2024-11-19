@@ -44,6 +44,10 @@ TOP_BVM = 0
 BOT_BVM = 1
 DRONE_BAT = 2
 
+# Upper BVM batteries when dev = 0
+# Lower BVM batteries when dev = 1
+# Drone batteries when dev = 2
+
 def pull_out(dev):
     if dev == 0:
         motor.dxlSetVelo([30, 30, 30, 30, 10], [0, 1, 2, 3, 4])
