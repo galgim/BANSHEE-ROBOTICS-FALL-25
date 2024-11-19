@@ -92,12 +92,14 @@ Command_dict = {
 }
 
 def main(args=None):
-    startsetup
+    startsetup()
 
 
 if __name__ == '__main__':
 
-    main()# TOP_BVM = 0
+    main()
+    
+# TOP_BVM = 0
 # BOT_BVM = 1
 # DRONE_BAT = 2
 
