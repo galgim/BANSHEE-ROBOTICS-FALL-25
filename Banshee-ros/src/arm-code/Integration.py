@@ -91,7 +91,7 @@ def Open():
 # Setup initial motor positions
 def startsetup():
     print("setting up")
-    motor.dxlSetVelo([30, 30, 10, 30, 10], [0, 1, 2, 3, 4])
+    motor.dxlSetVelo([30, 30, 30, 30, 10], [0, 1, 2, 3, 4])
     motor.simMotorRun([224, 222, 347, 139], [1, 2, 3, 4])
     time.sleep(1)
 
