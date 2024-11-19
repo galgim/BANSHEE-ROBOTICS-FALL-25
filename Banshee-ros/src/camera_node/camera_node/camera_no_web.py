@@ -20,7 +20,7 @@ class CameraNode(Node):
         Bool, 'stepperDone', self.stepperSubscriber, 10)
 
         self.destinationTrue = self.create_publisher(
-        Bool, 'DestinationConfirm', 10)
+        Int8, 'DestinationConfirm', 10)
 
         self.destinationFalse = self.create_publisher(
         Int32, 'DestinationFalse', 10)
@@ -78,8 +78,19 @@ class CameraNode(Node):
                         # Publisher logic
                         if self.sendFrame:
                             if abs(distance) <= 1:
-                                msg = Bool()
-                                msg.data = True
+                                msg = Int8()
+                                match(self.arucoID):
+                                    case 0,1,2,3:
+                                        msg.data = 0
+                                        break
+                                    case 4,5,6,7:
+                                        msg.data = 1
+                                        break
+                                    case self.arucoID:
+                                        msg.data = 2
+                                        break
+
+
                                 self.destinationTrue.publish(msg)
                                 self.arucoID = None
                             else:

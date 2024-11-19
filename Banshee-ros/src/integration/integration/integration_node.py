@@ -97,12 +97,9 @@ class IntegrationNode(Node):
         self.run_timer = self.create_timer(0.1, self.run)
 
     def done_callback(self, msg):
-      self.get_logger().info("Callback triggered, message received.")
       self.start_signal_received = True
       self.batteryLevel = msg.data
-
-      if self.start_signal_received:
-          self.get_logger().info("Received 'done' signal from Camera Node. Integration Node is now ready to execute commands.")
+      self.get_logger().info(f"Received batteryLevel {self.batteryLevel} from Camera Node. Integration Node is now ready to execute commands.")
 
     def run(self): 
       if self.start_signal_received and self.mode == 0:
