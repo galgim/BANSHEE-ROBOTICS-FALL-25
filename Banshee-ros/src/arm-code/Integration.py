@@ -56,6 +56,20 @@ def Drone_grab():
     motor.simMotorRun([132, 347, 54],[2, 3, 4])
     time.sleep(0.1)
 
+def Push_low():    
+    start_time = time.time()
+    print("Push in low sequence")
+    motor.dxlSetVelo([30, 30, 10, 10, 10], [0, 1, 2, 3, 4])
+    motor.simMotorRun([115, 280, 60],[2, 3, 4]) # guesstimate
+    time.sleep(0.1)
+
+def Push_high():    
+    start_time = time.time()
+    print("Push in low sequence")
+    motor.dxlSetVelo([30, 30, 10, 10, 10], [0, 1, 2, 3, 4])
+    motor.simMotorRun([150, 300, 90],[2, 3, 4]) # guesstimate
+    time.sleep(0.1)
+
 
 # Close Claw
 def Close():
@@ -85,6 +99,7 @@ def startsetup():
 Command_dict = {
     "grab high": Grab_high,
     "grab low": Grab_low,
+    "push low": Push_low,
     "drone": Drone_grab,
     "close": Close,
     "open": Open,
