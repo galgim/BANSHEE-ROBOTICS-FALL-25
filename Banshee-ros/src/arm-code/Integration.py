@@ -59,8 +59,9 @@ def Drone_grab():
 def Push_low():    
     start_time = time.time()
     print("Push in low sequence")
-    motor.dxlSetVelo([30, 30, 10, 10, 10], [0, 1, 2, 3, 4])
-    motor.simMotorRun([115, 280, 60],[2, 3, 4]) # guesstimate
+    motor.dxlSetVelo([30, 20, 10], [2, 3, 4])
+    # motor.simMotorRun([222, 347, 139], [1, 2, 3, 4])
+    motor.simMotorRun([115, 300, 60],[2, 3, 4]) # guesstimate
     time.sleep(0.1)
 
 def Push_high():    
@@ -107,7 +108,7 @@ Command_dict = {
 }
 
 def main(args=None):
-    startsetup()
+    
     Push_low()
 
 
