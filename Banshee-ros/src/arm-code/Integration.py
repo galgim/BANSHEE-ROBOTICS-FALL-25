@@ -91,7 +91,13 @@ Command_dict = {
     "setup": startsetup,
 }
 
-# TOP_BVM = 0
+def main(args=None):
+    startsetup
+
+
+if __name__ == '__main__':
+
+    main()# TOP_BVM = 0
 # BOT_BVM = 1
 # DRONE_BAT = 2
 
