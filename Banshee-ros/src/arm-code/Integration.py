@@ -93,6 +93,9 @@ Command_dict = {
 
 def main(args=None):
     startsetup()
+    Open()
+    time.sleep(3)
+    Close()
 
 
 if __name__ == '__main__':
