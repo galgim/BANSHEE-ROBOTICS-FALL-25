@@ -70,7 +70,11 @@ def Push_low():
     # motor.dxlSetVelo([10, 8, 10], [2, 3, 4])
     # motor.simMotorRun([100, 320, 50],[2, 3, 4])
 
-    motor.simMotorRun([310, 65],[3, 4])
+    # # slight push
+    # motor.simMotorRun([310, 65],[3, 4])
+
+    motor.simMotorRun([290, 75],[3, 4])
+
 
 
 
