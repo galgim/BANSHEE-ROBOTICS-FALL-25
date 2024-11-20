@@ -61,25 +61,24 @@ def Push_low():
     start_time = time.time()
     print("Push in low sequence")
     motor.dxlSetVelo([10, 10, 10], [2, 3, 4])
-    # motor.simMotorRun([132, 343, 70],[2, 3, 4]) # guesstimate
-    # time.sleep(5)
+    motor.simMotorRun([132, 343, 70],[2, 3, 4]) # guesstimate
+    time.sleep(5)
 
-    # motor.dxlSetVelo([10, 8, 5], [2, 3, 4])
-    # motor.simMotorRun([110, 330, 60],[2, 3, 4])
+    motor.dxlSetVelo([10, 8, 5], [2, 3, 4])
+    motor.simMotorRun([110, 330, 60],[2, 3, 4])
+    time.sleep(2)
+    motor.dxlSetVelo([10, 8, 10], [2, 3, 4])
+    motor.simMotorRun([100, 320, 50],[2, 3, 4])
+    time.sleep(1)
+    # slight push
+    motor.simMotorRun([310, 65],[3, 4])
+    time.sleep(1)
+    motor.simMotorRun([290, 75],[3, 4])
+    time.sleep(1)
+    motor.simMotorRun([90, 270, 90],[2, 3, 4])
+    time.sleep(1)
+    motor.simMotorRun([80, 260, 95],[2, 3, 4])
 
-    # motor.dxlSetVelo([10, 8, 10], [2, 3, 4])
-    # motor.simMotorRun([100, 320, 50],[2, 3, 4])
-
-    # # slight push
-    # motor.simMotorRun([310, 65],[3, 4])
-
-    # motor.simMotorRun([290, 75],[3, 4])
-
-    # motor.simMotorRun([90, 270, 90],[2, 3, 4])
-
-    # motor.simMotorRun([80, 260, 95],[2, 3, 4])
-
-    motor.simMotorRun([70, 230, 100],[2, 3, 4])
 
 
 
