@@ -60,8 +60,9 @@ def Push_low():
     start_time = time.time()
     print("Push in low sequence")
     motor.dxlSetVelo([5, 5, 5], [2, 3, 4])
-    motor.simMotorRun([90, 287, 64],[2, 3, 4]) # guesstimate
+    motor.simMotorRun([132, 287, 70],[2, 3, 4]) # guesstimate
     time.sleep(0.1)
+    motor.simMotorRun([90, 287, 70],[2, 3, 4]) # guesstimate
     time.sleep(0.1)
 
 def Push_high():    
