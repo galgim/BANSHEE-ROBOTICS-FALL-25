@@ -64,7 +64,7 @@ def Push_low():
     motor.simMotorRun([132, 343, 70],[2, 3, 4]) # guesstimate
     time.sleep(5)
     motor.dxlSetVelo([10, 8, 5], [2, 3, 4])
-    motor.simMotorRun([95, 320, 83],[2, 3, 4])
+    motor.simMotorRun([90, 340, 90],[2, 3, 4])
 
 def Push_high():    
     start_time = time.time()
