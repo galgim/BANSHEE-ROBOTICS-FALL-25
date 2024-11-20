@@ -59,25 +59,25 @@ class StepperMotorNode(Node):
     def initial_movement(self):
         try:
             GPIO.output(DIR, CW)
-            for _ in range(COLUMN1):                #Column 1           
+            for _ in range(COLUMN1):                        #Column 1           
                     GPIO.output(STEP, GPIO.HIGH)
                     sleep(DELAY) 
                     GPIO.output(STEP, GPIO.LOW)
                     sleep(DELAY)
             sleep(0.5)
-            for _ in range(COLUMN2):                #Column 2           
+            for _ in range(COLUMN2-COLUMN1):                #Column 2           
                     GPIO.output(STEP, GPIO.HIGH)
                     sleep(DELAY) 
                     GPIO.output(STEP, GPIO.LOW)
                     sleep(DELAY)
             sleep(0.5)
-            for _ in range(COLUMN3):                #Column 3           
+            for _ in range(COLUMN3-COLUMN2):                #Column 3           
                     GPIO.output(STEP, GPIO.HIGH)
                     sleep(DELAY) 
                     GPIO.output(STEP, GPIO.LOW)
                     sleep(DELAY)
             sleep(0.5)
-            for _ in range(COLUMN4):                #Column 4           
+            for _ in range(COLUMN4-COLUMN3):                #Column 4           
                     GPIO.output(STEP, GPIO.HIGH)
                     sleep(DELAY) 
                     GPIO.output(STEP, GPIO.LOW)
