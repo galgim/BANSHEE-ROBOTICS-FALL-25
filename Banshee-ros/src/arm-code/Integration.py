@@ -61,10 +61,13 @@ def Push_low():
     start_time = time.time()
     print("Push in low sequence")
     motor.dxlSetVelo([10, 10, 10], [2, 3, 4])
-    motor.simMotorRun([132, 343, 70],[2, 3, 4]) # guesstimate
-    time.sleep(5)
-    motor.dxlSetVelo([10, 8, 5], [2, 3, 4])
-    motor.simMotorRun([110, 330, 60],[2, 3, 4])
+    # motor.simMotorRun([132, 343, 70],[2, 3, 4]) # guesstimate
+    # time.sleep(5)
+    # motor.dxlSetVelo([10, 8, 5], [2, 3, 4])
+    # motor.simMotorRun([110, 330, 60],[2, 3, 4])
+    motor.dxlSetVelo([10, 8, 10], [2, 3, 4])
+    motor.simMotorRun([100, 330, 50],[2, 3, 4])
+
 
 ########
 
@@ -112,8 +115,8 @@ Command_dict = {
 }
 
 def main(args=None):
-    startsetup()
-    Close()
+    # startsetup()
+    # Close()
     time.sleep(3)
     Push_low()
     
