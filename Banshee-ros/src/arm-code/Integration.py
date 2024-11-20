@@ -52,9 +52,12 @@ def Grab_low():
 def Drone_grab():
     start_time = time.time()
     print("Grabbing drone")
-    motor.dxlSetVelo([30, 30, 10, 10, 10], [0, 1, 2, 3, 4])
+    motor.dxlSetVelo([10, 10, 10], [2, 3, 4])
     motor.simMotorRun([132, 347, 54],[2, 3, 4])
-    time.sleep(0.1)
+    time.sleep(4)
+    motor.dxlSetVelo([10, 10, 5], [2, 3, 4])
+    motor.simMotorRun([110, 330, 74],[2, 3, 4])
+
 
 def Push_low():    
     start_time = time.time()
