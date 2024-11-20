@@ -77,7 +77,10 @@ def Push_low():
 
     # motor.simMotorRun([90, 270, 90],[2, 3, 4])
 
-    motor.simMotorRun([80, 260, 95],[2, 3, 4])
+    # motor.simMotorRun([80, 260, 95],[2, 3, 4])
+
+    motor.simMotorRun([70, 240, 100],[2, 3, 4])
+
 
 
 
