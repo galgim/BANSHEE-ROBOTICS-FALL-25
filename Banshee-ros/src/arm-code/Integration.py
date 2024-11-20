@@ -64,7 +64,7 @@ def Push_low():
     motor.simMotorRun([132, 343, 70],[2, 3, 4]) # guesstimate
     time.sleep(5)
     motor.dxlSetVelo([10, 8, 5], [2, 3, 4])
-    motor.simMotorRun([100, 320, 60],[2, 3, 4])
+    motor.simMotorRun([110, 330, 60],[2, 3, 4])
 
 ########
 
