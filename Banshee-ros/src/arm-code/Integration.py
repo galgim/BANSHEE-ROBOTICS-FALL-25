@@ -55,7 +55,7 @@ def Drone_grab():
     motor.dxlSetVelo([10, 10, 10], [2, 3, 4])
     motor.simMotorRun([132, 347, 54],[2, 3, 4])
 
-
+#######
 
 def Push_low():    
     start_time = time.time()
@@ -64,7 +64,9 @@ def Push_low():
     motor.simMotorRun([132, 343, 70],[2, 3, 4]) # guesstimate
     time.sleep(5)
     motor.dxlSetVelo([10, 8, 5], [2, 3, 4])
-    motor.simMotorRun([90, 340, 60],[2, 3, 4])
+    motor.simMotorRun([100, 320, 60],[2, 3, 4])
+
+########
 
 def Push_high():    
     start_time = time.time()
