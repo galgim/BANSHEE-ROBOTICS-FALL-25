@@ -23,41 +23,47 @@ class StepperMotorNode(Node):
     def __init__(self):
         super().__init__('stepper_motor_node')
         
+        # GPIO Setup
         GPIO.setmode(GPIO.BOARD)
         GPIO.setup(DIR, GPIO.OUT)
         GPIO.setup(STEP, GPIO.OUT)
         
+        # Attributes
         self.arucoID = None
         self.distance = None
-        self.stepCoefficient = 1000/296
+        self.stepCoefficient = 1000 / 296  # Conversion factor for distance to steps
         self.position = 0
         
         # ROS2 Publisher and Subscribers
         self.initialSubscription = self.create_subscription(
-        Int8, 'arucoID', self.initialSubscriber, 10)
+            Int8, 'arucoID', self.initialSubscriber, 10)
 
         self.distanceSubscription = self.create_subscription(
-        Int32, 'DestinationFalse', self.distanceSubscriber, 10)
+            Int32, 'DestinationFalse', self.distanceSubscriber, 10)
 
         self.done_publisher = self.create_publisher(Bool, 'stepperDone', 10)
 
         self.get_logger().info('Stepper Motor Node has been started and is ready for commands.')
 
-        self.initial_movement()
-
     def initialSubscriber(self, msg):
+        """Callback for receiving Aruco IDs."""
         self.arucoID = msg.data
         self.get_logger().info(f"Received Aruco ID: {self.arucoID}")
-
-        pass # Move to initial position
+        self.initial_movement()
 
     def distanceSubscriber(self, msg):
+        """Callback for receiving distance to move the motor."""
         self.distance = msg.data
         self.get_logger().info(f"Received distance: {self.distance}")
         self.run_motor_cycle()
 
     def initial_movement(self):
+        """Move the stepper motor to the column associated with the received Aruco ID."""
         try:
+            if self.arucoID is None:
+                self.get_logger().warn("Aruco ID not set. Skipping initial movement.")
+                return
+
             # Mapping Aruco IDs to columns
             aruco_to_column = {
                 0: COLUMN4, 1: COLUMN4,
@@ -73,7 +79,6 @@ class StepperMotorNode(Node):
                 self.get_logger().warn(f"Invalid Aruco ID: {self.arucoID}. Skipping movement.")
                 return
 
-            # Log the target column
             self.get_logger().info(f"Moving to column associated with Aruco ID {self.arucoID}.")
 
             # Move to the target column
@@ -102,25 +107,27 @@ class StepperMotorNode(Node):
             self.cleanup()
 
     def run_motor_cycle(self):
+        """Move the motor based on the received distance."""
         try:
-            if self.distance != None:
-                if self.distance > 0:
-                    GPIO.output(DIR, CW)
-                else:
-                    GPIO.output(DIR, CCW)
-                
-                # Max steps in CW 4050
+            if self.distance is not None:
+                if self.distance > 4050 or self.distance < -4050:
+                    self.get_logger().warn("Distance out of range. Movement skipped.")
+                    return
+
+                GPIO.output(DIR, CW if self.distance > 0 else CCW)
+
                 steps = round(abs(self.stepCoefficient * self.distance))
-                for _ in range(steps):                   
+                self.get_logger().info(f"Running motor cycle for {steps} steps.")
+
+                for _ in range(steps):
                     GPIO.output(STEP, GPIO.HIGH)
-                    sleep(DELAY) 
+                    sleep(DELAY)
                     GPIO.output(STEP, GPIO.LOW)
                     sleep(DELAY)
-                
 
                 sleep(1)
                 # Publish cycle complete signal
-                self.get_logger().info('Cycle complete, publishing signal to camera')
+                self.get_logger().info('Cycle complete, publishing signal to camera.')
                 cycle_complete_msg = Bool()
                 cycle_complete_msg.data = True
                 self.done_publisher.publish(cycle_complete_msg)
@@ -129,7 +136,8 @@ class StepperMotorNode(Node):
             self.cleanup()
 
     def cleanup(self):
-        self.get_logger().info('Cleaning up...')
+        """Cleanup GPIO on shutdown."""
+        self.get_logger().info('Cleaning up GPIO...')
         GPIO.cleanup()
 
 
@@ -149,7 +157,6 @@ def main(args=None):
 
 if __name__ == '__main__':
     main()
-
     
 # import RPi.GPIO as GPIO
 # from time import sleep
