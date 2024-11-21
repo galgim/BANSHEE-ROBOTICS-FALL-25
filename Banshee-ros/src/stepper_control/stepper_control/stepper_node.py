@@ -58,40 +58,42 @@ class StepperMotorNode(Node):
 
     def initial_movement(self):
         try:
+            # Mapping Aruco IDs to columns
+            aruco_to_column = {
+                0: COLUMN4, 1: COLUMN4,
+                2: COLUMN3, 3: COLUMN3,
+                4: COLUMN2, 5: COLUMN2,
+                6: COLUMN1, 7: COLUMN1
+            }
+
+            # Determine the target column based on the received Aruco ID
+            target_steps = aruco_to_column.get(self.arucoID, None)
+
+            if target_steps is None:
+                self.get_logger().warn(f"Invalid Aruco ID: {self.arucoID}. Skipping movement.")
+                return
+
+            # Log the target column
+            self.get_logger().info(f"Moving to column associated with Aruco ID {self.arucoID}.")
+
+            # Move to the target column
             GPIO.output(DIR, CW)
-            for _ in range(COLUMN1):                        #Column 1           
-                    GPIO.output(STEP, GPIO.HIGH)
-                    sleep(DELAY) 
-                    GPIO.output(STEP, GPIO.LOW)
-                    sleep(DELAY)
-            sleep(0.5)
-            for _ in range(COLUMN2-COLUMN1):                #Column 2           
-                    GPIO.output(STEP, GPIO.HIGH)
-                    sleep(DELAY) 
-                    GPIO.output(STEP, GPIO.LOW)
-                    sleep(DELAY)
-            sleep(0.5)
-            for _ in range(COLUMN3-COLUMN2):                #Column 3           
-                    GPIO.output(STEP, GPIO.HIGH)
-                    sleep(DELAY) 
-                    GPIO.output(STEP, GPIO.LOW)
-                    sleep(DELAY)
-            sleep(0.5)
-            for _ in range(COLUMN4-COLUMN3):                #Column 4           
-                    GPIO.output(STEP, GPIO.HIGH)
-                    sleep(DELAY) 
-                    GPIO.output(STEP, GPIO.LOW)
-                    sleep(DELAY)
-            sleep(1)
+            for _ in range(target_steps):
+                GPIO.output(STEP, GPIO.HIGH)
+                sleep(DELAY)
+                GPIO.output(STEP, GPIO.LOW)
+                sleep(DELAY)
+
+            # Return to origin
             GPIO.output(DIR, CCW)
-            for _ in range(COLUMN4):                # Go back to origin       
-                    GPIO.output(STEP, GPIO.HIGH)
-                    sleep(DELAY) 
-                    GPIO.output(STEP, GPIO.LOW)
-                    sleep(DELAY)
-            
+            for _ in range(target_steps):
+                GPIO.output(STEP, GPIO.HIGH)
+                sleep(DELAY)
+                GPIO.output(STEP, GPIO.LOW)
+                sleep(DELAY)
+
             sleep(1)
-            self.get_logger().info('Cycle complete, publishing signal to camera')
+            self.get_logger().info('Cycle complete, publishing signal to camera.')
             cycle_complete_msg = Bool()
             cycle_complete_msg.data = True
             self.done_publisher.publish(cycle_complete_msg)
@@ -147,6 +149,8 @@ def main(args=None):
 
 if __name__ == '__main__':
     main()
+
+    
 # import RPi.GPIO as GPIO
 # from time import sleep
 
