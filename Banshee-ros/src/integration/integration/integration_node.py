@@ -192,7 +192,7 @@ class IntegrationNode(Node):
 
     def done_callback(self, msg):
       self.start_signal_received = True
-      self.batteryLevel = msg.data
+    #   self.batteryLevel = msg.data
       self.get_logger().info(f"Received batteryLevel {self.batteryLevel} from Camera Node. Integration Node is now ready to execute commands.")
 
     def run(self): 
