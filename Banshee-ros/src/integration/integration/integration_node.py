@@ -201,6 +201,7 @@ class IntegrationNode(Node):
         # pull_out(self.batteryLevel)
         startsetup()
         Close()
+        Push_low()
         self.mode = 1
         self.start_signal_received = False
         msg = Bool()
