@@ -79,16 +79,17 @@ class CameraNode(Node):
                         if self.sendFrame:
                             if abs(distance) <= 1:
                                 msg = Int8()
-                                match(self.arucoID):
-                                    case 0,1,2,3:
-                                        msg.data = 0
-                                        break
-                                    case 4,5,6,7:
-                                        msg.data = 1
-                                        break
-                                    case self.arucoID:
-                                        msg.data = 2
-                                        break
+                                self.get_logger().info(f"Publishing DestinationConfirm with ID: {self.arucoID}")
+                                # match(self.arucoID):
+                                #     case 0,1,2,3:
+                                #         msg.data = 0
+                                #         break
+                                #     case 4,5,6,7:
+                                #         msg.data = 1
+                                #         break
+                                #     case self.arucoID:
+                                #         msg.data = 2
+                                #         break
 
 
                                 self.destinationTrue.publish(msg)
