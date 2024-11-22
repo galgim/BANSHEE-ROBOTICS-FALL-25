@@ -125,7 +125,7 @@ Command_dict = {
 
 def main(args=None):
     startsetup()
-    # Close()
+    Close()
     # time.sleep(3)
     # Push_low()
     
