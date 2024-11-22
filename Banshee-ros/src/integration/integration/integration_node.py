@@ -171,12 +171,6 @@ Command_dict = {
     "setup": startsetup,
 }
 
-# def main(args=None):
-#     startsetup()
-#     Close()
-#     # time.sleep(3)
-#     # Push_low()
-    
 class IntegrationNode(Node):
     def __init__(self):
         super().__init__('Integration_Node')
