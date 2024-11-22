@@ -20,7 +20,7 @@ class CameraNode(Node):
         Bool, 'stepperDone', self.stepperSubscriber, 10)
 
         self.destinationTrue = self.create_publisher(
-        Int8, 'DestinationConfirm', self.stepperdone, 10)
+        Int8, 'DestinationConfirm', 10)
 
         self.destinationFalse = self.create_publisher(
         Int32, 'DestinationFalse', 10)
@@ -30,9 +30,6 @@ class CameraNode(Node):
         self.camera_thread.start()
 
         self.get_logger().info("Camera node initialized")
-
-    def stepperdone(self, msg):
-        self.get_logger().info(f"stepper done activate arm")
 
     def arucoSubscriber(self, msg):
         self.arucoID = int(msg.data)
