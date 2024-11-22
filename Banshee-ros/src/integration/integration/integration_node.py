@@ -48,39 +48,135 @@ DRONE_BAT = 2
 # Lower BVM batteries when dev = 1
 # Drone batteries when dev = 2
 
-def pull_out(dev):
-    if dev == 0:
-        motor.dxlSetVelo([30, 30, 30, 30, 10], [0, 1, 2, 3, 4])
-        # motor.simMotorRun([x,x,x,x,x],[0,1,2,3,4])
-        time.sleep(1)
-    elif dev == 1:
-        motor.dxlSetVelo([30, 30, 30, 30, 10], [0, 1, 2, 3, 4])
-        # motor.simMotorRun([x,x,x,x,x],[0,1,2,3,4])
-        time.sleep(1)
-    elif dev == 2:
-        motor.dxlSetVelo([30, 30, 30, 30, 10], [0, 1, 2, 3, 4])
-        # motor.simMotorRun([x,x,x,x,x],[0,1,2,3,4])
-        time.sleep(1)
-    else:
-        print("INVALID")
+# def pull_out(dev):
+#     if dev == 0:
+#         motor.dxlSetVelo([30, 30, 30, 30, 10], [0, 1, 2, 3, 4])
+#         # motor.simMotorRun([x,x,x,x,x],[0,1,2,3,4])
+#         time.sleep(1)
+#     elif dev == 1:
+#         motor.dxlSetVelo([30, 30, 30, 30, 10], [0, 1, 2, 3, 4])
+#         # motor.simMotorRun([x,x,x,x,x],[0,1,2,3,4])
+#         time.sleep(1)
+#     elif dev == 2:
+#         motor.dxlSetVelo([30, 30, 30, 30, 10], [0, 1, 2, 3, 4])
+#         # motor.simMotorRun([x,x,x,x,x],[0,1,2,3,4])
+#         time.sleep(1)
+#     else:
+#         print("INVALID")
 
-def push_in(dev):
-    if dev == 0:
-        motor.dxlSetVelo([30, 30, 30, 30, 10], [0, 1, 2, 3, 4])
-        # motor.simMotorRun([x,x,x,x,x],[0,1,2,3,4])
-        time.sleep(1)
-    elif dev == 1:
-        motor.dxlSetVelo([30, 30, 30, 30, 10], [0, 1, 2, 3, 4])
-        # motor.simMotorRun([x,x,x,x,x],[0,1,2,3,4])
-        time.sleep(1)
-    elif dev == 2:
-        motor.dxlSetVelo([30, 30, 30, 30, 10], [0, 1, 2, 3, 4])
-        # motor.simMotorRun([x,x,x,x,x],[0,1,2,3,4])
-        time.sleep(1)
-    else:
-        print("INVALID")
+# def push_in(dev):
+#     if dev == 0:
+#         motor.dxlSetVelo([30, 30, 30, 30, 10], [0, 1, 2, 3, 4])
+#         # motor.simMotorRun([x,x,x,x,x],[0,1,2,3,4])
+#         time.sleep(1)
+#     elif dev == 1:
+#         motor.dxlSetVelo([30, 30, 30, 30, 10], [0, 1, 2, 3, 4])
+#         # motor.simMotorRun([x,x,x,x,x],[0,1,2,3,4])
+#         time.sleep(1)
+#     elif dev == 2:
+#         motor.dxlSetVelo([30, 30, 30, 30, 10], [0, 1, 2, 3, 4])
+#         # motor.simMotorRun([x,x,x,x,x],[0,1,2,3,4])
+#         time.sleep(1)
+#     else:
+#         print("INVALID")
 
 
+# Grab high
+def Grab_high():
+    start_time = time.time()
+    print("Grabbing high")
+    motor.dxlSetVelo([30, 30, 10, 10, 10], [0, 1, 2, 3, 4])
+    motor.simMotorRun([170, 330, 90],[2, 3, 4])
+    time.sleep(0.1)
+
+# Grab low
+def Grab_low():
+    start_time = time.time()
+    print("Grabbing low")
+    motor.dxlSetVelo([30, 30, 10, 10, 10], [0, 1, 2, 3, 4])
+    motor.simMotorRun([132, 347, 54],[2, 3, 4])
+    time.sleep(0.1)
+
+def Drone_grab():
+    start_time = time.time()
+    print("Grabbing drone")
+    motor.dxlSetVelo([10, 10, 10], [2, 3, 4])
+    motor.simMotorRun([132, 347, 54],[2, 3, 4])
+
+#######
+
+def Push_low():    
+    start_time = time.time()
+    print("Push in low sequence")
+    motor.dxlSetVelo([10, 10, 10], [2, 3, 4])
+    motor.simMotorRun([132, 343, 70],[2, 3, 4]) # guesstimate
+    time.sleep(5)
+    motor.dxlSetVelo([10, 8, 5], [2, 3, 4])
+    motor.simMotorRun([110, 330, 60],[2, 3, 4])
+    time.sleep(2)
+    motor.dxlSetVelo([10, 8, 10], [2, 3, 4])
+    motor.simMotorRun([100, 320, 50],[2, 3, 4])
+    time.sleep(1)
+    # slight push
+    motor.simMotorRun([310, 65],[3, 4])
+    time.sleep(1)
+    motor.simMotorRun([290, 75],[3, 4])
+    time.sleep(1)
+    motor.simMotorRun([90, 270, 90],[2, 3, 4])
+    time.sleep(1)
+    motor.simMotorRun([80, 260, 95],[2, 3, 4])
+
+########
+
+def Push_high():    
+    start_time = time.time()
+    print("Push in low sequence")
+    motor.dxlSetVelo([30, 30, 10, 10, 10], [0, 1, 2, 3, 4])
+    motor.simMotorRun([120, 250, 80],[2, 3, 4]) # guesstimate
+    time.sleep(0.1)
+
+
+# Close Claw
+def Close():
+    start_time = time.time()
+    print("close claw")
+    motor.dxlSetVelo([30, 30, 30, 30, 10], [0, 1, 2, 3, 4])
+    motor.simMotorRun([108],[0])
+    time.sleep(1)
+    # motor.simMotorRun([134],[1])
+
+#Open Claw
+def Open():
+    start_time = time.time()
+    print("open claw")
+    motor.dxlSetVelo([30, 30, 30, 30, 10], [0, 1, 2, 3, 4])
+    motor.simMotorRun([45],[0])
+    time.sleep(1)
+
+# Setup initial motor positions
+def startsetup():
+    print("setting up")
+    motor.dxlSetVelo([30, 30, 30, 30, 10], [0, 1, 2, 3, 4])
+    motor.simMotorRun([224, 222, 347, 139], [1, 2, 3, 4])
+    time.sleep(1)
+
+# Dictionary mapping commands to functions
+Command_dict = {
+    "grab high": Grab_high,
+    "grab low": Grab_low,
+    "push low": Push_low,
+    "drone": Drone_grab,
+    "close": Close,
+    "open": Open,
+    "setup": startsetup,
+}
+
+# def main(args=None):
+#     startsetup()
+#     Close()
+#     # time.sleep(3)
+#     # Push_low()
+    
 class IntegrationNode(Node):
     def __init__(self):
         super().__init__('Integration_Node')
@@ -108,7 +204,9 @@ class IntegrationNode(Node):
     def run(self): 
       if self.start_signal_received and self.mode == 0:
         # Proceed to command execution after receiving 'done' signal
-        pull_out(self.batteryLevel)
+        # pull_out(self.batteryLevel)
+        startsetup()
+        Close()
         self.mode = 1
         self.start_signal_received = False
         msg = Bool()
@@ -117,7 +215,9 @@ class IntegrationNode(Node):
 
       elif self.start_signal_received and self.mode == 1:
         # Proceed to command execution after receiving 'done' signal
-        push_in(self.batteryLevel)
+        # push_in(self.batteryLevel)
+        startsetup()
+        Close()
         self.mode = 0
         self.start_signal_received = False
         msg = Bool()
