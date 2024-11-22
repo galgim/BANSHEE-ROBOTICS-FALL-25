@@ -1,0 +1,18 @@
+{
+    "python.autoComplete.extraPaths": [
+        "/home/ubuntu/BANSHEE-Mechatronics-SPR24/Banshee-ros/install/stepper_control/lib/python3.10/site-packages",
+        "/home/ubuntu/BANSHEE-Mechatronics-SPR24/Banshee-ros/install/integration/lib/python3.10/site-packages",
+        "/home/ubuntu/BANSHEE-Mechatronics-SPR24/Banshee-ros/install/camera_node/lib/python3.10/site-packages",
+        "/home/ubuntu/BANSHEE-Mechatronics-SPR24/Banshee-ros/install/bvm_node/lib/python3.10/site-packages",
+        "/opt/ros/humble/lib/python3.10/site-packages",
+        "/opt/ros/humble/local/lib/python3.10/dist-packages"
+    ],
+    "python.analysis.extraPaths": [
+        "/home/ubuntu/BANSHEE-Mechatronics-SPR24/Banshee-ros/install/stepper_control/lib/python3.10/site-packages",
+        "/home/ubuntu/BANSHEE-Mechatronics-SPR24/Banshee-ros/install/integration/lib/python3.10/site-packages",
+        "/home/ubuntu/BANSHEE-Mechatronics-SPR24/Banshee-ros/install/camera_node/lib/python3.10/site-packages",
+        "/home/ubuntu/BANSHEE-Mechatronics-SPR24/Banshee-ros/install/bvm_node/lib/python3.10/site-packages",
+        "/opt/ros/humble/lib/python3.10/site-packages",
+        "/opt/ros/humble/local/lib/python3.10/dist-packages"
+    ]
+}
