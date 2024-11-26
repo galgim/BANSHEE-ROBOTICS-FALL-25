@@ -172,7 +172,10 @@ CW = 1   # Clockwise Rotation
 CCW = 0  # Counter Clockwise Rotation
 
 # Set Positions in BTP
-
+COLUMN1 = 463
+COLUMN2 = 1481
+COLUMN3 = 2492
+COLUMN4 = 3510
 
 
 class StepperMotorNode(Node):
@@ -214,12 +217,17 @@ class StepperMotorNode(Node):
 
     def initial_movement(self):
         try:
-            GPIO.output(DIR, CW)
-            for _ in range(1000):                   
-                    GPIO.output(STEP, GPIO.HIGH)
-                    sleep(0.001) 
-                    GPIO.output(STEP, GPIO.LOW)
-                    sleep(0.001)
+            if self.arucoID is None:
+                self.get_logger().warn("Aruco ID not set. Skipping initial movement.")
+                return
+
+            # Mapping Aruco IDs to columns
+            aruco_to_column = {
+                0: COLUMN1, 4: COLUMN1,
+                1: COLUMN2, 5: COLUMN2,
+                2: COLUMN3, 6: COLUMN3,
+                3: COLUMN4, 7: COLUMN4
+            }
 
             sleep(1)
             self.get_logger().info('Cycle complete, publishing signal to camera')
