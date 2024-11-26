@@ -211,8 +211,7 @@ class StepperMotorNode(Node):
                 3: COLUMN4, 7: COLUMN4
             }
 
-        self.run_motor_cycle(round(aruco_to_column.get(arucoID, None) / self.stepCoefficient))
-
+        self.run_motor_cycle(aruco_to_column.get(arucoID, None))
     def distanceSubscriber(self, msg):
         distance = msg.data
         self.get_logger().info(f"Received distance: {distance}")
@@ -222,6 +221,7 @@ class StepperMotorNode(Node):
     def run_motor_cycle(self, newPosition):
         try:
             if newPosition is not None:
+                self.get_logger().info(str(newPosition) + " is new position")
                 # Max steps in CW 4050
                 if newPosition - self.position > 4050 or newPosition - self.position < 0:
                     self.get_logger().warn("Distance out of range. Movement skipped.")
