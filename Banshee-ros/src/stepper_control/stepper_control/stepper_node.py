@@ -211,7 +211,7 @@ class StepperMotorNode(Node):
                 3: COLUMN4, 7: COLUMN4
             }
 
-        self.run_motor_cycle(aruco_to_column.get(self.arucoID, None) / self.stepCoefficient)
+        self.run_motor_cycle(aruco_to_column.get(arucoID, None) / self.stepCoefficient)
 
     def distanceSubscriber(self, msg):
         distance = msg.data
