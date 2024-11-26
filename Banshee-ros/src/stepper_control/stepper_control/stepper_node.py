@@ -220,14 +220,21 @@ class StepperMotorNode(Node):
 
     def run_motor_cycle(self, distance):
         try:
-            if distance != None:
+            if distance is not None:
+                steps = round(abs(self.stepCoefficient * distance))
+
+                # Max steps in CW 4050
+                if self.position + steps > 4050 or self.position + steps < 0:
+                    self.get_logger().warn("Distance out of range. Movement skipped.")
+                    return
+
+                self.position = self.position + steps
+
                 if distance > 0:
                     GPIO.output(DIR, CW)
                 else:
                     GPIO.output(DIR, CCW)
-                
-                # Max steps in CW 4050
-                steps = round(abs(self.stepCoefficient * distance))
+
                 for _ in range(steps):                   
                     GPIO.output(STEP, GPIO.HIGH)
                     sleep(0.002) 
