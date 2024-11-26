@@ -217,9 +217,9 @@ class StepperMotorNode(Node):
             GPIO.output(DIR, CW)
             for _ in range(1000):                   
                     GPIO.output(STEP, GPIO.HIGH)
-                    sleep(0.003) 
+                    sleep(0.001) 
                     GPIO.output(STEP, GPIO.LOW)
-                    sleep(0.003)
+                    sleep(0.001)
 
             sleep(1)
             self.get_logger().info('Cycle complete, publishing signal to camera')
@@ -242,9 +242,9 @@ class StepperMotorNode(Node):
                 steps = round(abs(self.stepCoefficient * self.distance))
                 for _ in range(steps):                   
                     GPIO.output(STEP, GPIO.HIGH)
-                    sleep(0.003) 
+                    sleep(0.002) 
                     GPIO.output(STEP, GPIO.LOW)
-                    sleep(0.003)
+                    sleep(0.002)
                 
 
                 sleep(1)
