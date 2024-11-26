@@ -186,8 +186,6 @@ class StepperMotorNode(Node):
         GPIO.setup(DIR, GPIO.OUT)
         GPIO.setup(STEP, GPIO.OUT)
         
-        self.arucoID = None
-        self.distance = None
         self.stepCoefficient = 1000/296
         self.position = 0
         
@@ -202,58 +200,39 @@ class StepperMotorNode(Node):
 
         self.get_logger().info('Stepper Motor Node has been started and is ready for commands.')
 
-        self.initial_movement()
-
     def initialSubscriber(self, msg):
-        self.arucoID = msg.data
-        self.get_logger().info(f"Received Aruco ID: {self.arucoID}")
+        arucoID = msg.data
+        self.get_logger().info(f"Received Aruco ID: {arucoID}")
 
-        pass # Move to initial position
-
-    def distanceSubscriber(self, msg):
-        self.distance = msg.data
-        self.get_logger().info(f"Received distance: {self.distance}")
-        self.run_motor_cycle()
-
-    def initial_movement(self):
-        try:
-            if self.arucoID is None:
-                self.get_logger().warn("Aruco ID not set. Skipping initial movement.")
-                return
-
-            # Mapping Aruco IDs to columns
-            aruco_to_column = {
+        aruco_to_column = {
                 0: COLUMN1, 4: COLUMN1,
                 1: COLUMN2, 5: COLUMN2,
                 2: COLUMN3, 6: COLUMN3,
                 3: COLUMN4, 7: COLUMN4
             }
 
-            sleep(1)
-            self.get_logger().info('Cycle complete, publishing signal to camera')
-            cycle_complete_msg = Bool()
-            cycle_complete_msg.data = True
-            self.done_publisher.publish(cycle_complete_msg)
+        self.run_motor_cycle(aruco_to_column.get(self.arucoID, None) / self.stepCoefficient)
 
-        except KeyboardInterrupt:
-            self.cleanup()
+    def distanceSubscriber(self, msg):
+        distance = msg.data
+        self.get_logger().info(f"Received distance: {distance}")
+        self.run_motor_cycle(distance)
 
-    def run_motor_cycle(self):
+    def run_motor_cycle(self, distance):
         try:
-            if self.distance != None:
-                if self.distance > 0:
+            if distance != None:
+                if distance > 0:
                     GPIO.output(DIR, CW)
                 else:
                     GPIO.output(DIR, CCW)
                 
                 # Max steps in CW 4050
-                steps = round(abs(self.stepCoefficient * self.distance))
+                steps = round(abs(self.stepCoefficient * distance))
                 for _ in range(steps):                   
                     GPIO.output(STEP, GPIO.HIGH)
                     sleep(0.002) 
                     GPIO.output(STEP, GPIO.LOW)
                     sleep(0.002)
-                
 
                 sleep(1)
                 # Publish cycle complete signal
@@ -261,7 +240,6 @@ class StepperMotorNode(Node):
                 cycle_complete_msg = Bool()
                 cycle_complete_msg.data = True
                 self.done_publisher.publish(cycle_complete_msg)
-                self.distance = None
         except KeyboardInterrupt:
             self.cleanup()
 
