@@ -211,26 +211,24 @@ class StepperMotorNode(Node):
                 3: COLUMN4, 7: COLUMN4
             }
 
-        self.run_motor_cycle(aruco_to_column.get(arucoID, None) / self.stepCoefficient)
+        self.run_motor_cycle(round(aruco_to_column.get(arucoID, None) / self.stepCoefficient))
 
     def distanceSubscriber(self, msg):
         distance = msg.data
         self.get_logger().info(f"Received distance: {distance}")
-        self.run_motor_cycle(distance)
+        addedSteps = distance * self.stepCoefficient
+        self.run_motor_cycle(round(self.position + addedSteps))
 
-    def run_motor_cycle(self, distance):
+    def run_motor_cycle(self, newPosition):
         try:
-            if distance is not None:
-                steps = round(abs(self.stepCoefficient * distance))
-
+            if newPosition is not None:
                 # Max steps in CW 4050
-                if self.position + steps > 4050 or self.position + steps < 0:
+                if newPosition - self.position > 4050 or newPosition - self.position < 0:
                     self.get_logger().warn("Distance out of range. Movement skipped.")
                     return
 
-                self.position = self.position + steps
-
-                if distance > 0:
+                steps = abs(newPosition - self.position)
+                if steps > 0:
                     GPIO.output(DIR, CW)
                 else:
                     GPIO.output(DIR, CCW)
