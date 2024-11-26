@@ -227,13 +227,14 @@ class StepperMotorNode(Node):
                     self.get_logger().warn("Distance out of range. Movement skipped.")
                     return
 
-                steps = abs(newPosition - self.position)
+                steps = newPosition - self.position
+                self.get_logger().info(steps + " is new position")
                 if steps > 0:
                     GPIO.output(DIR, CW)
                 else:
                     GPIO.output(DIR, CCW)
 
-                for _ in range(steps):                   
+                for _ in range(abs(steps)):                   
                     GPIO.output(STEP, GPIO.HIGH)
                     sleep(0.002) 
                     GPIO.output(STEP, GPIO.LOW)
