@@ -32,6 +32,7 @@ class CameraNode(Node):
         self.get_logger().info("Camera node initialized")
 
     def arucoSubscriber(self, msg):
+        self.sendFrame = False
         self.arucoID = int(msg.data)
         self.get_logger().info(f"Received Aruco ID: {self.arucoID}")
 
@@ -73,7 +74,7 @@ class CameraNode(Node):
                         corner1_x = int(corners[0][0][0])
                         corner2_x = int(corners[0][2][0])
                         middle_x = (corner1_x + corner2_x) // 2
-                        distance = (middle_x - int(width / 2)) * -1
+                        distance = (int(width / 2) - middle_x)
 
                         # Publisher logic
                         if self.sendFrame:

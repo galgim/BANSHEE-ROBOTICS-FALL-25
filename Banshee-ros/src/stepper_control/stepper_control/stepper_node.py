@@ -172,7 +172,7 @@ CW = 1   # Clockwise Rotation
 CCW = 0  # Counter Clockwise Rotation
 
 # Set Positions in BTP
-COLUMN1 = 463
+COLUMN1 = 500
 COLUMN2 = 1481
 COLUMN3 = 2492
 COLUMN4 = 3510
@@ -186,7 +186,7 @@ class StepperMotorNode(Node):
         GPIO.setup(DIR, GPIO.OUT)
         GPIO.setup(STEP, GPIO.OUT)
         
-        self.stepCoefficient = 1000/296
+        self.stepCoefficient = 500/154
         self.position = 0
         
         # ROS2 Publisher and Subscribers
@@ -222,25 +222,27 @@ class StepperMotorNode(Node):
         try:
             if newPosition is not None:
                 self.get_logger().info(str(newPosition) + " is new position")
+
+                steps = newPosition - self.position
+
                 # Max steps in CW 4050
-                if newPosition - self.position > 4050 or newPosition - self.position < 0:
+                if self.position + steps > 4050 or self.position + steps < 0:
                     self.get_logger().warn("Distance out of range. Movement skipped.")
                     return
 
-                steps = newPosition - self.position
-                self.get_logger().info(steps + " is new position")
                 if steps > 0:
                     GPIO.output(DIR, CW)
                 else:
                     GPIO.output(DIR, CCW)
-
                 for _ in range(abs(steps)):                   
                     GPIO.output(STEP, GPIO.HIGH)
                     sleep(0.002) 
                     GPIO.output(STEP, GPIO.LOW)
                     sleep(0.002)
+                
+                self.position = self.position + steps
 
-                sleep(1)
+                sleep(.5)
                 # Publish cycle complete signal
                 self.get_logger().info('Cycle complete, publishing signal to camera')
                 cycle_complete_msg = Bool()
