@@ -103,6 +103,12 @@ def Drone_grab():
     motor.dxlSetVelo([10, 10, 10], [2, 3, 4])
     motor.simMotorRun([132, 347, 54],[2, 3, 4])
 
+def Drone_push():
+    start_time = time.time()
+    print("Pushing drone")
+    motor.dxlSetVelo([10, 10, 10], [2, 3, 4])
+    motor.simMotorRun([132, 347, 54],[2, 3, 4])
+
 #######
 
 def Push_low():    
@@ -192,7 +198,7 @@ class IntegrationNode(Node):
 
     def done_callback(self, msg):
       self.start_signal_received = True
-    #   self.batteryLevel = msg.data
+      self.batteryLevel = msg.data
       self.get_logger().info(f"Received batteryLevel {self.batteryLevel} from Camera Node. Integration Node is now ready to execute commands.")
 
     def run(self): 
@@ -201,7 +207,12 @@ class IntegrationNode(Node):
         # pull_out(self.batteryLevel)
         startsetup()
         Close()
-        Push_low()
+        if self.batteryLevel == 0:  
+          Push_high()
+        elif self.batteryLevel == 1:
+          Push_low()
+        else:
+          Drone_push()
         self.mode = 1
         self.start_signal_received = False
         msg = Bool()

@@ -1,8 +1,8 @@
 import rclpy
 from rclpy.node import Node
 from std_msgs.msg import Bool, Int8
-#drone battery 3-9
-#upper battery 1-3
+#drone battery 8-9
+#upper battery 0-3
 #lower battery 4-7
 #we get drone landed done from gcs node (mode 1)
 #voltage from esp and find lowest aruco with no voltage
@@ -20,7 +20,7 @@ class BVMNode(Node):
         self.done = 0 # flag for each mode
         self.checkModeComplete = False
         self.DroneMarkers = [7, 8]
-        self.arucoID = None
+        self.batteryChamber = None
 
 
 
@@ -38,7 +38,7 @@ class BVMNode(Node):
     
     def arucoIDPublisher(self):
         msg = Int8()
-        msg.data = int(input("Input Aruco Marker: "))
+        msg.data = int(input("Input Battery Chamber: "))
         self.arucoPublisher.publish(msg)
         self.get_logger().info('Sent marker: "%s"' % msg.data)
 
