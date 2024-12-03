@@ -160,7 +160,7 @@
     
 import rclpy
 from rclpy.node import Node
-from std_msgs.msg import Bool, Int32, Int8
+from std_msgs.msg import Bool, Float64, Int8
 import RPi.GPIO as GPIO
 from time import sleep
 
@@ -194,7 +194,7 @@ class StepperMotorNode(Node):
         Int8, 'arucoID', self.initialSubscriber, 10)
 
         self.distanceSubscription = self.create_subscription(
-        Int32, 'DestinationFalse', self.distanceSubscriber, 10)
+        Float64, 'DestinationFalse', self.distanceSubscriber, 10)
 
         self.done_publisher = self.create_publisher(Bool, 'stepperDone', 10)
 
@@ -216,7 +216,7 @@ class StepperMotorNode(Node):
         distance = msg.data
         self.get_logger().info(f"Received distance: {distance}")
         addedSteps = distance * self.stepCoefficient
-        self.run_motor_cycle(round(self.position + addedSteps))
+        self.run_motor_cycle(self.position + addedSteps)
 
     def run_motor_cycle(self, newPosition):
         try:
@@ -234,7 +234,7 @@ class StepperMotorNode(Node):
                     GPIO.output(DIR, CW)
                 else:
                     GPIO.output(DIR, CCW)
-                for _ in range(abs(steps)):                   
+                for _ in range(abs(round(steps))):                   
                     GPIO.output(STEP, GPIO.HIGH)
                     sleep(0.002) 
                     GPIO.output(STEP, GPIO.LOW)

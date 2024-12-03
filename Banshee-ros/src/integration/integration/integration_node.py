@@ -227,8 +227,8 @@ class IntegrationNode(Node):
         self.mode = 0
         self.start_signal_received = False
         msg = Bool()
-        # msg.data = True
-        self.armFinished.publish(True)
+        msg.data = True
+        self.armFinished.publish(msg)
 
 def main(args=None):
     rclpy.init(args=args)
