@@ -1,6 +1,8 @@
 import rclpy
 from rclpy.node import Node
 from std_msgs.msg import Bool, Int8
+import serial
+import time
 #drone battery 8-9
 #upper battery 0-3
 #lower battery 4-7
@@ -51,6 +53,34 @@ class BVMNode(Node):
     
     def batteryAmount(self, msg):
         self.batteries = msg.data
+
+    def espSend(response):
+        ser = serial.Serial('/dev/ttyACM0', 9600, timeout=1)
+        changetobyte = response.encode(encoding="utf-8") 
+        ser.write(changetobyte)
+        print("send code to arduino")
+        # Add a delay to ensure all responses are sent by the Arduino
+        time.sleep(1)
+        
+        while ser.in_waiting > 0:
+            line = ser.readline().decode('utf-8').rstrip()
+            print(line)
+            ser.reset_input_buffer()
+        time.sleep(1)
+
+    def espReceive(response):
+        ser = serial.Serial('/dev/ttyACM0', 9600, timeout=1)
+        changetobyte = response.encode(encoding="utf-8") 
+        ser.write(changetobyte)
+        print("send code to arduino")
+        # Add a delay to ensure all responses are sent by the Arduino
+        time.sleep(1)
+        
+        while ser.in_waiting > 0:
+            line = ser.readline().decode('utf-8').rstrip()
+            print(line)
+            ser.reset_input_buffer()
+        time.sleep(1)
     
     def bvmLogic(self):
         if len(self.DroneMarkers) > 0:

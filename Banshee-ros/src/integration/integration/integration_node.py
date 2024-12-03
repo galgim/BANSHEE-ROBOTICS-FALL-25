@@ -194,6 +194,8 @@ class IntegrationNode(Node):
         self.start_signal_received = False
         self.batteryLevel = None
 
+        startsetup()
+        Close()
         self.run_timer = self.create_timer(0.1, self.run)
 
     def done_callback(self, msg):
@@ -205,8 +207,6 @@ class IntegrationNode(Node):
       if self.start_signal_received and self.mode == 0:
         # Proceed to command execution after receiving 'done' signal
         # pull_out(self.batteryLevel)
-        startsetup()
-        Close()
         if self.batteryLevel == 0:  
           Push_high()
         elif self.batteryLevel == 1:
