@@ -19,12 +19,4 @@ def generate_launch_description():
                 {"start_signal_topic": "/stepper/done"}  
             ]
         ),
-        Node(
-            package='camera_node',  
-            executable='camera_no_web',  
-            name='camera',
-            parameters=[
-                {"start_signal_topic": "ArucoID"}  
-            ]
-        ),
     ])
