@@ -141,6 +141,7 @@ Command_dict = {
 }
 
 def main(args=None):
+    Open()
     startsetup()
     Close()
     time.sleep(1)
