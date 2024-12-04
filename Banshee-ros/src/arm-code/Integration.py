@@ -143,7 +143,7 @@ Command_dict = {
 def main(args=None):
     startsetup()
     Close()
-    # time.sleep(3)
+    time.sleep(1)
     Push_low()
     
 
