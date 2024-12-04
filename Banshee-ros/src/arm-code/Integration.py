@@ -60,7 +60,7 @@ def Drone_grab():
 def Push_low():    
     start_time = time.time()
     print("Push in low sequence")
-    motor.dxlSetVelo([10, 10, 10], [2, 3, 4])
+    motor.dxlSetVelo([10, 10, 20], [2, 3, 4])
     max_length_angle = calculation.angle_Calc([375, 0, 50], 0)
     motor.simMotorRun(max_length_angle, [1, 2, 3, 4])
     # for i in range(280,190,-10):
