@@ -68,7 +68,7 @@ def Push_low():
         initial_pull_out_angle = calculation.angle_Calc([i,-3,73], 0)
         print("move 4 pull away slight")
         motor.simMotorRun(initial_pull_out_angle, [1, 2, 3, 4])
-        time.sleep(.2)
+        time.sleep(3)
         motor.dxlPresPos([0, 1, 2, 3, 4])
 
     # motor.simMotorRun([132, 343, 70],[2, 3, 4]) # guesstimate
