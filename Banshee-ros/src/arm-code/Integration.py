@@ -87,7 +87,7 @@ def Push_low():
     # time.sleep(1)
     # motor.simMotorRun([80, 260, 95],[2, 3, 4])
     time.sleep(1)
-    motor.simMotorRun([80, 260, 95],[2, 3, 4])
+    motor.simMotorRun([80, 250, 95],[2, 3, 4])
 
 def Push_high():    
     start_time = time.time()
@@ -117,7 +117,7 @@ def Open():
 # Setup initial motor positions
 def startsetup():
     print("setting up")
-    motor.dxlSetVelo([30, 30, 30, 30, 30], [0, 1, 2, 3, 4])
+    motor.dxlSetVelo([30, 30, 30, 20, 30], [0, 1, 2, 3, 4])
     motor.simMotorRun([224, 222, 347, 139], [1, 2, 3, 4])
     time.sleep(1)
 
