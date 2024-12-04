@@ -204,7 +204,7 @@ def simMotorRun(angle_inputs, dxlIDs):
 
         # Wait for all motors to finish moving
         while True:
-            movementStatus = simPosCheck(dxl_goal_inputs, dxlIDs)
+            dxl_end_position, movementStatus = simPosCheck(dxl_goal_inputs, dxlIDs)
             if all(status == 1 for status in movementStatus):
                 break
             time.sleep(0.1)  # Short delay to prevent CPU overloading
@@ -437,7 +437,7 @@ def simPosCheck(dxl_goal_inputs, dxlIDs):
 
         return dxl_present_position
     
-    # print("Simultaneous position checking. DXL IDs being read: ", dxlIDs)
+    print("Simultaneous position checking. DXL IDs being read: ", dxlIDs)
     repetition_status = [0] * idNum
     movement_status = [0] * idNum
 
