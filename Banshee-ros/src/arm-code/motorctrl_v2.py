@@ -417,9 +417,10 @@ def write(dxl_goal_inputs, dxlIDs):
 
 def simPosCheck(dxl_goal_inputs, dxlIDs):
     idNum = len(dxlIDs)
+
     def simReadData():
         dxl_present_position = [0] * idNum
-        # Syncread present position
+        # Sync read present position
         dxl_comm_result = motor_sync_read.txRxPacket()
         # if dxl_comm_result != COMM_SUCCESS:
             # print("%s" % packetHandler.getTxRxResult(dxl_comm_result))
@@ -427,7 +428,7 @@ def simPosCheck(dxl_goal_inputs, dxlIDs):
         # Check if groupsyncread data of Dynamixel is available
         for motorID in dxlIDs:
             dxl_getdata_result = motor_sync_read.isAvailable(motorID, ADDR_PRESENT_POSITION, LEN_PRESENT_POSITION)
-            # if dxl_getdata_result != True:
+            # if not dxl_getdata_result:
             #     print("[ID:%03d] groupSyncRead getdata failed" % motorID)
 
         # Get Dynamixel present position value
@@ -436,33 +437,38 @@ def simPosCheck(dxl_goal_inputs, dxlIDs):
             #print("ID:%03d, position = %03d" % (dxlIDs[motorIndex], dxl_present_position[motorIndex]))
 
         return dxl_present_position
-    
+
     print("Simultaneous position checking. DXL IDs being read: ", dxlIDs)
     repetition_status = [0] * idNum
     movement_status = [0] * idNum
 
     present_position = simReadData()
-    kicker = 0
-    while (kicker == 0):
+
+    while True:
         new_position = simReadData()
-        #Kicker method to prevent the infinite looping of the motor
+        movement_complete_count = 0
+
         for id in range(idNum):
-            if (abs(new_position[id] - present_position[id]) < 2) and movement_status[id] == 0:
+            # Check if the motor has stopped moving (no significant position change)
+            if abs(new_position[id] - present_position[id]) < 2:
                 repetition_status[id] += 1
             else:
                 repetition_status[id] = 0
-            if repetition_status[id] >= 10:
-                kicker = 1
-        print(kicker)
-        present_position = new_position
 
-        movement_complete_count = 0
-        for id in range(idNum):
-            if (abs(dxl_goal_inputs[id]- present_position[id]) < DXL_MOVING_STATUS_THRESHOLD):
+            # If a motor has been stationary for a sufficient period, mark it as complete
+            if repetition_status[id] >= 10:
+                movement_status[id] = 1
+
+            # Check if the motor is within the goal position threshold
+            if abs(dxl_goal_inputs[id] - new_position[id]) < DXL_MOVING_STATUS_THRESHOLD:
                 movement_complete_count += 1
                 movement_status[id] = 1
-        
-        if (movement_complete_count == idNum):
-            kicker = 1
-    
+
+        # If all motors are stationary and within their goal thresholds, exit the loop
+        if movement_complete_count == idNum and all(status == 1 for status in movement_status):
+            break
+
+        present_position = new_position
+        time.sleep(0.1)  # Small delay to avoid overloading the CPU
+
     return present_position, movement_status
