@@ -87,7 +87,7 @@ def Push_low():
     # motor.simMotorRun([90, 270, 90],[2, 3, 4])
     # time.sleep(1)
     # motor.simMotorRun([80, 260, 95],[2, 3, 4])
-    motor.simMotorRun([80, 245, 95],[2, 3, 4])
+    motor.simMotorRun([70, 245, 95],[2, 3, 4])
     Open()
 def Push_high():    
     start_time = time.time()
