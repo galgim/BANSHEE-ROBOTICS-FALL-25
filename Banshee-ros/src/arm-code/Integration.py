@@ -64,7 +64,7 @@ def Push_low():
     motor.dxlPresPos([0, 1, 2, 3, 4])
     # max_length_angle = calculation.angle_Calc([190, 0, 73], 0)
     # motor.simMotorRun(max_length_angle, [1, 2, 3, 4])
-    for i in range(375,280,-10):
+    for i in range(375,300,-10):
         print(i)
         initial_pull_out_angle = calculation.angle_Calc([i,-3,73], 0)
         print("move 4 pull away slight")
