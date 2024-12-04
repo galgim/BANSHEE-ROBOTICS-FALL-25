@@ -415,7 +415,8 @@ def write(dxl_goal_inputs, dxlIDs):
     #Clear syncwrite parameter storage
     motor_sync_write.clearParam()
 
-def simPosCheck(dxl_goal_inputs, dxlIDs):
+def simPosCheck(dxl_goal_inputs, dxlIDs, timeout=5.0):
+    import time
     idNum = len(dxlIDs)
 
     def simReadData():
@@ -443,6 +444,7 @@ def simPosCheck(dxl_goal_inputs, dxlIDs):
     movement_status = [0] * idNum
 
     present_position = simReadData()
+    start_time = time.time()
 
     while True:
         new_position = simReadData()
@@ -466,6 +468,11 @@ def simPosCheck(dxl_goal_inputs, dxlIDs):
 
         # If all motors are stationary and within their goal thresholds, exit the loop
         if movement_complete_count == idNum and all(status == 1 for status in movement_status):
+            break
+
+        # Check for timeout
+        if time.time() - start_time > timeout:
+            print("Timeout reached. Moving on to the next sequence.")
             break
 
         present_position = new_position
