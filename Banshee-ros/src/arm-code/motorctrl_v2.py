@@ -437,7 +437,7 @@ def simPosCheck(dxl_goal_inputs, dxlIDs):
 
         return dxl_present_position
     
-    print("Simultaneous position checking. DXL IDs being read: ", dxlIDs)
+    # print("Simultaneous position checking. DXL IDs being read: ", dxlIDs)
     repetition_status = [0] * idNum
     movement_status = [0] * idNum
 
