@@ -82,7 +82,7 @@ class CameraNode(Node):
 
                         # Publisher logic
                         if self.sendFrame:
-                            if abs(distance) <= 1:
+                            if abs(distance) <= 1.5:
                                 msg = Int8()
                                 self.get_logger().info(f"Publishing DestinationConfirm with ID: {self.arucoID}")
                                 match(self.batteryChamber):
