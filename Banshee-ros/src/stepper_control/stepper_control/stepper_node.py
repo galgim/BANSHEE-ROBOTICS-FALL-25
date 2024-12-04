@@ -186,7 +186,7 @@ class StepperMotorNode(Node):
         GPIO.setup(DIR, GPIO.OUT)
         GPIO.setup(STEP, GPIO.OUT)
         
-        self.stepCoefficient = 500/154
+        self.stepCoefficient = 500/159.5
         self.position = 0
         
         # ROS2 Publisher and Subscribers
