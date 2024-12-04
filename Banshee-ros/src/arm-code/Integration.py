@@ -61,15 +61,15 @@ def Push_low():
     start_time = time.time()
     print("Push in low sequence")
     motor.dxlSetVelo([10, 10, 20], [2, 3, 4])
-    max_length_angle = calculation.angle_Calc([190, 0, 73], 0)
-    motor.simMotorRun(max_length_angle, [1, 2, 3, 4])
-    # for i in range(280,190,-10):
-    #     print(i)
-    #     initial_pull_out_angle = calculation.angle_Calc([i,-3,73], 0)
-    #     print("move 4 pull away slight")
-    #     motor.simMotorRun(initial_pull_out_angle, [1, 2, 3, 4])
-    #     time.sleep(.2)
-    #     motor.dxlPresPos([0, 1, 2, 3, 4])
+    # max_length_angle = calculation.angle_Calc([190, 0, 73], 0)
+    # motor.simMotorRun(max_length_angle, [1, 2, 3, 4])
+    for i in range(375,280,-10):
+        print(i)
+        initial_pull_out_angle = calculation.angle_Calc([i,-3,73], 0)
+        print("move 4 pull away slight")
+        motor.simMotorRun(initial_pull_out_angle, [1, 2, 3, 4])
+        time.sleep(.2)
+        motor.dxlPresPos([0, 1, 2, 3, 4])
 
     # motor.simMotorRun([132, 343, 70],[2, 3, 4]) # guesstimate
     # time.sleep(5)
