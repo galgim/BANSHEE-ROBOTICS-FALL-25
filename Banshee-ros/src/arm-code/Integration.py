@@ -138,7 +138,7 @@ def main(args=None):
     Close()
     time.sleep(1)
     Push_low()
-    startsetup()
+    # startsetup()
     
 
 
