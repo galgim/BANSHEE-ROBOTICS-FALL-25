@@ -71,7 +71,7 @@ def Push_low():
     #     time.sleep(3)
     print("place chamber")
     motor.simMotorRun([132, 343, 70],[2, 3, 4]) # guesstimate
-    motor.dxlSetVelo([13, 23, 10], [2, 3, 4])
+    motor.dxlSetVelo([13, 28, 10], [2, 3, 4])
     # motor.dxlSetVelo([10, 8, 5], [2, 3, 4])
     # motor.simMotorRun([110, 330, 60],[2, 3, 4])
     # time.sleep(2)
