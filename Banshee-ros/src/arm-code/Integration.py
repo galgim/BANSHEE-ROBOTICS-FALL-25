@@ -70,7 +70,7 @@ def Push_low():
     #     motor.simMotorRun(initial_pull_out_angle, [1, 2, 3, 4])
     #     time.sleep(3)
     print("place chamber")
-    motor.simMotorRun([132, 343, 60],[2, 3, 4]) # guesstimate
+    motor.simMotorRun([132, 333, 60],[2, 3, 4]) # guesstimate
     # motor.dxlSetVelo([10, 8, 5], [2, 3, 4])
     # motor.simMotorRun([110, 330, 60],[2, 3, 4])
     # time.sleep(2)
@@ -110,7 +110,7 @@ def Close():
 def Open():
     start_time = time.time()
     print("open claw")
-    motor.dxlSetVelo([30, 30, 30, 30, 10], [0, 1, 2, 3, 4])
+    motor.dxlSetVelo([30, 30, 30, 30, 30], [0, 1, 2, 3, 4])
     motor.simMotorRun([45],[0])
     time.sleep(1)
 
