@@ -103,10 +103,10 @@ def angle_Calc(coor, CLAW_MODE):                                # coor[] = [Px, 
     
     print("[%s, %s, %s, %s]" % (int(baseTheta), int(shoulderTheta), int(elbowTheta), int(wristTheta)))
 
-    if (OUT_OF_RANGE_F):
-        return 0
-    else:
-        return [int(baseTheta+BASE_OFFSET), int(shoulderTheta+SHOUDLER_OFFSET), int(elbowTheta+ELBOW_OFFSET+ELBOW_W_OFFSET), int(wristTheta+WRIST_OFFSET)]
+    # if (OUT_OF_RANGE_F):
+    #     return 0
+    # else:
+    #     return [int(baseTheta+BASE_OFFSET), int(shoulderTheta+SHOUDLER_OFFSET), int(elbowTheta+ELBOW_OFFSET+ELBOW_W_OFFSET), int(wristTheta+WRIST_OFFSET)]
 
 
 # if __name__ == "__main__":
