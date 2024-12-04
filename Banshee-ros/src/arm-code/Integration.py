@@ -95,7 +95,7 @@ def Open():
 def startsetup():
     print("setting up")
     motor.dxlSetVelo([30, 30, 30, 20, 30], [0, 1, 2, 3, 4])
-    motor.simMotorRun([180, 224, 222, 347, 139], [0, 1, 2, 3, 4])
+    motor.simMotorRun([220, 222, 347, 139], [1, 2, 3, 4])
     time.sleep(1)
 
 # Dictionary mapping commands to functions
