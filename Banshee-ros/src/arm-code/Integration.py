@@ -60,8 +60,15 @@ def Drone_grab():
 def Push_low():    
     start_time = time.time()
     print("Push in low sequence")
-    # motor.dxlSetVelo([10, 10, 10], [2, 3, 4])
-    # motor.simMotorRun([132, 343, 70],[2, 3, 4]) # guesstimate
+    motor.dxlSetVelo([10, 10, 10], [2, 3, 4])
+    motor.simMotorRun([132, 343, 70],[2, 3, 4]) # guesstimate
+    for i in range(280,190,-10):
+        print(i)
+        initial_pull_out_angle = calculation.angle_Calc([i,-3,73], 0)
+        print("move 4 pull away slight")
+        motor.simMotorRun(initial_pull_out_angle, [1, 2, 3, 4])
+        time.sleep(.2)
+        motor.dxlPresPos([0, 1, 2, 3, 4])
     # time.sleep(5)
     # motor.dxlSetVelo([10, 8, 5], [2, 3, 4])
     # motor.simMotorRun([110, 330, 60],[2, 3, 4])
@@ -79,10 +86,10 @@ def Push_low():
     # motor.simMotorRun([80, 260, 95],[2, 3, 4])
     # time.sleep(1)
     # motor.simMotorRun([90, 260, 105],[2, 3, 4])
-    time.sleep(1)
-    motor.simMotorRun([80, 250, 95],[2, 3, 4])
-    time.sleep(1)
-    motor.simMotorRun([80, 230, 75],[2, 3, 4])
+    # time.sleep(1)
+    # motor.simMotorRun([80, 250, 95],[2, 3, 4])
+    # time.sleep(1)
+    # motor.simMotorRun([80, 230, 75],[2, 3, 4])
 
 
 ########
@@ -131,9 +138,9 @@ Command_dict = {
 }
 
 def main(args=None):
-    # startsetup()
-    # Close()
-    # time.sleep(3)
+    startsetup()
+    Close()
+    time.sleep(3)
     Push_low()
     
 
