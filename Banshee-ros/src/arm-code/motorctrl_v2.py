@@ -453,7 +453,7 @@ def simPosCheck(dxl_goal_inputs, dxlIDs):
                 repetition_status[id] = 0
             if repetition_status[id] >= 10:
                 kicker = 1
-        
+        print(kicker)
         present_position = new_position
 
         movement_complete_count = 0
