@@ -62,8 +62,8 @@ def Push_low():
     print("Push in low sequence")
     motor.dxlSetVelo([10, 10, 20], [2, 3, 4])
     motor.dxlPresPos([0, 1, 2, 3, 4])
-    # max_length_angle = calculation.angle_Calc([190, 0, 73], 0)
-    # motor.simMotorRun(max_length_angle, [1, 2, 3, 4])
+    max_length_angle = calculation.angle_Calc([190, 0, 73], 0)
+    motor.simMotorRun(max_length_angle, [1, 2, 3, 4])
     for i in range(180,300,10):
         print(i)
         initial_pull_out_angle = calculation.angle_Calc([i,-3,73], 0)
