@@ -86,20 +86,20 @@ def angle_Calc(coor, CLAW_MODE):                                # coor[] = [Px, 
     wristTheta = phi - elbowTheta - shoulderTheta
     #print("theta4 = "+ str(wristTheta) + "\n")
 
-    if ((baseTheta < BASE_L_LIMIT) or (baseTheta > BASE_H_LIMIT)):                                          
-        print("Base angle calculated (%s) is out of physical range [-135, 135]" % (baseTheta))              # setting physical range limit for baseTheta [-135, 135]
-        OUT_OF_RANGE_F = 1
-    elif ((shoulderTheta < SHOULDER_L_LIMIT) or (shoulderTheta > SHOULDER_H_LIMIT)):
-        print("Shoulder angle calculated (%s) is out of physical range [0, 180]" % (shoulderTheta))         # setting physical range limit for shoulderTheta [0, 180]
-        OUT_OF_RANGE_F = 1
-    elif ((elbowTheta > ELBOW_H_LIMIT) or (elbowTheta < ELBOW_L_LIMIT)):
-        print("Elbow angle calculated (%s) is out of physical range [-180, 0]" % (elbowTheta))              # setting physical range limit for elbowTheta [-180, 0]
-        OUT_OF_RANGE_F = 1   
-    elif ((wristTheta > WRIST_H_LIMIT) or (wristTheta < WRIST_L_LIMIT)):
-        print("Wrist angle calculated (%s) is out of physical range [-90, 90]" % (wristTheta))              # setting physical range limit for wristTheta [-90, 90]
-        OUT_OF_RANGE_F = 1
-    else:
-        OUT_OF_RANGE_F = 0
+    # if ((baseTheta < BASE_L_LIMIT) or (baseTheta > BASE_H_LIMIT)):                                          
+    #     print("Base angle calculated (%s) is out of physical range [-135, 135]" % (baseTheta))              # setting physical range limit for baseTheta [-135, 135]
+    #     OUT_OF_RANGE_F = 1
+    # elif ((shoulderTheta < SHOULDER_L_LIMIT) or (shoulderTheta > SHOULDER_H_LIMIT)):
+    #     print("Shoulder angle calculated (%s) is out of physical range [0, 180]" % (shoulderTheta))         # setting physical range limit for shoulderTheta [0, 180]
+    #     OUT_OF_RANGE_F = 1
+    # elif ((elbowTheta > ELBOW_H_LIMIT) or (elbowTheta < ELBOW_L_LIMIT)):
+    #     print("Elbow angle calculated (%s) is out of physical range [-180, 0]" % (elbowTheta))              # setting physical range limit for elbowTheta [-180, 0]
+    #     OUT_OF_RANGE_F = 1   
+    # elif ((wristTheta > WRIST_H_LIMIT) or (wristTheta < WRIST_L_LIMIT)):
+    #     print("Wrist angle calculated (%s) is out of physical range [-90, 90]" % (wristTheta))              # setting physical range limit for wristTheta [-90, 90]
+    #     OUT_OF_RANGE_F = 1
+    # else:
+    #     OUT_OF_RANGE_F = 0
     
     print("[%s, %s, %s, %s]" % (int(baseTheta), int(shoulderTheta), int(elbowTheta), int(wristTheta)))
 
