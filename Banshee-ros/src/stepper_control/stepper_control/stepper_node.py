@@ -210,8 +210,8 @@ class StepperMotorNode(Node):
                 2: COLUMN3, 6: COLUMN3,
                 3: COLUMN4, 7: COLUMN4
             }
-
         self.run_motor_cycle(aruco_to_column.get(arucoID, None))
+
     def distanceSubscriber(self, msg):
         distance = msg.data
         self.get_logger().info(f"Received distance: {distance}")

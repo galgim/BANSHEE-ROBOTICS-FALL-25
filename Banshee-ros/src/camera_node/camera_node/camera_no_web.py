@@ -84,19 +84,15 @@ class CameraNode(Node):
                         if self.sendFrame:
                             if abs(distance) <= 1.5:
                                 msg = Int8()
-                                self.get_logger().info(f"Publishing DestinationConfirm with ID: {self.arucoID}")
-                                match(self.batteryChamber):
-                                    case 0,1,2,3:
-                                        msg.data = 0
-                                        break
-                                    case 4,5,6,7:
-                                        msg.data = 1
-                                        break
-                                    case self.batteryChamber:
-                                        msg.data = 2
-                                        break
+                                
+                                if (self.batteryChamber < 4):
+                                    msg.data = 0
+                                elif (self.batteryChamber < 8):
+                                    msg.data = 1
+                                else:
+                                    msg.data = 2
 
-
+                                self.get_logger().info(f"Publishing DestinationConfirm with mode: {msg.data}")
                                 self.destinationTrue.publish(msg)
                                 self.arucoID = None
                             else:
@@ -104,6 +100,7 @@ class CameraNode(Node):
                                 msg.data = distance
                                 self.destinationFalse.publish(msg)
                             self.sendFrame = False
+                            self.get_logger().warn("sendFrame is now false")
 
                         cv2.putText(frame, f"distance: {distance}", (10, 30),
                                     cv2.FONT_HERSHEY_SIMPLEX, 1, (255, 255, 255), 2, cv2.LINE_AA)
