@@ -160,7 +160,7 @@
     
 import rclpy
 from rclpy.node import Node
-from std_msgs.msg import Bool, Float64, Int8
+from std_msgs.msg import Bool, Float32, Int8
 import RPi.GPIO as GPIO
 from time import sleep
 
@@ -194,7 +194,7 @@ class StepperMotorNode(Node):
         Int8, 'arucoID', self.initialSubscriber, 10)
 
         self.distanceSubscription = self.create_subscription(
-        Float64, 'DestinationFalse', self.distanceSubscriber, 10)
+        Float32, 'DestinationFalse', self.distanceSubscriber, 10)
 
         self.done_publisher = self.create_publisher(Bool, 'stepperDone', 10)
 
@@ -242,7 +242,7 @@ class StepperMotorNode(Node):
                 
                 self.position = self.position + steps
 
-                sleep(0.75)
+                sleep(1)
                 # Publish cycle complete signal
                 self.get_logger().info('Cycle complete, publishing signal to camera')
                 cycle_complete_msg = Bool()

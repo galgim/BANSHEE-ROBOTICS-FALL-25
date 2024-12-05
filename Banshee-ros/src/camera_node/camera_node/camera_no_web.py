@@ -3,7 +3,7 @@ from rclpy.node import Node
 import cv2
 import numpy as np
 import threading
-from std_msgs.msg import Int8, Float64, Bool
+from std_msgs.msg import Int8, Float32, Bool
 
 class CameraNode(Node):
     def __init__(self):
@@ -23,7 +23,7 @@ class CameraNode(Node):
         Int8, 'DestinationConfirm', 10)
 
         self.destinationFalse = self.create_publisher(
-        Float64, 'DestinationFalse', 10)
+        Float32, 'DestinationFalse', 10)
 
         # Start the camera thread
         self.camera_thread = threading.Thread(target=self.cameraRun)
@@ -100,7 +100,7 @@ class CameraNode(Node):
                                 self.destinationTrue.publish(msg)
                                 self.arucoID = None
                             else:
-                                msg = Float64()
+                                msg = Float32()
                                 msg.data = distance
                                 self.destinationFalse.publish(msg)
                             self.sendFrame = False
