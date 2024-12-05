@@ -128,7 +128,7 @@ def main(args=None):
     Push_low()
     time.sleep(1)
     startsetup()
-    time.sleep()
+    time.sleep(1)
     Pull_low()
     startsetup()
     # Close()
