@@ -66,6 +66,17 @@ def Push_low():
     motor.dxlSetVelo([15, 28, 10], [2, 3, 4])
     motor.simMotorRun([80, 248, 95],[2, 3, 4])
     Open()
+
+def Pull_low():    
+    start_time = time.time()
+    print("Pull out low sequence")
+    motor.dxlSetVelo([13, 38, 20], [2, 3, 4])
+    print("remove chamber")
+    motor.simMotorRun([80, 248, 95],[2, 3, 4])
+    Close()
+    motor.simMotorRun([132, 343, 70],[2, 3, 4])
+
+
 def Push_high():    
     start_time = time.time()
     print("Push in low sequence")
@@ -112,11 +123,15 @@ Command_dict = {
 def main(args=None):
     Open()
     startsetup()
-    Close()
     time.sleep(1)
-    Push_low()
-    time.sleep(1)
+    Pull_low()
     startsetup()
+    # Close()
+    # time.sleep(1)
+    # Push_low()
+    # time.sleep(1)
+    # startsetup()
+
     
 
 
