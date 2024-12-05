@@ -74,8 +74,8 @@ def Pull_low():
     print("remove chamber")
     motor.simMotorRun([80, 248, 95],[2, 3, 4])
     Close()
-    motor.dxlSetVelo([10, 30, 20], [2, 3, 4])
-    motor.simMotorRun([132, 343, 50],[2, 3, 4])
+    motor.dxlSetVelo([5, 30, 20], [2, 3, 4])
+    motor.simMotorRun([132, 343, 40],[2, 3, 4])
 
 
 def Push_high():    
