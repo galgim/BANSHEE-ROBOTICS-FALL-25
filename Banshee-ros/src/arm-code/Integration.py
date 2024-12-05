@@ -124,6 +124,7 @@ Command_dict = {
 def main(args=None):
     Open()
     startsetup()
+    Close()
     Push_low()
     time.sleep(1)
     startsetup()
