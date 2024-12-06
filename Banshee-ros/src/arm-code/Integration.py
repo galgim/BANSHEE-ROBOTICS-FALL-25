@@ -121,7 +121,7 @@ def main(args=None):
     startsetup()
     time.sleep(1)
     Push_high()
-    time.sleep(1)
+    time.sleep(10)
     startsetup()
 
     # Open()
