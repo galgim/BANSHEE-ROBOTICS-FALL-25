@@ -116,7 +116,6 @@ Command_dict = {
 }
 
 def main(args=None):
-    startsetup()
     Open()
     time.sleep(1)
     Pull_high()
