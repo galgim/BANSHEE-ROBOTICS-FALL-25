@@ -116,6 +116,7 @@ Command_dict = {
 }
 
 def main(args=None):
+    Open()
     startsetup()
     Push_high
     startsetup()
