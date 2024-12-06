@@ -77,10 +77,10 @@ def Pull_high():
     print("Pull out high sequence")
     motor.dxlSetVelo([30, 20, 30], [2, 3, 4])   # set initial velocity
     print("remove chamber")
-    motor.simMotorRun([80, 248, 95],[2, 3, 4])  # move arm to chamber position
+    motor.simMotorRun([60, 180, 144],[2, 3, 4])  # move arm to chamber position
     Close()                                     # grab battery
     motor.dxlSetVelo([12, 30, 20], [2, 3, 4])   # set pull out velocity
-    motor.simMotorRun([132, 343, 40],[2, 3, 4]) # pull battery out
+    motor.simMotorRun([130, 310, 90],[2, 3, 4]) # pull battery out
 
 
 # Close Claw
@@ -117,9 +117,9 @@ Command_dict = {
 
 def main(args=None):
     startsetup()
-    Close()
+    Open()
     time.sleep(1)
-    Push_high()
+    Pull_high()
     time.sleep(1)
 
     # Open()
