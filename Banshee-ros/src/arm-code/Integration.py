@@ -69,7 +69,7 @@ def Push_high():
     print("place chamber")
     motor.simMotorRun([130, 310, 90],[2, 3, 4]) # move arm to first position
     motor.dxlSetVelo([15, 28, 10], [2, 3, 4])   # set final velocity
-    # motor.simMotorRun([80, 248, 95],[2, 3, 4])  # move arm w/ battery to chamber
+    motor.simMotorRun([27, 132, 144],[2, 3, 4])  # move arm w/ battery to chamber
     Open()                                      # let go of battery
 
 def Pull_high():    
