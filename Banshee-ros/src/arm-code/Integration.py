@@ -79,8 +79,8 @@ def Pull_high():
     print("remove chamber")
     motor.simMotorRun([60, 178, 144],[2, 3, 4])  # move arm to chamber position
     Close()                                     # grab battery
-    motor.dxlSetVelo([12, 28, 20], [2, 3, 4])   # set pull out velocity
-    motor.simMotorRun([130, 310, 85],[2, 3, 4]) # pull battery out
+    motor.dxlSetVelo([12, 28, 15], [2, 3, 4])   # set pull out velocity
+    motor.simMotorRun([130, 310, 80],[2, 3, 4]) # pull battery out
 
 
 # Close Claw
