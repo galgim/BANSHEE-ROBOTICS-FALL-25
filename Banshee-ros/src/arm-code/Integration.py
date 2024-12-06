@@ -117,8 +117,8 @@ Command_dict = {
 
 def main(args=None):
     startsetup()
-    Open()
-    time.sleep(1)
+    Push_high
+    startsetup()
     Pull_high()
     time.sleep(1)
 
