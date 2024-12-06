@@ -75,7 +75,7 @@ def Push_high():
 def Pull_high():    
     start_time = time.time()
     print("Pull out high sequence")
-    motor.dxlSetVelo([30, 20, 30], [2, 3, 4])   # set initial velocity
+    motor.dxlSetVelo([20, 20, 30], [2, 3, 4])   # set initial velocity
     print("remove chamber")
     motor.simMotorRun([60, 180, 144],[2, 3, 4])  # move arm to chamber position
     Close()                                     # grab battery
