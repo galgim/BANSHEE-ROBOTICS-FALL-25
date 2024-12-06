@@ -119,7 +119,7 @@ def main(args=None):
     Open()
     startsetup()
     Close()
-    Push_high
+    Push_high()
     startsetup()
     Pull_high()
     time.sleep(1)
