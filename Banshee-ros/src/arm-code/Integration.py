@@ -118,6 +118,7 @@ Command_dict = {
 def main(args=None):
     Open()
     startsetup()
+    Close()
     Push_high
     startsetup()
     Pull_high()
