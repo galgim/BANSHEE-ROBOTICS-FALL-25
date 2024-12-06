@@ -123,6 +123,7 @@ def main(args=None):
     startsetup()
     Pull_high()
     time.sleep(1)
+    startsetup()
 
     # Open()
     # startsetup()
