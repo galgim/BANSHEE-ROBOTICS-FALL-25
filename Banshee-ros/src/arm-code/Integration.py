@@ -67,7 +67,7 @@ def Push_high():
     print("Push in high sequence")
     motor.dxlSetVelo([10, 10, 10], [2, 3, 4])   # set initial velocity
     print("place chamber")
-    motor.simMotorRun([132, 270, 120],[2, 3, 4]) # move arm to first position
+    motor.simMotorRun([125, 290, 110],[2, 3, 4]) # move arm to first position
     motor.dxlSetVelo([15, 28, 10], [2, 3, 4])   # set final velocity
     # motor.simMotorRun([80, 248, 95],[2, 3, 4])  # move arm w/ battery to chamber
     Open()                                      # let go of battery
@@ -121,8 +121,7 @@ def main(args=None):
     startsetup()
     time.sleep(1)
     Push_high()
-    time.sleep(10)
-    startsetup()
+    time.sleep(1)
 
     # Open()
     # startsetup()
