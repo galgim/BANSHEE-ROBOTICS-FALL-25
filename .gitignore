@@ -171,6 +171,12 @@ cython_debug/
 !.vscode/settings.json
 
 # colcon/CMake output
-**/Banshee-ros/build/*
-**/Banshee-ros/install/*
-**/Banshee-ros/log/*
+**/Banshee-ros/build/
+**/Banshee-ros/install/
+**/Banshee-ros/log/
+**/Banshee-ros/bags/
+**/Banshee-ros/launch/__pycache__/
+
+*.pkl
+*.pyc
+.vscode
