@@ -162,6 +162,7 @@ import rclpy
 from rclpy.node import Node
 from std_msgs.msg import Bool, Float32, Int8
 import RPi.GPIO as GPIO
+from Arduino import Arduino
 from time import sleep
 
 # Pin Definitions
@@ -185,6 +186,10 @@ class StepperMotorNode(Node):
         GPIO.setmode(GPIO.BOARD)
         GPIO.setup(DIR, GPIO.OUT)
         GPIO.setup(STEP, GPIO.OUT)
+
+        board = Arduino()
+        board.pinMode(STEP, "OUTPUT")
+        board.digitalWrite(STEP, 1)
         
         self.stepCoefficient = 500/159.5
         self.position = 0
