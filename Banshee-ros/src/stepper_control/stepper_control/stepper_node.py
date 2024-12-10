@@ -187,9 +187,9 @@ class StepperMotorNode(Node):
         # GPIO.setup(DIR, GPIO.OUT)
         # GPIO.setup(STEP, GPIO.OUT)
 
-        board = Arduino()
-        board.pinMode(STEP, "OUTPUT")
-        board.digitalWrite(STEP, 1)
+        self.board = Arduino()
+        self.board.pinMode(DIR, "OUTPUT")
+        self.board.pinMode(STEP, "OUTPUT")
         
         self.stepCoefficient = 500/159.5
         self.position = 0
@@ -236,14 +236,16 @@ class StepperMotorNode(Node):
                     return
 
                 if steps > 0:
-                    pass
+                    self.board.digitalWrite(DIR, CW)
                     # GPIO.output(DIR, CW)
                 else:
-                    pass
+                    self.board.digitalWrite(DIR, CCW)
                     # GPIO.output(DIR, CCW)
-                for _ in range(abs(round(steps))):                   
+                for _ in range(abs(round(steps))):   
+                    self.board.digitalWrite(STEP, "HIGH")                
                     # GPIO.output(STEP, GPIO.HIGH)
                     sleep(0.002) 
+                    self.board.digitalWrite(STEP, "LOW")
                     # GPIO.output(STEP, GPIO.LOW)
                     sleep(0.002)
                 
