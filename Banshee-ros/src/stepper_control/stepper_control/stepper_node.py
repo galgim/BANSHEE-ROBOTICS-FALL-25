@@ -161,7 +161,7 @@
 import rclpy
 from rclpy.node import Node
 from std_msgs.msg import Bool, Float32, Int8
-import RPi.GPIO as GPIO
+# import RPi.GPIO as GPIO
 from Arduino import Arduino
 from time import sleep
 
@@ -183,9 +183,9 @@ class StepperMotorNode(Node):
     def __init__(self):
         super().__init__('stepper_motor_node')
         
-        GPIO.setmode(GPIO.BOARD)
-        GPIO.setup(DIR, GPIO.OUT)
-        GPIO.setup(STEP, GPIO.OUT)
+        # GPIO.setmode(GPIO.BOARD)
+        # GPIO.setup(DIR, GPIO.OUT)
+        # GPIO.setup(STEP, GPIO.OUT)
 
         board = Arduino()
         board.pinMode(STEP, "OUTPUT")
@@ -236,13 +236,15 @@ class StepperMotorNode(Node):
                     return
 
                 if steps > 0:
-                    GPIO.output(DIR, CW)
+                    pass
+                    # GPIO.output(DIR, CW)
                 else:
-                    GPIO.output(DIR, CCW)
+                    pass
+                    # GPIO.output(DIR, CCW)
                 for _ in range(abs(round(steps))):                   
-                    GPIO.output(STEP, GPIO.HIGH)
+                    # GPIO.output(STEP, GPIO.HIGH)
                     sleep(0.002) 
-                    GPIO.output(STEP, GPIO.LOW)
+                    # GPIO.output(STEP, GPIO.LOW)
                     sleep(0.002)
                 
                 self.position = self.position + steps
@@ -258,7 +260,7 @@ class StepperMotorNode(Node):
 
     def cleanup(self):
         self.get_logger().info('Cleaning up...')
-        GPIO.cleanup()
+        # GPIO.cleanup()
 
 
 def main(args=None):
