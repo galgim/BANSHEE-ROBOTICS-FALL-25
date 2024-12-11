@@ -4,7 +4,7 @@ from pinpong.board import Board, Pin
 
 # Pin Definitions
 DIR = Pin.D10  # Direction Pin (Dir+)
-STEP = Pin.D8  # Step Pin (Pul+)
+STEP = Pin.D9  # Step Pin (Pul+)
 
 CW = 1   # Clockwise Rotation
 CCW = 0  # Counter Clockwise Rotation
