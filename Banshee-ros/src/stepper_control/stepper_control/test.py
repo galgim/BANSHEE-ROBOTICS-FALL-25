@@ -18,6 +18,8 @@ dir = Pin(DIR, Pin.OUT)  # Initialize the pin for digital output'\
 while True:
   dir.write_digital(0)# led.value(1)  # Output high level Method 1
   mov.write_digital(1)
+  print("move")
   sleep(0.002)  # Output high level Method 2
   mov.write_digital(0)
   sleep(0.002)
+  print("stop")
