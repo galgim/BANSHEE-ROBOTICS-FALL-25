@@ -2,9 +2,9 @@
 import time
 from pinpong.board import Board, Pin
  
-Board("leonardo").begin()  # Initialization, select board type (uno, microbit, RPi, handpy) and port number. If no port number is entered, automatic detection will be performed
+# Board("leonardo").begin()  # Initialization, select board type (uno, microbit, RPi, handpy) and port number. If no port number is entered, automatic detection will be performed
 #Board("uno", "COM36").begin()  # Initialization with specified port on Windows
-Board("leonardo", "/dev/ttyACM0").begin()  # Initialization with specified port on Linux
+Board("leonardo", "/dev/ttyS1").begin()  # Initialization with specified port on Linux
 #Board("uno", "/dev/cu.usbmodem14101").begin()  # Initialization with specified port on Mac
 led = Pin(Pin.D13, Pin.OUT)  # Initialize the pin for digital output
  
