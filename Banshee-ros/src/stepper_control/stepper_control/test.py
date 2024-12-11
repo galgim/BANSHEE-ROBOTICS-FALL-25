@@ -1,57 +1,31 @@
-import logging
-import unittest
 import time
 
-"""
-A collection of some basic tests for the Arduino library.
+from pinpong.board import Board,Pin
 
-Extensive coverage is a bit difficult, since a positive test involves actually
-connecting and issuing commands to a live Arduino, hosting any hardware
-required to test a particular function. But a core of basic communication tests
-should at least be maintained here.
-"""
+#Board("uno").begin() #Initialization, select board type (uno, microbit, RPi,) and port number. If the port number is not entered, it will be automatically recognized
 
+#Board("leonardo","COM5").begin() #Specify the port initialization under Windows
 
-logging.basicConfig(level=logging.DEBUG)
+Board("leonardo","/dev/ttyS1").begin() #Specify the port initialization under Linux
 
-# Bind raw_input to input in python 2.7
-try:
-    input = raw_input
-except NameError:
-    pass
+#Board("uno","/dev/cu.usbmodem14101").begin() #Specify the port initialization under MacOS
 
+led = Pin(Pin.D13, Pin.OUT) #Pin initialization as level output
 
-class TestBasics(unittest.TestCase):
+while True:
 
-    def test_find(self):
-        """ Tests auto-connection/board detection. """
-        input(
-            'Plug in Arduino board w/LED at pin 13, reset, then press enter')
-        from Arduino import Arduino
-        board = None
-        try:
-            # This will trigger automatic port resolution.
-            board = Arduino(115200)
-        finally:
-            if board:
-                board.close()
+    #led.value(1) #Output high level method 1
 
-    def test_open(self):
-        """ Tests connecting to an explicit port. """
-        port = None
-        while not port:
-            port = input(
-                'Plug in Arduino board w/LED at pin 13, reset.\n'\
-                'Enter the port where the Arduino is connected, then press enter:')
-            if not port:
-                print('You must enter a port.')
-        from Arduino import Arduino
-        board = None
-        try:
-            board = Arduino(115200, port=port)
-        finally:
-            if board:
-                board.close()
+    led.write_digital(1) #Output high level method 2
 
-if __name__ == '__main__':
-    unittest.main()
+    print("1") #Terminal printing information.
+
+    time.sleep(1) #Wait for 1 second and keep the state
+
+    #led.value(0) #Output Low Level Method 1
+
+    led.write_digital(0) #Output Low Level Method 1
+
+    print("0") #Terminal printing information.
+
+    time.sleep(1) #Wait for 1 second and keep the state
