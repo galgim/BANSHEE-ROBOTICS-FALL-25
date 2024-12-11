@@ -164,7 +164,7 @@ from std_msgs.msg import Bool, Float32, Int8
 # import RPi.GPIO as GPIO
 from time import sleep 
 from pinpong.board import Board, Pin
-
+Board("leonardo", "/dev/ttyACM0").begin()  # Initialization with specified port on Linux
 # Pin Definitions
 DIR = Pin.D10  # Direction Pin (Dir+)
 STEP = Pin.D8  # Step Pin (Pul+)
@@ -182,7 +182,6 @@ COLUMN4 = 3510
 class StepperMotorNode(Node):
     def __init__(self):
         super().__init__('stepper_motor_node')
-        Board("leonardo", "/dev/ttyACM0").begin()  # Initialization with specified port on Linux
         self.rotation = Pin(DIR, Pin.OUT)  # Initialize the pin for digital output
         self.movement = Pin(STEP, Pin.OUT)
 
