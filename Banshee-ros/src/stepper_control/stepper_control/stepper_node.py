@@ -167,7 +167,7 @@ from pinpong.board import Board, Pin
 Board("leonardo", "/dev/ttyACM0").begin()  # Initialization with specified port on Linux
 # Pin Definitions
 DIR = Pin.D10  # Direction Pin (Dir+)
-STEP = Pin.D8  # Step Pin (Pul+)
+STEP = Pin.D9  # Step Pin (Pul+)
 
 CW = 1   # Clockwise Rotation
 CCW = 0  # Counter Clockwise Rotation
