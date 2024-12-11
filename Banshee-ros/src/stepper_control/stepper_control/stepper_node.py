@@ -166,7 +166,7 @@ from time import sleep
 from pinpong.board import Board, Pin
 Board("leonardo", "/dev/ttyACM0").begin()  # Initialization with specified port on Linux
 # Pin Definitions
-DIR = Pin.D10  # Direction Pin (Dir+)
+DIR = Pin.D8  # Direction Pin (Dir+)
 STEP = Pin.D9  # Step Pin (Pul+)
 
 CW = 0   # Clockwise Rotation
