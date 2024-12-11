@@ -6,7 +6,7 @@ from pinpong.board import Board, Pin
 #Board("uno", "COM36").begin()  # Initialization with specified port on Windows
 Board("leonardo", "/dev/ttyACM0").begin()  # Initialization with specified port on Linux
 #Board("uno", "/dev/cu.usbmodem14101").begin()  # Initialization with specified port on Mac
-led = Pin(Pin.D13, Pin.OUT)  # Initialize the pin for digital output
+led = Pin(Pin.D10, Pin.OUT)  # Initialize the pin for digital output
  
 while True:
   # led.value(1)  # Output high level Method 1
