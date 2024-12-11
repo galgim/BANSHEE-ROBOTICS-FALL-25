@@ -169,8 +169,8 @@ Board("leonardo", "/dev/ttyACM0").begin()  # Initialization with specified port 
 DIR = Pin.D10  # Direction Pin (Dir+)
 STEP = Pin.D9  # Step Pin (Pul+)
 
-CW = 1   # Clockwise Rotation
-CCW = 0  # Counter Clockwise Rotation
+CW = 0   # Clockwise Rotation
+CCW = 1  # Counter Clockwise Rotation
 
 # Set Positions in BTP
 COLUMN1 = 500
