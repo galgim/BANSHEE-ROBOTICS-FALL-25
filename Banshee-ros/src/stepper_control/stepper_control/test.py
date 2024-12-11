@@ -6,7 +6,7 @@ from pinpong.board import Board,Pin
 
 #Board("leonardo","COM5").begin() #Specify the port initialization under Windows
 
-Board("leonardo","/dev/ttyS1").begin() #Specify the port initialization under Linux
+Board("uno","/dev/ttyS1").begin() #Specify the port initialization under Linux
 
 #Board("uno","/dev/cu.usbmodem14101").begin() #Specify the port initialization under MacOS
 
