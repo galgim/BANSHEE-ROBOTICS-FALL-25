@@ -19,7 +19,7 @@ while True:
   dir.write_digital(0)# led.value(1)  # Output high level Method 1
   mov.write_digital(1)
   print("move")
-  sleep(1)  # Output high level Method 2
+  sleep(.002)  # Output high level Method 2
   mov.write_digital(0)
-  sleep(1)
+  sleep(.002)
   print("stop")
