@@ -162,15 +162,15 @@ import rclpy
 from rclpy.node import Node
 from std_msgs.msg import Bool, Float32, Int8
 # import RPi.GPIO as GPIO
-from time import sleep 
-from pinpong.board import Board, Pin
-Board("leonardo", "/dev/ttyACM0").begin()  # Initialization with specified port on Linux
-# Pin Definitions
-DIR = Pin.D8  # Direction Pin (Dir+)
-STEP = Pin.D9  # Step Pin (Pul+)
+from Arduino import Arduino
+from time import sleep
 
-CW = 1   # Clockwise Rotation
-CCW = 0  # Counter Clockwise Rotation
+# Pin Definitions
+DIR = 10  # Direction Pin (Dir+)
+STEP = 8  # Step Pin (Pul+)
+
+CW = "HIGH"   # Clockwise Rotation
+CCW = "LOW"  # Counter Clockwise Rotation
 
 # Set Positions in BTP
 COLUMN1 = 500
@@ -182,9 +182,15 @@ COLUMN4 = 3510
 class StepperMotorNode(Node):
     def __init__(self):
         super().__init__('stepper_motor_node')
-        self.rotation = Pin(DIR, Pin.OUT)  # Initialize the pin for digital output
-        self.movement = Pin(STEP, Pin.OUT)
+        
+        # GPIO.setmode(GPIO.BOARD)
+        # GPIO.setup(DIR, GPIO.OUT)
+        # GPIO.setup(STEP, GPIO.OUT)
 
+        self.board = Arduino(115200, port="/dev/ttyS1")
+        self.board.pinMode(DIR, "OUTPUT")
+        self.board.pinMode(STEP, "OUTPUT")
+        
         self.stepCoefficient = 500/159.5
         self.position = 0
         
@@ -230,16 +236,16 @@ class StepperMotorNode(Node):
                     return
 
                 if steps > 0:
-                    self.rotation.write_digital(CW)
+                    self.board.digitalWrite(DIR, CW)
                     # GPIO.output(DIR, CW)
                 else:
-                    self.rotation.write_digital(CCW)
+                    self.board.digitalWrite(DIR, CCW)
                     # GPIO.output(DIR, CCW)
                 for _ in range(abs(round(steps))):   
-                    self.movement.write_digital(1)         
+                    self.board.digitalWrite(STEP, "HIGH")                
                     # GPIO.output(STEP, GPIO.HIGH)
                     sleep(0.002) 
-                    self.movement.write_digital(0)
+                    self.board.digitalWrite(STEP, "LOW")
                     # GPIO.output(STEP, GPIO.LOW)
                     sleep(0.002)
                 
