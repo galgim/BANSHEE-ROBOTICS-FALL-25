@@ -81,7 +81,7 @@ def Pull_high():
 def Drone_push():
     start_time = time.time()
     print("Drone push sequence")
-    motor.dxlSetVelo([20, 40, 30, 10, 20], [0, 1, 2, 3, 4])   # set initial velocity
+    motor.dxlSetVelo([20, 50, 35, 30, 20], [0, 1, 2, 3, 4])   # set initial velocity
     print("push drone bat")
     motor.simMotorRun([45], [1]) # turn around
     time.sleep(0.2)
