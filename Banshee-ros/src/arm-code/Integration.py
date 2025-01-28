@@ -33,12 +33,6 @@ motor.portInitialization(PORT_NUM, ALL_IDs)
 
 # Define Motor Movements
 
-def Drone_grab():
-    start_time = time.time()
-    print("Grabbing drone")
-    motor.dxlSetVelo([10, 10, 10], [2, 3, 4])
-    motor.simMotorRun([132, 347, 54],[2, 3, 4])
-
 #######
 
 def Push_low():    
@@ -82,6 +76,29 @@ def Pull_high():
     motor.dxlSetVelo([12, 28, 15], [2, 3, 4])   # set pull out velocity
     motor.simMotorRun([130, 320, 70],[2, 3, 4]) # pull battery out
 
+####################
+
+def Drone_push():
+    start_time = time.time()
+    print("Drone push sequence")
+    motor.dxlSetVelo([20, 10, 10, 10, 10], [0, 1, 2, 3, 4])   # set initial velocity
+    print("push drone bat")
+    motor.simMotorRun([45], [1]) # turn around
+    time.sleep(0.2)
+    motor.simMotorRun([94, 244, 124],[2, 3, 4])  # move arm to chamber position
+    Open()                                     # push battery
+
+def Drone_pull():
+    start_time = time.time()
+    print("Drone pull sequence")
+    motor.dxlSetVelo([10, 10, 10, 10, 10], [0, 1, 2, 3, 4])   # set initial velocity
+    print("remove drone bat")
+    motor.simMotorRun([0, 0, 0],[2, 3, 4])  # move arm to chamber position
+    Close()                                     # grab battery
+    motor.dxlSetVelo([10, 10, 10], [2, 3, 4])   # set pull out velocity
+    motor.simMotorRun([0, 0, 0],[2, 3, 4]) # pull battery out
+
+####################
 
 # Close Claw
 def Close():
@@ -102,14 +119,15 @@ def Open():
 # Setup initial motor positions
 def startsetup():
     print("setting up")
-    motor.dxlSetVelo([30, 30, 30, 20, 30], [0, 1, 2, 3, 4])
+    motor.dxlSetVelo([30, 30, 20, 30], [1, 2, 3, 4])
     motor.simMotorRun([225, 222, 347, 139], [1, 2, 3, 4])
     time.sleep(1)
 
 # Dictionary mapping commands to functions
 Command_dict = {
     "push low": Push_low,
-    "drone": Drone_grab,
+    "drone push": Drone_push,
+    "drone pull": Drone_pull,
     "close": Close,
     "open": Open,
     "setup": startsetup,
@@ -119,11 +137,16 @@ def main(args=None):
     Open()
     startsetup()
     Close()
-    Push_low()
-    startsetup()
-    Pull_low()
-    time.sleep(0.5)
-    startsetup()
+    Drone_push()
+
+    # Open()
+    # startsetup()
+    # Close()
+    # Push_low()
+    # startsetup()
+    # Pull_low()
+    # time.sleep(0.5)
+    # startsetup()
     
     # Close()
     # Push_high()
