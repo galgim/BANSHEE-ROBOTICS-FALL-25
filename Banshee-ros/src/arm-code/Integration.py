@@ -84,7 +84,7 @@ def Drone_push():
     motor.dxlSetVelo([30, 50, 30, 30, 30], [0, 1, 2, 3, 4])     # set initial velocity
     print("push drone bat")
     motor.simMotorRun([45], [1])                                # turn around
-    motor.simMotorRun([130, 290, 90],[2, 3, 4])                 # move arm to first position
+    motor.simMotorRun([154, 334, 90],[2, 3, 4])                 # move arm to first position
     motor.dxlSetVelo([30, 50, 30, 30, 30], [0, 1, 2, 3, 4])     # set final velocity
     motor.simMotorRun([94, 244, 120],[2, 3, 4])                 # move arm to chamber position
     Open()                                                      # push battery
