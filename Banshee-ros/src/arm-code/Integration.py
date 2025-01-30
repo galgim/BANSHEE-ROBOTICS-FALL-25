@@ -87,7 +87,7 @@ def Drone_push():
     motor.simMotorRun([154, 334, 90],[2, 3, 4])                 # move arm to first position
     motor.dxlSetVelo([30, 50, 17, 27, 8], [0, 1, 2, 3, 4])     # set final velocity
     motor.simMotorRun([95, 250, 115],[2, 3, 4])                 # move arm to chamber position
-    Open()                                                      # push battery
+    #Open()                                                      # push battery
 
 def Drone_pull():
     start_time = time.time()
@@ -137,7 +137,6 @@ Command_dict = {
 def main(args=None):
     Open()
     startsetup()
-    Close()
     Drone_push()
 
     # Open()
