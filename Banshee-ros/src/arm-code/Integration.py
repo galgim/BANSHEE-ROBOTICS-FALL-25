@@ -92,7 +92,7 @@ def Drone_push():
 def Drone_pull():
     start_time = time.time()
     print("Drone pull sequence")
-    motor.dxlSetVelo([30, 50, 30, 30, 30], [0, 1, 2, 3, 4])     # set initial velocity
+    motor.dxlSetVelo([30, 50, 17, 27, 8], [0, 1, 2, 3, 4])     # set initial velocity
     print("remove drone bat")
     motor.simMotorRun([45], [1])                                # turn around                  
     motor.simMotorRun([95, 243, 112],[2, 3, 4])                 # move to battery position
