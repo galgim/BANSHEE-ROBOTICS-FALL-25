@@ -99,8 +99,9 @@ def Drone_pull():
     motor.dxlSetVelo([17, 27, 8], [2, 3, 4])                    # set grab speed                      
     motor.simMotorRun([95, 243, 112],[2, 3, 4])                 # move to battery position
     Close()  
-    motor.dxlSetVelo([25, 25, 10], [2, 3, 4])                    # set pull out speed
-    motor.simMotorRun([222, 347, 139],[2, 3, 4])                 # pull battery out
+    motor.simMotorRun([154, 334, 90],[2, 3, 4])                 # get to middle position
+    motor.dxlSetVelo([20, 20, 20], [2, 3, 4])                   # set pull out speed
+    motor.simMotorRun([222, 347, 139],[2, 3, 4])                # pull battery out
 
 ####################
 
