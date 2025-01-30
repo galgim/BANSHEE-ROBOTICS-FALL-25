@@ -85,19 +85,19 @@ def Drone_push():
     print("push drone bat")
     motor.simMotorRun([45], [1])                                # turn around
     motor.simMotorRun([154, 334, 90],[2, 3, 4])                 # move arm to first position
-    motor.dxlSetVelo([30, 50, 17, 27, 8], [0, 1, 2, 3, 4])     # set final velocity
+    motor.dxlSetVelo([17, 27, 8], [2, 3, 4])                    # set final velocity
     motor.simMotorRun([95, 243, 112],[2, 3, 4])                 # move arm to chamber position
-    #Open()                                                      # push battery
+    Open()                                                      # push battery
 
 def Drone_pull():
     start_time = time.time()
     print("Drone pull sequence")
-    motor.dxlSetVelo([10, 10, 10, 10, 10], [0, 1, 2, 3, 4])   # set initial velocity
-    print("remove drone bat")
-    motor.simMotorRun([0, 0, 0],[2, 3, 4])  # move arm to chamber position
-    Close()                                     # grab battery
-    motor.dxlSetVelo([10, 10, 10], [2, 3, 4])   # set pull out velocity
-    motor.simMotorRun([0, 0, 0],[2, 3, 4]) # pull battery out
+    motor.dxlSetVelo([30, 50, 30, 30, 30], [0, 1, 2, 3, 4])      # set initial velocity
+    print("remove drone bat")                                                  
+    motor.simMotorRun([95, 243, 112],[2, 3, 4])                 # move to battery position
+    Close()  
+    motor.dxlSetVelo([17, 27, 8], [2, 3, 4])                   # set pull out velocity
+    motor.simMotorRun([154, 334, 90],[2, 3, 4])                      # pull battery out
 
 ####################
 
@@ -135,9 +135,13 @@ Command_dict = {
 }
 
 def main(args=None):
-    Open()
     startsetup()
-    Drone_push()
+    Open()
+    Drone_pull()
+
+    # Open()
+    # startsetup()
+    # Drone_push()
 
     # Open()
     # startsetup()
