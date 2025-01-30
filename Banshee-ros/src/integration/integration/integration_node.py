@@ -81,97 +81,105 @@ DRONE_BAT = 2
 #         print("INVALID")
 
 
-# Grab high
-def Grab_high():
-    start_time = time.time()
-    print("Grabbing high")
-    motor.dxlSetVelo([30, 30, 10, 10, 10], [0, 1, 2, 3, 4])
-    motor.simMotorRun([170, 330, 90],[2, 3, 4])
-    time.sleep(0.1)
-
-# Grab low
-def Grab_low():
-    start_time = time.time()
-    print("Grabbing low")
-    motor.dxlSetVelo([30, 30, 10, 10, 10], [0, 1, 2, 3, 4])
-    motor.simMotorRun([132, 347, 54],[2, 3, 4])
-    time.sleep(0.1)
-
-def Drone_grab():
-    start_time = time.time()
-    print("Grabbing drone")
-    motor.dxlSetVelo([10, 10, 10], [2, 3, 4])
-    motor.simMotorRun([132, 347, 54],[2, 3, 4])
-
-def Drone_push():
-    start_time = time.time()
-    print("Pushing drone")
-    motor.dxlSetVelo([10, 10, 10], [2, 3, 4])
-    motor.simMotorRun([132, 347, 54],[2, 3, 4])
-
-#######
-
 def Push_low():    
     start_time = time.time()
     print("Push in low sequence")
-    motor.dxlSetVelo([10, 10, 10], [2, 3, 4])
-    motor.simMotorRun([132, 343, 70],[2, 3, 4]) # guesstimate
-    time.sleep(5)
-    motor.dxlSetVelo([10, 8, 5], [2, 3, 4])
-    motor.simMotorRun([110, 330, 60],[2, 3, 4])
-    time.sleep(2)
-    motor.dxlSetVelo([10, 8, 10], [2, 3, 4])
-    motor.simMotorRun([100, 320, 50],[2, 3, 4])
-    time.sleep(1)
-    # slight push
-    motor.simMotorRun([310, 65],[3, 4])
-    time.sleep(1)
-    motor.simMotorRun([290, 75],[3, 4])
-    time.sleep(1)
-    motor.simMotorRun([90, 270, 90],[2, 3, 4])
-    time.sleep(1)
-    motor.simMotorRun([80, 260, 95],[2, 3, 4])
+    motor.dxlSetVelo([13, 38, 20], [2, 3, 4])   # set initial velocity
+    print("place chamber")
+    motor.simMotorRun([132, 343, 70],[2, 3, 4]) # move arm to first position
+    motor.dxlSetVelo([15, 28, 10], [2, 3, 4])   # set final velocity
+    motor.simMotorRun([80, 248, 95],[2, 3, 4])  # move arm w/ battery to chamber
+    Open()                                      # let go of battery
 
-########
+def Pull_low():    
+    start_time = time.time()
+    print("Pull out low sequence")
+    motor.dxlSetVelo([30, 20, 30], [2, 3, 4])   # set initial velocity
+    print("remove chamber")
+    motor.simMotorRun([80, 248, 95],[2, 3, 4])  # move arm to chamber position
+    Close()                                     # grab battery
+    motor.dxlSetVelo([12, 30, 15], [2, 3, 4])   # set pull out velocity
+    motor.simMotorRun([132, 343, 40],[2, 3, 4]) # pull battery out
+
 
 def Push_high():    
     start_time = time.time()
-    print("Push in low sequence")
-    motor.dxlSetVelo([30, 30, 10, 10, 10], [0, 1, 2, 3, 4])
-    motor.simMotorRun([120, 250, 80],[2, 3, 4]) # guesstimate
-    time.sleep(0.1)
+    print("Push in high sequence")
+    motor.dxlSetVelo([20, 20, 20], [2, 3, 4])   # set initial velocity
+    print("place chamber")
+    motor.simMotorRun([130, 310, 90],[2, 3, 4]) # move arm to first position
+    motor.dxlSetVelo([15, 28, 10], [2, 3, 4])   # set final velocity
+    motor.simMotorRun([60, 180, 144],[2, 3, 4])  # move arm w/ battery to chamber
+    Open()                                      # let go of battery
+
+def Pull_high():    
+    start_time = time.time()
+    print("Pull out high sequence")
+    motor.dxlSetVelo([20, 20, 30], [2, 3, 4])   # set initial velocity
+    print("remove chamber")
+    motor.simMotorRun([60, 178, 144],[2, 3, 4])  # move arm to chamber position
+    Close()                                     # grab battery
+    motor.dxlSetVelo([12, 28, 15], [2, 3, 4])   # set pull out velocity
+    motor.simMotorRun([130, 320, 70],[2, 3, 4]) # pull battery out
+
+
+def Drone_push():
+    start_time = time.time()
+    print("Drone push sequence")
+    motor.dxlSetVelo([30, 50, 30, 30, 30], [0, 1, 2, 3, 4])     # set initial speed
+    print("push drone bat")
+    motor.simMotorRun([45], [1])                                # turn around
+    motor.simMotorRun([154, 334, 90],[2, 3, 4])                 # move arm to first position
+    motor.dxlSetVelo([17, 27, 8], [2, 3, 4])                    # set push in speed
+    motor.simMotorRun([95, 243, 112],[2, 3, 4])                 # move arm to chamber position
+    Open()                                                      # push battery
+
+def Drone_pull():
+    start_time = time.time()
+    print("Drone pull sequence")
+    motor.dxlSetVelo([30, 50, 30, 30, 30], [0, 1, 2, 3, 4])     # set initial velocity
+    print("remove drone bat")
+    motor.simMotorRun([45], [1])                                # turn around       
+    motor.simMotorRun([154, 334, 90],[2, 3, 4])                 # get to middle position
+    motor.dxlSetVelo([17, 27, 8], [2, 3, 4])                    # set grab speed                      
+    motor.simMotorRun([95, 243, 112],[2, 3, 4])                 # move to battery position
+    Close()  
+    motor.simMotorRun([154, 334, 90],[2, 3, 4])                 # get to middle position
+    motor.dxlSetVelo([25, 15, 25], [2, 3, 4])                    # set grab speed                      
+    motor.simMotorRun([222, 334, 139],[2, 3, 4])                # pull battery out
 
 
 # Close Claw
 def Close():
     start_time = time.time()
     print("close claw")
-    motor.dxlSetVelo([30, 30, 30, 30, 10], [0, 1, 2, 3, 4])
+    motor.dxlSetVelo([30], [0])
     motor.simMotorRun([108],[0])
     time.sleep(1)
-    # motor.simMotorRun([134],[1])
 
 #Open Claw
 def Open():
     start_time = time.time()
     print("open claw")
-    motor.dxlSetVelo([30, 30, 30, 30, 10], [0, 1, 2, 3, 4])
+    motor.dxlSetVelo([30], [0])
     motor.simMotorRun([45],[0])
     time.sleep(1)
 
 # Setup initial motor positions
 def startsetup():
     print("setting up")
-    motor.dxlSetVelo([30, 30, 30, 30, 10], [0, 1, 2, 3, 4])
-    motor.simMotorRun([224, 222, 347, 139], [1, 2, 3, 4])
+    motor.dxlSetVelo([30, 30, 20, 30], [1, 2, 3, 4])
+    motor.simMotorRun([225, 222, 347, 139], [1, 2, 3, 4])
     time.sleep(1)
 
 # Dictionary mapping commands to functions
 Command_dict = {
-    "grab high": Grab_high,
-    "grab low": Grab_low,
-    "push low": Push_low,
-    "drone": Drone_grab,
+    "grab h": Pull_high,
+    "push h": Push_high,
+    "pull l": Pull_low,
+    "push l": Push_low,
+    "pull d": Drone_pull,
+    "push d": Drone_push,
     "close": Close,
     "open": Open,
     "setup": startsetup,
