@@ -21,7 +21,7 @@ class BVMNode(Node):
         self.mode = 0
         self.done = 0 # flag for each mode
         self.checkModeComplete = False
-        self.DroneMarkers = [7, 8]
+        self.DroneMarkers = [4, 5]
         self.batteryChamber = None
         self.ser = serial.Serial('/dev/ttyUSB1', 115200, timeout=1)
 
@@ -58,7 +58,7 @@ class BVMNode(Node):
         self.ser.write(b'Hello ESP32\n')  # Send data
         response = self.ser.readline().decode('utf-8').strip()  # Read response
         if response:
-            self.get_logger().info("Received: ", response)
+            self.get_logger().info("Received: " + str(response))
     
     def bvmLogic(self):
         if len(self.DroneMarkers) > 0:
