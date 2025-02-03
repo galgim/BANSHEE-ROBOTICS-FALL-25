@@ -36,7 +36,8 @@ class BVMNode(Node):
         # self.arucoIDPublisher()
 
         # Uncomment line and delete arucoID() once finished with GCS node
-        self.run_timer = self.create_timer(0.5, self.bvmLogic)
+        self.bvmLogic
+        # self.run_timer = self.create_timer(0.5, self.bvmLogic)
     
     def arucoIDPublisher(self):
         msg = Int8()
@@ -55,13 +56,15 @@ class BVMNode(Node):
         self.batteries = msg.data
 
     def espReadVoltage(self):
-        raw_data = self.ser.read(32)  # Expecting 8 floats (8 * 4 bytes = 32)
+        while True:
+            if self.ser.in_waiting > 0:
+                raw_data = self.ser.read(32)  # Expecting 8 floats (8 * 4 bytes = 32)
 
-        if len(raw_data) == 32:
-            values = [round(v,2) for v in struct.unpack('8f', raw_data)]
-            self.get_logger().info("Received Doubles: " + str(values))
-        else:
-            self.get_logger().warn("Incomplete double data received")
+                if len(raw_data) == 32:
+                    values = [round(v,2) for v in struct.unpack('8f', raw_data)]
+                    self.get_logger().info("Received Doubles: " + str(values))
+                else:
+                    self.get_logger().warn("Incomplete double data received")
 
     def espSendUnlocked(self, chamber, state):
         if isinstance(chamber, int) and isinstance(state, int):
