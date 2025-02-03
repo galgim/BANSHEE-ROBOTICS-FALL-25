@@ -1,7 +1,7 @@
 import serial
 
 # Change '/dev/ttyUSB0' to the correct port (COMx on Windows)
-ser = serial.Serial('/dev/ttyUSB0', 115200, timeout=1)
+ser = serial.Serial('/dev/ttyUSB1', 115200, timeout=1)
 
 while True:
     ser.write(b'Hello ESP32\n')  # Send data

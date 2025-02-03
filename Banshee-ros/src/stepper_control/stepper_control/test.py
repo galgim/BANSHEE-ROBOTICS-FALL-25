@@ -1,25 +1,57 @@
+import logging
+import unittest
+import time
 
-from time import sleep
-from pinpong.board import Board, Pin
+"""
+A collection of some basic tests for the Arduino library.
 
-# Pin Definitions
-DIR = Pin.D10  # Direction Pin (Dir+)
-STEP = Pin.D9  # Step Pin (Pul+)
+Extensive coverage is a bit difficult, since a positive test involves actually
+connecting and issuing commands to a live Arduino, hosting any hardware
+required to test a particular function. But a core of basic communication tests
+should at least be maintained here.
+"""
 
-CW = 1   # Clockwise Rotation
-CCW = 0  # Counter Clockwise Rotation
-# Board("leonardo").begin()  # Initialization, select board type (uno, microbit, RPi, handpy) and port number. If no port number is entered, automatic detection will be performed
-#Board("uno", "COM36").begin()  # Initialization with specified port on Windows
-Board("leonardo", "/dev/ttyACM0").begin()  # Initialization with specified port on Linux
-#Board("uno", "/dev/cu.usbmodem14101").begin()  # Initialization with specified port on Mac
-mov = Pin(STEP, Pin.OUT)  # Initialize the pin for digital output'\
-dir = Pin(DIR, Pin.OUT)  # Initialize the pin for digital output'\
 
-while True:
-  dir.write_digital(0)# led.value(1)  # Output high level Method 1
-  mov.write_digital(1)
-  print("move")
-  sleep(.002)  # Output high level Method 2
-  mov.write_digital(0)
-  sleep(.002)
-  print("stop")
+logging.basicConfig(level=logging.DEBUG)
+
+# Bind raw_input to input in python 2.7
+try:
+    input = raw_input
+except NameError:
+    pass
+
+
+class TestBasics(unittest.TestCase):
+
+    def test_find(self):
+        """ Tests auto-connection/board detection. """
+        input(
+            'Plug in Arduino board w/LED at pin 13, reset, then press enter')
+        from Arduino import Arduino
+        board = None
+        try:
+            # This will trigger automatic port resolution.
+            board = Arduino(115200, port="/dev/ttyS1")
+        finally:
+            if board:
+                board.close()
+
+    def test_open(self):
+        """ Tests connecting to an explicit port. """
+        port = None
+        while not port:
+            port = input(
+                'Plug in Arduino board w/LED at pin 13, reset.\n'\
+                'Enter the port where the Arduino is connected, then press enter:')
+            if not port:
+                print('You must enter a port.')
+        from Arduino import Arduino
+        board = None
+        try:
+            board = Arduino(115200, port=port)
+        finally:
+            if board:
+                board.close()
+
+if __name__ == '__main__':
+    unittest.main()
