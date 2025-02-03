@@ -67,6 +67,7 @@ class BVMNode(Node):
             self.get_logger().info("Received: " + str(values))
         else:
             self.get_logger().warn("Incomplete data received")
+"test"
 
         
     def bvmLogic(self):
