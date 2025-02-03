@@ -22,3 +22,21 @@ void loop() {
 }
 
 */
+void setup() {
+  Serial.begin(115200);  // Start serial communication
+}
+
+void loop() {
+  if (Serial.available() > 0) {
+    String incomingData = Serial.readStringUntil('\n');  // Read incoming data
+
+    // Define an array of values to send
+    int values[] = {10, 20, 30, 40, 50};  
+    int size = sizeof(values) / sizeof(values[0]);
+
+    // Send the array over Serial
+    Serial.write((byte*)values, size * sizeof(int));  // Send array as raw bytes
+  }
+
+  delay(1000);  // Avoid flooding the serial port
+}
