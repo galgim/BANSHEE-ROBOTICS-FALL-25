@@ -55,18 +55,16 @@ class BVMNode(Node):
     def batteryAmount(self, msg):
         self.batteries = msg.data
 
-import struct
+    def espSend(self):
+        self.ser.write(b'Hello ESP32\n')  # Request data
 
-def espSend(self):
-    self.ser.write(b'Hello ESP32\n')  # Request data
+        raw_data = self.ser.read(32)  # Expecting 5 doubles (5 * 8 bytes = 40)
 
-    raw_data = self.ser.read(32)  # Expecting 5 doubles (5 * 8 bytes = 40)
-
-    if len(raw_data) == 32:
-        values = list(struct.unpack('5d', raw_data))  # Unpack as 5 doubles
-        self.get_logger().info("Received Doubles: " + str(values))
-    else:
-        self.get_logger().warn("Incomplete double data received")
+        if len(raw_data) == 32:
+            values = list(struct.unpack('5d', raw_data))  # Unpack as 5 doubles
+            self.get_logger().info("Received Doubles: " + str(values))
+        else:
+            self.get_logger().warn("Incomplete double data received")
 
 
         
