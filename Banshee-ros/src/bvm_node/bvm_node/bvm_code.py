@@ -3,6 +3,7 @@ from rclpy.node import Node
 from std_msgs.msg import Bool, Int8
 import serial
 import time
+import struct
 #drone battery 8-9
 #upper battery 0-3
 #lower battery 4-7
@@ -55,11 +56,19 @@ class BVMNode(Node):
         self.batteries = msg.data
 
     def espSend(self):
-        self.ser.write(b'Hello ESP32\n')  # Send data
-        response = self.ser.readline().decode("utf-8").strip()  # Read response
-        if response:
-            self.get_logger().info("Received: " + str(response))
-    
+        self.ser.write(b'Hello ESP32\n')  # Send request to Arduino
+
+        time.sleep(0.1)  # Small delay to allow Arduino to respond
+
+        raw_data = self.ser.read(20)  # Expecting 5 integers (5 * 4 bytes = 20 bytes)
+
+        if len(raw_data) == 20:  # Ensure all bytes were received
+            values = list(struct.unpack('5i', raw_data))  # Unpack binary data into integers
+            self.get_logger().info("Received: " + str(values))
+        else:
+            self.get_logger().warn("Incomplete data received")
+
+        
     def bvmLogic(self):
         if len(self.DroneMarkers) > 0:
             if self.mode == 0:
