@@ -23,7 +23,7 @@ class BVMNode(Node):
         self.checkModeComplete = False
         self.DroneMarkers = [7, 8]
         self.batteryChamber = None
-
+        self.ser = serial.Serial('/dev/ttyUSB1', 115200, timeout=1)
 
 
         self.arucoPublisher = self.create_publisher(
@@ -33,10 +33,10 @@ class BVMNode(Node):
         self.armSubscriber = self.create_subscription(
         Bool, 'modeComplete', self.modeComplete, 10)
 
-        self.arucoIDPublisher()
+        # self.arucoIDPublisher()
 
         # Uncomment line and delete arucoID() once finished with GCS node
-        # self.bvmLogic()
+        self.run_timer = self.create_timer(0.5, self.bvmLogic())
     
     def arucoIDPublisher(self):
         msg = Int8()
@@ -54,24 +54,16 @@ class BVMNode(Node):
     def batteryAmount(self, msg):
         self.batteries = msg.data
 
-    def espSend(response):
-        ser = serial.Serial('/dev/ttyACM0', 9600, timeout=1)
-        changetobyte = response.encode(encoding="utf-8") 
-        ser.write(changetobyte)
-        print("send code to arduino")
-        # Add a delay to ensure all responses are sent by the Arduino
-        time.sleep(1)
-        
-        while ser.in_waiting > 0:
-            line = ser.readline().decode('utf-8').rstrip()
-            print(line)
-            ser.reset_input_buffer()
-        time.sleep(1)
+    def espSend(self):
+        self.ser.write(b'Hello ESP32\n')  # Send data
+        response = self.ser.readline().decode('utf-8').strip()  # Read response
+        if response:
+            self.get_logger().info("Received: ", response)
     
     def bvmLogic(self):
         if len(self.DroneMarkers) > 0:
             if self.mode == 0:
-                pass
+                self.espSend()
             elif self.mode == 1 and self.done == 0:
                 
 
