@@ -55,18 +55,19 @@ class BVMNode(Node):
     def batteryAmount(self, msg):
         self.batteries = msg.data
 
-    def espSend(self):
-        self.ser.write(b'Hello ESP32\n')  # Send request to Arduino
+import struct
 
-        time.sleep(0.1)  # Small delay to allow Arduino to respond
+def espSend(self):
+    self.ser.write(b'Hello ESP32\n')  # Request data
 
-        raw_data = self.ser.read(20)  # Expecting 5 integers (5 * 4 bytes = 20 bytes)
+    raw_data = self.ser.read(32)  # Expecting 5 doubles (5 * 8 bytes = 40)
 
-        if len(raw_data) == 20:  # Ensure all bytes were received
-            values = list(struct.unpack('5i', raw_data))  # Unpack binary data into integers
-            self.get_logger().info("Received: " + str(values))
-        else:
-            self.get_logger().warn("Incomplete data received")
+    if len(raw_data) == 32:
+        values = list(struct.unpack('5d', raw_data))  # Unpack as 5 doubles
+        self.get_logger().info("Received Doubles: " + str(values))
+    else:
+        self.get_logger().warn("Incomplete double data received")
+
 
         
     def bvmLogic(self):
