@@ -56,7 +56,7 @@ class BVMNode(Node):
 
     def espSend(self):
         self.ser.write(b'Hello ESP32\n')  # Send data
-        response = self.ser.readline().decode('utf-8').strip()  # Read response
+        response = self.ser.read()  # Read response
         if response:
             self.get_logger().info("Received: " + str(response))
     
