@@ -81,7 +81,7 @@ class BVMNode(Node):
 
 
                 self.done = 1
-            elif self.mode == 3:
+            elif self.mode == 3 and self.done == 0:
                 self.previousID = arucoID
 
 
@@ -93,7 +93,5 @@ def main(args=None):
         rclpy.spin(node)
     except:
         KeyboardInterrupt
-    finally:
-        rclpy.shutdown()
 if __name__ == '__main__':
     main()
