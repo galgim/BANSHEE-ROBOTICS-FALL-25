@@ -4,9 +4,8 @@ from std_msgs.msg import Bool, Int8
 import serial
 import time
 import struct
-#drone battery 8-9
-#upper battery 0-3
-#lower battery 4-7
+#drone battery 4-5
+#battery columns 0-3
 #we get drone landed done from gcs node (mode 1)
 #voltage from esp and find lowest aruco with no voltage
 #find max voltage battery lowest aruco
@@ -59,13 +58,19 @@ class BVMNode(Node):
         raw_data = self.ser.read(32)  # Expecting 8 floats (8 * 4 bytes = 32)
 
         if len(raw_data) == 32:
-            values = [round(v,2) for v in struct.unpack('8f', raw_data)]  # Unpack as 5 doubles
+            values = [round(v,2) for v in struct.unpack('8f', raw_data)]
             self.get_logger().info("Received Doubles: " + str(values))
         else:
             self.get_logger().warn("Incomplete double data received")
 
-    def espSendUnlock(self, chamber):
-        self.ser.write(b, chamber) 
+    def espSendUnlocked(self, chamber, state):
+        if isinstance(chamber, int) and isinstance(state, int):
+            byte_data = struct.pack('2i', chamber, state)
+            self.ser.write(byte_data)
+        elif isinstance(chamber, int) and isinstance(state, bool):
+            state = int(state)
+            byte_data = struct.pack('2i', chamber, state)
+            self.ser.write(byte_data)
 
 
         
@@ -73,6 +78,7 @@ class BVMNode(Node):
         if len(self.DroneMarkers) > 0:
             if self.mode == 0:
                 self.espReadVoltage()
+                self.espSendUnlock(1, 1)
             elif self.mode == 1 and self.done == 0:
                 
 
