@@ -36,7 +36,7 @@ class BVMNode(Node):
         # self.arucoIDPublisher()
 
         # Uncomment line and delete arucoID() once finished with GCS node
-        # self.run_timer = self.create_timer(0.5, self.bvmLogic)
+        self.run_timer = self.create_timer(0.5, self.bvmLogic)
     
     def arucoIDPublisher(self):
         msg = Int8()
