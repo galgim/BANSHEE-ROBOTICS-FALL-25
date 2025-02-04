@@ -55,18 +55,19 @@ class BVMNode(Node):
 
     def espReadVoltage(self):
         while True:
-            raw_data = self.ser.read(32)
-            data_left = self.ser.in_waiting()
-            raw_data += self.ser.read(data_left)
+        # Wait until at least 32 bytes are available
+            if self.ser.in_waiting >= 32:
+                raw_data = self.ser.read(32)  # Read exactly 32 bytes
 
-            if len(raw_data) == 32:
-                values = [round(v,2) for v in struct.unpack('8f', raw_data)]
-                self.get_logger().info("Received Doubles: " + str(values))
-            else:
-                self.get_logger().warn("Incomplete double data received")
-
-            if raw_data:
-                self.get_logger().info("Data received")
+                # Ensure the correct amount of data was read
+                if len(raw_data) == 32:
+                    values = [round(v, 2) for v in struct.unpack('8f', raw_data)]
+                    self.get_logger().info("Received Voltages: " + str(values))
+                    return values  # Return values to use in logic
+                else:
+                    self.get_logger().warn("Incomplete data received")
+        
+            time.sleep(0.1)
 
     def espSendUnlocked(self, chamber, state):
         if isinstance(chamber, int) and isinstance(state, int):
