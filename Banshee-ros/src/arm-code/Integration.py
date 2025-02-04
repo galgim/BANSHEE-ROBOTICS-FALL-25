@@ -38,42 +38,42 @@ motor.portInitialization(PORT_NUM, ALL_IDs)
 def Push_low():    
     start_time = time.time()
     print("Push in low sequence")
-    motor.dxlSetVelo([13, 38, 20], [2, 3, 4])   # set initial velocity
+    motor.dxlSetVelo([18, 43, 25], [2, 3, 4])   # set initial velocity
     print("place chamber")
     motor.simMotorRun([132, 343, 70],[2, 3, 4]) # move arm to first position
-    motor.dxlSetVelo([15, 28, 10], [2, 3, 4])   # set final velocity
+    motor.dxlSetVelo([20, 33, 15], [2, 3, 4])   # set final velocity
     motor.simMotorRun([80, 248, 95],[2, 3, 4])  # move arm w/ battery to chamber
     Open()                                      # let go of battery
 
 def Pull_low():    
     start_time = time.time()
     print("Pull out low sequence")
-    motor.dxlSetVelo([30, 20, 30], [2, 3, 4])   # set initial velocity
+    motor.dxlSetVelo([35, 25, 35], [2, 3, 4])   # set initial velocity
     print("remove chamber")
     motor.simMotorRun([80, 248, 95],[2, 3, 4])  # move arm to chamber position
     Close()                                     # grab battery
-    motor.dxlSetVelo([12, 30, 15], [2, 3, 4])   # set pull out velocity
+    motor.dxlSetVelo([17, 37, 20], [2, 3, 4])   # set pull out velocity
     motor.simMotorRun([132, 343, 40],[2, 3, 4]) # pull battery out
 
 
 def Push_high():    
     start_time = time.time()
     print("Push in high sequence")
-    motor.dxlSetVelo([20, 20, 20], [2, 3, 4])   # set initial velocity
+    motor.dxlSetVelo([25, 25, 25], [2, 3, 4])   # set initial velocity
     print("place chamber")
     motor.simMotorRun([130, 310, 90],[2, 3, 4]) # move arm to first position
-    motor.dxlSetVelo([15, 28, 10], [2, 3, 4])   # set final velocity
+    motor.dxlSetVelo([20, 33, 15], [2, 3, 4])   # set final velocity
     motor.simMotorRun([60, 180, 144],[2, 3, 4])  # move arm w/ battery to chamber
     Open()                                      # let go of battery
 
 def Pull_high():    
     start_time = time.time()
     print("Pull out high sequence")
-    motor.dxlSetVelo([20, 20, 30], [2, 3, 4])   # set initial velocity
+    motor.dxlSetVelo([25, 25, 35], [2, 3, 4])   # set initial velocity
     print("remove chamber")
     motor.simMotorRun([60, 178, 144],[2, 3, 4])  # move arm to chamber position
     Close()                                     # grab battery
-    motor.dxlSetVelo([12, 28, 15], [2, 3, 4])   # set pull out velocity
+    motor.dxlSetVelo([17, 33, 23], [2, 3, 4])   # set pull out velocity
     motor.simMotorRun([130, 320, 70],[2, 3, 4]) # pull battery out
 
 ####################
