@@ -36,6 +36,7 @@ class BVMNode(Node):
         # self.arucoIDPublisher()
 
         # Uncomment line and delete arucoID() once finished with GCS node
+        
         self.run_timer = self.create_timer(0.5, self.bvmLogic)
     
     def arucoIDPublisher(self):
@@ -78,7 +79,6 @@ class BVMNode(Node):
         if len(self.DroneMarkers) > 0:
             if self.mode == 0:
                 self.espReadVoltage()
-                self.espSendUnlock(1, 1)
             elif self.mode == 1 and self.done == 0:
                 
 
