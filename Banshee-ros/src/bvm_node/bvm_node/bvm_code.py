@@ -25,6 +25,7 @@ class BVMNode(Node):
         self.batteryChamber = None
         self.ser = serial.Serial('/dev/ttyUSB1', 115200, timeout=1)
 
+
         self.arucoPublisher = self.create_publisher(
         Int8, 'arucoID', 10)
         self.get_logger().info("ArucoID Publisher started")
@@ -35,7 +36,7 @@ class BVMNode(Node):
         # self.arucoIDPublisher()
 
         # Uncomment line and delete arucoID() once finished with GCS node
-        self.bvmLogic
+        self.run_timer = self.create_timer(0.5, self.bvmLogic)
     
     def arucoIDPublisher(self):
         msg = Int8()
@@ -54,20 +55,13 @@ class BVMNode(Node):
         self.batteries = msg.data
 
     def espReadVoltage(self):
-        while True:
-        # Wait until at least 32 bytes are available
-            if self.ser.in_waiting >= 32:
-                raw_data = self.ser.read(32)  # Read exactly 32 bytes
+        raw_data = self.ser.read(32)  # Expecting 8 floats (8 * 4 bytes = 32)
 
-                # Ensure the correct amount of data was read
-                if len(raw_data) == 32:
-                    values = [round(v, 2) for v in struct.unpack('8f', raw_data)]
-                    self.get_logger().info("Received Voltages: " + str(values))
-                    return values  # Return values to use in logic
-                else:
-                    self.get_logger().warn("Incomplete data received")
-        
-            time.sleep(0.1)
+        if len(raw_data) == 32:
+            values = [round(v,2) for v in struct.unpack('8f', raw_data)]
+            self.get_logger().info("Received Doubles: " + str(values))
+        else:
+            self.get_logger().warn("Incomplete double data received")
 
     def espSendUnlocked(self, chamber, state):
         if isinstance(chamber, int) and isinstance(state, int):
@@ -84,6 +78,7 @@ class BVMNode(Node):
         if len(self.DroneMarkers) > 0:
             if self.mode == 0:
                 self.espReadVoltage()
+                self.espSendUnlock(1, 1)
             elif self.mode == 1 and self.done == 0:
                 
 
