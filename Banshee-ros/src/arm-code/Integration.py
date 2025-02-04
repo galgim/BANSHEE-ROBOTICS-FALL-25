@@ -59,7 +59,7 @@ def Pull_low():
 def Push_high():    
     start_time = time.time()
     print("Push in high sequence")
-    motor.dxlSetVelo([25, 25, 28], [2, 3, 4])   # set initial velocity
+    motor.dxlSetVelo([25, 25, 30], [2, 3, 4])   # set initial velocity
     print("place chamber")
     motor.simMotorRun([130, 310, 90],[2, 3, 4]) # move arm to first position
     motor.dxlSetVelo([15, 28, 10], [2, 3, 4])   # set final velocity
@@ -73,7 +73,7 @@ def Pull_high():
     print("remove chamber")
     motor.simMotorRun([60, 178, 144],[2, 3, 4])  # move arm to chamber position
     Close()                                     # grab battery
-    motor.dxlSetVelo([17, 33, 23], [2, 3, 4])   # set pull out velocity
+    motor.dxlSetVelo([15, 28, 10], [2, 3, 4])   # set pull out velocity
     motor.simMotorRun([130, 320, 70],[2, 3, 4]) # pull battery out
 
 ####################
@@ -124,7 +124,7 @@ def Open():
 # Setup initial motor positions
 def startsetup():
     print("setting up")
-    motor.dxlSetVelo([30, 30, 20, 30], [1, 2, 3, 4])
+    motor.dxlSetVelo([30, 30, 30, 30], [1, 2, 3, 4])
     motor.simMotorRun([225, 222, 347, 139], [1, 2, 3, 4])
     time.sleep(1)
 
@@ -160,7 +160,6 @@ def main(args=None):
     Push_high()
     startsetup()
     Pull_high()
-    time.sleep(0.1)
     startsetup()
 
     # Open()
