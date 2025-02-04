@@ -139,22 +139,22 @@ Command_dict = {
 }
 
 def main(args=None):
-    startsetup()
-    Open()
-    Drone_pull()
+    # startsetup()
+    # Open()
+    # Drone_pull()
 
     # Open()
     # startsetup()
     # Drone_push()
 
-    # Open()
-    # startsetup()
-    # Close()
-    # Push_low()
-    # startsetup()
-    # Pull_low()
-    # time.sleep(0.5)
-    # startsetup()
+    Open()
+    startsetup()
+    Close()
+    Push_low()
+    startsetup()
+    Pull_low()
+    time.sleep(0.5)
+    startsetup()
     
     # Close()
     # Push_high()
