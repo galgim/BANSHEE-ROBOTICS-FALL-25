@@ -205,7 +205,7 @@ class IntegrationNode(Node):
         self.batteryLevel = None
 
         startsetup()
-        Close()
+        Open()
         self.run_timer = self.create_timer(0.1, self.run)
 
     def done_callback(self, msg):
