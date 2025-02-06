@@ -205,7 +205,7 @@ class IntegrationNode(Node):
         self.batteryLevel = None
 
         startsetup()
-        Open()
+        Close()
         self.run_timer = self.create_timer(0.1, self.run)
 
     def done_callback(self, msg):
@@ -218,11 +218,11 @@ class IntegrationNode(Node):
         # Proceed to command execution after receiving 'done' signal
         # pull_out(self.batteryLevel)
         if self.batteryLevel == 0:  
-          Push_high()
+          Pull_high()
         elif self.batteryLevel == 1:
-          Push_low()
+          Pull_low()
         else:
-          Drone_push()
+          Drone_pull()
         self.mode = 1
         self.start_signal_received = False
         msg = Bool()
@@ -232,8 +232,12 @@ class IntegrationNode(Node):
       elif self.start_signal_received and self.mode == 1:
         # Proceed to command execution after receiving 'done' signal
         # push_in(self.batteryLevel)
-        startsetup()
-        Close()
+        if self.batteryLevel == 0:  
+          Push_high()
+        elif self.batteryLevel == 1:
+          Push_low()
+        else:
+          Drone_push()
         self.mode = 0
         self.start_signal_received = False
         msg = Bool()
