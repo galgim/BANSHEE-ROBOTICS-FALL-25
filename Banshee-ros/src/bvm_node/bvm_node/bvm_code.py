@@ -58,12 +58,12 @@ class BVMNode(Node):
         try:
             return [round(v,2) for v in struct.unpack(type, data)]
         except:
-            print("Incomplete data received")
+            self.get_logger().info("Incomplete data received")
 
     def espRead(self):
         if self.ser.in_waiting > 0:
             tag = self.ser.readline().decode('utf-8').strip()
-            print("Tag: " + tag)
+            self.get_logger().info("Tag: " + tag)
             # Examples of reading from ESP
             if tag == "Voltage":
                 raw_data = self.ser.read(32)
@@ -71,7 +71,7 @@ class BVMNode(Node):
             if tag == "OtherInfo":
                 raw_data = self.ser.read(12)
                 values = self.structUnpack('3i', raw_data)
-            print(values)
+            self.get_logger().info(values)
 
     def espSend(self, tag, data):
         if isinstance(data, list):
@@ -84,7 +84,7 @@ class BVMNode(Node):
         if len(self.DroneMarkers) > 0:
             if self.mode == 0:
                 while True:
-                    self.espRead(self)
+                    self.espRead()
             elif self.mode == 1 and self.done == 0:
                 
 
