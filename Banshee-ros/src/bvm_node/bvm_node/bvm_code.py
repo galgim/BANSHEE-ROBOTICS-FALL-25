@@ -36,7 +36,8 @@ class BVMNode(Node):
         # self.arucoIDPublisher()
 
         # Uncomment line and delete arucoID() once finished with GCS node
-        self.run_timer = self.create_timer(0.1, self.bvmLogic)
+        # self.run_timer = self.create_timer(0.1, self.espRead)
+        self.espRead()
     
     def arucoIDPublisher(self):
         msg = Int8()
@@ -72,6 +73,7 @@ class BVMNode(Node):
                 raw_data = self.ser.read(12)
                 values = self.structUnpack('3i', raw_data)
             self.get_logger().info(values)
+        self.espRead()
 
     def espSend(self, tag, data):
         if isinstance(data, list):
