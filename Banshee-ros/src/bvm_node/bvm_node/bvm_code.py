@@ -83,7 +83,8 @@ class BVMNode(Node):
     def bvmLogic(self):
         if len(self.DroneMarkers) > 0:
             if self.mode == 0:
-                self.espRead()
+                while True:
+                    self.espRead(self)
             elif self.mode == 1 and self.done == 0:
                 
 
