@@ -205,7 +205,7 @@ class IntegrationNode(Node):
         self.batteryLevel = None
 
         startsetup()
-        Close()
+        Open()
         self.run_timer = self.create_timer(0.1, self.run)
 
     def done_callback(self, msg):
@@ -213,6 +213,7 @@ class IntegrationNode(Node):
       self.batteryLevel = msg.data
       self.get_logger().info(f"Received batteryLevel {self.batteryLevel} from Camera Node. Integration Node is now ready to execute commands.")
 
+    # PULL FUNCTION
     def run(self): 
       if self.start_signal_received and self.mode == 0:
         # Proceed to command execution after receiving 'done' signal
@@ -229,6 +230,7 @@ class IntegrationNode(Node):
         msg.data = True
         self.armFinished.publish(msg)
 
+      # PUSH FUNCTION
       elif self.start_signal_received and self.mode == 1:
         # Proceed to command execution after receiving 'done' signal
         # push_in(self.batteryLevel)
