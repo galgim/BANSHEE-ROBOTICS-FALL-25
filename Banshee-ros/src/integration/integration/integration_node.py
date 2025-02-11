@@ -228,9 +228,9 @@ class IntegrationNode(Node):
       self.get_logger().info(f"Received batteryLevel {self.batteryLevel} from Camera Node. Integration Node is now ready to execute commands.")
 
     def test(self):
-      self.start_signal_received = True
+      self.start_signal_received = 0
       self.batteryLevel = 0
-      
+
     # PULL FUNCTION
     def run(self): 
       if self.start_signal_received and self.mode == 0:
