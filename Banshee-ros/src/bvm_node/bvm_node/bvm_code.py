@@ -33,10 +33,10 @@ class BVMNode(Node):
         self.armSubscriber = self.create_subscription(
         Bool, 'modeComplete', self.modeComplete, 10)
 
-        self.arucoIDPublisher()
+        # self.arucoIDPublisher()
 
         # Uncomment line and delete arucoID() once finished with GCS node
-        # self.run_timer = self.create_timer(0.1, self.bvmLogic)
+        self.run_timer = self.create_timer(0.1, self.bvmLogic)
     
     def arucoIDPublisher(self):
         msg = Int8()
