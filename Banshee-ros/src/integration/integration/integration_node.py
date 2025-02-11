@@ -219,7 +219,7 @@ class IntegrationNode(Node):
         
         # Flag to indicate if the node has received the signal to start
         self.start_signal_received = True
-        self.batteryLevel = 0
+        self.batteryLevel = 1
 
         startsetup()
         Open()
