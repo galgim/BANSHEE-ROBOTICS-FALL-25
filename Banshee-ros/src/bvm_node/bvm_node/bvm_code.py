@@ -63,14 +63,16 @@ class BVMNode(Node):
     def espRead(self):
         if self.ser.in_waiting > 0:
             tag = self.ser.readline().decode('utf-8').strip()
-            self.get_logger().info("Tag: " + tag)
             # Examples of reading from ESP
             if tag == "Voltage":
                 raw_data = self.ser.read(32)
                 values = self.structUnpack('8f', raw_data)
-            if tag == "OtherInfo":
+            elif tag == "OtherInfo":
                 raw_data = self.ser.read(12)
                 values = self.structUnpack('3i', raw_data)
+            else:
+                return
+            self.get_logger().info("Tag: " + tag)
             self.get_logger().info(f"{values}")
 
     def espSend(self, tag, data):
