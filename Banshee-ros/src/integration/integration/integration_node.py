@@ -250,7 +250,7 @@ class IntegrationNode(Node):
           Droneside()
           Drone_pull()
         self.mode = 1
-        self.start_signal_received = False
+        self.start_signal_received = True
         msg = Bool()
         msg.data = True
         self.armFinished.publish(msg)
@@ -269,7 +269,7 @@ class IntegrationNode(Node):
           Droneside()
           Drone_push()
         self.mode = 0
-        self.start_signal_received = False
+        self.start_signal_received = True
         msg = Bool()
         msg.data = True
         self.armFinished.publish(msg)
