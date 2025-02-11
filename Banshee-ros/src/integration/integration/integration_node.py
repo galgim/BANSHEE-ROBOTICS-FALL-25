@@ -246,11 +246,11 @@ class IntegrationNode(Node):
           Droneside()
         elif self.batteryLevel == 1:
           Pull_low()
-          startsetup
+          startsetup()
           Droneside()
         else:
           Drone_pull()
-          startsetup
+          startsetup()
           BVMside()
 
         self.mode = 1
