@@ -169,18 +169,21 @@ def Open():
 
 # Setup initial motor positions
 def startsetup():
+    start_time = time.time()
     print("setting up")
     motor.dxlSetVelo([30, 30, 30, 30], [1, 2, 3, 4])
     motor.simMotorRun([225, 222, 347, 139], [1, 2, 3, 4])
     time.sleep(1)
 
 def BVMside():
+    start_time = time.time()
     print("BVMside")
     motor.dxlSetVelo([30], [1])
     motor.simMotorRun([225], [1])
     time.sleep(1)
 
-def Droneside():  
+def Droneside():
+    start_time = time.time()
     print("BVMside")
     motor.dxlSetVelo([30], [1])
     motor.simMotorRun([45], [1])
