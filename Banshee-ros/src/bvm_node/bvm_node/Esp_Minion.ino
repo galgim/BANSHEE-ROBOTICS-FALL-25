@@ -4,14 +4,14 @@
 #include <Arduino.h>
 
 // Define the GPIO pin to control the solenoid
-const int solenoidPin = GPIO_NUM_1;
-const int solenoidPin2 = GPIO_NUM_3;
+const int solenoidPin = GPIO_NUM_2;
+const int solenoidPin2 = GPIO_NUM_4;
 
 const int CELLS_PER_BATTERY = 4;
 
-uint8_t masterMacAddress[] = {0xFF, 0xFF, 0xFF, 0xFF, 0xFF, 0xFF};  
+uint8_t masterMacAddress[] = {0x34, 0x5F, 0x45, 0xE7, 0x49, 0x2C}; // find Mac address for specific esp
 
-uint8_t data[10];  // 6 bytes for MAC, 4 bytes for voltage
+uint8_t data[4];  // 4 bytes for voltage
 
 // Callback when data is sent to master
 void OnDataSent(const uint8_t *mac_addr, esp_now_send_status_t status) {
@@ -59,17 +59,6 @@ void setup() {
 }
 
 void loop() {
-    // Turn on solenoid for 0.5s
-    digitalWrite(solenoidPin, HIGH);
-    digitalWrite(solenoidPin2, HIGH);
-    delay(500); // Keep solenoid active
-    digitalWrite(solenoidPin, LOW);
-    digitalWrite(solenoidPin2, LOW);
-
-    // Get Minion MAC Address
-    uint8_t minionMac[6];
-    WiFi.macAddress(minionMac);
-
     // Calculate total voltage
     float totalVoltage = 0;
     for (int i = 0; i < CELLS_PER_BATTERY; i++) {
@@ -79,15 +68,13 @@ void loop() {
     }
 
     Serial.printf("Total Voltage: %.3fV\n", totalVoltage);
-    memcpy(data, minionMac, 6);
-    memcpy(&data[6], &totalVoltage, sizeof(totalVoltage));  
+    memcpy(data, &totalVoltage, sizeof(totalVoltage));  
 
     // Send data to master ESP
     esp_err_t result = esp_now_send(masterMacAddress, data, sizeof(data));
 
-    Serial.println(digitalRead(solenoidPin));
-    Serial.println(digitalRead(solenoidPin2));
-    Serial.println("------------------------");
+    Serial.println(WiFi.macAddress());
+    Serial.println("This esp is for chamber 1."); // Change number here to let others know chamber #
 
     delay(1000); // Wait before sending the next packet
 }

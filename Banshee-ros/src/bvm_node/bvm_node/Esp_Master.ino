@@ -1,64 +1,71 @@
 /*
 #include <esp_now.h>
 #include <WiFi.h>
-#include <ArduinoJson.h>
 #include <HTTPClient.h>
 
-const int MAX_MINIONS = 8;
+const int MAX_MINIONS = 2;
 const int CELLS_PER_BATTERY = 4;  // Update if necessary
 
 // 2D array to store minion ID and its total voltage
-float minions[MAX_MINIONS][7];
+uint8_t minionsMacs[MAX_MINIONS][6] = {
+  {0xA0, 0xB7, 0x65, 0x25, 0x80, 0x68}, // Chamber 0
+  {0xA0, 0xB7, 0x65, 0x25, 0x0A, 0x70} // Chamber 1
+  
+  // Add more here when ready
+  };
+
+float voltage[8] = {0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0};
+
+void sendDataBvm(String tag, const void* data, size_t size) {
+    Serial.println(tag);
+    Serial.write((const uint8_t*)data, size);
+  }
+
+void setVoltageFromMinion(const uint8_t *mac, float voltageValue) {
+    for (int i = 0; i < MAX_MINIONS; i++) {
+        if (memcmp(mac, minionsMacs[i], 6) == 0) {
+            Serial.println("Minion Address in List!");// Match found
+            voltage[i] = voltageValue;
+            return;
+        }
+    }
+    Serial.println("Mac address not found in list");
+}
 
 void onDataReceive(const esp_now_recv_info *info, const uint8_t *incomingData, int len) {
-    if (len != 10) {
+    if (len != 4) {
         Serial.println("Invalid data length!");
         return;
     }
 
     uint8_t senderMac[6];
-    float totalVoltage;
-    memcpy(senderMac, incomingData, 6);  // Extract MAC
-    memcpy(&totalVoltage, incomingData + 6, sizeof(totalVoltage));  // Extract Voltage
+    memcpy(senderMac, info->src_addr, 6);  // Get sender's MAC
 
-    // Print received data
-    Serial.print("Received data from: ");
+    // Print received MAC address
+    Serial.print("Received from: ");
     for (int i = 0; i < 6; i++) {
-        Serial.printf("%02X:", senderMac[i]);
+        Serial.printf("%02X", senderMac[i]);
+        if (i < 5) Serial.print(":");
     }
-    Serial.printf(" Total Voltage: %.3fV\n", totalVoltage);
+    Serial.println();
 
-    // Check if the minion is already stored
-    bool found = false;
+    // Debugging: Print stored minion MACs
+    Serial.println("Checking against stored minions:");
     for (int i = 0; i < MAX_MINIONS; i++) {
-        bool macMatch = true;
+        Serial.print("Minion[" + String(i) + "]: ");
         for (int j = 0; j < 6; j++) {
-            if (memcmp(minions[i], senderMac, 6) == 0) {
-                minions[i][6] = totalVoltage;
-                found = true;
-                break;
-            }
+            Serial.printf("%02X", minionsMacs[i][j]);
+            if (j < 5) Serial.print(":");
         }
-
-        if (macMatch) {
-            minions[i][6] = totalVoltage;  // Update voltage
-            found = true;
-            break;
-        }
+        Serial.println();
     }
 
-    // If not found, add new minion
-    if (!found) {
-        for (int i = 0; i < MAX_MINIONS; i++) {
-            if (minions[i][0] == 0) {  // Empty slot
-                for (int j = 0; j < 6; j++) {
-                    minions[i][j] = senderMac[j];  // Store MAC
-                }
-                minions[i][6] = totalVoltage;  // Store Voltage
-                break;
-            }
-        }
-    }
+    float totalVoltage;
+    memcpy(&totalVoltage, incomingData, sizeof(totalVoltage));  // Extract Voltage
+
+    setVoltageFromMinion(senderMac, totalVoltage);
+
+    sendDataBvm("Voltage", voltage, sizeof(voltage));
 }
 
 // // Function to send data to server
@@ -113,11 +120,6 @@ void setup() {
 
     esp_now_register_recv_cb(onDataReceive);
 
-    // Initialize all minions as inactive (set voltage to 0.0)
-    for (int i = 0; i < MAX_MINIONS; i++) {
-        minions[i][0] = 0;  // ID (initialized as 0)
-        minions[i][1] = 0.0f;  // Voltage (initialized as 0.0)
-    }
 }
 
 unsigned long lastSendTime = 0;
@@ -131,13 +133,6 @@ void loop() {
         lastSendTime = currentMillis;
 
         // Check if we have any active minions
-        bool hasActiveMinions = false;
-        for (int i = 0; i < MAX_MINIONS; i++) {
-            if (minions[i][1] != 0.0f) {
-                hasActiveMinions = true;
-                break;
-            }
-        }
 
         // // Only send if we have data to send
         // if (hasActiveMinions) {
