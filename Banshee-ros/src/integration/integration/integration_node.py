@@ -249,6 +249,7 @@ class IntegrationNode(Node):
         else:
           Droneside()
           Drone_pull()
+        startsetup()
         self.mode = 1
         self.start_signal_received = True
         msg = Bool()
@@ -268,6 +269,7 @@ class IntegrationNode(Node):
         else:
           Droneside()
           Drone_push()
+        startsetup()
         self.mode = 0
         self.start_signal_received = True
         msg = Bool()
