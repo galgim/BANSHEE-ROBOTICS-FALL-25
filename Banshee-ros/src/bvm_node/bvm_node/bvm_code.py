@@ -23,7 +23,7 @@ class BVMNode(Node):
         self.checkModeComplete = False
         self.DroneMarkers = [4, 5]
         self.batteryChamber = None
-        self.ser = serial.Serial('/dev/ttyUSB1', 9600, timeout=1)
+        self.ser = serial.Serial('/dev/ttyUSB0', 115200, timeout=1)
 
 
         self.arucoPublisher = self.create_publisher(
