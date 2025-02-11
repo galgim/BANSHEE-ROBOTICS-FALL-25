@@ -40,7 +40,7 @@ def Push_low():
     print("Push in low sequence")
     motor.dxlSetVelo([18, 43, 25], [2, 3, 4])   # set initial velocity
     print("place chamber")
-    motor.simMotorRun([132, 343, 70],[2, 3, 4]) # move arm to first position
+    motor.simMotorRun([112, 323, 70],[2, 3, 4]) # move arm to first position
     time.sleep(1)
     motor.dxlSetVelo([17, 32, 18], [2, 3, 4])   # set final velocity
     motor.simMotorRun([80, 248, 95],[2, 3, 4])  # move arm w/ battery to chamber
