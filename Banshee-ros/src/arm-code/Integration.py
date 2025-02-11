@@ -41,7 +41,7 @@ def Push_low():
     
     motor.dxlSetVelo([20, 10, 20], [2, 3, 4])   # set initial velocity
     motor.simMotorRun([108, 325, 48],[2, 3, 4]) # move arm to first position
-    motor.dxlSetVelo([15, 32, 17], [2, 3, 4])   # set final velocity
+    motor.dxlSetVelo([17, 32, 17], [2, 3, 4])   # set final velocity
     motor.simMotorRun([80, 248, 95],[2, 3, 4])  # move arm w/ battery to chamber
     Open()                                      # let go of battery
 
@@ -51,7 +51,7 @@ def Pull_low():
     motor.dxlSetVelo([35, 25, 35], [2, 3, 4])   # set initial velocity
     motor.simMotorRun([80, 248, 95],[2, 3, 4])  # move arm to chamber position
     Close()                                     # grab battery
-    motor.dxlSetVelo([20, 35, 20], [2, 3, 4])   # set pull out velocity
+    motor.dxlSetVelo([17, 32, 17], [2, 3, 4])   # set pull out velocity
     motor.simMotorRun([108, 325, 48],[2, 3, 4]) # pull battery out
 
 
