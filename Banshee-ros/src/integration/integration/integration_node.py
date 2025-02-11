@@ -242,14 +242,17 @@ class IntegrationNode(Node):
         # pull_out(self.batteryLevel)
         if self.batteryLevel == 0:  
           Pull_high()
+          startsetup()
           Droneside()
         elif self.batteryLevel == 1:
           Pull_low()
+          startsetup
           Droneside()
         else:
           Drone_pull()
+          startsetup
           BVMside()
-        startsetup()
+
         self.mode = 1
         self.start_signal_received = True
         msg = Bool()
@@ -262,14 +265,17 @@ class IntegrationNode(Node):
         # push_in(self.batteryLevel)
         if self.batteryLevel == 0:  
           Push_high()
+          startsetup()
           Droneside()
         elif self.batteryLevel == 1:
           Push_low()
+          startsetup()
           Droneside()
         else:
           Drone_push()
+          startsetup()
           BVMside()
-        startsetup()
+
         self.mode = 0
         self.start_signal_received = True
         msg = Bool()
