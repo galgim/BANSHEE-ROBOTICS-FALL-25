@@ -23,7 +23,7 @@ class BVMNode(Node):
         self.checkModeComplete = False
         self.DroneMarkers = [4, 5]
         self.batteryChamber = None
-        self.ser = serial.Serial('/dev/ttyUSB1', 9600, timeout=1)
+        self.ser = serial.Serial('/dev/ttyUSB0', 115200, timeout=1)
 
 
         self.arucoPublisher = self.create_publisher(
@@ -33,10 +33,10 @@ class BVMNode(Node):
         self.armSubscriber = self.create_subscription(
         Bool, 'modeComplete', self.modeComplete, 10)
 
-        # self.arucoIDPublisher()
+        self.arucoIDPublisher()
 
         # Uncomment line and delete arucoID() once finished with GCS node
-        self.run_timer = self.create_timer(0.1, self.bvmLogic)
+        # self.run_timer = self.create_timer(0.1, self.bvmLogic)
     
     def arucoIDPublisher(self):
         msg = Int8()
