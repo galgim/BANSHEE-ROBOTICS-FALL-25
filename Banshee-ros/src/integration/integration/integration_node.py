@@ -218,8 +218,8 @@ class IntegrationNode(Node):
           Bool, 'ArmDone', 10)
         
         # Flag to indicate if the node has received the signal to start
-        self.start_signal_received = False
-        self.batteryLevel = None
+        self.start_signal_received = True
+        self.batteryLevel = 0
 
         startsetup()
         Open()
@@ -232,9 +232,6 @@ class IntegrationNode(Node):
 
     # PULL FUNCTION
     def run(self): 
-      self.start_signal_received = True
-      self.batteryLevel = 0
-
       if self.start_signal_received and self.mode == 0:
         # Proceed to command execution after receiving 'done' signal
         # pull_out(self.batteryLevel)
