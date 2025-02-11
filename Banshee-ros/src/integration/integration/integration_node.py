@@ -174,6 +174,18 @@ def startsetup():
     motor.simMotorRun([225, 222, 347, 139], [1, 2, 3, 4])
     time.sleep(1)
 
+def BVMside():
+    print("BVMside")
+    motor.dxlSetVelo([30], [1])
+    motor.simMotorRun([225], [1])
+    time.sleep(1)
+
+def Droneside():  
+    print("BVMside")
+    motor.dxlSetVelo([30], [1])
+    motor.simMotorRun([45], [1])
+    time.sleep(1)  
+
 # Dictionary mapping commands to functions
 Command_dict = {
     "grab h": Pull_high,
@@ -185,6 +197,8 @@ Command_dict = {
     "close": Close,
     "open": Open,
     "setup": startsetup,
+    "BVMside": BVMside,
+    "Droneside": Droneside
 }
 
 class IntegrationNode(Node):
@@ -219,10 +233,13 @@ class IntegrationNode(Node):
         # Proceed to command execution after receiving 'done' signal
         # pull_out(self.batteryLevel)
         if self.batteryLevel == 0:  
+          BVMside()
           Pull_high()
         elif self.batteryLevel == 1:
+          BVMside()
           Pull_low()
         else:
+          Droneside()
           Drone_pull()
         self.mode = 1
         self.start_signal_received = False
@@ -235,10 +252,13 @@ class IntegrationNode(Node):
         # Proceed to command execution after receiving 'done' signal
         # push_in(self.batteryLevel)
         if self.batteryLevel == 0:  
+          BVMside()
           Push_high()
         elif self.batteryLevel == 1:
+          BVMside()
           Push_low()
         else:
+          Droneside()
           Drone_push()
         self.mode = 0
         self.start_signal_received = False
