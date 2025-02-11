@@ -218,8 +218,11 @@ class IntegrationNode(Node):
           Bool, 'ArmDone', 10)
         
         # Flag to indicate if the node has received the signal to start
-        self.start_signal_received = True
-        self.batteryLevel = 0
+        self.start_signal_received = False
+        self.batteryLevel = None
+
+        startsetup()
+        Open()
 
         self.run_timer = self.create_timer(0.1, self.run)
 
@@ -230,9 +233,6 @@ class IntegrationNode(Node):
 
     # PULL FUNCTION
     def run(self): 
-      startsetup()
-      Open()
-
       self.get_logger().info(f"Run method triggered. Start signal: {self.start_signal_received}")
       if self.start_signal_received:
         self.get_logger().info("Executing command...")
