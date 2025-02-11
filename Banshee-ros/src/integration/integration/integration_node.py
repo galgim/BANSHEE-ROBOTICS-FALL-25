@@ -219,7 +219,7 @@ class IntegrationNode(Node):
         
         # Flag to indicate if the node has received the signal to start
         self.start_signal_received = True
-        self.batteryLevel = 1
+        self.batteryLevel = 2
 
         startsetup()
         Open()
@@ -241,14 +241,14 @@ class IntegrationNode(Node):
         # Proceed to command execution after receiving 'done' signal
         # pull_out(self.batteryLevel)
         if self.batteryLevel == 0:  
-          BVMside()
           Pull_high()
-        elif self.batteryLevel == 1:
-          BVMside()
-          Pull_low()
-        else:
           Droneside()
+        elif self.batteryLevel == 1:
+          Pull_low()
+          Droneside()
+        else:
           Drone_pull()
+          BVMside()
         startsetup()
         self.mode = 1
         self.start_signal_received = True
@@ -261,14 +261,14 @@ class IntegrationNode(Node):
         # Proceed to command execution after receiving 'done' signal
         # push_in(self.batteryLevel)
         if self.batteryLevel == 0:  
-          BVMside()
           Push_high()
-        elif self.batteryLevel == 1:
-          BVMside()
-          Push_low()
-        else:
           Droneside()
+        elif self.batteryLevel == 1:
+          Push_low()
+          Droneside()
+        else:
           Drone_push()
+          BVMside()
         startsetup()
         self.mode = 0
         self.start_signal_received = True
