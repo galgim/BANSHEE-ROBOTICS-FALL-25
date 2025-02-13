@@ -46,7 +46,7 @@ class CameraNode(Node):
             self.get_logger().info("Stepper finished moving")
 
     def getDirection(self, arucoID):
-        if arucoID < 8:
+        if arucoID < 4:
             return 1
         else:
             return -1
