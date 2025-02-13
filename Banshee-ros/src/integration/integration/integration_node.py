@@ -221,8 +221,9 @@ class IntegrationNode(Node):
         self.start_signal_received = False
         self.batteryLevel = None
 
+        BVMside() # testing
         startsetup()
-        Open()
+        Open() # testing
 
         self.run_timer = self.create_timer(0.1, self.run)
 
