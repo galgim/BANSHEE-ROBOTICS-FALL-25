@@ -2,16 +2,14 @@
 from dynamixel_sdk import *  # Uses Dynamixel SDK library
 import os
 
-if os.name == 'nt':
-    import msvcrt
+import sys
+import tty
+import termios
+import os
 
-    def getch():
-        return msvcrt.getch().decode()
-else:
-    import sys
-    import tty
-    import termios
-    fd = sys.stdin.fileno()
+fd = sys.stdin.fileno()
+
+if os.isatty(fd):
     old_settings = termios.tcgetattr(fd)
 
     def getch():
@@ -21,6 +19,9 @@ else:
         finally:
             termios.tcsetattr(fd, termios.TCSADRAIN, old_settings)
         return ch
+else:
+    def getch():
+        return None  # Or return a default value
 
 
 #********* DYNAMIXEL Model definition *********   
