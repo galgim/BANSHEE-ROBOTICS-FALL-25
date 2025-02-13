@@ -255,7 +255,7 @@ class IntegrationNode(Node):
           Drone_push()
           startsetup()
           BVMside()
-          
+
         self.mode = 1
         self.start_signal_received = True
         msg = Bool()

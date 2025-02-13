@@ -136,6 +136,8 @@ CW = 1   # Clockwise Rotation
 CCW = 0  # Counter Clockwise Rotation
 
 # Set Positions in BTP
+DRONE = 1481
+RESET = 100
 COLUMN1 = 500
 COLUMN2 = 1481
 COLUMN3 = 2492
@@ -170,7 +172,8 @@ class StepperMotorNode(Node):
                 0: COLUMN1, 4: COLUMN1,
                 1: COLUMN2, 5: COLUMN2,
                 2: COLUMN3, 6: COLUMN3,
-                3: COLUMN4, 7: COLUMN4
+                3: COLUMN4, 7: COLUMN4,
+                8: DRONE
             }
         self.run_motor_cycle(aruco_to_column.get(arucoID, None))
 
