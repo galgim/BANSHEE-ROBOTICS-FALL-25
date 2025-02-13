@@ -37,7 +37,7 @@ class CameraNode(Node):
         if self.batteryChamber < 8:
             self.arucoID = self.batteryChamber % 4
         else:
-            self.arucoID = self.batteryChamber
+            self.arucoID = self.batteryChamber - 4
         self.get_logger().info(f"Received Aruco ID: {self.arucoID}")
 
     def stepperSubscriber(self, msg):
