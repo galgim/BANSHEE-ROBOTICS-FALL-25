@@ -10,14 +10,9 @@ import os
 fd = sys.stdin.fileno()
 
 if os.isatty(fd):
-    old_settings = termios.tcgetattr(fd)
-
     def getch():
-        try:
-            tty.setraw(sys.stdin.fileno())
-            ch = sys.stdin.read(1)
-        finally:
-            termios.tcsetattr(fd, termios.TCSADRAIN, old_settings)
+        tty.setraw(sys.stdin.fileno())
+        ch = sys.stdin.read(1)
         return ch
 else:
     def getch():
