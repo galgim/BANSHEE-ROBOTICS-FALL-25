@@ -221,7 +221,7 @@ class IntegrationNode(Node):
         self.start_signal_received = False
         self.batteryLevel = None
 
-        BVMside() # testing
+        Droneside() # testing
         startsetup()
         Open() # testing
 
