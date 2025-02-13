@@ -7,16 +7,15 @@ def generate_launch_description():
             package='stepper_control',  
             executable='stepper_node',
             name='stepper_control',
-            parameters=[
-                {"done_signal_topic": "/stepper/done"} 
-            ]
         ),
         Node(
             package='integration',  
             executable='integration_node',  
             name='integration',
-            parameters=[
-                {"start_signal_topic": "/stepper/done"}  
-            ]
+        ),
+        Node(
+            package='camera_node',
+            executable='camera_no_web',
+            name='camera_node',
         ),
     ])
