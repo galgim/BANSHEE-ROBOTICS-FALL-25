@@ -45,6 +45,12 @@ class CameraNode(Node):
             self.sendFrame = True
             self.get_logger().info("Stepper finished moving")
 
+    def getDirection(self, arucoID):
+        if arucoID < 8:
+            return 1
+        else:
+            return -1
+
     def cameraRun(self):
         aruco_dict = cv2.aruco.getPredefinedDictionary(cv2.aruco.DICT_5X5_100)
         detector_parameters = cv2.aruco.DetectorParameters()
@@ -78,7 +84,7 @@ class CameraNode(Node):
                         corner1_x = corners[0][0][0]
                         corner2_x = corners[0][2][0]
                         middle_x = (corner1_x + corner2_x) / 2
-                        distance = width / 2 - middle_x
+                        distance = (width / 2 - middle_x) * self.getDirection(self.arucoID)
 
                         # Publisher logic
                         if self.sendFrame:
