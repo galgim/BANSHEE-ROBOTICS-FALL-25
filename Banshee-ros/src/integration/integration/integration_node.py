@@ -244,15 +244,15 @@ class IntegrationNode(Node):
         # Proceed to command execution after receiving 'done' signal
         # pull_out(self.batteryLevel)
         if self.batteryLevel == 0:  
-          Push_high()
+          Pull_high()
           startsetup()
           Droneside()
         elif self.batteryLevel == 1:
-          Push_low()
+          Pull_low()
           startsetup()
           Droneside()
         else:
-          Drone_push()
+          Drone_pull()
           startsetup()
           BVMside()
 
@@ -266,6 +266,18 @@ class IntegrationNode(Node):
       elif self.start_signal_received and self.mode == 1:
         # Proceed to command execution after receiving 'done' signal
         # push_in(self.batteryLevel)if self.batteryLevel == 0:  
+        if self.batteryLevel == 0:  
+          Push_high()
+          startsetup()
+          Droneside()
+        elif self.batteryLevel == 1:
+          Push_low()
+          startsetup()
+          Droneside()
+        else:
+          Drone_push()
+          startsetup()
+          BVMside()
         if self.batteryLevel == 0:  
           Pull_high()
           startsetup()
