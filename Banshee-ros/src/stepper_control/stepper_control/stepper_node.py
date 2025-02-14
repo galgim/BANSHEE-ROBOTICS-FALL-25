@@ -127,6 +127,7 @@ from std_msgs.msg import Bool, Float32, Int8
 # import RPi.GPIO as GPIO
 from time import sleep 
 from pinpong.board import Board, Pin
+import math
 Board("leonardo", "/dev/ttyACM0").begin()  # Initialization with specified port on Linux
 # Pin Definitions
 DIR = Pin.D10  # Direction Pin (Dir+)
@@ -183,12 +184,17 @@ class StepperMotorNode(Node):
         addedSteps = distance * self.stepCoefficient
         self.run_motor_cycle(self.position + addedSteps)
 
+    def speedCoefficient(self, steps, i):
+        if steps < 300:
+            return -0.5 * pow(math.e, -pow((5(i / steps) - 2), 2)) + 1
+        
     def run_motor_cycle(self, newPosition):
         try:
             if newPosition is not None:
                 self.get_logger().info(str(newPosition) + " is new position")
 
                 steps = newPosition - self.position
+                abs_rounded_steps = abs(round(steps))
 
                 # Max steps in CW 4050
                 if self.position + steps > 4050 or self.position + steps < 0:
@@ -201,13 +207,14 @@ class StepperMotorNode(Node):
                 else:
                     self.rotation.write_digital(CCW)
                     # GPIO.output(DIR, CCW)
-                for _ in range(abs(round(steps))):   
+                for i in range(abs_rounded_steps):   
+                    speed = self.speedCoefficient(abs_rounded_steps, i)
                     self.movement.write_digital(1)         
                     # GPIO.output(STEP, GPIO.HIGH)
-                    sleep(0.002) 
+                    sleep(0.002 * speed) 
                     self.movement.write_digital(0)
                     # GPIO.output(STEP, GPIO.LOW)
-                    sleep(0.002)
+                    sleep(0.002 * speed)
                 
                 self.position = self.position + steps
 

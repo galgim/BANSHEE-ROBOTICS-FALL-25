@@ -79,12 +79,18 @@ class CameraNode(Node):
 
             # Only process if an Aruco ID is set via the subscriber
             if marker_ids is not None and self.arucoID is not None:
+
+                if self.arucoID < 4:
+                    direction = 1
+                else:
+                    direction = -1
+
                 for ids, corners in zip(marker_ids, marker_corners):
                     if ids == self.arucoID:
                         corner1_x = corners[0][0][0]
                         corner2_x = corners[0][2][0]
                         middle_x = (corner1_x + corner2_x) / 2
-                        distance = (width / 2 - middle_x) * self.getDirection(self.arucoID)
+                        distance = (width / 2 - middle_x) * direction
 
                         # Publisher logic
                         if self.sendFrame:
