@@ -95,12 +95,14 @@ def Push_low():
 def Pull_low():    
     start_time = time.time()
     print("Pull out low sequence")
-    motor.dxlSetVelo([35, 25, 35], [2, 3, 4])   # set initial velocity
+    motor.dxlSetVelo([30, 35, 25, 35], [1, 2, 3, 4])   # set initial velocity
     print("remove chamber")
     motor.simMotorRun([80, 248, 95],[2, 3, 4])  # move arm to chamber position
     Close()                                     # grab battery
     motor.dxlSetVelo([17, 37, 20], [2, 3, 4])   # set pull out velocity
     motor.simMotorRun([132, 343, 40],[2, 3, 4]) # pull battery out
+    motor.simMotorRun([45], [1])                   
+
 
 # Push Battery into top BVM
 def Push_high():    
@@ -117,12 +119,14 @@ def Push_high():
 def Pull_high():    
     start_time = time.time()
     print("Pull out high sequence")
-    motor.dxlSetVelo([25, 25, 35], [2, 3, 4])   # set initial velocity
+    motor.dxlSetVelo([30, 25, 25, 35], [1, 2, 3, 4])   # set initial velocity
     print("remove chamber")
     motor.simMotorRun([60, 178, 144],[2, 3, 4])  # move arm to chamber position
     Close()                                     # grab battery
     motor.dxlSetVelo([17, 33, 15], [2, 3, 4])   # set pull out velocity
     motor.simMotorRun([130, 320, 70],[2, 3, 4]) # pull battery out
+    motor.simMotorRun([45], [1])                   
+
 
 # Push Battery into Drone
 def Drone_push():
@@ -141,8 +145,7 @@ def Drone_pull():
     start_time = time.time()
     print("Drone pull sequence")
     motor.dxlSetVelo([30, 50, 30, 30, 30], [0, 1, 2, 3, 4])     # set initial velocity
-    print("remove drone bat")
-    motor.simMotorRun([45], [1])                                # turn around       
+    print("remove drone bat")      
     motor.simMotorRun([154, 334, 90],[2, 3, 4])                 # get to middle position
     motor.dxlSetVelo([17, 27, 8], [2, 3, 4])                    # set grab speed                      
     motor.simMotorRun([95, 243, 112],[2, 3, 4])                 # move to battery position
@@ -150,6 +153,7 @@ def Drone_pull():
     motor.simMotorRun([154, 334, 90],[2, 3, 4])                 # get to middle position
     motor.dxlSetVelo([25, 15, 25], [2, 3, 4])                    # set grab speed                      
     motor.simMotorRun([222, 334, 139],[2, 3, 4])                # pull battery out
+    motor.simMotorRun([225], [1])                   
 
 # Close Claw
 def Close():
@@ -246,15 +250,12 @@ class IntegrationNode(Node):
         if self.batteryLevel == 0:  
           Pull_high()
           startsetup()
-          Droneside()
         elif self.batteryLevel == 1:
           Pull_low()
           startsetup()
-          Droneside()
         else:
           Drone_pull()
           startsetup()
-          BVMside()
 
         self.mode = 1
         self.start_signal_received = False
@@ -269,15 +270,12 @@ class IntegrationNode(Node):
         if self.batteryLevel == 0:  
           Push_high()
           startsetup()
-          Droneside()
         elif self.batteryLevel == 1:
           Push_low()
           startsetup()
-          Droneside()
         else:
           Drone_push()
           startsetup()
-          BVMside()
 
         self.mode = 0
         self.start_signal_received = False
