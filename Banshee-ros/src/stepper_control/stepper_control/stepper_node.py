@@ -162,10 +162,10 @@ import rclpy
 from rclpy.node import Node
 from std_msgs.msg import Bool, Float32, Int8
 # import RPi.GPIO as GPIO
-from Arduino import Arduino
-from time import sleep
+from time import sleep 
+from pinpong.board import Board, Pin
 import math
-
+Board("leonardo", "/dev/ttyACM0").begin()  # Initialization with specified port on Linux
 # Pin Definitions
 DIR = 10  # Direction Pin (Dir+)
 STEP = 8  # Step Pin (Pul+)
@@ -227,8 +227,7 @@ class StepperMotorNode(Node):
     def speedCoefficient(self, steps, i):
         if steps < 300:
             return -0.5 * pow(math.e, -pow((5(i / steps) - 2), 2)) + 1
-
-
+        
     def run_motor_cycle(self, newPosition):
         try:
             if newPosition is not None:
@@ -250,12 +249,10 @@ class StepperMotorNode(Node):
                     # GPIO.output(DIR, CCW)
                 for i in range(abs_rounded_steps):   
                     speed = self.speedCoefficient(abs_rounded_steps, i)
-
-
-                    self.board.digitalWrite(STEP, "HIGH")
+                    self.movement.write_digital(1)         
                     # GPIO.output(STEP, GPIO.HIGH)
                     sleep(0.002 * speed) 
-                    self.board.digitalWrite(STEP, "LOW")
+                    self.movement.write_digital(0)
                     # GPIO.output(STEP, GPIO.LOW)
                     sleep(0.002 * speed)
                 
