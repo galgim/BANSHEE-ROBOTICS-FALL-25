@@ -9,7 +9,7 @@ const int solenoidPin2 = GPIO_NUM_4;
 
 const int CELLS_PER_BATTERY = 4;
 
-uint8_t masterMacAddress[] = {0x34, 0x5F, 0x45, 0xE7, 0x49, 0x2C}; // find Mac address for specific esp
+uint8_t masterMacAddress[] = {0xA0, 0xB7, 0x65, 0x25, 0xD4, 0xBC}; // A0:B7:65:25:D4:BC
 
 uint8_t data[4];  // 4 bytes for voltage
 
@@ -21,6 +21,31 @@ void OnDataSent(const uint8_t *mac_addr, esp_now_send_status_t status) {
     } else {
         Serial.println("Delivery Fail");
     }
+}
+
+void onDataReceive(const esp_now_recv_info *info, const uint8_t *incomingData, int len) {
+    if (len != 2) {
+        Serial.println("Invalid data length!");
+        return;
+    }
+
+    uint8_t senderMac[6];
+    memcpy(senderMac, info->src_addr, 6);  // Get sender's MAC
+
+    // Print received MAC address
+    Serial.print("Received from: ");
+    for (int i = 0; i < 6; i++) {
+        Serial.printf("%02X", senderMac[i]);
+        if (i < 5) Serial.print(":");
+    }
+    Serial.println();
+
+    float chamber;
+    memcpy(&chamber, incomingData, sizeof(chamber));
+
+    Serial.println("Received Unlock signal");
+    Serial.println("Received Unlock signal");
+    Serial.println("Received Unlock signal");
 }
 
 // Generate dummy voltage data for simplicity
@@ -39,6 +64,7 @@ void setup() {
     }
 
     esp_now_register_send_cb(OnDataSent);
+    esp_now_register_recv_cb(onDataReceive);
 
     // Register master ESP as peer
     esp_now_peer_info_t peerInfo;
@@ -74,8 +100,8 @@ void loop() {
     esp_err_t result = esp_now_send(masterMacAddress, data, sizeof(data));
 
     Serial.println(WiFi.macAddress());
-    Serial.println("This esp is for chamber 1."); // Change number here to let others know chamber #
+    Serial.println("This esp is for chamber 1.");
 
-    delay(1000); // Wait before sending the next packet
+    delay(10000); // Wait before sending the next packet
 }
 */

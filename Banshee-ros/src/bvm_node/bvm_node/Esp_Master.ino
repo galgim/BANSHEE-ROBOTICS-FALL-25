@@ -3,11 +3,14 @@
 #include <WiFi.h>
 #include <HTTPClient.h>
 
+// Declarations
+//void sendDataBvm(String tag, const void* data, size_t size);
+
 const int MAX_MINIONS = 2;
 const int CELLS_PER_BATTERY = 4;  // Update if necessary
 
 // 2D array to store minion ID and its total voltage
-uint8_t minionsMacs[MAX_MINIONS][6] = {
+uint8_t minionsMacs[MAX_MINIONS][6] = {  // Master esp MAC {0xA0, 0xB7, 0x65, 0x25, 0xD4, 0xBC}
   {0xA0, 0xB7, 0x65, 0x25, 0x80, 0x68}, // Chamber 0
   {0xA0, 0xB7, 0x65, 0x25, 0x0A, 0x70} // Chamber 1
   
@@ -15,10 +18,16 @@ uint8_t minionsMacs[MAX_MINIONS][6] = {
   };
 
 float voltage[8] = {0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0};
+uint8_t data[2];  // 2 bytes for int
+int done = 0;
+
+const int button = GPIO_NUM_34;
+const int led = GPIO_NUM_32;
 
 void sendDataBvm(String tag, const void* data, size_t size) {
     Serial.println(tag);
     Serial.write((const uint8_t*)data, size);
+    Serial.println();
   }
 
 void setVoltageFromMinion(const uint8_t *mac, float voltageValue) {
@@ -32,40 +41,80 @@ void setVoltageFromMinion(const uint8_t *mac, float voltageValue) {
     Serial.println("Mac address not found in list");
 }
 
+void readFromBvm() {
+    if (Serial.available()) {
+        String tag = Serial.readStringUntil('\n');
+
+        
+        if (tag == "Chamber") {
+          String message = Serial.readStringUntil('\n');
+          int chamber = message.toInt();
+
+          if (chamber == 1) {
+            digitalWrite(led, HIGH);
+            delay(1000);
+            digitalWrite(led, LOW);
+            }
+
+          memcpy(data, &chamber, sizeof(chamber));
+      
+          esp_err_t result = esp_now_send(minionsMacs[chamber], data, sizeof(data));
+        }
+    }
+    else {
+        return;
+      }
+}
+
+void OnDataSent(const uint8_t *mac_addr, esp_now_send_status_t status) {
+    Serial.print("Last Packet Send Status: ");
+    if (status == ESP_NOW_SEND_SUCCESS) {
+        Serial.println("Delivery Success");
+    } else {
+        Serial.println("Delivery Fail");
+    }
+
+    uint32_t msg[1] = {1};
+    
+}
+
 void onDataReceive(const esp_now_recv_info *info, const uint8_t *incomingData, int len) {
     if (len != 4) {
         Serial.println("Invalid data length!");
         return;
     }
 
+   
     uint8_t senderMac[6];
     memcpy(senderMac, info->src_addr, 6);  // Get sender's MAC
 
-    // Print received MAC address
-    Serial.print("Received from: ");
-    for (int i = 0; i < 6; i++) {
-        Serial.printf("%02X", senderMac[i]);
-        if (i < 5) Serial.print(":");
+    Serial.flush();
+
+    if (done == 0) {
+      // Print received MAC address
+      Serial.print("Received from: ");
+      for (int i = 0; i < 6; i++) {
+          Serial.printf("%02X", senderMac[i]);
+          if (i < 5) Serial.print(":");
+      }
+      Serial.println();
     }
-    Serial.println();
 
     // Debugging: Print stored minion MACs
-    Serial.println("Checking against stored minions:");
-    for (int i = 0; i < MAX_MINIONS; i++) {
-        Serial.print("Minion[" + String(i) + "]: ");
-        for (int j = 0; j < 6; j++) {
-            Serial.printf("%02X", minionsMacs[i][j]);
-            if (j < 5) Serial.print(":");
-        }
-        Serial.println();
-    }
+//    Serial.println("Checking against stored minions:");
+//    for (int i = 0; i < MAX_MINIONS; i++) {
+//        Serial.print("Minion[" + String(i) + "]: ");
+//        for (int j = 0; j < 6; j++) {
+//            Serial.printf("%02X", minionsMacs[i][j]);
+//            if (j < 5) Serial.print(":");
+//        }
+//        Serial.println();
+//    }
 
     float totalVoltage;
     memcpy(&totalVoltage, incomingData, sizeof(totalVoltage));  // Extract Voltage
 
     setVoltageFromMinion(senderMac, totalVoltage);
-
-    sendDataBvm("Voltage", voltage, sizeof(voltage));
 }
 
 // // Function to send data to server
@@ -109,16 +158,36 @@ void onDataReceive(const esp_now_recv_info *info, const uint8_t *incomingData, i
 //     http.end();
 // }
 
+void addPeers() {
+    for (int i = 0; i < MAX_MINIONS; i++) {
+        esp_now_peer_info_t peerInfo = {};
+        memcpy(peerInfo.peer_addr, minionsMacs[i], 6);
+        peerInfo.channel = 0;
+        peerInfo.encrypt = false;
+
+        if (esp_now_add_peer(&peerInfo) != ESP_OK) {
+            Serial.print("Failed to add peer: ");
+            Serial.println(i);
+        }
+    }
+}
+
 void setup() {
     Serial.begin(115200);
     WiFi.mode(WIFI_STA);
+
+    pinMode(button, INPUT);
+    pinMode(led, OUTPUT);
 
     if (esp_now_init() != ESP_OK) {
         Serial.println("Error initializing ESP-NOW");
         return;
     }
 
+    addPeers();
+
     esp_now_register_recv_cb(onDataReceive);
+    esp_now_register_send_cb(OnDataSent);
 
 }
 
@@ -127,11 +196,38 @@ const unsigned long sendInterval = 5000;  // 5 seconds interval
 
 void loop() {
     unsigned long currentMillis = millis();
+    
+    int buttonState = digitalRead(button);
 
+    if (buttonState == HIGH) {
+      done = 0;
+      }
+    
     // Send data to server every 5 seconds
     if (currentMillis - lastSendTime >= sendInterval) {
         lastSendTime = currentMillis;
 
+        
+
+        if (done == 0) {
+          Serial.println("signal not reached");
+          int count = 0;
+          for (int i = 0; i < 8; i++) {
+            if (voltage[i] > 10.0) {
+              count++;
+              }
+            }
+          if (count == 2) {
+            Serial.println("done signal reached");
+            sendDataBvm("Voltage", voltage, sizeof(voltage));
+            
+            done = 1;
+          }
+        } 
+        else {
+          readFromBvm();
+          }
+        Serial.flush();
         // Check if we have any active minions
 
         // // Only send if we have data to send

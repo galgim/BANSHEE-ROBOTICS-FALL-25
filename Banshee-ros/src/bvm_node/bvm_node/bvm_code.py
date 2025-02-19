@@ -67,46 +67,34 @@ class BVMNode(Node):
             if tag == "Voltage":
                 raw_data = self.ser.read(32)
                 values = self.structUnpack('8f', raw_data)
-                valid_data = sum(1 for v in values if v > 3.0)
-
-                if valid_data >= 1:
-                    self.get_logger().warn("Valid data received")
-                    time.sleep(1)
-                    self.batteryChamber = values.index(max(values))
-                    self.get_logger().warn(f"Choosing chamber {self.batteryChamber}.")
-                    self.mode = 1
-                else:
-                    self.get_logger().warn("Invalid voltage data received: Less than 7 charged batteries read.")
-
-            elif tag == "OtherInfo":
-                raw_data = self.ser.read(12)
-                values = self.structUnpack('3i', raw_data)
+                self.batteryChamber = values.index(max(values))
+                self.get_logger().warn(f"Choosing chamber {self.batteryChamber}.")
+                self.mode = 1
+            elif tag == "Chamber":
+                raw_data = self.ser.read(4)
+                values = self.structUnpack('1i', raw_data)
             else:
                 return
             self.get_logger().info("Tag: " + tag)
             self.get_logger().info(f"{values}")
 
     def espSend(self, tag, data):
-        self.ser.write((f"{tag}").encode('utf-8'))
-        if isinstance(data, list):
-            self.ser.write(bytearray(data), len(data))
-        else:
-            data = str(data)
-            self.ser.write(data.encode('utf-8'))
-
-
+        tag = str(tag)
+        self.ser.write((tag + '\n').encode('utf-8'))
+        data = str(data)
+        self.ser.write((data + '\n').encode('utf-8'))
         
     def bvmLogic(self):
         if len(self.DroneMarkers) > 0:
             if self.mode == 0:
+                # self.espSend("Chamber", self.batteryChamber)
                 self.espRead()
             elif self.mode == 1 and self.done == 0:
-                
                 self.espSend("Chamber", self.batteryChamber)
+                self.ser.close()
 
 
-
-
+                
                 # Get BVM aruco ID needed
                 # arucoID = Int8() 
                 # arucoID.data = None # Figure out how to get it from esp
@@ -120,7 +108,7 @@ class BVMNode(Node):
 
                 self.done = 1
             elif self.mode == 3 and self.done == 0:
-                self.previousID = arucoID
+                self.previousID = self.arucoID
 
 
     
