@@ -88,9 +88,11 @@ class BVMNode(Node):
         if len(self.DroneMarkers) > 0:
             if self.mode == 0:
                 # self.espSend("Chamber", self.batteryChamber)
-                self.espRead()
+                self.espRead() #low battery first
             elif self.mode == 1 and self.done == 0:
+                #pull drone
                 self.espSend("Chamber", self.batteryChamber)
+                #push into empty chamber
                 self.ser.close()
 
 
@@ -102,13 +104,18 @@ class BVMNode(Node):
                 # self.get_logger().info('Sent marker: "%s"' % arucoID.data)
                 self.done = 1
             elif self.mode == 2 and self.done == 0:
-                
+                #pull full chamber
+                #push into drone
 
 
 
                 self.done = 1
+                #if 2 battery then self mode 3
             elif self.mode == 3 and self.done == 0:
                 self.previousID = self.arucoID
+                #change drone battery to other one
+                #for sinch drone
+                #for later
 
 
     
