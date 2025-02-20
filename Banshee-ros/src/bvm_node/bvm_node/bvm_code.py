@@ -87,28 +87,22 @@ class BVMNode(Node):
     def bvmLogic(self):
         if len(self.DroneMarkers) > 0:
             if self.mode == 0:
-                # self.espSend("Chamber", self.batteryChamber)
-                self.espRead() #low battery first
+                self.espRead()                                  # Find highest and lowest voltage in BVM
+
             elif self.mode == 1 and self.done == 0:
-                #pull drone
-                self.espSend("Chamber", self.batteryChamber)
-                #push into empty chamber
-                self.ser.close()
-
-
-                
+                # pull drone (4)
+                self.espSend("Chamber", self.batteryChamber)    # unlock battery chamber
+                # push into empty chamber
                 # Get BVM aruco ID needed
                 # arucoID = Int8() 
                 # arucoID.data = None # Figure out how to get it from esp
                 # self.arucoPublisher.publish(arucoID)
                 # self.get_logger().info('Sent marker: "%s"' % arucoID.data)
-                self.done = 1
+                self.done = 1                                   # finish full battery exchange sequence
+
             elif self.mode == 2 and self.done == 0:
                 #pull full chamber
                 #push into drone
-
-
-
                 self.done = 1
                 #if 2 battery then self mode 3
             elif self.mode == 3 and self.done == 0:
