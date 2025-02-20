@@ -15,9 +15,9 @@ class BVMNode(Node):
         super().__init__("BVM_Node")
 
         # Mode 0 = standby
-        # Mode 1 = Begin battery transfer from drone to BVM
-        # Mode 2 = Begin battery transfer from BVM to drone
-        # Mode 3 = Done with Battery, set every value back to default standby value (If another battery, go back to mode 1)
+        # Mode 1 = Pull Drone/BVM
+        # Mode 2 = Push BVM/Drone
+        # Mode 3 = Check if cycle done or continue cycle (mode 0 or mode 1)
         self.mode = 0
         self.done = 0 # flag for each mode
         self.checkModeComplete = False
@@ -31,7 +31,7 @@ class BVMNode(Node):
         self.get_logger().info("ArucoID Publisher started")
 
         self.armSubscriber = self.create_subscription(
-        Bool, 'modeComplete', self.modeComplete, 10)
+        Bool, 'ArmDone', self.modeComplete, 10)
 
         # self.arucoIDPublisher()
 
@@ -49,8 +49,8 @@ class BVMNode(Node):
     
     def modeComplete(self, msg):
         if msg.data:
-            self.mode += 1
             self.done = 0
+            self.mode += 1
     
     def batteryAmount(self, msg):
         self.batteries = msg.data
@@ -88,39 +88,35 @@ class BVMNode(Node):
     def bvmLogic(self):
         if len(self.DroneMarkers) > 0:
             if self.mode == 0:
-                self.espRead()                                              # Find highest and lowest voltage in BVM
-
-            # Mode 1:
+                self.espRead()                                              # Find highest and lowest voltage in BVM, esp switches to mode 1
+            
+            # Mode 1: Pull Drone, Push Empty
             elif self.mode == 1 and self.done == 0:
                 self.espSend("Chamber", self.batteryChamber)                # unlock battery chamber
-                aruco_ID = 4                                                # drone aruco_ID
-                self.arucoPublisher.publish(aruco_ID)                       # publish aruco_ID
-                self.get_logger().info('Sent marker: "%s"' % aruco_ID.data)
+                # pull drone
+                self.done = 1
 
-                aruco_ID = None # Whichever chamber is empty                                                
-                self.arucoPublisher.publish(aruco_ID)                       # publish aruco_ID
-                self.get_logger().info('Sent marker: "%s"' % aruco_ID.data)
 
-            # Mode 2:
+                # aruco_ID = 4                                                # drone aruco_ID
+                # self.arucoPublisher.publish(aruco_ID)                       # publish aruco_ID
+                # self.get_logger().info('Sent marker: "%s"' % aruco_ID.data)
+
+            # Mode 2: Pull Full, Push Drone
             elif self.mode == 2 and self.done == 0:
                 self.espSend("Chamber", self.batteryChamber)                # unlock battery chamber
-                aruco_ID = None # Whichever chamber is full                                              
-                self.arucoPublisher.publish(aruco_ID)                       # publish aruco_ID
-                self.get_logger().info('Sent marker: "%s"' % aruco_ID.data)   
-
-                aruco_ID = 4                                                # drone aruco_ID
-                self.arucoPublisher.publish(aruco_ID)                       # publish aruco_ID
-                self.get_logger().info('Sent marker: "%s"' % aruco_ID.data)   
+                # push bvm
+                self.done = 1
 
 
-                self.done = 1                                               # finish full battery exchange sequence
+                # aruco_ID = None # Whichever chamber is full                                              
+                # self.arucoPublisher.publish(aruco_ID)                       # publish aruco_ID
+                # self.get_logger().info('Sent marker: "%s"' % aruco_ID.data)   
 
-            # Might not need this
             elif self.mode == 3 and self.done == 0:
                 self.previousID = self.arucoID
-                # change drone battery to other one
-                # for sinch drone
-                # for later
+                # determine whether to go to mode 1 or 0, based on drone array 
+                # if drone array has number go to mode 1 and pull that number if drone array empty go to mode 0
+                #drone array get rid of one index
 
 
     
