@@ -94,26 +94,26 @@ class BVMNode(Node):
             elif self.mode == 1 and self.done == 0:
                 self.espSend("Chamber", self.batteryChamber)                # unlock battery chamber
                 # pull drone
+                aruco_ID = 4                                                # drone aruco_ID
+                self.arucoPublisher.publish(aruco_ID)                       # publish aruco_ID
+                self.get_logger().info('Sent marker: "%s"' % aruco_ID.data)
                 self.done = 1
-
-
-                # aruco_ID = 4                                                # drone aruco_ID
-                # self.arucoPublisher.publish(aruco_ID)                       # publish aruco_ID
-                # self.get_logger().info('Sent marker: "%s"' % aruco_ID.data)
 
             # Mode 2: Pull Full, Push Drone
             elif self.mode == 2 and self.done == 0:
                 self.espSend("Chamber", self.batteryChamber)                # unlock battery chamber
                 # push bvm
+                aruco_ID = None # Whichever chamber is full                                              
+                self.arucoPublisher.publish(aruco_ID)                       # publish aruco_ID
+                self.get_logger().info('Sent marker: "%s"' % aruco_ID.data)   
                 self.done = 1
-
-
-                # aruco_ID = None # Whichever chamber is full                                              
-                # self.arucoPublisher.publish(aruco_ID)                       # publish aruco_ID
-                # self.get_logger().info('Sent marker: "%s"' % aruco_ID.data)   
 
             elif self.mode == 3 and self.done == 0:
                 self.previousID = self.arucoID
+                if array == 1:
+                    self.mode = 1
+                else:
+                    self.mode = 0
                 # determine whether to go to mode 1 or 0, based on drone array 
                 # if drone array has number go to mode 1 and pull that number if drone array empty go to mode 0
                 #drone array get rid of one index
