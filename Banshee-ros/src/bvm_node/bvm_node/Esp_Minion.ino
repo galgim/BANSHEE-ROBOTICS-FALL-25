@@ -1,4 +1,4 @@
-/*
+
 #include <WiFi.h>
 #include <esp_now.h>
 #include <Arduino.h>
@@ -104,4 +104,3 @@ void loop() {
 
     delay(10000); // Wait before sending the next packet
 }
-*/
