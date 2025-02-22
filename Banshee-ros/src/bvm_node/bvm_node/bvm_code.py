@@ -90,7 +90,7 @@ class BVMNode(Node):
             if self.mode == 0:
                 self.espRead()                                              # Find highest and lowest voltage in BVM, esp switches to mode 1
             
-            # Mode 1: Pull Drone, pull full
+            # Mode 1: Pull Drone, (2)pull full
             elif self.mode == 1 and self.done == 0:
                 self.espSend("Chamber", self.batteryChamber)                # unlock battery chamber
                 # pull drone
@@ -99,7 +99,7 @@ class BVMNode(Node):
                 self.get_logger().info('Sent marker: "%s"' % aruco_ID.data)
                 self.done = 1
 
-            # Mode 2: push empty, push drone
+            # Mode 2: push empty, (2)push drone
             elif self.mode == 2 and self.done == 0:
                 self.espSend("Chamber", self.batteryChamber)                # unlock battery chamber
                 # push bvm
