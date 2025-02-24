@@ -20,7 +20,7 @@ class BVMNode(Node):
         # Mode 3 = Check if cycle done or continue cycle (mode 0 or mode 1)
         self.mode = 0 # decides what bvmlogic function will do
         self.done = 0 # flag for each mode
-        self.halfCycleComplete = 0 # flag to choose whether drone battery or bvm battery chamber
+        self.halfCycleComplete = 1 # flag to choose whether drone battery or bvm battery chamber
         self.DroneMarkers = [4, 5]
         self.batteryChamber = None # Full battery chamber
         self.emptyChamber = None # Empty battery chamber
@@ -83,13 +83,15 @@ class BVMNode(Node):
 
     # Sends 2 new lines into ESP UART serial port
     def espSend(self, tag, data=None):
-        if not self.ser.is_open():
-            self.ser = serial.Serial('/dev/ttyUSB1', 115200, timeout=1)
+        self.get_logger().info("test")
         tag = str(tag)
         self.ser.write((tag + '\n').encode('utf-8'))
         if data != None:
             data = str(data)
             self.ser.write((data + '\n').encode('utf-8'))
+        self.ser.close()
+        time.sleep(1)
+        self.ser.open()
     
     # Logic of the program
     def bvmLogic(self):
@@ -102,37 +104,41 @@ class BVMNode(Node):
                 aruco_ID = self.DroneMarkers[0]
             else:
                 aruco_ID = self.batteryChamber
-                self.espSend("Chamber", aruco_ID)
-
-            self.arucoPublisher.publish(aruco_ID)
-            self.get_logger().info('Sent marker: "%s"' % aruco_ID.data)
+                self.espSend("Unlock", aruco_ID)
+            
+            msg = Int8()
+            msg.data = aruco_ID
+            self.arucoPublisher.publish(msg)
+            self.get_logger().info('Sent marker: "%s"' % msg.data)
             self.done = 1
 
         # Mode 2: push empty, (2)push drone
         elif self.mode == 2 and self.done == 0:
             if self.halfCycleComplete == 0:
                 aruco_ID = self.emptyChamber
+                self.espSend("Unlock", aruco_ID)
             else:
                 aruco_ID = self.DroneMarkers[0]
-                self.espSend("Chamber", aruco_ID)
-
-            self.arucoPublisher.publish(aruco_ID)
-            self.get_logger().info('Sent marker: "%s"' % aruco_ID.data)
+            msg = Int8()
+            msg.data = aruco_ID
+            self.arucoPublisher.publish(msg)
+            self.get_logger().info('Sent marker: "%s"' % msg.data)
             self.done = 1
 
         elif self.mode == 3:
             if self.halfCycleComplete == 0:
                 self.mode = 1
                 self.halfCycleComplete = 1
-                return
+                self.espSend("Lock", self.emptyChamber)
             else:
                 self.DroneMarkers.pop(0)
                 if len(self.DroneMarkers) > 0:
                     self.espSend("CycleComplete")
+                    self.espSend("Lock", self.batteryChamber)
                 else:
                     self.espSend("DroneComplete")
-                    self.mode = 0
-            self.halfCycleComplete = 0
+                self.mode = 0
+                self.halfCycleComplete = 0
             # determine whether to go to mode 1 or 0, based on drone array 
             # if drone array has number go to mode 1 and pull that number if drone array empty go to mode 0
             #drone array get rid of one index

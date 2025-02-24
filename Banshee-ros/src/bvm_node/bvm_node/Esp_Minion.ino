@@ -1,7 +1,7 @@
-
 #include <WiFi.h>
 #include <esp_now.h>
-#include <Arduino.h>
+#include <Arduino.h> 
+#include "esp_adc_cal.h"
 
 // Define the GPIO pin to control the solenoid
 const int solenoidPin = GPIO_NUM_2;
@@ -10,8 +10,16 @@ const int solenoidPin2 = GPIO_NUM_4;
 const int CELLS_PER_BATTERY = 4;
 
 uint8_t masterMacAddress[] = {0xA0, 0xB7, 0x65, 0x25, 0xD4, 0xBC}; // A0:B7:65:25:D4:BC
-
 uint8_t data[4];  // 4 bytes for voltage
+
+const int batteryPin0 = GPIO_NUM_32;
+const int batteryPin1 = GPIO_NUM_33;
+const int batteryPin2 = GPIO_NUM_34;
+const int batteryPin3 = GPIO_NUM_35;
+
+float voltages[4] = {0, 0, 0, 0};
+
+esp_adc_cal_characteristics_t adc_chars;
 
 // Callback when data is sent to master
 void OnDataSent(const uint8_t *mac_addr, esp_now_send_status_t status) {
@@ -40,12 +48,15 @@ void onDataReceive(const esp_now_recv_info *info, const uint8_t *incomingData, i
     }
     Serial.println();
 
-    float chamber;
-    memcpy(&chamber, incomingData, sizeof(chamber));
+    int command;
+    memcpy(&command, incomingData, sizeof(command));
 
-    Serial.println("Received Unlock signal");
-    Serial.println("Received Unlock signal");
-    Serial.println("Received Unlock signal");
+    if (command == 1) {
+      Serial.println("Received Unlock signal");
+      }
+    else if (command == 0) {
+      Serial.println("Received lock signal");
+      }
 }
 
 // Generate dummy voltage data for simplicity
@@ -53,11 +64,25 @@ float generateDummyVoltage() {
     return 3.7 + (random(0, 100) / 1000.0);  // Random voltage between 3.7V and 3.8V
 }
 
+double ReadVoltage(byte pin){  
+  uint32_t adc_reading = analogRead(pin);  // Raw ADC value
+  uint32_t voltage_mv = esp_adc_cal_raw_to_voltage(adc_reading, &adc_chars);
+  
+  return (voltage_mv / 1000.0); // Convert from mV to V
+}
+
 // Initialize solenoid pins and ESP-NOW
 void setup() {
     Serial.begin(115200);
     WiFi.mode(WIFI_STA);
 
+    analogSetPinAttenuation(batteryPin0, ADC_11db);
+    analogSetPinAttenuation(batteryPin1, ADC_11db);
+    analogSetPinAttenuation(batteryPin2, ADC_11db);
+    analogSetPinAttenuation(batteryPin3, ADC_11db);
+
+    esp_adc_cal_characterize(ADC_UNIT_1, ADC_ATTEN_DB_11, ADC_WIDTH_BIT_12, 1100, &adc_chars);
+    
     if (esp_now_init() != ESP_OK) {
         Serial.println("Failed to initialize ESP-NOW");
         return;
@@ -87,11 +112,24 @@ void setup() {
 void loop() {
     // Calculate total voltage
     float totalVoltage = 0;
-    for (int i = 0; i < CELLS_PER_BATTERY; i++) {
-        float cellVoltage = generateDummyVoltage();
-        totalVoltage += cellVoltage;
-        Serial.printf("Cell %d Voltage: %.3fV\n", i + 1, cellVoltage);
+    voltages[0] = (ReadVoltage(batteryPin0) * 4.2)/(56.0/19.0);
+    voltages[1] = (ReadVoltage(batteryPin1) * 4.2)/(126.0/43.0);
+    voltages[2] = (ReadVoltage(batteryPin2)* 4.2)/(3.0);
+    voltages[3] = (ReadVoltage(batteryPin3) * 4.2)/(420.0/133.0);
+
+  // Check if voltages between 0 and 4.2 volts, meaning its being charged. 
+    for(int i=0; i < 4; i++){
+      if(voltages[i] > 0.0 && voltages[i] < 4.3){
+        voltages[i] -= 0.09;
+      }
+        totalVoltage += voltages[i];
     }
+
+    Serial.printf("Cell 1: %.3fV\n", voltages[0]);
+    Serial.printf("Cell 2: %.3fV\n", voltages[1]);
+    Serial.printf("Cell 3: %.3fV\n", voltages[2]);
+    Serial.printf("Cell 4: %.3fV\n", voltages[3]);
+
 
     Serial.printf("Total Voltage: %.3fV\n", totalVoltage);
     memcpy(data, &totalVoltage, sizeof(totalVoltage));  
@@ -100,7 +138,7 @@ void loop() {
     esp_err_t result = esp_now_send(masterMacAddress, data, sizeof(data));
 
     Serial.println(WiFi.macAddress());
-    Serial.println("This esp is for chamber 1.");
+    Serial.println("This esp is for chamber 0.");
 
-    delay(10000); // Wait before sending the next packet
+    delay(5000); // Wait before sending the next packet
 }

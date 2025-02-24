@@ -6,34 +6,43 @@
 // Declarations
 //void sendDataBvm(String tag, const void* data, size_t size);
 
-const int MAX_MINIONS = 2;
+const int MAX_MINIONS = 3;
 const int CELLS_PER_BATTERY = 4;  // Update if necessary
 
 // 2D array to store minion ID and its total voltage
 uint8_t minionsMacs[MAX_MINIONS][6] = {  // Master esp MAC {0xA0, 0xB7, 0x65, 0x25, 0xD4, 0xBC}
-  {0xA0, 0xB7, 0x65, 0x25, 0x80, 0x68}, // Chamber 0
-  {0xA0, 0xB7, 0x65, 0x25, 0x0A, 0x70} // Chamber 1
+  {0xA0, 0xB7, 0x65, 0x25, 0xC2, 0x1C}, // Chamber 0
+  {0xA0, 0xB7, 0x65, 0x25, 0x0A, 0x70}, // Chamber 1
+  {0x34, 0x5F, 0x45, 0xE7, 0x33, 0x1C} // Chamber 2
   
   // Add more here when ready
   };
 
 float voltage[8] = {0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0};
-uint8_t data[2];  // 2 bytes for int
+uint8_t data[2];  // 2 bytes for arduino int
 int done = 0;
+int chamber = -1; // -1 will indicate when no chamber is selected
 
-const int button = GPIO_NUM_34;
-const int led = GPIO_NUM_32;
+// Used for testing purposes
+const int button = GPIO_NUM_35;
+const int led0 = GPIO_NUM_32;
+const int led1 = GPIO_NUM_33;
+const int led2 = GPIO_NUM_25;
 
+// Used to send byte data to UART serial port to communicate with BVM
+// Tag indicates what kind of information it is, which will need to be coded on BVM python code
+// Data is the byte data being send in a newline after the tag
 void sendDataBvm(String tag, const void* data, size_t size) {
     Serial.println(tag);
     Serial.write((const uint8_t*)data, size);
     Serial.println();
   }
 
+// Used to set the Voltage array in the correct order as the minion array is set.
 void setVoltageFromMinion(const uint8_t *mac, float voltageValue) {
     for (int i = 0; i < MAX_MINIONS; i++) {
         if (memcmp(mac, minionsMacs[i], 6) == 0) {
-            Serial.println("Minion Address in List!");// Match found
+            // Serial.println("Minion Address in List!");// Match found
             voltage[i] = voltageValue;
             return;
         }
@@ -41,50 +50,78 @@ void setVoltageFromMinion(const uint8_t *mac, float voltageValue) {
     Serial.println("Mac address not found in list");
 }
 
+// Reads from the UART serial port to get information from the BVM
+// We first read the Tag, which we can decide what to do in the code based off this tag
+// Then we read the data in the next line
 void readFromBvm() {
     if (Serial.available()) {
         String tag = Serial.readStringUntil('\n');
 
         
-        if (tag == "Chamber") {
+        if (tag == "Unlock") {
           String message = Serial.readStringUntil('\n');
-          int chamber = message.toInt();
-
-          if (chamber == 1) {
-            digitalWrite(led, HIGH);
-            delay(1000);
-            digitalWrite(led, LOW);
+          chamber = message.toInt();
+          int signal = 1;
+          
+          if (chamber == 0) {
+            digitalWrite(led0, HIGH);
+            }
+          else if (chamber == 1) {
+            digitalWrite(led1, HIGH);
+            }
+          else if (chamber == 2) {
+            digitalWrite(led2, HIGH);
             }
 
-          memcpy(data, &chamber, sizeof(chamber));
-      
-          esp_err_t result = esp_now_send(minionsMacs[chamber], data, sizeof(data));
+          memcpy(data, &signal, sizeof(signal));
+        
+          esp_err_t result = esp_now_send(minionsMacs[chamber], data, sizeof(data)); // Sends corresponding minion signal 1 to unlock battery chamber
         }
-    }
+        else if (tag == "Lock") {
+          String message = Serial.readStringUntil('\n');
+          chamber = message.toInt();
+          int signal = 0;
+          
+          if (chamber == 0) {
+            digitalWrite(led0, LOW);
+            }
+          else if (chamber == 1) {
+            digitalWrite(led1, LOW);
+            }
+          else if (chamber == 2) {
+            digitalWrite(led2, LOW);
+            }
+
+          memcpy(data, &signal, sizeof(signal));
+
+          esp_err_t result = esp_now_send(minionsMacs[chamber], data, sizeof(data)); // Sends corresponding minion signal 1 to lock battery chamber
+          }
+        else if (tag == "CycleComplete") {
+          Serial.print("CycleComplete signal");
+          }
+        }
     else {
         return;
       }
 }
 
-void OnDataSent(const uint8_t *mac_addr, esp_now_send_status_t status) {
+// Triggers when master sends data through ESP_NOW
+void onDataSent(const uint8_t *mac_addr, esp_now_send_status_t status) {
     Serial.print("Last Packet Send Status: ");
     if (status == ESP_NOW_SEND_SUCCESS) {
         Serial.println("Delivery Success");
     } else {
         Serial.println("Delivery Fail");
     }
-
-    uint32_t msg[1] = {1};
-    
 }
 
+// Triggers when master receives data through ESP_NOW
 void onDataReceive(const esp_now_recv_info *info, const uint8_t *incomingData, int len) {
     if (len != 4) {
         Serial.println("Invalid data length!");
         return;
     }
 
-   
     uint8_t senderMac[6];
     memcpy(senderMac, info->src_addr, 6);  // Get sender's MAC
 
@@ -158,6 +195,7 @@ void onDataReceive(const esp_now_recv_info *info, const uint8_t *incomingData, i
 //     http.end();
 // }
 
+// Attempts to add all peers in the minion array using their mac addresses
 void addPeers() {
     for (int i = 0; i < MAX_MINIONS; i++) {
         esp_now_peer_info_t peerInfo = {};
@@ -176,8 +214,11 @@ void setup() {
     Serial.begin(115200);
     WiFi.mode(WIFI_STA);
 
+    // Testing
     pinMode(button, INPUT);
-    pinMode(led, OUTPUT);
+    pinMode(led0, OUTPUT);
+    pinMode(led1, OUTPUT);
+    pinMode(led2, OUTPUT);
 
     if (esp_now_init() != ESP_OK) {
         Serial.println("Error initializing ESP-NOW");
@@ -187,7 +228,7 @@ void setup() {
     addPeers();
 
     esp_now_register_recv_cb(onDataReceive);
-    esp_now_register_send_cb(OnDataSent);
+    esp_now_register_send_cb(onDataSent);
 
 }
 
@@ -217,7 +258,7 @@ void loop() {
               count++;
               }
             }
-          if (count == 2) {
+          if (count > 0) {
             Serial.println("done signal reached");
             sendDataBvm("Voltage", voltage, sizeof(voltage));
             
