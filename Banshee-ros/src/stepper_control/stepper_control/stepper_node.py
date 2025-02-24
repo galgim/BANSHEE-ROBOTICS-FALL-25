@@ -225,8 +225,9 @@ class StepperMotorNode(Node):
         self.run_motor_cycle(self.position + addedSteps)
 
     def speedCoefficient(self, steps, i):
-        if steps < 300:
-            return -0.5 * pow(math.e, -pow((5(i / steps) - 2), 2)) + 1
+        if steps > 300:
+            speed = -0.5 * pow(math.e, -pow((5*float(i / steps) - 2), 2)) + 1
+            return speed
         
     def run_motor_cycle(self, newPosition):
         try:
@@ -251,10 +252,10 @@ class StepperMotorNode(Node):
                     speed = self.speedCoefficient(abs_rounded_steps, i)
                     self.movement.write_digital(1)         
                     # GPIO.output(STEP, GPIO.HIGH)
-                    sleep(0.002 * speed) 
+                    sleep(0.001 * speed) 
                     self.movement.write_digital(0)
                     # GPIO.output(STEP, GPIO.LOW)
-                    sleep(0.002 * speed)
+                    sleep(0.001 * speed)
                 
                 self.position = self.position + steps
 

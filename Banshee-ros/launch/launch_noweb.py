@@ -18,4 +18,9 @@ def generate_launch_description():
             executable='camera_no_web',
             name='camera_node',
         ),
+        Node(
+            package='bvm_node',
+            executable='bvm_code',
+            name='bvm_node',
+        ),
     ])
