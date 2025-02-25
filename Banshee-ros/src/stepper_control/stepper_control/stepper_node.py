@@ -62,8 +62,8 @@ class StepperMotorNode(Node):
         self.run_motor_cycle(self.position + addedSteps)
 
     def speedCoefficient(self, steps, i):
-        if steps < 300:
-            return -0.5 * pow(math.e, -pow((5(i / steps) - 2), 2)) + 1
+        if steps:
+            return -0.5 * pow(math.e, -pow((5.0*float(i / steps) - 2.0), 2.0)) + 1.0
         
     def run_motor_cycle(self, newPosition):
         try:

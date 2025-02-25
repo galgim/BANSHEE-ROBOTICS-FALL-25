@@ -20,7 +20,7 @@ def generate_launch_description():
         ),
         Node(
             package='bvm_node',
-            executable='bvm_code',
+            executable='bvm_node',
             name='bvm_node',
         ),
     ])
