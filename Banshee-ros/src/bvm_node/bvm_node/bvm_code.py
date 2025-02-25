@@ -119,6 +119,7 @@ class BVMNode(Node):
                 self.espSend("Unlock", aruco_ID)
             else:
                 aruco_ID = self.DroneMarkers[0]
+                self.espSend("Lock", self.batteryChamber)
             msg = Int8()
             msg.data = aruco_ID
             self.arucoPublisher.publish(msg)
@@ -134,7 +135,6 @@ class BVMNode(Node):
                 self.DroneMarkers.pop(0)
                 if len(self.DroneMarkers) > 0:
                     self.espSend("CycleComplete")
-                    self.espSend("Lock", self.batteryChamber)
                 else:
                     self.espSend("DroneComplete")
                 self.mode = 0
