@@ -20,7 +20,7 @@ class BVMNode(Node):
         # Mode 3 = Check if cycle done or continue cycle (mode 0 or mode 1)
         self.mode = 0 # decides what bvmlogic function will do
         self.done = 0 # flag for each mode
-        self.halfCycleComplete = 1 # flag to choose whether drone battery or bvm battery chamber
+        self.halfCycleComplete = 0 # flag to choose whether drone battery or bvm battery chamber
         self.DroneMarkers = [4, 5]
         self.batteryChamber = None # Full battery chamber
         self.emptyChamber = None # Empty battery chamber
