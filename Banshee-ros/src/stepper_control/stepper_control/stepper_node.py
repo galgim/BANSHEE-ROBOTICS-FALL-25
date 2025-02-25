@@ -5,6 +5,8 @@ from std_msgs.msg import Bool, Float32, Int8
 from time import sleep 
 from pinpong.board import Board, Pin
 import math
+from simple_pid import PID
+
 Board("leonardo", "/dev/ttyACM0").begin()  # Initialization with specified port on Linux
 # Pin Definitions
 DIR = Pin.D10  # Direction Pin (Dir+)
@@ -30,7 +32,11 @@ class StepperMotorNode(Node):
 
         self.stepCoefficient = 500/159.5
         self.position = 0
-        
+         
+        #PID COntroller
+        self.pid = PID(0.8, 0.1, 0.05, setpoint=0) #tune this
+        self.pid.output_limits = (0.001, 0.005) #min/max step delay
+
         # ROS2 Publisher and Subscribers
         self.initialSubscription = self.create_subscription(
         Int8, 'arucoID', self.initialSubscriber, 10)
@@ -61,39 +67,50 @@ class StepperMotorNode(Node):
         addedSteps = distance * self.stepCoefficient
         self.run_motor_cycle(self.position + addedSteps)
 
-    def speedCoefficient(self, steps, i):
-        if steps:
-            return -0.5 * pow(math.e, -pow((5.0*float(i / steps) - 2.0), 2.0)) + 1.0
+    #def speedCoefficient(self, steps, i):
+    #    if steps:
+    #        return -0.5 * pow(math.e, -pow((5.0*float(i / steps) - 2.0), 2.0)) + 1.0
         
     def run_motor_cycle(self, newPosition):
         try:
             if newPosition is not None:
-                self.get_logger().info(str(newPosition) + " is new position")
-
-                steps = newPosition - self.position
-                abs_rounded_steps = abs(round(steps))
+                #self.get_logger().info(str(newPosition) + " is new position")
+                self.get_logger().warn("Received none, skipping movement")   #added
+                return
+            
+            self.get_logger().info(f"New target position: {newPosition}")
+            
+            steps = newPosition - self.position
+            abs_rounded_steps = abs(round(steps))
 
                 # Max steps in CW 4050
-                if self.position + steps > 4050 or self.position + steps < 0:
-                    self.get_logger().warn("Distance out of range. Movement skipped.")
-                    return
+            if self.position + steps > 4050 or self.position + steps < 0:
+                self.get_logger().warn("Distance out of range. Movement skipped.")
+                return
+            
+            self.rotation.write_digital(CW if steps > 0 else CCW)
 
-                if steps > 0:
-                    self.rotation.write_digital(CW)
-                    # GPIO.output(DIR, CW)
-                else:
-                    self.rotation.write_digital(CCW)
-                    # GPIO.output(DIR, CCW)
-                for i in range(abs_rounded_steps):   
-                    speed = self.speedCoefficient(abs_rounded_steps, i)
-                    self.movement.write_digital(1)         
-                    # GPIO.output(STEP, GPIO.HIGH)
-                    sleep(0.002 * speed) 
-                    self.movement.write_digital(0)
-                    # GPIO.output(STEP, GPIO.LOW)
-                    sleep(0.002 * speed)
+
+            #    if steps > 0:
+            #        self.rotation.write_digital(CW)
+            #        # GPIO.output(DIR, CW)
+            #    else:
+            #        self.rotation.write_digital(CCW)
+            #        # GPIO.output(DIR, CCW)
+            for i in range(abs_rounded_steps):   
+                error = newPosition - self.position
+                delay = self.pid(error)
+
+                #speed = self.speedCoefficient(abs_rounded_steps, i)
+                self.movement.write_digital(1)         
+                # GPIO.output(STEP, GPIO.HIGH)
+                sleep(delay) 
+                self.movement.write_digital(0)
+                # GPIO.output(STEP, GPIO.LOW)
+                sleep(delay)
                 
-                self.position = self.position + steps
+                #position estimation
+                self.position +=  1 if steps > 0 else -1
 
                 sleep(1)
                 # Publish cycle complete signal
