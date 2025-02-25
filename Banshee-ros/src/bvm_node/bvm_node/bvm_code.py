@@ -21,7 +21,7 @@ class BVMNode(Node):
         self.mode = 0 # decides what bvmlogic function will do
         self.done = 0 # flag for each mode
         self.halfCycleComplete = 0 # flag to choose whether drone battery or bvm battery chamber
-        self.DroneMarkers = [8, 9]
+        self.DroneMarkers = [8]
         self.batteryChamber = None # Full battery chamber
         self.emptyChamber = None # Empty battery chamber
         self.ser = serial.Serial('/dev/ttyUSB1', 115200, timeout=1)
