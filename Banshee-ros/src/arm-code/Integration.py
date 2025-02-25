@@ -149,6 +149,7 @@ def main(args=None):
     Drone_pull()
     startsetup
     Open()
+    time.sleep(0.1)
     Pull_high()
     startsetup()
     Drone_push()
