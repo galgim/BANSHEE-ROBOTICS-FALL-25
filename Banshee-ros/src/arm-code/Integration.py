@@ -146,11 +146,9 @@ Command_dict = {
 }
 
 def main(args=None):
-    Drone_pull()
-    startsetup
-    Open()
-    time.sleep(0.1)
-    Pull_high()
+    Push_low()
+    startsetup()
+    Pull_low()
     startsetup()
     Drone_push()
     startsetup()
