@@ -132,8 +132,8 @@ class BVMNode(Node):
                 self.halfCycleComplete = 1
                 self.espSend("Lock", self.emptyChamber)
             else:
-                self.DroneMarkers.pop(0)
-                if len(self.DroneMarkers) > 0:
+                self.DroneMarkers += 1
+                if len(self.DroneMarkers) == len(self.DroneMarkers) - 1:
                     self.espSend("CycleComplete")
                 else:
                     self.espSend("DroneComplete")
