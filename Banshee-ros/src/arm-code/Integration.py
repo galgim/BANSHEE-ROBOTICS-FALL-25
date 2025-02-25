@@ -135,6 +135,20 @@ def startsetup():
     motor.simMotorRun([222, 347, 139], [2, 3, 4])
     time.sleep(1)
 
+def BVMside():
+    start_time = time.time()
+    print("BVMside")
+    motor.dxlSetVelo([30], [1])
+    motor.simMotorRun([225], [1])
+    time.sleep(1)
+
+def Droneside():
+    start_time = time.time()
+    print("BVMside")
+    motor.dxlSetVelo([30], [1])
+    motor.simMotorRun([45], [1])
+    time.sleep(1)  
+
 # Dictionary mapping commands to functions
 Command_dict = {
     "push low": Push_low,
@@ -146,11 +160,10 @@ Command_dict = {
 }
 
 def main(args=None):
+    BVMside()
     Push_low()
     startsetup()
     Pull_low()
-    startsetup()
-    Drone_push()
     startsetup()
 
 
