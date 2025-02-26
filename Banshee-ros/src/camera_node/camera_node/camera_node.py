@@ -34,6 +34,12 @@ class CameraNode(Node):
 
         self.get_logger().info("Camera node initialized and WebSocket task started")
 
+    def getDirection(self, arucoID):
+        if arucoID < 8:
+            return 1
+        else:
+            return -1
+
     def arucoSubscriber(self, msg):
         self.arucoID = int(msg.data)
         self.get_logger().info(f"Received Aruco ID: {self.arucoID}")
