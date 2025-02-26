@@ -132,11 +132,12 @@ class BVMNode(Node):
                 self.halfCycleComplete = 1
                 self.espSend("Lock", self.emptyChamber)
             else:
-                self.DroneMarkers += 1
-                if self.DroneMarkers == len(self.DroneMarkers) - 1:
+                self.DroneMarkers.pop(0)
+                if len(self.DroneMarkers) > 1:
                     self.espSend("CycleComplete")
                 else:
                     self.espSend("DroneComplete")
+                    self.DroneMarkers = [8] # Only 1 index since we do not have function to find batteries yet, and only 1 battery on drone for now.
                 self.mode = 0
                 self.halfCycleComplete = 0
             # determine whether to go to mode 1 or 0, based on drone array 
