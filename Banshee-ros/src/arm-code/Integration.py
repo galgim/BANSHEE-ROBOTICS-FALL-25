@@ -165,6 +165,7 @@ Command_dict = {
 
 def main(args=None):
     BVMside()
+    Open()
     Close()
     Push_low()
     Open()
