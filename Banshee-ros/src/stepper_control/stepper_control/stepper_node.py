@@ -73,7 +73,7 @@ class StepperMotorNode(Node):
         
     def run_motor_cycle(self, newPosition):
         try:
-            if newPosition is not None:
+            if newPosition is None:
                 #self.get_logger().info(str(newPosition) + " is new position")
                 self.get_logger().warn("Received none, skipping movement")   #added
                 return
