@@ -52,11 +52,11 @@ def Pull_low():
     print("Pull out low sequence")
     motor.dxlSetVelo([30, 35, 25, 35], [1, 2, 3, 4])            # set initial velocity
     print("remove chamber")
-    motor.simMotorRun([80, 251, 97],[2, 3, 4])                  # move arm to chamber position
+    motor.simMotorRun([80, 251, 94],[2, 3, 4])                  # move arm to chamber position
     Close()                                                     # grab battery
     motor.dxlSetVelo([15, 55, 40], [2, 3, 4])                   # set pull out velocity
     motor.simMotorRun([105, 338, 30],[2, 3, 4])                 # move arm to middle position
-    motor.dxlSetVelo([35, 30, 30], [2, 3, 4])                   # set grab speed                      
+    motor.dxlSetVelo([20, 30, 25], [2, 3, 4])                   # set grab speed                      
     motor.simMotorRun([222, 347, 139], [2, 3, 4])               # back to position
 
 # Push Battery into top BVM
