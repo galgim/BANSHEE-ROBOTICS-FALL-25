@@ -59,7 +59,7 @@ def Pull_low():
     # motor.dxlSetVelo([15, 78, 54], [2, 3, 4])                      # set pull out velocity
     motor.dxlSetVelo([15, 78, 54], [2, 3, 4])                       # set pull out velocity
     motor.simMotorRun([95, 328, 30],[2, 3, 4])                      # move arm to middle position
-    motor.dxlSetVelo([35, 30, 30], [2, 3, 4])                       # set grab speed                      
+    motor.dxlSetVelo([127, 19, 109], [2, 3, 4])                       # set grab speed                      
     motor.simMotorRun([222, 347, 139], [2, 3, 4])                   # back to start
 
 # Push Battery into top BVM
