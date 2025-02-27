@@ -35,6 +35,7 @@ motor.portInitialization(PORT_NUM, ALL_IDs)
 
 #######
 
+# Push Battery into low BVM
 def Push_low():    
     start_time = time.time()
     print("Push in low sequence")
@@ -47,7 +48,7 @@ def Push_low():
     motor.simMotorRun([80, 248, 95],[2, 3, 4])                      # move arm w/ battery to chamber
     Open()                                                          # let go of battery
 
-# Pull Battery from low BVM
+# Pull Battery into low BVM
 def Pull_low():    
     start_time = time.time()
     print("Pull out low sequence")
@@ -55,7 +56,7 @@ def Pull_low():
     print("remove chamber")
     motor.simMotorRun([80, 250, 94],[2, 3, 4])                      # move arm to chamber position
     Close()                                                         # grab battery
-    # motor.dxlSetVelo([15, 78, 54], [2, 3, 4])                     # set pull out velocity
+    # motor.dxlSetVelo([15, 78, 54], [2, 3, 4])                      # set pull out velocity
     motor.dxlSetVelo([35, 98, 74], [2, 3, 4])                       # set pull out velocity
     motor.simMotorRun([95, 328, 30],[2, 3, 4])                      # move arm to middle position
     motor.dxlSetVelo([35, 30, 30], [2, 3, 4])                       # set grab speed                      
