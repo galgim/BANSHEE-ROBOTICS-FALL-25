@@ -38,23 +38,29 @@ motor.portInitialization(PORT_NUM, ALL_IDs)
 def Push_low():    
     start_time = time.time()
     print("Push in low sequence")
-    
-    motor.dxlSetVelo([20, 10, 20], [2, 3, 4])   # set initial velocity
-    motor.simMotorRun([108, 325, 48],[2, 3, 4]) # move arm to first position
-    motor.dxlSetVelo([16, 33, 20], [2, 3, 4])   # set final velocity
-    motor.simMotorRun([80, 248, 95],[2, 3, 4])  # move arm w/ battery to chamber
-    Open()                                      # let go of battery
+    motor.dxlSetVelo([20, 30, 25], [2, 3, 4])                   # set initial velocity
+    print("place chamber")
+    motor.simMotorRun([105, 338, 30],[2, 3, 4])                 # move arm to first position
+    time.sleep(2)
+    motor.dxlSetVelo([15, 55, 40], [2, 3, 4])                   # set final velocity
+    motor.simMotorRun([80, 248, 95],[2, 3, 4])                  # move arm w/ battery to chamber
+    Open()                                                      # let go of battery
 
+# Pull Battery from low BVM
 def Pull_low():    
     start_time = time.time()
     print("Pull out low sequence")
-    motor.dxlSetVelo([35, 25, 35], [2, 3, 4])   # set initial velocity
-    motor.simMotorRun([80, 248, 95],[2, 3, 4])  # move arm to chamber position
-    Close()                                     # grab battery
-    motor.dxlSetVelo([17, 32, 17], [2, 3, 4])   # set pull out velocity
-    motor.simMotorRun([108, 325, 48],[2, 3, 4]) # pull battery out
+    motor.dxlSetVelo([30, 35, 25, 35], [1, 2, 3, 4])            # set initial velocity
+    print("remove chamber")
+    motor.simMotorRun([80, 250, 94],[2, 3, 4])                  # move arm to chamber position
+    Close()                                                     # grab battery
+    # motor.dxlSetVelo([15, 68, 50], [2, 3, 4])                   # set pull out velocity
+    motor.dxlSetVelo([15, 68, 50], [2, 3, 4])                   # set pull out velocity
+    motor.simMotorRun([95, 328, 30],[2, 3, 4])                 # move arm to middle position
+    motor.dxlSetVelo([35, 30, 30], [2, 3, 4])                   # set grab speed                      
+    motor.simMotorRun([222, 347, 139], [2, 3, 4])               # back to position
 
-
+# Push Battery into top BVM
 def Push_high():    
     start_time = time.time()
     print("Push in high sequence")
@@ -65,18 +71,22 @@ def Push_high():
     motor.simMotorRun([60, 180, 144],[2, 3, 4])  # move arm w/ battery to chamber
     Open()                                      # let go of battery
 
+# Pull Battery from top BVM
 def Pull_high():    
     start_time = time.time()
     print("Pull out high sequence")
-    motor.dxlSetVelo([25, 25, 35], [2, 3, 4])   # set initial velocity
+    motor.dxlSetVelo([30, 25, 25, 35], [1, 2, 3, 4])            # set initial velocity
     print("remove chamber")
-    motor.simMotorRun([60, 178, 144],[2, 3, 4])  # move arm to chamber position
-    Close()                                     # grab battery
-    motor.dxlSetVelo([17, 33, 15], [2, 3, 4])   # set pull out velocity
-    motor.simMotorRun([130, 320, 70],[2, 3, 4]) # pull battery out
+    motor.simMotorRun([60, 180, 144],[2, 3, 4])                 # move arm to chamber position
+    Close()                                                     # grab battery
+    motor.dxlSetVelo([17, 33, 15], [2, 3, 4])                   # set pull out velocity
+    motor.simMotorRun([130, 320, 70],[2, 3, 4])                 # middle position
+    motor.dxlSetVelo([35, 20, 25], [2, 3, 4])                   # set grab speed                      
+    motor.simMotorRun([222, 334, 139],[2, 3, 4])                # pull battery out
+    motor.simMotorRun([45], [1])                   
 
-####################
 
+# Push Battery into Drone
 def Drone_push():
     start_time = time.time()
     print("Drone push sequence")
@@ -88,12 +98,12 @@ def Drone_push():
     motor.simMotorRun([95, 243, 112],[2, 3, 4])                 # move arm to chamber position
     Open()                                                      # push battery
 
+# Pull Battery from Drone
 def Drone_pull():
     start_time = time.time()
     print("Drone pull sequence")
     motor.dxlSetVelo([30, 50, 30, 30, 30], [0, 1, 2, 3, 4])     # set initial velocity
-    print("remove drone bat")
-    motor.simMotorRun([45], [1])                                # turn around       
+    print("remove drone bat")      
     motor.simMotorRun([154, 334, 90],[2, 3, 4])                 # get to middle position
     motor.dxlSetVelo([17, 27, 8], [2, 3, 4])                    # set grab speed                      
     motor.simMotorRun([95, 243, 112],[2, 3, 4])                 # move to battery position
@@ -101,8 +111,7 @@ def Drone_pull():
     motor.simMotorRun([154, 334, 90],[2, 3, 4])                 # get to middle position
     motor.dxlSetVelo([25, 15, 25], [2, 3, 4])                    # set grab speed                      
     motor.simMotorRun([222, 334, 139],[2, 3, 4])                # pull battery out
-
-####################
+    motor.simMotorRun([225], [1])                   
 
 # Close Claw
 def Close():
@@ -122,10 +131,25 @@ def Open():
 
 # Setup initial motor positions
 def startsetup():
+    start_time = time.time()
     print("setting up")
-    motor.dxlSetVelo([30, 30, 30, 30], [1, 2, 3, 4])
-    motor.simMotorRun([225, 222, 347, 139], [1, 2, 3, 4])
+    motor.dxlSetVelo([30, 30, 30], [2, 3, 4])
+    motor.simMotorRun([222, 347, 139], [2, 3, 4])
     time.sleep(1)
+
+def BVMside():
+    start_time = time.time()
+    print("BVMside")
+    motor.dxlSetVelo([30], [1])
+    motor.simMotorRun([225], [1])
+    time.sleep(1)
+
+def Droneside():
+    start_time = time.time()
+    print("BVMside")
+    motor.dxlSetVelo([30], [1])
+    motor.simMotorRun([45], [1])
+    time.sleep(1)  
 
 # Dictionary mapping commands to functions
 Command_dict = {
@@ -138,40 +162,11 @@ Command_dict = {
 }
 
 def main(args=None):
-    # startsetup()
-    # Open()
-    # Drone_pull()
-
-    # Open()
-    # startsetup()
-    # Drone_push()
-
+    time.sleep(5)
+    BVMside()
     Open()
-    startsetup()
-    Push_low()
-    startsetup()
     Pull_low()
-    time.sleep(0.5)
     startsetup()
-    
-    # Close()
-    # Push_high()
-    # startsetup()
-    # Pull_high()
-    # startsetup()
-
-    # Open()
-    # startsetup()
-    # time.sleep(1)
-    # Pull_low()
-    # startsetup()
-    # Close()
-    # time.sleep(1)
-    # Push_low()
-    # time.sleep(1)
-    # startsetup()
-
-    
 
 
 if __name__ == '__main__':

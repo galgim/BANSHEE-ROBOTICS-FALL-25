@@ -52,16 +52,13 @@ void onDataReceive(const esp_now_recv_info *info, const uint8_t *incomingData, i
     memcpy(&command, incomingData, sizeof(command));
 
     if (command == 1) {
+      digitalWrite(solenoidPin, HIGH);
       Serial.println("Received Unlock signal");
       }
     else if (command == 0) {
+      digitalWrite(solenoidPin, LOW);
       Serial.println("Received lock signal");
       }
-}
-
-// Generate dummy voltage data for simplicity
-float generateDummyVoltage() {
-    return 3.7 + (random(0, 100) / 1000.0);  // Random voltage between 3.7V and 3.8V
 }
 
 double ReadVoltage(byte pin){  
@@ -105,8 +102,7 @@ void setup() {
     Serial.println("Sender ESP Ready to send data");
 
     // Initialize solenoid pins
-    pinMode(solenoidPin, OUTPUT);
-    pinMode(solenoidPin2, OUTPUT);
+    pinMode(solenoidPin, OUTPUT);;
 }
 
 void loop() {
@@ -138,7 +134,7 @@ void loop() {
     esp_err_t result = esp_now_send(masterMacAddress, data, sizeof(data));
 
     Serial.println(WiFi.macAddress());
-    Serial.println("This esp is for chamber 0.");
+    Serial.println("This esp is for chamber 3.");
 
     delay(5000); // Wait before sending the next packet
 }
