@@ -54,7 +54,7 @@ def Pull_low():
     print("remove chamber")
     motor.simMotorRun([80, 250, 95],[2, 3, 4])                  # move arm to chamber position
     Close()                                                     # grab battery
-    motor.dxlSetVelo([17, 37, 20], [2, 3, 4])                   # set pull out velocity
+    motor.dxlSetVelo([15, 55, 40], [2, 3, 4])                   # set pull out velocity
     motor.simMotorRun([105, 338, 30],[2, 3, 4])                 # move arm to middle position
     motor.dxlSetVelo([35, 30, 30], [2, 3, 4])                   # set grab speed                      
     motor.simMotorRun([222, 334, 139],[2, 3, 4])                # pull battery out
