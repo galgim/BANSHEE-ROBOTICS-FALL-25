@@ -177,7 +177,7 @@ class StepperMotorNode(Node):
         self.position = 0
 
         #PID COntroller
-        # self.pid = PID(0.8, 0.1, 0.05, setpoint=0) #tune this
+        self.pid = PID(0.8, 0.1, 0.05, setpoint=0) #tune this
         # self.pid.output_limits = (0.001, 0.005) #min/max step delay
 
         # ROS2 Publisher and Subscribers
@@ -240,22 +240,18 @@ class StepperMotorNode(Node):
                 #     sleep(0.002) 
                 #     self.movement.write_digital(0)
                 #     # GPIO.output(STEP, GPIO.LOW)
-                #     sleep(0.002)
+                #     sleep(0.002) 
+                error = newPosition - self.position
+                delay = self.pid(error)
 
-                for i in range(abs_rounded_steps):   
-                    error = newPosition - self.position
-                    delay = float(PID(0.8, 0.1, 0.05, setpoint=error)) #tune this
+                #speed = self.speedCoefficient(abs_rounded_steps, i)
+                self.movement.write_digital(1)         
+                # GPIO.output(STEP, GPIO.HIGH)
+                sleep(delay) 
+                self.movement.write_digital(0)
+                # GPIO.output(STEP, GPIO.LOW)
+                sleep(delay)
 
-                    #speed = self.speedCoefficient(abs_rounded_steps, i)
-                    self.movement.write_digital(1)         
-                    # GPIO.output(STEP, GPIO.HIGH)
-                    sleep(delay) 
-                    self.movement.write_digital(0)
-                    # GPIO.output(STEP, GPIO.LOW)
-                    sleep(delay)
-
-
-                
                 self.position = self.position + steps
 
                 sleep(1)
