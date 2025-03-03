@@ -15,26 +15,35 @@ print("✅ Heartbeat received!")
 master.set_mode("GUIDED")
 time.sleep(2)
 
-# ✅ Arm the drone (required for motor test)
+# ✅ Arm the drone
 master.arducopter_arm()
 time.sleep(3)
 
-# ✅ Perform motor test (Motor 1, 20% throttle, for 2 seconds)
-print("🛠 Testing Motor #1 at 20% power for 2 seconds...")
-master.mav.command_long_send(
-    master.target_system, master.target_component,
-    mavutil.mavlink.MAV_CMD_DO_MOTOR_TEST, 0,
-    1,  # Motor instance (1 = first motor)
-    0,  # Test type (0 = PWM, 1 = Percentage)
-    20,  # Throttle (20%)
-    2,  # Duration in seconds
-    0, 0, 0  # Unused parameters
-)
+# ✅ Function to move the drone
+def move_drone(vx=1.0, vz=0, duration=3):
+    """Move the drone in the Local NED frame (without GPS)"""
+    for _ in range(duration):
+        master.mav.set_position_target_local_ned_send(
+            0, master.target_system, master.target_component,
+            mavutil.mavlink.MAV_FRAME_LOCAL_NED,  
+            int(0b000011000000),  # Velocity control only
+            0, 0, 0,  # Position (ignored)
+            vx, 0, vz,  # Velocity (X forward, Y ignored, Z up/down)
+            0, 0, 0,  # Acceleration (ignored)
+            0, 0  # Yaw (ignored)
+        )
+        print(f"🚀 Moving: Forward {vx} m/s, Descend {vz} m/s")
+        time.sleep(1)
 
-# ✅ Wait for motor test to complete
-time.sleep(5)
+    print("✅ Movement complete!")
 
-# ✅ Disarm after test
+# ✅ Move forward first
+move_drone(vx=1.0, duration=3)
+
+# ✅ Then descend
+move_drone(vx=0, vz=-0.5, duration=5)
+
+# ✅ Disarm after movement
 master.arducopter_disarm()
 print("🛑 Drone Disarmed!")
 
