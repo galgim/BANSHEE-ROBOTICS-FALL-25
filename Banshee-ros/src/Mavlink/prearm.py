@@ -11,7 +11,7 @@ master = mavutil.mavlink_connection(
 master.wait_heartbeat()
 print("✅ Heartbeat received!")
 
-# ✅ Check for Pre-Arm Errors
+# ✅ Check Pre-Arm Errors Function
 def check_prearm_errors():
     print("🔍 Checking for pre-arm failures...")
     while True:
@@ -35,7 +35,7 @@ if mode != "GUIDED":
     master.close()
     exit()
 
-# ✅ Disable RC Check (Allows arming without an RC controller)
+# ✅ Step 1: Disable RC Check (Force RC Ignored)
 master.mav.command_long_send(
     master.target_system, master.target_component,
     mavutil.mavlink.MAV_CMD_DO_SET_PARAMETER, 0,
@@ -43,7 +43,15 @@ master.mav.command_long_send(
 )
 print("🎮 RC requirement skipped!")
 
-# ✅ Disable GPS Requirement (If flying without GPS)
+# ✅ Step 2: Disable **All** Pre-Arm Checks (RC, GPS, etc.)
+master.mav.command_long_send(
+    master.target_system, master.target_component,
+    mavutil.mavlink.MAV_CMD_DO_SET_PARAMETER, 0,
+    160, 0, 0, 0, 0, 0, 0  # 160 = ARMING_CHECK, set to 0 (disable all checks)
+)
+print("✅ All pre-arm checks disabled!")
+
+# ✅ Step 3: Disable GPS Requirement (If flying without GPS)
 master.mav.command_long_send(
     master.target_system, master.target_component,
     mavutil.mavlink.MAV_CMD_DO_SET_PARAMETER, 0,
@@ -51,7 +59,7 @@ master.mav.command_long_send(
 )
 print("📡 GPS Check Disabled!")
 
-# ✅ Disable Safety Switch (If Needed)
+# ✅ Step 4: Disable Safety Switch (If Needed)
 master.mav.command_long_send(
     master.target_system, master.target_component,
     mavutil.mavlink.MAV_CMD_DO_SET_PARAMETER, 0,
@@ -59,7 +67,7 @@ master.mav.command_long_send(
 )
 print("🔓 Safety Disabled!")
 
-# ✅ Check Battery Voltage
+# ✅ Step 5: Check Battery Voltage
 msg = master.recv_match(type='SYS_STATUS', blocking=True)
 voltage = msg.voltage_battery / 1000.0
 print(f"🔋 Battery Voltage: {voltage}V")
@@ -69,12 +77,12 @@ if voltage < 10.5:
     master.close()
     exit()
 
-# ✅ Attempt to Arm
+# ✅ Step 6: Attempt to Arm
 print("🚀 Attempting to arm the drone...")
 master.arducopter_arm()
 time.sleep(2)
 
-# ✅ Verify Arming
+# ✅ Step 7: Verify Arming
 msg = master.recv_match(type='HEARTBEAT', blocking=True)
 armed = msg.base_mode & mavutil.mavlink.MAV_MODE_FLAG_SAFETY_ARMED
 
