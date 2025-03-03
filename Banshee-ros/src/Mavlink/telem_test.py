@@ -3,17 +3,17 @@ from pymavlink import mavutil
 
 master = mavutil.mavlink_connection('/dev/serial/by-id/usb-Holybro_Pixhawk6C_1E0030001151333036383238-if00', baud=115200)
 
-master.arducopter_arm()
+master.wait_heartbeat()
+print("Heartbeat from system (system %u component %u)" %
+      (master.target_system, master.target_component))
 
-print('arm')
-
-# master.mav.command_long_send(
-#     1, 0,
-#     mavutil.mavlink.MAV_CMD_DO_MOTOR_TEST, 0,
-#     1, 0, 20, 20, 0, 0, 0
-# )
-
-# time.sleep(20)
+# while True:
+#     # msg = master.recv_match(type='ATTITUDE', blocking=True) #PITCH, YAW, ROLL
+#     # msg = master.recv_match(type='SYS_STATUS', blocking=True) # VOLTAGE
+#     # msg = master.recv_match(type='GLOBAL_POSITION_INT', blocking=True) #position and velocity
+#     msg = master.recv_match(type='SERVO_OUTPUT_RAW', blocking=True)
+#     if msg:
+#         print(f"Motor PWM Outputs: {msg.servo1_raw}, {msg.servo2_raw}, {msg.servo3_raw}, {msg.servo4_raw}")
 def descend(vz=-0.5, duration=5):
     """Command the drone to descend at a set velocity"""
     for _ in range(duration):
@@ -32,22 +32,3 @@ def descend(vz=-0.5, duration=5):
     print("✔ Descent complete!")
 
 descend()
-
-master.arducopter_disarm()
-
-print('done')
-
-master.wait_heartbeat()
-print("Heartbeat from system (system %u component %u)" %
-      (master.target_system, master.target_component))
-
-# while True:
-#     # msg = master.recv_match(type='ATTITUDE', blocking=True) #PITCH, YAW, ROLL
-#     # msg = master.recv_match(type='SYS_STATUS', blocking=True) # VOLTAGE
-#     msg = master.recv_match(type='GLOBAL_POSITION_INT', blocking=True) #GPS position and velocity
-#     print(msg)
-
-
-
-master.close()
-
