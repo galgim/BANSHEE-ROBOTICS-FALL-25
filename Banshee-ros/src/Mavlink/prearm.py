@@ -1,105 +1,91 @@
-"""
-Simple script for take off and control with arrow keys
-"""
-
-
 import time
-from dronekit import connect, VehicleMode, LocationGlobalRelative, Command, LocationGlobal
+import tkinter as tk
 from pymavlink import mavutil
 
-#- Importing Tkinter: sudo apt-get install python-tk
-import Tkinter as tk
-
-
-#-- Connect to the vehicle
-print('Connecting...')
-vehicle = mavutil.mavlink_connection(
+# ✅ Connect to Pixhawk
+print("🔗 Connecting to Pixhawk...")
+master = mavutil.mavlink_connection(
     '/dev/serial/by-id/usb-Holybro_Pixhawk6C_1E0030001151333036383238-if00',
     baud=115200
 )
 
-#-- Setup the commanded flying speed
-gnd_speed = 5 # [m/s]
+# ✅ Wait for heartbeat
+master.wait_heartbeat()
+print("✅ Heartbeat received!")
 
-#-- Define arm and takeoff
+# ✅ Set GUIDED Mode
+def set_guided_mode():
+    master.set_mode("GUIDED")
+    time.sleep(2)
+    msg = master.recv_match(type='HEARTBEAT', blocking=True)
+    mode = mavutil.mode_string_v10(msg)
+    print(f"🎮 Current Flight Mode: {mode}")
+    if mode != "GUIDED":
+        print("❌ Failed to switch to GUIDED mode! Check flight controller settings.")
+        master.close()
+        exit()
+
+# ✅ Arm and Takeoff
 def arm_and_takeoff(altitude):
+    print("🚀 Arming motors...")
+    master.arducopter_arm()
+    time.sleep(3)
 
-   while not vehicle.is_armable:
-      print("waiting to be armable")
-      time.sleep(1)
+    print("🔼 Taking off...")
+    master.mav.command_long_send(
+        master.target_system, master.target_component,
+        mavutil.mavlink.MAV_CMD_NAV_TAKEOFF, 0,
+        0, 0, 0, 0, 0, 0, altitude
+    )
 
-   print("Arming motors")
-   vehicle.mode = VehicleMode("GUIDED")
-   vehicle.armed = True
+    # Wait until the drone reaches target altitude
+    while True:
+        msg = master.recv_match(type='GLOBAL_POSITION_INT', blocking=True)
+        current_alt = msg.relative_alt / 1000.0  # Convert mm to meters
+        print(f"📏 Altitude: {current_alt:.1f}m")
+        if current_alt >= altitude - 1.0:
+            print("🎯 Target altitude reached!")
+            break
+        time.sleep(1)
 
-   while not vehicle.armed: time.sleep(1)
+# ✅ Set Velocity Control
+def send_velocity(vx, vy, vz):
+    """ Sends velocity commands to the drone using MAVLink. """
+    master.mav.set_position_target_local_ned_send(
+        0, master.target_system, master.target_component,
+        mavutil.mavlink.MAV_FRAME_BODY_NED,  
+        int(0b000011000000),  # Velocity only
+        0, 0, 0,  # Position (ignored)
+        vx, vy, vz,  # Velocity: X (Forward), Y (Left/Right), Z (Up/Down)
+        0, 0, 0,  # Acceleration (ignored)
+        0, 0  # Yaw (ignored)
+    )
+    print(f"➡ Moving: vx={vx}, vy={vy}, vz={vz}")
 
-   print("Taking Off")
-   vehicle.simple_takeoff(altitude)
-
-   while True:
-      v_alt = vehicle.location.global_relative_frame.alt
-      print(">> Altitude = %.1f m"%v_alt)
-      if v_alt >= altitude - 1.0:
-          print("Target altitude reached")
-          break
-      time.sleep(1)
-      
- #-- Define the function for sending mavlink velocity command in body frame
-def set_velocity_body(vehicle, vx, vy, vz):
-    """ Remember: vz is positive downward!!!
-    http://ardupilot.org/dev/docs/copter-commands-in-guided-mode.html
-    
-    Bitmask to indicate which dimensions should be ignored by the vehicle 
-    (a value of 0b0000000000000000 or 0b0000001000000000 indicates that 
-    none of the setpoint dimensions should be ignored). Mapping: 
-    bit 1: x,  bit 2: y,  bit 3: z, 
-    bit 4: vx, bit 5: vy, bit 6: vz, 
-    bit 7: ax, bit 8: ay, bit 9:
-    
-    
-    """
-    msg = vehicle.message_factory.set_position_target_local_ned_encode(
-            0,
-            0, 0,
-            mavutil.mavlink.MAV_FRAME_BODY_NED,
-            0b0000111111000111, #-- BITMASK -> Consider only the velocities
-            0, 0, 0,        #-- POSITION
-            vx, vy, vz,     #-- VELOCITY
-            0, 0, 0,        #-- ACCELERATIONS
-            0, 0)
-    vehicle.send_mavlink(msg)
-    vehicle.flush()
-    
-    
-#-- Key event function
+# ✅ Handle Keyboard Input
 def key(event):
-    if event.char == event.keysym: #-- standard keys
-        if event.keysym == 'r':
-            print("r pressed >> Set the vehicle to RTL")
-            vehicle.mode = VehicleMode("RTL")
-            
-    else: #-- non standard keys
-        if event.keysym == 'Up':
-            set_velocity_body(vehicle, gnd_speed, 0, 0)
-        elif event.keysym == 'Down':
-            set_velocity_body(vehicle,-gnd_speed, 0, 0)
-        elif event.keysym == 'Left':
-            set_velocity_body(vehicle, 0, -gnd_speed, 0)
-        elif event.keysym == 'Right':
-            set_velocity_body(vehicle, 0, gnd_speed, 0)
-    
-    
-#---- MAIN FUNCTION
-#- Takeoff
+    if event.keysym == 'Up':
+        send_velocity(1.0, 0, 0)  # Move Forward
+    elif event.keysym == 'Down':
+        send_velocity(-1.0, 0, 0)  # Move Backward
+    elif event.keysym == 'Left':
+        send_velocity(0, -1.0, 0)  # Move Left
+    elif event.keysym == 'Right':
+        send_velocity(0, 1.0, 0)  # Move Right
+    elif event.keysym == 'r':
+        print("🔄 Returning to Launch (RTL)...")
+        master.set_mode("RTL")  # Return to launch
+
+# ✅ Start Mission
+set_guided_mode()
 arm_and_takeoff(10)
- 
-#- Read the keyboard with tkinter
+
+# ✅ Tkinter Window for Keyboard Control
 root = tk.Tk()
-print(">> Control the drone with the arrow keys. Press r for RTL mode")
+print("🎮 Control the drone with the arrow keys. Press 'r' for RTL mode.")
 root.bind_all('<Key>', key)
 root.mainloop()
- 
-    
-    
-    
+
+# ✅ Close Connection
+master.close()
+print("✅ Done!")
