@@ -1,98 +1,105 @@
+"""
+Simple script for take off and control with arrow keys
+"""
+
+
 import time
+from dronekit import connect, VehicleMode, LocationGlobalRelative, Command, LocationGlobal
 from pymavlink import mavutil
 
-# ✅ Connect to Pixhawk
-master = mavutil.mavlink_connection(
+#- Importing Tkinter: sudo apt-get install python-tk
+import Tkinter as tk
+
+
+#-- Connect to the vehicle
+print('Connecting...')
+vehicle = mavutil.mavlink_connection(
     '/dev/serial/by-id/usb-Holybro_Pixhawk6C_1E0030001151333036383238-if00',
     baud=115200
 )
 
-# ✅ Wait for heartbeat
-master.wait_heartbeat()
-print("✅ Heartbeat received!")
+#-- Setup the commanded flying speed
+gnd_speed = 5 # [m/s]
 
-# ✅ Check Pre-Arm Errors Function
-def check_prearm_errors():
-    print("🔍 Checking for pre-arm failures...")
-    while True:
-        msg = master.recv_match(type='STATUSTEXT', blocking=True)
-        if msg:
-            print(f"⚠ {msg.text}")
-            if "PreArm" in msg.text:
-                return msg.text  # Return the pre-arm error message
-        time.sleep(0.5)
+#-- Define arm and takeoff
+def arm_and_takeoff(altitude):
 
-# ✅ Set GUIDED Mode
-master.set_mode("GUIDED")
-time.sleep(2)
+   while not vehicle.is_armable:
+      print("waiting to be armable")
+      time.sleep(1)
 
-msg = master.recv_match(type='HEARTBEAT', blocking=True)
-mode = mavutil.mode_string_v10(msg)
-print(f"🎮 Current Flight Mode: {mode}")
+   print("Arming motors")
+   vehicle.mode = VehicleMode("GUIDED")
+   vehicle.armed = True
 
-if mode != "GUIDED":
-    print("❌ Failed to switch to GUIDED mode! Check flight controller settings.")
-    master.close()
-    exit()
+   while not vehicle.armed: time.sleep(1)
 
-# ✅ Step 1: Disable RC Check (Force RC Ignored)
-master.mav.command_long_send(
-    master.target_system, master.target_component,
-    mavutil.mavlink.MAV_CMD_DO_SET_PARAMETER, 0,
-    301, 1, 0, 0, 0, 0, 0  # 301 = RC_OPTIONS, set to 1 (Ignore RC checks)
-)
-print("🎮 RC requirement skipped!")
+   print("Taking Off")
+   vehicle.simple_takeoff(altitude)
 
-# ✅ Step 2: Disable **All** Pre-Arm Checks (RC, GPS, etc.)
-master.mav.command_long_send(
-    master.target_system, master.target_component,
-    mavutil.mavlink.MAV_CMD_DO_SET_PARAMETER, 0,
-    160, 0, 0, 0, 0, 0, 0  # 160 = ARMING_CHECK, set to 0 (disable all checks)
-)
-print("✅ All pre-arm checks disabled!")
-
-# ✅ Step 3: Disable GPS Requirement (If flying without GPS)
-master.mav.command_long_send(
-    master.target_system, master.target_component,
-    mavutil.mavlink.MAV_CMD_DO_SET_PARAMETER, 0,
-    511, 0, 0, 0, 0, 0, 0  # 511 = GPS_CHECK, set to 0 to disable GPS requirement
-)
-print("📡 GPS Check Disabled!")
-
-# ✅ Step 4: Disable Safety Switch (If Needed)
-master.mav.command_long_send(
-    master.target_system, master.target_component,
-    mavutil.mavlink.MAV_CMD_DO_SET_PARAMETER, 0,
-    220, 0, 0, 0, 0, 0, 0  # 220 = BRD_SAFETYENABLE, set to 0
-)
-print("🔓 Safety Disabled!")
-
-# ✅ Step 5: Check Battery Voltage
-msg = master.recv_match(type='SYS_STATUS', blocking=True)
-voltage = msg.voltage_battery / 1000.0
-print(f"🔋 Battery Voltage: {voltage}V")
-
-if voltage < 10.5:
-    print("⚠️ WARNING: Low Battery! Charge before flying.")
-    master.close()
-    exit()
-
-# ✅ Step 6: Attempt to Arm
-print("🚀 Attempting to arm the drone...")
-master.arducopter_arm()
-time.sleep(2)
-
-# ✅ Step 7: Verify Arming
-msg = master.recv_match(type='HEARTBEAT', blocking=True)
-armed = msg.base_mode & mavutil.mavlink.MAV_MODE_FLAG_SAFETY_ARMED
-
-if armed:
-    print("✅ Drone Armed Successfully!")
-else:
-    print("❌ Failed to arm. Checking pre-arm errors...")
-    prearm_message = check_prearm_errors()
-    print(f"🛑 Pre-Arm Failure Reason: {prearm_message}")
-
-# ✅ Close connection
-master.close()
-print("✅ Done!")
+   while True:
+      v_alt = vehicle.location.global_relative_frame.alt
+      print(">> Altitude = %.1f m"%v_alt)
+      if v_alt >= altitude - 1.0:
+          print("Target altitude reached")
+          break
+      time.sleep(1)
+      
+ #-- Define the function for sending mavlink velocity command in body frame
+def set_velocity_body(vehicle, vx, vy, vz):
+    """ Remember: vz is positive downward!!!
+    http://ardupilot.org/dev/docs/copter-commands-in-guided-mode.html
+    
+    Bitmask to indicate which dimensions should be ignored by the vehicle 
+    (a value of 0b0000000000000000 or 0b0000001000000000 indicates that 
+    none of the setpoint dimensions should be ignored). Mapping: 
+    bit 1: x,  bit 2: y,  bit 3: z, 
+    bit 4: vx, bit 5: vy, bit 6: vz, 
+    bit 7: ax, bit 8: ay, bit 9:
+    
+    
+    """
+    msg = vehicle.message_factory.set_position_target_local_ned_encode(
+            0,
+            0, 0,
+            mavutil.mavlink.MAV_FRAME_BODY_NED,
+            0b0000111111000111, #-- BITMASK -> Consider only the velocities
+            0, 0, 0,        #-- POSITION
+            vx, vy, vz,     #-- VELOCITY
+            0, 0, 0,        #-- ACCELERATIONS
+            0, 0)
+    vehicle.send_mavlink(msg)
+    vehicle.flush()
+    
+    
+#-- Key event function
+def key(event):
+    if event.char == event.keysym: #-- standard keys
+        if event.keysym == 'r':
+            print("r pressed >> Set the vehicle to RTL")
+            vehicle.mode = VehicleMode("RTL")
+            
+    else: #-- non standard keys
+        if event.keysym == 'Up':
+            set_velocity_body(vehicle, gnd_speed, 0, 0)
+        elif event.keysym == 'Down':
+            set_velocity_body(vehicle,-gnd_speed, 0, 0)
+        elif event.keysym == 'Left':
+            set_velocity_body(vehicle, 0, -gnd_speed, 0)
+        elif event.keysym == 'Right':
+            set_velocity_body(vehicle, 0, gnd_speed, 0)
+    
+    
+#---- MAIN FUNCTION
+#- Takeoff
+arm_and_takeoff(10)
+ 
+#- Read the keyboard with tkinter
+root = tk.Tk()
+print(">> Control the drone with the arrow keys. Press r for RTL mode")
+root.bind_all('<Key>', key)
+root.mainloop()
+ 
+    
+    
+    
