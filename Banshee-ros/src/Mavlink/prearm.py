@@ -1,7 +1,7 @@
 import time
 from pymavlink import mavutil
 
-# Connect to Pixhawk
+# ✅ Connect to Pixhawk
 master = mavutil.mavlink_connection(
     '/dev/serial/by-id/usb-Holybro_Pixhawk6C_1E0030001151333036383238-if00',
     baud=115200
@@ -11,39 +11,33 @@ master = mavutil.mavlink_connection(
 master.wait_heartbeat()
 print("✅ Heartbeat received!")
 
-# ✅ Set GUIDED mode
+# ✅ Set to GUIDED mode
 master.set_mode("GUIDED")
 time.sleep(2)
 
-# ✅ Disable RC Pre-Arm Check
-master.mav.command_long_send(
-    master.target_system, master.target_component,
-    mavutil.mavlink.MAV_CMD_DO_SET_PARAMETER, 0,
-    301, 0, 0, 0, 0, 0, 0  # 301 = RC_OPTIONS, set to 0 (disable RC checks)
-)
-print("🎮 RC requirement disabled!")
-
-# ✅ Disable ARMING_CHECK (Optional)
-master.mav.command_long_send(
-    master.target_system, master.target_component,
-    mavutil.mavlink.MAV_CMD_DO_SET_PARAMETER, 0,
-    160, 0, 0, 0, 0, 0, 0  # 160 = ARMING_CHECK, set to 0 (disable all checks)
-)
-print("✅ ARMING_CHECK disabled (RC not required)")
-
-# ✅ Try Arming
+# ✅ Arm the drone (required for motor test)
 master.arducopter_arm()
-time.sleep(2)
+time.sleep(3)
 
-# ✅ Check if armed
-msg = master.recv_match(type='HEARTBEAT', blocking=True)
-armed = msg.base_mode & mavutil.mavlink.MAV_MODE_FLAG_SAFETY_ARMED
+# ✅ Perform motor test (Motor 1, 20% throttle, for 2 seconds)
+print("🛠 Testing Motor #1 at 20% power for 2 seconds...")
+master.mav.command_long_send(
+    master.target_system, master.target_component,
+    mavutil.mavlink.MAV_CMD_DO_MOTOR_TEST, 0,
+    1,  # Motor instance (1 = first motor)
+    0,  # Test type (0 = PWM, 1 = Percentage)
+    20,  # Throttle (20%)
+    2,  # Duration in seconds
+    0, 0, 0  # Unused parameters
+)
 
-if armed:
-    print("🚀 Drone Armed Successfully!")
-else:
-    print("❌ Still failed to arm. Check for other pre-arm issues.")
+# ✅ Wait for motor test to complete
+time.sleep(5)
 
-# Close connection
+# ✅ Disarm after test
+master.arducopter_disarm()
+print("🛑 Drone Disarmed!")
+
+# ✅ Close connection
 master.close()
 print("✅ Done!")
