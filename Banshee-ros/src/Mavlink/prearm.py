@@ -10,7 +10,12 @@ master = mavutil.mavlink_connection(
 # Wait for heartbeat
 master.wait_heartbeat()
 print("✅ Heartbeat received!")
-
+master.mav.command_long_send(
+    master.target_system, master.target_component,
+    mavutil.mavlink.MAV_CMD_DO_SET_PARAMETER, 0,
+    160, 0, 0, 0, 0, 0, 0  # 160 = ARMING_CHECK, set to 0 (disable all checks)
+)
+print("✅ ARMING_CHECK disabled (RC requirement removed)")
 # Function to check pre-arm messages
 def check_prearm_errors():
     print("🔍 Checking for pre-arm failures...")
