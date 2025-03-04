@@ -68,7 +68,6 @@ class BVMNode(Node):
     # Reads from ESP UART serial port once each iteration
     def espRead(self):
         if self.ser.in_waiting > 0:
-            self.get_logger().info("reading voltage")
             tag = self.ser.readline().decode('utf-8').strip()
             # Examples of reading from ESP
             if tag == "Voltage":
