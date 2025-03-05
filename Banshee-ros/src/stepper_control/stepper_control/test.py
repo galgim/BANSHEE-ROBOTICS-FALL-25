@@ -40,9 +40,9 @@ class StepperMotor:
             delay = self.pid(error)
 
             self.movement.write_digital(1)
-            sleep(.0003)
+            sleep(.008)
             self.movement.write_digital(0)
-            sleep(.0003)
+            sleep(.008)
 
             # Update current position
             self.position += 1 if step_direction == CW else -1
@@ -57,5 +57,5 @@ if __name__ == '__main__':
     stepper.move_to_position(500)
     
     # # Wait, then move back to 0
-    # sleep(2)
-    # stepper.move_to_position(0)
+    sleep(2)
+    stepper.move_to_position(0)
