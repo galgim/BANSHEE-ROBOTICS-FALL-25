@@ -230,9 +230,7 @@ class IntegrationNode(Node):
         self.start_signal_received = False
         self.batteryLevel = None
 
-        Droneside() # testing
         startsetup()
-        Open() # testing
 
 
     def done_callback(self, msg):
