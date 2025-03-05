@@ -121,7 +121,7 @@ Ki = 0.01
 Kd = 0.1
 
 # Function to create PID controllers for each motor
-def create_pid_controllers(dxlIDs):
+def pids(dxlIDs):
     return [PID(Kp, Ki, Kd, setpoint=0) for _ in dxlIDs]
 
 # Function to set motor velocities with PID adjustment
@@ -149,6 +149,13 @@ def dxlGetVelo(dxlIDs):
     print("Velocities are ", dxl_present_velocity)
     print("-------------------------------------")
     return (dxl_present_velocity)
+
+# Example Usage
+dxlIDs = [1, 2, 3]  # Example motor IDs
+pid_controllers = pids(dxlIDs)  # Initialize PID controllers
+vel_array = [200, 300, 400]  # Example target velocities
+
+dxlSetVelo(vel_array, dxlIDs, pid_controllers)  # Call function correctly
 
 
 def motorRunWithInputs(angle_inputs, dxlIDs, pid_controllers):
