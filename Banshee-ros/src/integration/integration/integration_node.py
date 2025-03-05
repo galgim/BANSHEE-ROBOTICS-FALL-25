@@ -4,7 +4,7 @@ import rclpy
 from rclpy.node import Node
 from std_msgs.msg import Bool, Int8  # Import message type for the 'done' signal
 import math
-from integration import motorctrl_v2 as motor
+from integration import motorctrl_v3 as motor
 from integration import Movement_calc_v2 as calculation
 import numpy as np
 import time
@@ -164,7 +164,7 @@ def Drone_pull():
 def Close():
     start_time = time.time()
     print("close claw")
-    motor.dxlSetVelo([30], [0])
+    motor.dxlSetVelo([30], [0])                                          
     motor.simMotorRun([108],[0])
     time.sleep(1)
 
