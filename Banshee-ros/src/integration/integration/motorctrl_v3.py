@@ -115,27 +115,29 @@ def dxlPresAngle(dxlIDs):
     print("-------------------------------------")
     return (dxl_present_angle)
 
-# PID values
+# PID values (adjust if needed)
 Kp = 0.5
 Ki = 0.01
 Kd = 0.1
 
-def pids(dxlIDs):
+# Function to create PID controllers for each motor
+def create_pid_controllers(dxlIDs):
     return [PID(Kp, Ki, Kd, setpoint=0) for _ in dxlIDs]
 
+# Function to set motor velocities with PID adjustment
 def dxlSetVelo(vel_array, dxlIDs, pid_controllers):
-    if (len(vel_array) == len(dxlIDs)):
-        idNum = len(dxlIDs)
-        for id in range(idNum):
-                    current_velocity = ReadMotorData(dxlIDs[id], ADDR_PROFILE_VELOCITY)
-                    pid_adjustment = pid_controllers[id](vel_array[id], current_velocity)
-                    new_velocity = max(0, min(1023, int(vel_array[id] + pid_adjustment)))
-                    WriteMotorData(dxlIDs[id], ADDR_PROFILE_VELOCITY, vel_array[id])
+    if len(vel_array) == len(dxlIDs):
+        for i in range(len(dxlIDs)):
+            current_velocity = ReadMotorData(dxlIDs[i], ADDR_PROFILE_VELOCITY)
+            pid_controllers[i].setpoint = vel_array[i]
+            pid_adjustment = pid_controllers[i](current_velocity)  # PID computes correction
+            new_velocity = max(0, min(1023, int(vel_array[i] + pid_adjustment)))  # Limit range
+            WriteMotorData(dxlIDs[i], ADDR_PROFILE_VELOCITY, new_velocity)  # Send command
     else:
         print("ERROR: Number of velocity inputs not matching with number of DXL ID inputs!")
+    
     print("-------------------------------------")
     dxlGetVelo(dxlIDs)
-
 
 def dxlGetVelo(dxlIDs):
     idNum = len(dxlIDs)
