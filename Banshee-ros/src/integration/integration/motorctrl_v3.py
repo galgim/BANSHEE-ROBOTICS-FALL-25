@@ -115,29 +115,35 @@ def dxlPresAngle(dxlIDs):
     print("-------------------------------------")
     return (dxl_present_angle)
 
-# PID values (adjust if needed)
+from simple_pid import PID
+
+# PID Gains
 Kp = 0.5
 Ki = 0.01
 Kd = 0.1
 
-# Function to create PID controllers for each motor
+# Function to create PID controllers for each motor (initialize ONCE)
 def pids(dxlIDs):
-    return [PID(Kp, Ki, Kd, setpoint=0) for _ in dxlIDs]
+    return [PID(Kp, Ki, Kd, setpoint=0) for _ in dxlIDs]  # PID Controllers
 
 # Function to set motor velocities with PID adjustment
 def dxlSetVelo(vel_array, dxlIDs, pid_controllers):
     if len(vel_array) == len(dxlIDs):
         for i in range(len(dxlIDs)):
-            current_velocity = ReadMotorData(dxlIDs[i], ADDR_PROFILE_VELOCITY)
-            pid_controllers[i].setpoint = vel_array[i]
-            pid_adjustment = pid_controllers[i](current_velocity)  # PID computes correction
-            new_velocity = max(0, min(1023, int(vel_array[i] + pid_adjustment)))  # Limit range
-            WriteMotorData(dxlIDs[i], ADDR_PROFILE_VELOCITY, new_velocity)  # Send command
+            current_velocity = ReadMotorData(dxlIDs[i], ADDR_PROFILE_VELOCITY)  # Read actual velocity
+            pid_controllers[i].setpoint = vel_array[i]  # Set target velocity
+            pid_adjustment = pid_controllers[i](current_velocity)  # Compute correction
+
+            # PID controls the correction dynamically (not just addition)
+            new_velocity = max(0, min(1023, int(pid_adjustment)))  # Keep within valid range
+
+            WriteMotorData(dxlIDs[i], ADDR_PROFILE_VELOCITY, new_velocity)  # Send adjusted velocity
+        
+        print("-------------------------------------")
+        dxlGetVelo(dxlIDs)  # Print velocities for debugging
     else:
         print("ERROR: Number of velocity inputs not matching with number of DXL ID inputs!")
-    
-    print("-------------------------------------")
-    dxlGetVelo(dxlIDs)
+
 
 def dxlGetVelo(dxlIDs):
     idNum = len(dxlIDs)
@@ -149,14 +155,6 @@ def dxlGetVelo(dxlIDs):
     print("Velocities are ", dxl_present_velocity)
     print("-------------------------------------")
     return (dxl_present_velocity)
-
-# Example Usage
-dxlIDs = [1, 2, 3]  # Example motor IDs
-pid_controllers = pids(dxlIDs)  # Initialize PID controllers
-vel_array = [200, 300, 400]  # Example target velocities
-
-dxlSetVelo(vel_array, dxlIDs, pid_controllers)  # Call function correctly
-
 
 def motorRunWithInputs(angle_inputs, dxlIDs, pid_controllers):
     idNum = len(dxlIDs)
