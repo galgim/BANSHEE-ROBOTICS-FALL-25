@@ -167,7 +167,7 @@ def main(args=None):
     BVMside()
     startsetup()
     Open()
-    Close()23235
+    Close()
     Push_low()
     Open()
     Pull_low()
