@@ -177,7 +177,7 @@ def Open():
     time.sleep(1)
 
 # Setup initial motor positions
-def startsetup(pid_controllers):
+def startsetup():
     start_time = time.time()
     print("setting up")
     motor.dxlSetVelo([30, 30, 30], [2, 3, 4], pid_controllers)
