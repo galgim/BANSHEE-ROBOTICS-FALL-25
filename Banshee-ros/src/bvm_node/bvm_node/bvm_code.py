@@ -73,13 +73,14 @@ class BVMNode(Node):
             if tag == "Voltage":
                 raw_data = self.ser.read(32)
                 values = self.structUnpack('8f', raw_data)
+                self.get_logger().info("Tag: " + tag)
+                self.get_logger().info(f"{values}")
+                self.get_logger().info(values)
                 self.batteryChamber = values.index(max(values))
                 self.emptyChamber = values.index(min(values))
                 self.mode = 1
             else:
                 return
-            self.get_logger().info("Tag: " + tag)
-            self.get_logger().info(f"{values}")
 
     # Sends 2 new lines into ESP UART serial port
     def espSend(self, tag, data=None):
