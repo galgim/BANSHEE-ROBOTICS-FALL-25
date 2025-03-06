@@ -35,6 +35,8 @@ MOVE_IDs = [BASE_ID, BICEP_ID, FOREARM_ID, WRIST_ID, CLAW_ID]
 # Initialize motor port
 motor.portInitialization(PORT_NUM, ALL_IDs)
 
+# Initialize PID Controllers for all motors
+pid_controllers = motor.pids(MOVE_IDs)
 
 # Calculate the angle for the max length reaching out in the x position
 max_length_angle = calculation.angle_Calc([375, 0, 73], 0)
@@ -230,8 +232,6 @@ class IntegrationNode(Node):
         self.start_signal_received = False
         self.batteryLevel = None
 
-        # Initialize PID Controllers for all motors
-        self.pid_controllers = motor.pids(MOVE_IDs)
 
         startsetup()
 
