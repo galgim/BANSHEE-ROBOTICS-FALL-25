@@ -236,6 +236,7 @@ class IntegrationNode(Node):
         self.pid_controllers = motor.pids(MOVE_IDs)
 
         startsetup(self.pid_controllers)
+        Drone_push(self.pid_controllers)
 
     def done_callback(self, msg):
         self.start_signal_received = True
