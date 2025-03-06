@@ -232,6 +232,8 @@ class IntegrationNode(Node):
         self.start_signal_received = False
         self.batteryLevel = None
 
+        # Initialize PID Controllers for all motors
+        self.pid_controllers = motor.pids(MOVE_IDs)
 
         startsetup(self.pid_controllers)
 
