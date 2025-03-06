@@ -221,7 +221,7 @@ class IntegrationNode(Node):
         
         # Subscriber for 'ConfirmPosition' signal from Camera node
         self.subscription = self.create_subscription(
-          Int8,'DestinationConfirm', self.done_callback, 10)
+          Int8, 'DestinationConfirm', self.done_callback, 10)
         
         self.armFinished = self.create_publisher(
           Bool, 'ArmDone', 10)
@@ -230,60 +230,54 @@ class IntegrationNode(Node):
         self.start_signal_received = False
         self.batteryLevel = None
 
+        # Initialize PID Controllers for all motors
+        self.pid_controllers = motor.pids(MOVE_IDs)
+
         startsetup()
 
-
     def done_callback(self, msg):
-      self.start_signal_received = True
-      self.batteryLevel = msg.data
-      self.get_logger().info(f"Received batteryLevel {self.batteryLevel} from Camera Node. Integration Node is now ready to execute commands.")
-      self.run()
-
+        self.start_signal_received = True
+        self.batteryLevel = msg.data
+        self.get_logger().info(f"Received batteryLevel {self.batteryLevel} from Camera Node. Integration Node is now ready to execute commands.")
+        self.run()
 
     def run(self): 
-      self.get_logger().info(f"Run method triggered. Start signal: {self.start_signal_received}")
-      if self.start_signal_received:
-        self.get_logger().info("Executing command...")
+        self.get_logger().info(f"Run method triggered. Start signal: {self.start_signal_received}")
+        if self.start_signal_received:
+            self.get_logger().info("Executing command...")
 
-      # PULL FUNCTION
-      if self.start_signal_received and self.mode == 0:
-        # Proceed to command execution after receiving 'done' signal
-        # pull_out(self.batteryLevel)
-        if self.batteryLevel == 0:  
-          Pull_high()
-          startsetup()
-        elif self.batteryLevel == 1:
-          Pull_low()
-          startsetup()
-        else:
-          Drone_pull()
-          startsetup()
+        # PULL FUNCTION
+        if self.start_signal_received and self.mode == 0:
+            if self.batteryLevel == 0:  
+                Pull_high(self.pid_controllers)
+            elif self.batteryLevel == 1:
+                Pull_low(self.pid_controllers)
+            else:
+                Drone_pull(self.pid_controllers)
+            startsetup()
 
-        self.mode = 1
-        self.start_signal_received = False
-        msg = Bool()
-        msg.data = True
-        self.armFinished.publish(msg)
+            self.mode = 1
+            self.start_signal_received = False
+            msg = Bool()
+            msg.data = True
+            self.armFinished.publish(msg)
 
-      # PUSH FUNCTION
-      elif self.start_signal_received and self.mode == 1:
-        # Proceed to command execution after receiving 'done' signal
-        # push_in(self.batteryLevel)if self.batteryLevel == 0:  
-        if self.batteryLevel == 0:  
-          Push_high()
-          startsetup()
-        elif self.batteryLevel == 1:
-          Push_low()
-          startsetup()
-        else:
-          Drone_push()
-          startsetup()
+        # PUSH FUNCTION
+        elif self.start_signal_received and self.mode == 1:
+            if self.batteryLevel == 0:  
+                Push_high(self.pid_controllers)
+            elif self.batteryLevel == 1:
+                Push_low(self.pid_controllers)
+            else:
+                Drone_push(self.pid_controllers)
+            startsetup()
 
-        self.mode = 0
-        self.start_signal_received = False
-        msg = Bool()
-        msg.data = True
-        self.armFinished.publish(msg)
+            self.mode = 0
+            self.start_signal_received = False
+            msg = Bool()
+            msg.data = True
+            self.armFinished.publish(msg)
+
 
 
 def main(args=None):
