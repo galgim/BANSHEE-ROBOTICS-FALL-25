@@ -182,7 +182,7 @@ def Open():
 def startsetup(pid_controllers):
     start_time = time.time()
     print("setting up")
-    motor.dxlSetVelo([30, 30, 30], [2, 3, 4], pid_controllers)
+    motor.dxlSetVelo([120, 120, 120], [2, 3, 4], pid_controllers)
     motor.simMotorRun([222, 347, 139], [2, 3, 4])
     time.sleep(1)
 
