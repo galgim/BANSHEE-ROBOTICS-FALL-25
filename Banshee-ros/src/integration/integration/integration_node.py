@@ -136,14 +136,14 @@ def Pull_high():
 
 
 # Push Battery into Drone
-def Drone_push():
+def Drone_push(pid_controllers):
     start_time = time.time()
     print("Drone push sequence")
-    motor.dxlSetVelo([30, 50, 30, 30, 30], [0, 1, 2, 3, 4])     # set initial speed
+    motor.dxlSetVelo([30, 50, 30, 30, 30], [0, 1, 2, 3, 4],pid_controllers)     # set initial speed
     print("push drone bat")
     motor.simMotorRun([45], [1])                                # turn around
     motor.simMotorRun([154, 334, 90],[2, 3, 4])                 # move arm to first position
-    motor.dxlSetVelo([17, 27, 8], [2, 3, 4])                    # set push in speed
+    motor.dxlSetVelo([17, 27, 8], [2, 3, 4],pid_controllers)                    # set push in speed
     motor.simMotorRun([95, 243, 112],[2, 3, 4])                 # move arm to chamber position
     Open()                                                      # push battery
 
