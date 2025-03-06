@@ -233,7 +233,7 @@ class IntegrationNode(Node):
         # Initialize PID Controllers for all motors
         self.pid_controllers = motor.pids(MOVE_IDs)
 
-        startsetup()
+        startsetup(self.pid_controllers)
 
     def done_callback(self, msg):
         self.start_signal_received = True

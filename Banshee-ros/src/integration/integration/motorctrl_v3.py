@@ -115,8 +115,6 @@ def dxlPresAngle(dxlIDs):
     print("-------------------------------------")
     return (dxl_present_angle)
 
-from simple_pid import PID
-
 # PID Gains
 Kp = 0.5
 Ki = 0.01
