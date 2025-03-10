@@ -1,18 +1,41 @@
-# Example MAVLink command to arm the drone
+import os
+import glob
 from pymavlink import mavutil
 
-master = mavutil.mavlink_connection(
-    '/dev/serial/by-id/usb-Holybro_Pixhawk6C_1E0030001151333036383238-if00',
-    baud=115200
-)  # Adjust to your connection
-master.wait_heartbeat()
+def find_pixhawk_port():
+    """Finds the correct Pixhawk serial port (if00)."""
+    serial_ports = glob.glob('/dev/serial/by-id/*')
 
-# Set mode to GUIDED or OFFBOARD (as needed)
-mode = 'GUIDED'  # Change to 'OFFBOARD' for PX4
-mode_id = master.mode_mapping()[mode]
-master.set_mode(mode_id)
+    for port in serial_ports:
+        if "Pixhawk" in port or "Holybro" in port:
+            if port.endswith("-if00"):  # Select only the main MAVLink interface
+                print(f"Found Pixhawk MAVLink port: {port}")
+                return port
 
-# Arm the vehicle
-master.arducopter_arm()
+    print("No valid Pixhawk MAVLink port found!")
+    return None
 
-print("Vehicle armed!")
+def connect_to_pixhawk():
+    """Connects to Pixhawk via MAVLink."""
+    port = find_pixhawk_port()
+    if not port:
+        return None
+
+    try:
+        master = mavutil.mavlink_connection(port, baud=115200)
+        master.wait_heartbeat(timeout=5)
+        print("Connected to Pixhawk!")
+        return master
+    except Exception as e:
+        print(f"Failed to connect: {e}")
+        return None
+
+# Run the connection test
+if __name__ == "__main__":
+    master = connect_to_pixhawk()
+    if master:
+        print("Listening for MAVLink messages...")
+        while True:
+            msg = master.recv_match(blocking=True)
+            if msg:
+                print(msg)
