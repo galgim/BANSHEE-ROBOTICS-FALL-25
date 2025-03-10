@@ -20,7 +20,7 @@ class StepperMotor:
         self.position = 0  # Current position
 
     def move_to_position(self, target_position):
-        """Moves stepper motor to the target position with acceleration and deceleration for steps > 200."""
+        """Move stepper motor with smooth acceleration/deceleration for long distances, slow constant speed for short."""
         steps = target_position - self.position
         step_direction = CW if steps > 0 else CCW
         self.rotation.write_digital(step_direction)
@@ -28,45 +28,65 @@ class StepperMotor:
         steps = abs(steps)
         print(f"Moving {steps} steps {'CW' if step_direction == CW else 'CCW'}")
 
-        if steps > 200:
-            min_delay = 0.0003  # Fastest speed
-            max_delay = 0.003   # Slowest speed
-        else:
-            min_delay = 0.003  # Fixed slow speed for small movements
-            max_delay = 0.003
+        # Define delays (min_delay = fast, max_delay = slow)
+        min_delay = 0.0003  # Fastest speed
+        max_delay = 0.003   # Slowest speed
 
-        for step in range(steps):
-            if steps > 200:
-                # Apply acceleration and deceleration only for steps > 200
-                if step < steps * 0.07:  # First 20% acceleration
-                    delay = max_delay - (max_delay - min_delay) * (step / (steps * 0.2))
-                elif step > steps * 0.93:  # Last 20% deceleration
-                    delay = min_delay + (max_delay - min_delay) * ((step - steps * 0.8) / (steps * 0.2))
-                else:  # Constant speed
+        accel_percent = 0.3  # Portion of steps for acceleration/deceleration
+
+        # Threshold to decide whether to use acceleration or just slow speed
+        if steps <= 200:
+            delay = max_delay  # Move slow for small movements
+            for step in range(steps):
+                self.movement.write_digital(1)
+                sleep(delay)
+                self.movement.write_digital(0)
+                sleep(delay)
+                self.position += 1 if step_direction == CW else -1
+        else:
+            # Long movement with smooth acceleration and deceleration
+            accel_steps = int(steps * accel_percent)
+            decel_steps = int(steps * accel_percent)
+            cruise_steps = steps - accel_steps - decel_steps
+
+            for step in range(steps):
+                if step < accel_steps:
+                    # Acceleration: from slow to fast
+                    delay = max_delay - (max_delay - min_delay) * (step / accel_steps)
+                elif step >= accel_steps + cruise_steps:
+                    # Deceleration: from fast back to slow
+                    decel_step = step - (accel_steps + cruise_steps)
+                    delay = min_delay + (max_delay - min_delay) * (decel_step / decel_steps)
+                else:
+                    # Cruise at fast speed
                     delay = min_delay
-            else:
-                delay = max_delay  # Fixed slow speed for small movements
-            
-            self.movement.write_digital(1)
-            sleep(delay)
-            self.movement.write_digital(0)
-            sleep(delay)
-            
-            self.position += 1 if step_direction == CW else -1
-        
-        print("Movement complete.")
+
+                # Step pulse
+                self.movement.write_digital(1)
+                sleep(delay)
+                self.movement.write_digital(0)
+                sleep(delay)
+
+                # Update current position
+                self.position += 1 if step_direction == CW else -1
+
+        print(f"Arrived at position {self.position}.")
 
 # Run Test
 if __name__ == '__main__':
     stepper = StepperMotor()
     
-    # Move to 1000 steps position
-    stepper.move_to_position(2000)
-    
-    # Wait, then move back to 0
+    # Move small distance (slow constant speed)
+    stepper.move_to_position(150)
     sleep(2)
+    
+    # Return to 0 (slow constant speed)
     stepper.move_to_position(0)
-    sleep(1)
-    stepper.move_to_position(100)
-    sleep(1)
+    sleep(2)
+
+    # Move large distance (acceleration and deceleration to/from slow speed)
+    stepper.move_to_position(2000)
+    sleep(2)
+    
+    # Return to 0 (with smooth acceleration/deceleration)
     stepper.move_to_position(0)
