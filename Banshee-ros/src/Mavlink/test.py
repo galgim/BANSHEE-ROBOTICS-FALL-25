@@ -1,7 +1,10 @@
 # Example MAVLink command to arm the drone
 from pymavlink import mavutil
 
-master = mavutil.mavlink_connection('udp:127.0.0.1:14550')  # Adjust to your connection
+master = mavutil.mavlink_connection(
+    '/dev/serial/by-id/usb-Holybro_Pixhawk6C_1E0030001151333036383238-if00',
+    baud=115200
+)  # Adjust to your connection
 master.wait_heartbeat()
 
 # Set mode to GUIDED or OFFBOARD (as needed)
