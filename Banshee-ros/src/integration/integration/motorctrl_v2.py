@@ -199,11 +199,14 @@ def simMotorRun(angle_inputs, dxlIDs):
         simWrite(dxl_goal_inputs, dxlIDs)
 
         # Wait for all motors to finish moving
+        i = 0
         while True:
             dxl_end_position, movementStatus = simPosCheck(dxl_goal_inputs, dxlIDs)
             if all(status == 1 for status in movementStatus):
                 break
+            dxlSetVelo([i, i, i, i], [1, 2, 3, 4])
             time.sleep(0.1)  # Short delay to prevent CPU overloading
+            i = i + 1
 
         # Check the final positions and print the angles
         for id in range(idNum):
