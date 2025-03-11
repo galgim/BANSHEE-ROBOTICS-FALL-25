@@ -65,39 +65,21 @@ class BVMNode(Node):
         except:
             self.get_logger().info("Incomplete data received")
 
+    # Reads from ESP UART serial port once each iteration
     def espRead(self):
-        try:
-            if self.ser.in_waiting > 0:
-                line = self.ser.readline()
-                try:
-                    tag = line.decode('utf-8').strip()
-                except UnicodeDecodeError:
-                    self.get_logger().warn(f"Received non-UTF8 line: {line}")
-                    return  # Or keep reading until a proper line comes in
-
-                if tag == "Voltage":
-                    # Now check if we have enough data for 8 floats
-                    if self.ser.in_waiting >= 32:
-                        raw_data = self.ser.read(32)
-                        try:
-                            values = self.structUnpack('8f', raw_data)
-                            if values:
-                                self.batteryChamber = values.index(max(values))
-                                self.emptyChamber = values.index(min(values))
-                                self.mode = 1
-                                self.get_logger().info(f"Tag: {tag}, Values: {values}")
-                            else:
-                                self.get_logger().warn("No values unpacked.")
-                        except struct.error as e:
-                            self.get_logger().error(f"Struct unpack error: {e}")
-                    else:
-                        self.get_logger().warn("Not enough bytes after Voltage tag.")
-                else:
-                    self.get_logger().warn(f"Unknown tag: {tag}")
-        except Exception as e:
-            self.get_logger().error(f"Unexpected error: {e}")
-
-
+        if self.ser.in_waiting > 0:
+            tag = self.ser.readline().decode('utf-8').strip()
+            # Examples of reading from ESP
+            if tag == "Voltage":
+                raw_data = self.ser.read(32)
+                values = self.structUnpack('8f', raw_data)
+                self.batteryChamber = values.index(max(values))
+                self.emptyChamber = values.index(min(values))
+                self.mode = 1
+            else:
+                return
+            self.get_logger().info("Tag: " + tag)
+            self.get_logger().info(f"{values}")
 
     # Sends 2 new lines into ESP UART serial port
     def espSend(self, tag, data=None):
