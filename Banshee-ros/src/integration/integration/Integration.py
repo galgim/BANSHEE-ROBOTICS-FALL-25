@@ -1,7 +1,7 @@
 #!/usr/bin/env python3
 import math
 import motorctrl_v2 as motor
-import Movement_Calc_v2 as calculation
+import Movement_calc_v2 as calculation
 import numpy as np
 import time
 import cv2
@@ -39,14 +39,15 @@ motor.portInitialization(PORT_NUM, ALL_IDs)
 def Push_low():    
     start_time = time.time()
     print("Push in low sequence")
-    motor.dxlSetVelo([117, 9, 109], [2, 3, 4])                       # set initial velocity
+    motor.dxlSetVelo([20, 30, 25], [2, 3, 4])   # set initial velocity
+    # motor.dxlSetVelo([117, 17, 94], [2, 3, 4])                       # set initial velocity
     print("place chamber")
     #motor.simMotorRun([105, 338, 38],[2, 3, 4])                     # move arm to first position
     motor.simMotorRun([105, 330, 45],[2, 3, 4])                     # move arm to first position
     time.sleep(.5)
-    # motor.dxlSetVelo([15, 55, 40], [2, 3, 4])                       # set final velocity
+    motor.dxlSetVelo([25, 82, 50], [2, 3, 4])                       # set final velocity
     #motor.dxlSetVelo([25, 90, 65], [2, 3, 4])                       # set final velocity
-    motor.dxlSetVelo([25, 140, 65], [2, 3, 4])                       # set final velocity
+    # motor.dxlSetVelo([25, 140, 65], [2, 3, 4])                       # set final velocity
     motor.simMotorRun([80, 248, 95],[2, 3, 4])                      # move arm w/ battery to chamber
     Open()                                                          # let go of battery
 
@@ -66,16 +67,25 @@ def Pull_low():
 
 # Push Battery into top BVM
 def Push_high():    
+    # start_time = time.time()
+    # print("Push in high sequence")
+    # #motor.dxlSetVelo([25, 25, 30], [2, 3, 4])   # set initial velocity
+    # motor.dxlSetVelo([92, 37, 49], [2, 3, 4])   # set initial velocity
+    # print("place chamber")
+    # motor.simMotorRun([130, 310, 90],[2, 3, 4]) # move arm to first position
+    # #motor.dxlSetVelo([17, 33, 15], [2, 3, 4])   # set final velocity
+    # motor.dxlSetVelo([70, 130, 54], [2, 3, 4])   # set final velocity
+    # motor.simMotorRun([60, 180, 144],[2, 3, 4])  # move arm w/ battery to chamber
+    # Open()                                      # let go of battery
+
     start_time = time.time()
     print("Push in high sequence")
-    #motor.dxlSetVelo([25, 25, 30], [2, 3, 4])   # set initial velocity
-    motor.dxlSetVelo([92, 37, 49], [2, 3, 4])   # set initial velocity
+    motor.dxlSetVelo([25, 25, 30], [2, 3, 4])   # set initial velocity
     print("place chamber")
     motor.simMotorRun([130, 310, 90],[2, 3, 4]) # move arm to first position
-    #motor.dxlSetVelo([17, 33, 15], [2, 3, 4])   # set final velocity
-    motor.dxlSetVelo([70, 130, 54], [2, 3, 4])   # set final velocity
+    motor.dxlSetVelo([17, 33, 15], [2, 3, 4])   # set final velocity
     motor.simMotorRun([60, 180, 144],[2, 3, 4])  # move arm w/ battery to chamber
-    Open()                                      # let go of battery
+    Open()                                      # let go of 
 
 # Pull Battery from top BVM
 def Pull_high():    
@@ -169,11 +179,12 @@ Command_dict = {
 
 def main(args=None):
     startsetup()
-    Droneside()
+    # Droneside()
+    BVMside()
     Open()
     Close()
-    # Push_low()
-    # startsetup()
+    Push_high()
+    startsetup()
 
 if __name__ == '__main__':
 
