@@ -25,7 +25,8 @@ class BVMNode(Node):
         self.batteryChamber = None # Full battery chamber
         self.emptyChamber = None # Empty battery chamber
         self.ser = serial.Serial('/dev/ttyUSB1', 115200, timeout=1)
-
+        self.ser.reset_input_buffer()
+        self.get_logger().info("Serial port initialized and buffer flushed.")
 
         self.arucoPublisher = self.create_publisher(
         Int8, 'arucoID', 10)
@@ -69,6 +70,8 @@ class BVMNode(Node):
     def espRead(self):
         if self.ser.in_waiting > 0:
             tag = self.ser.readline().decode('utf-8').strip()
+            self.get_logger().info("Tag: " + tag)
+
             # Examples of reading from ESP
             if tag == "Voltage":
                 raw_data = self.ser.read(32)
@@ -143,8 +146,6 @@ class BVMNode(Node):
             # determine whether to go to mode 1 or 0, based on drone array 
             # if drone array has number go to mode 1 and pull that number if drone array empty go to mode 0
             #drone array get rid of one index
-
-
     
 def main(args=None):
     rclpy.init(args=args)
@@ -152,6 +153,15 @@ def main(args=None):
     try:
         rclpy.spin(node)
     except:
-        KeyboardInterrupt
+        try:
+            rclpy.spin(node)
+        except KeyboardInterrupt:
+            pass  # Handle Ctrl+C properly
+        except Exception as e:
+            print(f"Exception occurred: {e}")  # Print real error if other exception occurs
+        finally:
+            node.destroy_node()
+            rclpy.shutdown()
+
 if __name__ == '__main__':
     main()
