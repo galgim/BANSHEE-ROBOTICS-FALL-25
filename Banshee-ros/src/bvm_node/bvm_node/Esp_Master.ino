@@ -1,10 +1,12 @@
-
 #include <esp_now.h>
 #include <WiFi.h>
 #include <HTTPClient.h>
 
 // Declarations
 //void sendDataBvm(String tag, const void* data, size_t size);
+
+const int LED = GPIO_NUM_32;
+
 
 const int MAX_MINIONS = 4;
 const int CELLS_PER_BATTERY = 4;  // Update if necessary
@@ -19,10 +21,14 @@ uint8_t minionsMacs[MAX_MINIONS][6] = {  // Master esp MAC {0xA0, 0xB7, 0x65, 0x
   // Add more here when ready
   };
 
+uint8_t gcs_esp[] = {0x24, 0x6F, 0x28, 0xAA, 0xBB, 0xCC};
+uint8_t drone_esp[] = {0xA0, 0xB7, 0x65, 0x26, 0xBE, 0x84}; 
+
 float voltage[8] = {0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0};
 uint8_t data[2];  // 2 bytes for arduino int
 int done = 0;
 int chamber = -1; // -1 will indicate when no chamber is selected
+char receivedCommand[32] = {0};
 
 // Used for testing purposes
 const int button = GPIO_NUM_35;
@@ -118,10 +124,10 @@ void onDataSent(const uint8_t *mac_addr, esp_now_send_status_t status) {
 
 // Triggers when master receives data through ESP_NOW
 void onDataReceive(const esp_now_recv_info *info, const uint8_t *incomingData, int len) {
-    if (len != 4) {
-        Serial.println("Invalid data length!");
-        return;
-    }
+    // if (len != 4) {
+    //     Serial.println("Invalid data length!");
+    //     return;
+    // }
 
     uint8_t senderMac[6];
     memcpy(senderMac, info->src_addr, 6);  // Get sender's MAC
@@ -153,6 +159,17 @@ void onDataReceive(const esp_now_recv_info *info, const uint8_t *incomingData, i
     memcpy(&totalVoltage, incomingData, sizeof(totalVoltage));  // Extract Voltage
 
     setVoltageFromMinion(senderMac, totalVoltage);
+
+    strncpy(receivedCommand, (const char *)incomingData, sizeof(receivedCommand) - 1);
+    receivedCommand[sizeof(receivedCommand) - 1] = '\0';  // Null-terminate the string
+
+    Serial.print("Received command: ");
+    Serial.println(receivedCommand);
+
+    if (strcmp(receivedCommand, "done") == 0) {
+      Serial.println("Received 'done' command, triggering done = 0...");
+      done = 0;  
+    }
 }
 
 // // Function to send data to server
@@ -198,28 +215,47 @@ void onDataReceive(const esp_now_recv_info *info, const uint8_t *incomingData, i
 
 // Attempts to add all peers in the minion array using their mac addresses
 void addPeers() {
+    esp_now_peer_info_t peerInfo = {};
+    esp_now_peer_info_t peerInfoGCS = {};  // Create a separate peer info for GCS
+    esp_now_peer_info_t peerInfoDrone = {}; // Create a separate peer info for drone
     for (int i = 0; i < MAX_MINIONS; i++) {
-        esp_now_peer_info_t peerInfo = {};
         memcpy(peerInfo.peer_addr, minionsMacs[i], 6);
         peerInfo.channel = 0;
         peerInfo.encrypt = false;
 
         if (esp_now_add_peer(&peerInfo) != ESP_OK) {
-            Serial.print("Failed to add peer: ");
-            Serial.println(i);
+          Serial.print("Failed to add peer: ");
+          Serial.println(i);
         }
     }
+
+  // Set up the first peer (GCS)
+  memcpy(peerInfoGCS.peer_addr, gcs_esp, 6);  // Use gcs_esp MAC address
+  peerInfoGCS.channel = 0;
+  peerInfoGCS.encrypt = false;
+
+  // Set up the second peer (Drone)
+  memcpy(peerInfoDrone.peer_addr, drone_esp, 6);  // Use drone_esp MAC address
+  peerInfoDrone.channel = 0;
+  peerInfoDrone.encrypt = false;
+
+  // Add the peers
+  if (esp_now_add_peer(&peerInfoGCS) != ESP_OK) {
+      Serial.println("Failed to add GCS peer");
+  }
+
+  if (esp_now_add_peer(&peerInfoDrone) != ESP_OK) {
+      Serial.println("Failed to add Drone peer");
+  }
 }
 
 void setup() {
     Serial.begin(115200);
     WiFi.mode(WIFI_STA);
-    delay(1000);  // Stabilize UART after boot
-    // Flush any garbage received during boot
-    while (Serial.available()) Serial.read();  
 
-    Serial.println("READY");  // Send startup handshake message
-    // Testin g
+    // Testing
+    pinMode(LED, OUTPUT);
+  
 
     if (esp_now_init() != ESP_OK) {
         Serial.println("Error initializing ESP-NOW");
@@ -239,19 +275,12 @@ const unsigned long sendInterval = 5000;  // 5 seconds interval
 void loop() {
     unsigned long currentMillis = millis();
     
-    int buttonState = digitalRead(button);
-
-    if (buttonState == HIGH) {
-      done = 0;
-      }
-    
     // Send data to server every 5 seconds
     if (currentMillis - lastSendTime >= sendInterval) {
         lastSendTime = currentMillis;
-
         
 
-        if (done == 0) {
+        if(done == 0){
           Serial.println("signal not reached");
           int count = 0;
           for (int i = 0; i < 8; i++) {
@@ -262,12 +291,15 @@ void loop() {
           if (count > 0) {
             Serial.println("done signal reached");
             sendDataBvm("Voltage", voltage, sizeof(voltage));
-            
+            digitalWrite(LED, HIGH);
+
             done = 1;
+            
           }
-        } 
+        }
         else {
           readFromBvm();
+          digitalWrite(LED, LOW);
           }
         Serial.flush();
         // Check if we have any active minions
