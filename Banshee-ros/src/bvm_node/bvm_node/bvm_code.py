@@ -68,17 +68,15 @@ class BVMNode(Node):
     def espRead(self):
         try:
             if self.ser.in_waiting > 0:
+                line = self.ser.readline()
                 try:
-                    tag = self.ser.readline().decode('utf-8').strip()
-                except UnicodeDecodeError as e:
-                    self.get_logger().error(f"Failed to decode tag: {e}")
-                    return
-
-                if not tag:
-                    self.get_logger().warn("Empty tag received")
-                    return
+                    tag = line.decode('utf-8').strip()
+                except UnicodeDecodeError:
+                    self.get_logger().warn(f"Received non-UTF8 line: {line}")
+                    return  # Or keep reading until a proper line comes in
 
                 if tag == "Voltage":
+                    # Now check if we have enough data for 8 floats
                     if self.ser.in_waiting >= 32:
                         raw_data = self.ser.read(32)
                         try:
@@ -87,18 +85,18 @@ class BVMNode(Node):
                                 self.batteryChamber = values.index(max(values))
                                 self.emptyChamber = values.index(min(values))
                                 self.mode = 1
-                                self.get_logger().info("Tag: " + tag)
-                                self.get_logger().info(f"{values}")
+                                self.get_logger().info(f"Tag: {tag}, Values: {values}")
                             else:
-                                self.get_logger().warn("No values unpacked from Voltage data")
+                                self.get_logger().warn("No values unpacked.")
                         except struct.error as e:
-                            self.get_logger().error(f"Failed to unpack Voltage data: {e}")
+                            self.get_logger().error(f"Struct unpack error: {e}")
                     else:
-                        self.get_logger().warn("Not enough bytes for Voltage data")
+                        self.get_logger().warn("Not enough bytes after Voltage tag.")
                 else:
                     self.get_logger().warn(f"Unknown tag: {tag}")
         except Exception as e:
-            self.get_logger().error(f"Unexpected error in espRead: {e}")
+            self.get_logger().error(f"Unexpected error: {e}")
+
 
 
     # Sends 2 new lines into ESP UART serial port
