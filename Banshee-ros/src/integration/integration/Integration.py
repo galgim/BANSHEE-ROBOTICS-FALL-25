@@ -1,6 +1,6 @@
 #!/usr/bin/env python3
 import math
-import motorctrl_v2 as motor
+import motorctrl_v3 as motor
 import Movement_calc_v2 as calculation
 import numpy as np
 import time
@@ -67,16 +67,16 @@ def Pull_low():
 
 # Push Battery into top BVM
 def Push_high():    
-    start_time = time.time()
-    print("Push in high sequence")
-    #motor.dxlSetVelo([25, 25, 30], [2, 3, 4])   # set initial velocity
-    motor.dxlSetVelo([92, 37, 49], [2, 3, 4])   # set initial velocity
-    print("place chamber")
-    motor.simMotorRun([130, 310, 90],[2, 3, 4]) # move arm to first position
-    #motor.dxlSetVelo([17, 33, 15], [2, 3, 4])   # set final velocity
-    motor.dxlSetVelo([70, 130, 54], [2, 3, 4])   # set final velocity
-    motor.simMotorRun([60, 180, 144],[2, 3, 4])  # move arm w/ battery to chamber
-    Open()                                      # let go of battery
+    # start_time = time.time()
+    # print("Push in high sequence")
+    # #motor.dxlSetVelo([25, 25, 30], [2, 3, 4])   # set initial velocity
+    # motor.dxlSetVelo([92, 37, 49], [2, 3, 4])   # set initial velocity
+    # print("place chamber")
+    # motor.simMotorRun([130, 310, 90],[2, 3, 4]) # move arm to first position
+    # #motor.dxlSetVelo([17, 33, 15], [2, 3, 4])   # set final velocity
+    # motor.dxlSetVelo([70, 130, 54], [2, 3, 4])   # set final velocity
+    # motor.simMotorRun([60, 180, 144],[2, 3, 4])  # move arm w/ battery to chamber
+    # Open()                                      # let go of battery
 
     start_time = time.time()
     print("Push in high sequence")
@@ -149,6 +149,7 @@ def Open():
 def startsetup():
     start_time = time.time()
     print("setting up")
+
     motor.dxlSetVelo([30, 30, 30], [2, 3, 4])
     motor.simMotorRun([222, 347, 139], [2, 3, 4])
     time.sleep(1)
@@ -180,11 +181,11 @@ Command_dict = {
 def main(args=None):
     startsetup()
     # Droneside()
-    BVMside()
-    Open()
-    Close()
-    Push_high()
-    startsetup()
+    # BVMside()
+    # Open()
+    # Close()
+    # Push_high()
+    # startsetup()
 
 if __name__ == '__main__':
 
