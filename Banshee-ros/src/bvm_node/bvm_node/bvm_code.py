@@ -43,11 +43,7 @@ class BVMNode(Node):
         """ Read and process incoming data from ESP. """
         if self.ser.in_waiting > 0:
             tag = self.ser.readline().decode('utf-8', errors='ignore').strip()
-            self.get_logger().info(f"Tag: {tag}")
-
-            if tag not in self.VALID_TAGS:
-                self.get_logger().warn(f"Ignored unknown tag: {tag}")
-                return  # Skip unknown data
+            # self.get_logger().info(f"Tag: {tag}")
 
             if tag == "Voltage":
                 raw_data = self.ser.read(32)
