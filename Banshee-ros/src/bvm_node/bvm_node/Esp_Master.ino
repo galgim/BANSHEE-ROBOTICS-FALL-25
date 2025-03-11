@@ -214,12 +214,12 @@ void addPeers() {
 void setup() {
     Serial.begin(115200);
     WiFi.mode(WIFI_STA);
+    delay(1000);  // Stabilize UART after boot
+    // Flush any garbage received during boot
+    while (Serial.available()) Serial.read();  
 
-    // Testing
-    pinMode(button, INPUT);
-    pinMode(led0, OUTPUT);
-    pinMode(led1, OUTPUT);
-    pinMode(led2, OUTPUT);
+    Serial.println("READY");  // Send startup handshake message
+    // Testin g
 
     if (esp_now_init() != ESP_OK) {
         Serial.println("Error initializing ESP-NOW");

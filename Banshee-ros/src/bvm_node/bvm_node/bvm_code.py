@@ -26,6 +26,8 @@ class BVMNode(Node):
         self.emptyChamber = None # Empty battery chamber
         self.ser = serial.Serial('/dev/ttyUSB1', 115200, timeout=1)
         self.ser.reset_input_buffer()
+        self.wait_for_ready()
+        
         self.get_logger().info("Serial port initialized and buffer flushed.")
 
         self.arucoPublisher = self.create_publisher(
@@ -39,7 +41,15 @@ class BVMNode(Node):
         # self.arucoIDPublisher()
 
         self.run_timer = self.create_timer(0.1, self.bvmLogic)
-    
+    def wait_for_ready(self):
+        print("Waiting for ESP READY message...")
+        while True:
+            if self.ser.in_waiting > 0:
+                line = self.ser.readline().decode('utf-8').strip()
+                print(f"Received during wait: {line}")
+                if line == "READY":
+                    print("ESP32 is ready and synchronized!")
+                    break
     # Function for testing purposes
     def arucoIDPublisher(self, aruco_ID):
         msg = Int8()
