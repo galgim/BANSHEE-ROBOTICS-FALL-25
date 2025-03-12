@@ -114,7 +114,6 @@ class StepperMotorNode(Node):
 
         # If steps are small, move at constant slow speed
         if steps < 200:
-            self.get_logger().info(f"Small movement detected ({steps} steps), moving at constant slow speed.")
             delay = max_delay
             for _ in range(steps):
                 self.movement.write_digital(1)
