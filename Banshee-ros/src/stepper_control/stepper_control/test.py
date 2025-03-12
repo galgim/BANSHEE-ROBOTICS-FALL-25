@@ -32,7 +32,7 @@ class StepperMotor:
         min_delay = 0.0003  # Fastest speed
         max_delay = 0.003   # Slowest speed
 
-        accel_percent = 0.3  # Portion of steps for acceleration/deceleration
+        accel_percent = 0.2  # Portion of steps for acceleration/deceleration
 
         # Threshold to decide whether to use acceleration or just slow speed
         if steps <= 200:
@@ -85,8 +85,8 @@ if __name__ == '__main__':
     sleep(2)
 
     # Move large distance (acceleration and deceleration to/from slow speed)
-    stepper.move_to_position(2000)
+    stepper.move_to_position(500)
     sleep(2)
     
-    # Return to 0 (with smooth acceleration/deceleration)
+    # # Return to 0 (with smooth acceleration/deceleration)
     stepper.move_to_position(0)
