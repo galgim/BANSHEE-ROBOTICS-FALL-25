@@ -56,8 +56,8 @@ class BVMNode(Node):
 
     def espSend(self, tag, data=None):
         """ Send command to ESP, with optional data. """
-        self.ser.reset_input_buffer()
-        self.ser.reset_output_buffer()
+        # self.ser.reset_input_buffer()
+        # self.ser.reset_output_buffer()
         self.get_logger().info(f"Sending command: {tag} {data if data else ''}")
         self.ser.write((tag + '\n').encode('utf-8'))
         if data is not None:
