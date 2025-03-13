@@ -102,7 +102,7 @@ def Pull_low():
     Close()                                                     # grab battery
     motor.dxlSetVelo([17, 37, 20], [2, 3, 4])                   # set pull out velocity
     motor.simMotorRun([132, 343, 40],[2, 3, 4])                 # pull battery out
-    motor.dxlSetVelo([35, 20, 30], [2, 3, 4])                   # set grab speed                      
+    motor.dxlSetVelo([30, 35, 20, 30], [1, 2, 3, 4])                   # set grab speed                      
     motor.simMotorRun([222, 334, 139],[2, 3, 4])                # pull battery out
     motor.simMotorRun([45], [1])                   
 
