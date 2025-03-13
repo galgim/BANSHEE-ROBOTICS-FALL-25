@@ -190,6 +190,7 @@ def main(args=None):
     # Open()
     # Close()s
     Push_low()
+    Pull_low()
     startsetup()
 
 if __name__ == '__main__':
