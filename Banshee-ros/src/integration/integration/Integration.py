@@ -189,7 +189,7 @@ def main(args=None):
     BVMside()
     # Open()
     # Close()
-    Push_low()
+    Push_high()
     # startsetup()
 
 if __name__ == '__main__':
