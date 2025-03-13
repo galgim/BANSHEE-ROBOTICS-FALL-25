@@ -187,13 +187,13 @@ def main(args=None):
     BVMside()
     # Open()
     # Close()
-    Push_high()
+    Push_low()
     # startsetup()
 
 if __name__ == '__main__':
 
     main()
-    
+
 # TOP_BVM = 0
 # BOT_BVM = 1
 # DRONE_BAT = 2
