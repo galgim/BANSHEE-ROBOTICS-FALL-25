@@ -291,19 +291,18 @@ void loop() {
             Serial.println("done signal reached");
             sendDataBvm("Voltage", voltage, sizeof(voltage));
             digitalWrite(LED, HIGH);
-
             done = 1;
-
-          // clear old voltages
-          voltage[i] = 0.0;
-        
-            
-          }
         }
         else {
           readFromBvm();
           digitalWrite(LED, LOW);
-          }
+        }
+
+        // clear old voltages
+        for (int i = 0; i < MAX_MINIONS; i++) {
+          voltage[i] = 0.0;        
+        }
+
         Serial.flush();
         // Check if we have any active minions
 
