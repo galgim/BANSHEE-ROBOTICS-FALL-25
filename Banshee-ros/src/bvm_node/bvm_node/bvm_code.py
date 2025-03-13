@@ -133,12 +133,12 @@ class BVMNode(Node):
 
     # ----------------------- Utilities -----------------------
 
-    def publishAruco(self, aruco_ID):
+    def publishAruco(self, batterychamber):
         """ Publish Aruco ID for robot arm to act on. """
         msg = Int8()
-        msg.data = aruco_ID
+        msg.data = batterychamber
         self.arucoPublisher.publish(msg)
-        self.get_logger().info(f"Published Aruco ID: {aruco_ID}")
+        self.get_logger().info(f"Published battery chamber: {batterychamber}")
 
 
 # ----------------------- Main -----------------------

@@ -244,9 +244,6 @@ class IntegrationNode(Node):
 
     def run(self): 
       self.get_logger().info(f"Run method triggered. Start signal: {self.start_signal_received}")
-      if self.start_signal_received:
-        self.get_logger().info("Executing command...")
-
       # PULL FUNCTION
       if self.start_signal_received and self.mode == 0:
         # Proceed to command execution after receiving 'done' signal

@@ -47,8 +47,8 @@ class StepperMotorNode(Node):
 
     def initialSubscriber(self, msg):
         """Handle Aruco ID for pre-set column positions"""
-        arucoID = msg.data
-        self.get_logger().info(f"Received Aruco ID: {arucoID}")
+        batterychamber = msg.data
+        self.get_logger().info(f"Received battery chamber: {batterychamber}")
 
         aruco_to_column = {
             0: COLUMN1, 4: COLUMN1,
@@ -109,11 +109,11 @@ class StepperMotorNode(Node):
     def smooth_move(self, steps):
         """Perform smooth acceleration, cruising, and deceleration or constant slow speed for small steps"""
         min_delay = 0.0003  # Fastest delay (highest speed)
-        max_delay = 0.003   # Slowest delay (initial and final speed)
+        max_delay = 0.001   # Slowest delay (initial and final speed)
         accel_percent = 0.3  # % of steps for acceleration/deceleration
 
         # If steps are small, move at constant slow speed
-        if steps < 200:
+        if steps < 500:
             delay = max_delay
             for _ in range(steps):
                 self.movement.write_digital(1)
