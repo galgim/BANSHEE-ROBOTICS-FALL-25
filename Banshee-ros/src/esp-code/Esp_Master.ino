@@ -278,16 +278,11 @@ void loop() {
     // Send data to server every 5 seconds
     if (currentMillis - lastSendTime >= sendInterval) {
         lastSendTime = currentMillis;
-        
-        // clear old voltages
-        for (int i = 0; i < MAX_MINIONS; i++) {
-          voltage[i] = 0.0;
-        }
 
         if(done == 0){
           Serial.println("signal not reached");
           int count = 0;
-          for (int i = 0; i < 8; i++) {
+          for (int i = 0; i < MAX_MINIONS; i++) {
             if (voltage[i] > 10.0) {
               count++;
               }
@@ -298,6 +293,10 @@ void loop() {
             digitalWrite(LED, HIGH);
 
             done = 1;
+
+          // clear old voltages
+          voltage[i] = 0.0;
+        }
             
           }
         }
