@@ -190,7 +190,7 @@ def main(args=None):
     BVMside()
     # Open()
     # Close()
-    Drone_pull()
+    Pull_high()
     # startsetup()
 
 if __name__ == '__main__':
