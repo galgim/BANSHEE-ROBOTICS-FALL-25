@@ -102,8 +102,9 @@ def Pull_high():
     motor.simMotorRun([130, 320, 70],[2, 3, 4])                 # middle position
     motor.dxlSetVelo([30, 35, 20, 25], [1, 2, 3, 4])                   # set grab speed                      
     motor.simMotorRun([222, 334, 139],[2, 3, 4])                # pull battery out
+    startsetup()
     motor.simMotorRun([45], [1])                   
-    startsetup()                                                 #test
+                                                
 
 # Push Battery into Drone
 def Drone_push():
