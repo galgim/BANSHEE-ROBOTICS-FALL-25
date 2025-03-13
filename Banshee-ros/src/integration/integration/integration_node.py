@@ -128,7 +128,7 @@ def Pull_high():
     Close()                                                     # grab battery
     motor.dxlSetVelo([17, 33, 15], [2, 3, 4])                   # set pull out velocity
     motor.simMotorRun([130, 320, 70],[2, 3, 4])                 # middle position
-    motor.dxlSetVelo([35, 20, 25], [2, 3, 4])                   # set grab speed                      
+    motor.dxlSetVelo([30, 35, 20, 25], [1, 2, 3, 4])                   # set grab speed                      
     motor.simMotorRun([222, 334, 139],[2, 3, 4])                # pull battery out
     motor.simMotorRun([45], [1])                   
 
