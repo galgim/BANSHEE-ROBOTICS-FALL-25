@@ -279,6 +279,10 @@ void loop() {
     if (currentMillis - lastSendTime >= sendInterval) {
         lastSendTime = currentMillis;
         
+        // clear old voltages
+        for (int i = 0; i < MAX_MINIONS; i++) {
+          voltage[i] = 0.0;
+        }
 
         if(done == 0){
           Serial.println("signal not reached");
