@@ -57,7 +57,7 @@ class StepperMotorNode(Node):
             3: COLUMN4, 7: COLUMN4,
             8: DRONE
         }
-        target_position = aruco_to_column.get(arucoID, None)
+        target_position = aruco_to_column.get(batterychamber, None)
         self.run_motor_cycle(target_position)
 
     def distanceSubscriber(self, msg):
@@ -109,7 +109,7 @@ class StepperMotorNode(Node):
     def smooth_move(self, steps):
         """Perform smooth acceleration, cruising, and deceleration or constant slow speed for small steps"""
         min_delay = 0.0003  # Fastest delay (highest speed)
-        max_delay = 0.001   # Slowest delay (initial and final speed)
+        max_delay = 0.002   # Slowest delay (initial and final speed)
         accel_percent = 0.3  # % of steps for acceleration/deceleration
 
         # If steps are small, move at constant slow speed
