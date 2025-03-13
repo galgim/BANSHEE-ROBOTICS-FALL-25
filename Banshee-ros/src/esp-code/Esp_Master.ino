@@ -296,7 +296,7 @@ void loop() {
 
           // clear old voltages
           voltage[i] = 0.0;
-        }
+        
             
           }
         }
