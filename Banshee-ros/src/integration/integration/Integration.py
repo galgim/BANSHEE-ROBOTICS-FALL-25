@@ -79,7 +79,7 @@ def Push_high():
     motor.simMotorRun([130, 310, 90],[2, 3, 4]) # move arm to first position
     #motor.dxlSetVelo([17, 33, 15], [2, 3, 4])   # set final velocity   (old)
     motor.dxlSetVelo([70, 130, 54], [2, 3, 4])   # set final velocity (new)
-    motor.simMotorRun([60, 185, 144],[2, 3, 4])  # move arm w/ battery to chamber
+    motor.simMotorRun([60, 190, 144],[2, 3, 4])  # move arm w/ battery to chamber
     Open()                                      # let go of 
 
 # Pull Battery from top BVM
