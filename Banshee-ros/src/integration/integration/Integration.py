@@ -61,9 +61,9 @@ def Pull_low():
     Close()                                                         # grab battery
     # motor.dxlSetVelo([15, 78, 54], [2, 3, 4])                      # set pull out velocity
     motor.dxlSetVelo([15, 78, 54], [2, 3, 4])                       # set pull out velocity
-    motor.simMotorRun([100, 328, 47],[2, 3, 4])                      # move arm to middle position
+    motor.simMotorRun([100, 328, 43],[2, 3, 4])                      # move arm to middle position
     motor.dxlSetVelo([127, 19, 109], [2, 3, 4])                       # set grab speed                      
-    motor.simMotorRun([222, 347, 139], [2, 3, 4])                   # back to start
+    startsetup()
     motor.simMotorRun([45], [1]) 
 
 
@@ -154,8 +154,7 @@ def Open():
 def startsetup():
     start_time = time.time()
     print("setting up")
-
-    motor.dxlSetVelo([30, 30, 30], [2, 3, 4])
+    motor.dxlSetVelo([60, 60, 50], [2, 3, 4])
     motor.simMotorRun([222, 347, 139], [2, 3, 4])
     time.sleep(1)
 
@@ -187,10 +186,9 @@ def main(args=None):
     startsetup()
     # Droneside()
     BVMside()
-    # Open()
-    # Close()s
+    Open()
+    # Close()
     Pull_low()
-    startsetup()
 
 if __name__ == '__main__':
 
