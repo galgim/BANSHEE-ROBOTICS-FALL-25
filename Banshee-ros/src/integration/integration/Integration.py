@@ -69,8 +69,6 @@ def Pull_low():
 
 # Push Battery into top BVM
 def Push_high():    
- 
-
     start_time = time.time()
     print("Push in high sequence")
     #motor.dxlSetVelo([25, 25, 30], [2, 3, 4])   # set initial velocity (old)
