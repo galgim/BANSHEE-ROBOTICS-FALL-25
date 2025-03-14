@@ -55,9 +55,9 @@ def Push_low():
 def Pull_low():    
     start_time = time.time()
     print("Pull out low sequence")
-    motor.dxlSetVelo([30, 35, 25, 35], [1, 2, 3, 4])                # set initial speed
+    motor.dxlSetVelo([30, 142, 97, 45], [1, 2, 3, 4])                # set initial speed
     print("remove chamber")
-    motor.simMotorRun([80, 250, 94],[2, 3, 4])                      # move arm to chamber position
+    motor.simMotorRun([80, 248, 94],[2, 3, 4])                      # move arm to chamber position
     Close()                                                         # grab battery
     # motor.dxlSetVelo([15, 78, 54], [2, 3, 4])                      # set pull out velocity
     motor.dxlSetVelo([15, 78, 54], [2, 3, 4])                       # set pull out velocity
@@ -180,8 +180,7 @@ def main(args=None):
     # Droneside()
     BVMside()
     Open()
-    Close()
-    Push_low()
+    Pull_low()
     startsetup()
 
 if __name__ == '__main__':
