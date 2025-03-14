@@ -72,7 +72,7 @@ def Push_high():
     start_time = time.time()
     print("Push in high sequence")
     #motor.dxlSetVelo([25, 25, 30], [2, 3, 4])   # set initial velocity (old)
-    motor.dxlSetVelo([92, 37, 49], [2, 3, 4])   # set initial velocity (new)
+    motor.dxlSetVelo([92, 37, 70], [2, 3, 4])   # set initial velocity (new)
     print("place chamber")
     motor.simMotorRun([130, 310, 90],[2, 3, 4]) # move arm to first position
     #motor.dxlSetVelo([17, 33, 15], [2, 3, 4])   # set final velocity   (old)
@@ -181,7 +181,8 @@ def main(args=None):
     BVMside()
     Open()
     Close()
-    Push_high()
+    Push_low()
+    startsetup()
 
 if __name__ == '__main__':
 
