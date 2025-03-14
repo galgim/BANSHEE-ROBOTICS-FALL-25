@@ -191,7 +191,7 @@ def main(args=None):
     # Droneside()
     BVMside()
     Open()
-    # Close()
+    Close()
     Push_high()
 
 if __name__ == '__main__':
