@@ -39,8 +39,8 @@ motor.portInitialization(PORT_NUM, ALL_IDs)
 def Push_low():    
     start_time = time.time()
     print("Push in low sequence")
-    motor.dxlSetVelo([20, 30, 25], [2, 3, 4])   # set initial velocity
-    # motor.dxlSetVelo([117, 17, 94], [2, 3, 4])                       # set initial velocity
+    #motor.dxlSetVelo([20, 30, 25], [2, 3, 4])   # set initial velocity
+    motor.dxlSetVelo([117, 17, 94], [2, 3, 4])                       # set initial velocity
     print("place chamber")
     #motor.simMotorRun([105, 338, 38],[2, 3, 4])                     # move arm to first position
     motor.simMotorRun([105, 330, 45],[2, 3, 4])                     # move arm to first position
@@ -103,6 +103,7 @@ def Pull_high():
     motor.simMotorRun([130, 320, 70],[2, 3, 4])                 # middle position
     motor.dxlSetVelo([30, 35, 20, 25], [1, 2, 3, 4])                   # set grab speed                      
     motor.simMotorRun([222, 334, 139],[2, 3, 4])                # pull battery out
+    startsetup()
     motor.simMotorRun([45], [1])                   
 
 
@@ -132,7 +133,9 @@ def Drone_pull():
     motor.simMotorRun([154, 334, 90],[2, 3, 4])                 # get to middle position
     motor.dxlSetVelo([25, 15, 25], [2, 3, 4])                    # set grab speed                      
     motor.simMotorRun([222, 334, 139],[2, 3, 4])                # pull battery out
-    motor.simMotorRun([225], [1])                   
+    startsetup()
+    motor.simMotorRun([225], [1])    
+                   
 
 # Close Claw
 def Close():
@@ -188,7 +191,7 @@ def main(args=None):
     BVMside()
     Open()
     # Close()
-    Pull_low()
+    Push_low()
 
 if __name__ == '__main__':
 
