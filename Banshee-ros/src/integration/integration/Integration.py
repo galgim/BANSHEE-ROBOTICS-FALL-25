@@ -39,8 +39,8 @@ motor.portInitialization(PORT_NUM, ALL_IDs)
 def Push_low():    
     start_time = time.time()
     print("Push in low sequence")
-    #motor.dxlSetVelo([20, 30, 25], [2, 3, 4])   # set initial velocity
-    motor.dxlSetVelo([117, 17, 94], [2, 3, 4])                       # set initial velocity
+    #motor.dxlSetVelo([20, 30, 25], [2, 3, 4])   # set initial velocity (old)
+    motor.dxlSetVelo([117, 17, 94], [2, 3, 4])                       # set initial velocity (new)
     print("place chamber")
     #motor.simMotorRun([105, 338, 38],[2, 3, 4])                     # move arm to first position
     motor.simMotorRun([105, 330, 45],[2, 3, 4])                     # move arm to first position
@@ -182,7 +182,7 @@ def main(args=None):
     # Droneside()
     BVMside()
     Open()
-    Pull_high()
+    Pull_low()
     startsetup()
 
 if __name__ == '__main__':
