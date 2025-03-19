@@ -182,7 +182,7 @@ def main(args=None):
     # Droneside()
     BVMside()
     Open()
-    Pull_low()
+    Pull_high()
     startsetup()
 
 if __name__ == '__main__':
