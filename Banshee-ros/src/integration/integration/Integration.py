@@ -56,7 +56,7 @@ def Pull_low():
     start_time = time.time()
     print("Pull out low sequence")
     #motor.dxlSetVelo([30, 142, 97, 45], [1, 2, 3, 4])                # set initial speed (old)
-    motor.dxlSetVelo([30, 142, 99, 45], [1, 2, 3, 4])                # set initial speed (new)
+    motor.dxlSetVelo([35, 142, 99, 45], [1, 2, 3, 4])                # set initial speed (new)
     print("remove chamber")
     motor.simMotorRun([80, 248, 94],[2, 3, 4])                      # move arm to chamber position
     Close()                                                         # grab battery
