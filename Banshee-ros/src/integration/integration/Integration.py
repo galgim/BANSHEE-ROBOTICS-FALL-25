@@ -86,7 +86,7 @@ def Pull_high():
     start_time = time.time()
     print("Pull out high sequence")
     #motor.dxlSetVelo([30, 25, 25, 35], [1, 2, 3, 4])            # set initial velocity (old)
-    motor.dxlSetVelo([60, 162, 167, 5], [1, 2, 3, 4])            # set initial velocity (new)
+    motor.dxlSetVelo([60, 102, 107, 5], [1, 2, 3, 4])            # set initial velocity (new)-reduced m.p 2 and 3 by 60
     print("remove chamber")
     motor.simMotorRun([60, 180, 144],[2, 3, 4])                 # move arm to chamber position
     Close()                                                     # grab battery
@@ -181,12 +181,12 @@ Command_dict = {
 }
 
 def main(args=None):
-    startsetup()
-    Close()
     Droneside()
-    Push_high()
-    Open()
     startsetup()
+    Pull_high()
+    startsetup()
+   
+  
 
 if __name__ == '__main__':
 
