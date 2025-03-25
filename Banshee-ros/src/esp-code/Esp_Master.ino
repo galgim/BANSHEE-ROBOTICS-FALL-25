@@ -143,8 +143,8 @@ void onDataReceive(const esp_now_recv_info *info, const uint8_t *incomingData, i
     strncpy(receivedCommand, (const char *)incomingData, sizeof(receivedCommand) - 1);
     receivedCommand[sizeof(receivedCommand) - 1] = '\0';  // Null-terminate the string
 
-    Serial.print("Received command: ");
-    Serial.println(receivedCommand);
+    //Serial.print("Received command: ");
+    //Serial.println(receivedCommand);
 
     if (strcmp(receivedCommand, "done") == 0) {
       Serial.println("Received 'done' command, triggering done = 0...");

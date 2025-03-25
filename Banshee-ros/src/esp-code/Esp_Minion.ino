@@ -53,10 +53,14 @@ void onDataReceive(const esp_now_recv_info *info, const uint8_t *incomingData, i
 
     if (command == 1) {
       digitalWrite(solenoidPin, HIGH);
+      digitalWrite(solenoidPin2, HIGH);
+
       Serial.println("Received Unlock signal");
       }
     else if (command == 0) {
       digitalWrite(solenoidPin, LOW);
+      digitalWrite(solenoidPin2, LOW);
+
       Serial.println("Received lock signal");
       }
 }
@@ -102,7 +106,8 @@ void setup() {
     Serial.println("Sender ESP Ready to send data");
 
     // Initialize solenoid pins
-    pinMode(solenoidPin, OUTPUT);;
+    pinMode(solenoidPin, OUTPUT);
+    pinMode(solenoidPin2, OUTPUT);
 }
 
 void loop() {
