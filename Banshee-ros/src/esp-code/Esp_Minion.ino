@@ -55,7 +55,7 @@ void onDataReceive(const esp_now_recv_info *info, const uint8_t *incomingData, i
       digitalWrite(solenoidPin, HIGH);
       digitalWrite(solenoidPin2, HIGH);
 
-      Serial.println("Received Unlock signal");
+      Serial.println("Received unlock signal");
       }
     else if (command == 0) {
       digitalWrite(solenoidPin, LOW);
@@ -124,6 +124,13 @@ void loop() {
         voltages[i] -= 0.09;
       }
         totalVoltage += voltages[i];
+    }
+
+    if(totalVoltage > 10) {
+      digitalWrite(solenoidPin, LOW);
+      digitalWrite(solenoidPin2, LOW);
+      Serial.println("Received lock signal");
+
     }
 
     Serial.printf("Cell 1: %.3fV\n", voltages[0]);
