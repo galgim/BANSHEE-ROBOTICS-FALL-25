@@ -89,7 +89,6 @@ class BVMNode(Node):
         if data != None:
             data = str(data)
             self.ser.write((data + '\n').encode('utf-8'))
-        self.ser.close()
         time.sleep(1)
         self.ser.open()
     
