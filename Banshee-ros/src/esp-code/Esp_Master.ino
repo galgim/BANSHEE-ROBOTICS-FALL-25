@@ -7,7 +7,6 @@
 
 const int LED = GPIO_NUM_32;
 
-
 const int MAX_MINIONS = 4;
 const int CELLS_PER_BATTERY = 4;  // Update if necessary
 
@@ -27,6 +26,7 @@ uint8_t drone_esp[] = {0xA0, 0xB7, 0x65, 0x26, 0xBE, 0x84};
 float voltage[8] = {0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0};
 uint8_t data[2];  // 2 bytes for arduino int
 int done = 0;
+int droneDone = 0;
 int chamber = -1; // -1 will indicate when no chamber is selected
 char receivedCommand[32] = {0};
 
@@ -46,7 +46,10 @@ void sendDataBvm(String tag, const void* data, size_t size) {
   }
 
 // Used to set the Voltage array in the correct order as the minion array is set.
-void setVoltageFromMinion(const uint8_t *mac, float voltageValue) {
+void minionVoltage(const uint8_t *mac, float voltageValue) {
+    if (memcmp(mac, gcs_esp, 6) == 0) || (memcmp(mac, drone_esp, 6) == 0) {
+      return;
+      }
     for (int i = 0; i < MAX_MINIONS; i++) {
         if (memcmp(mac, minionsMacs[i], 6) == 0) {
             // Serial.println("Minion Address in List!");// Match found
@@ -63,28 +66,36 @@ void setVoltageFromMinion(const uint8_t *mac, float voltageValue) {
 void readFromBvm() {
     if (Serial.available()) {
         String tag = Serial.readStringUntil('\n');
-
         
         if (tag == "Unlock") {
           String message = Serial.readStringUntil('\n');
           chamber = message.toInt();
           int signal = 1;
-
+          
           memcpy(data, &signal, sizeof(signal));
-        
+          
           esp_err_t result = esp_now_send(minionsMacs[chamber], data, sizeof(data)); // Sends corresponding minion signal 1 to unlock battery chamber
         }
         else if (tag == "Lock") {
           String message = Serial.readStringUntil('\n');
           chamber = message.toInt();
           int signal = 0;
-
+          
           memcpy(data, &signal, sizeof(signal));
-
+          
           esp_err_t result = esp_now_send(minionsMacs[chamber], data, sizeof(data)); // Sends corresponding minion signal 1 to lock battery chamber
           }
         else if (tag == "CycleComplete") {
+          sendDataBvm("Voltage", voltage, sizeof(voltage));
           Serial.print("CycleComplete signal");
+          }
+        else if (tag == "DroneComplete") {
+          int signal = 1; // Could be any number but just signaling that system is complete
+
+          memcpy(data, &signal, sizeof(signal));
+          
+          esp_err_t result = esp_now_send(gcs_esp, data, sizeof(data)); // Sends done signal to GCS/DRONE esp
+          Serial.print("DroneComplete signal");
           }
         }
     else {
@@ -124,7 +135,7 @@ void onDataReceive(const esp_now_recv_info *info, const uint8_t *incomingData, i
       Serial.println();
     }
 
-    // Debugging: Print stored minion MACs
+//    Debugging: Print stored minion MACs
 //    Serial.println("Checking against stored minions:");
 //    for (int i = 0; i < MAX_MINIONS; i++) {
 //        Serial.print("Minion[" + String(i) + "]: ");
@@ -134,21 +145,17 @@ void onDataReceive(const esp_now_recv_info *info, const uint8_t *incomingData, i
 //        }
 //        Serial.println();
 //    }
-
-    float totalVoltage;
-    memcpy(&totalVoltage, incomingData, sizeof(totalVoltage));  // Extract Voltage
-
-    setVoltageFromMinion(senderMac, totalVoltage);
-
-    strncpy(receivedCommand, (const char *)incomingData, sizeof(receivedCommand) - 1);
-    receivedCommand[sizeof(receivedCommand) - 1] = '\0';  // Null-terminate the string
-
-    //Serial.print("Received command: ");
-    //Serial.println(receivedCommand);
-
-    if (strcmp(receivedCommand, "done") == 0) {
-      Serial.println("Received 'done' command, triggering done = 0...");
-      done = 0;  
+    
+    if (memcmp(mac, gcs_esp, 6) == 0) || (memcmp(mac, drone_esp, 6) == 0) {
+      int32_t message;
+      memcpy(&message, incomingData, sizeof(message));
+      sendDataBvm("Batteries", message, sizeof(message)); // Currently does nothing, but will later on for different types of drones
+      sendDataBvm("Voltage", voltage, sizeof(voltage));
+    }
+    else {
+      float totalVoltage;
+      memcpy(&totalVoltage, incomingData, sizeof(totalVoltage));
+      minionVoltage(senderMac, totalVoltage);
     }
 }
 
@@ -260,27 +267,28 @@ void loop() {
         lastSendTime = currentMillis;
         
 
-        if(done == 0){
-          Serial.println("signal not reached");
-          int count = 0;
-          for (int i = 0; i < 8; i++) {
-            if (voltage[i] > 10.0) {
-              count++;
-              }
-            }
-          if (count > 0) {
-            Serial.println("done signal reached");
-            sendDataBvm("Voltage", voltage, sizeof(voltage));
-            digitalWrite(LED, HIGH);
-
-            done = 1;
-            
-          }
-        }
-        else {
-          readFromBvm();
-          digitalWrite(LED, LOW);
-          }
+//        if(droneDone == 1){
+//          Serial.println("Drone is ready")
+//          int count = 0;
+//          for (int i = 0; i < 8; i++) {
+//            if (voltage[i] > 10.0) {
+//              count++;
+//              }
+//            }
+//          if (count > 0) {
+//            Serial.println("Done signal reached");
+//            sendDataBvm("Voltage", voltage, sizeof(voltage));
+//            digitalWrite(LED, HIGH);
+//            done = 1;
+//          else {
+//            Serial.println("Not enough voltage readings")
+//            }
+//          }
+//        }
+//        else {
+//          readFromBvm();
+//          digitalWrite(LED, LOW);
+//          }
         Serial.flush();
         // Check if we have any active minions
 
