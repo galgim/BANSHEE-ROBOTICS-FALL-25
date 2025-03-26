@@ -105,7 +105,7 @@ class BVMNode(Node):
             else:
                 aruco_ID = self.batteryChamber
                 self.espSend("Unlock", aruco_ID)
-            
+                self.get_logger().info("Pull Unlock signal reached")
             msg = Int8()
             msg.data = aruco_ID
             self.arucoPublisher.publish(msg)
@@ -117,6 +117,7 @@ class BVMNode(Node):
             if self.halfCycleComplete == 0:
                 aruco_ID = self.emptyChamber
                 self.espSend("Unlock", aruco_ID)
+                self.get_logger().info("Push Unlock signal reached")
             else:
                 aruco_ID = self.DroneMarkers[0]
             msg = Int8()
