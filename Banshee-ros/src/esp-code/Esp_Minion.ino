@@ -18,9 +18,10 @@ const int batteryPin2 = GPIO_NUM_34;
 const int batteryPin3 = GPIO_NUM_35;
 
 float voltages[4] = {0, 0, 0, 0};
+float totalVoltage = 0;
 
 esp_adc_cal_characteristics_t adc_chars;
-
+int mode = 0
 // Callback when data is sent to master
 void OnDataSent(const uint8_t *mac_addr, esp_now_send_status_t status) {
     Serial.print("Last Packet Send Status: ");
@@ -32,37 +33,35 @@ void OnDataSent(const uint8_t *mac_addr, esp_now_send_status_t status) {
 }
 
 void onDataReceive(const esp_now_recv_info *info, const uint8_t *incomingData, int len) {
-    if (len != 2) {
-        Serial.println("Invalid data length!");
-        return;
+  if (len != 2) {
+    Serial.println("Invalid data length!");
+    return;
+  }
+
+
+  uint8_t senderMac[6];
+  memcpy(senderMac, info->src_addr, 6);  // Get sender's MAC
+
+  // Print received MAC address
+  Serial.print("Received from: ");
+  for (int i = 0; i < 6; i++) {
+    Serial.printf("%02X", senderMac[i]);
+    if (i < 5) Serial.print(":");
+  }
+  Serial.println();
+
+  int command;
+  memcpy(&command, incomingData, sizeof(command));
+
+  if (command == 1) {
+    digitalWrite(solenoidPin, HIGH);
+    digitalWrite(solenoidPin2, HIGH);
+
+    Serial.println("Received unlock signal");
     }
 
-    uint8_t senderMac[6];
-    memcpy(senderMac, info->src_addr, 6);  // Get sender's MAC
-
-    // Print received MAC address
-    Serial.print("Received from: ");
-    for (int i = 0; i < 6; i++) {
-        Serial.printf("%02X", senderMac[i]);
-        if (i < 5) Serial.print(":");
-    }
-    Serial.println();
-
-    int command;
-    memcpy(&command, incomingData, sizeof(command));
-
-    if (command == 1) {
-      digitalWrite(solenoidPin, HIGH);
-      digitalWrite(solenoidPin2, HIGH);
-
-      Serial.println("Received unlock signal");
-      }
-    else if (command == 0) {
-      digitalWrite(solenoidPin, LOW);
-      digitalWrite(solenoidPin2, LOW);
-
-      Serial.println("Received lock signal");
-      }
+  if (totalVoltage > 10.0) mode == 1;
+  if (totalVoltage < 10.0) mode == 2;
 }
 
 double ReadVoltage(byte pin){  
@@ -108,45 +107,51 @@ void setup() {
     // Initialize solenoid pins
     pinMode(solenoidPin, OUTPUT);
     pinMode(solenoidPin2, OUTPUT);
+
+    digitalWrite(solenoidPin, LOW);
+    digitalWrite(solenoidPin2, LOW);
 }
 
 void loop() {
-    // Calculate total voltage
-    float totalVoltage = 0;
-    voltages[0] = (ReadVoltage(batteryPin0) * 4.2)/(56.0/19.0);
-    voltages[1] = (ReadVoltage(batteryPin1) * 4.2)/(126.0/43.0);
-    voltages[2] = (ReadVoltage(batteryPin2)* 4.2)/(3.0);
-    voltages[3] = (ReadVoltage(batteryPin3) * 4.2)/(420.0/133.0);
+  // Calculate total voltage
+  voltages[0] = (ReadVoltage(batteryPin0) * 4.2)/(56.0/19.0);
+  voltages[1] = (ReadVoltage(batteryPin1) * 4.2)/(126.0/43.0);
+  voltages[2] = (ReadVoltage(batteryPin2)* 4.2)/(3.0);
+  voltages[3] = (ReadVoltage(batteryPin3) * 4.2)/(420.0/133.0);
 
   // Check if voltages between 0 and 4.2 volts, meaning its being charged. 
-    for(int i=0; i < 4; i++){
-      if(voltages[i] > 0.0 && voltages[i] < 4.3){
-        voltages[i] -= 0.09;
-      }
-        totalVoltage += voltages[i];
+  for(int i=0; i < 4; i++){
+    if(voltages[i] > 0.0 && voltages[i] < 4.3){
+      voltages[i] -= 0.09;
     }
-
-    if(totalVoltage > 10) {
+      totalVoltage += voltages[i];
+  }
+  Serial.printf("Cell 1: %.3fV\n", voltages[0]);
+  Serial.printf("Cell 2: %.3fV\n", voltages[1]);
+  Serial.printf("Cell 3: %.3fV\n", voltages[2]);
+  Serial.printf("Cell 4: %.3fV\n", voltages[3]);
+  Serial.printf("Total Voltage: %.3fV\n", totalVoltage);
+  memcpy(data, &totalVoltage, sizeof(totalVoltage));  
+  
+  if (mode == 1) {
+    if (totalVoltage < 10.0) {
+      delay(3000);
       digitalWrite(solenoidPin, LOW);
       digitalWrite(solenoidPin2, LOW);
-      Serial.println("Received lock signal");
-
+      }
     }
+  else {
+    if (totalVoltage > 10.0) {
+      delay(1000);
+      digitalWrite(solenoidPin, LOW);
+      digitalWrite(solenoidPin2, LOW);
+      }
+    }
+  // Send data to master ESP
+  esp_err_t result = esp_now_send(masterMacAddress, data, sizeof(data));
 
-    Serial.printf("Cell 1: %.3fV\n", voltages[0]);
-    Serial.printf("Cell 2: %.3fV\n", voltages[1]);
-    Serial.printf("Cell 3: %.3fV\n", voltages[2]);
-    Serial.printf("Cell 4: %.3fV\n", voltages[3]);
+  Serial.println(WiFi.macAddress());
+  Serial.println("This esp is for chamber 3.");
 
-
-    Serial.printf("Total Voltage: %.3fV\n", totalVoltage);
-    memcpy(data, &totalVoltage, sizeof(totalVoltage));  
-
-    // Send data to master ESP
-    esp_err_t result = esp_now_send(masterMacAddress, data, sizeof(data));
-
-    Serial.println(WiFi.macAddress());
-    Serial.println("This esp is for chamber 3.");
-
-    delay(5000); // Wait before sending the next packet
+  delay(5000); // Wait before sending the next packet
 }
