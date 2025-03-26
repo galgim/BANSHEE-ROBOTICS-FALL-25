@@ -47,7 +47,7 @@ void sendDataBvm(String tag, const void* data, size_t size) {
 
 // Used to set the Voltage array in the correct order as the minion array is set.
 void minionVoltage(const uint8_t *mac, float voltageValue) {
-    if (memcmp(mac, gcs_esp, 6) == 0) || (memcmp(mac, drone_esp, 6) == 0) {
+    if (memcmp(mac, gcs_esp, 6) == 0 || memcmp(mac, drone_esp, 6) == 0) {
       return;
       }
     for (int i = 0; i < MAX_MINIONS; i++) {
@@ -94,8 +94,7 @@ void readFromBvm() {
 
           memcpy(data, &signal, sizeof(signal));
           
-          // esp_err_t result = esp_now_send(gcs_esp, data, sizeof(data)); // Sends done signal to GCS/DRONE esp
-          esp_err_t result = esp_now_send(drone_esp, data, sizeof(data));
+          esp_err_t result = esp_now_send(gcs_esp, data, sizeof(data)); // Sends done signal to GCS/DRONE esp
           Serial.print("DroneComplete signal");
           }
         }
@@ -147,7 +146,7 @@ void onDataReceive(const esp_now_recv_info *info, const uint8_t *incomingData, i
 //        Serial.println();
 //    }
     
-    if (memcmp(mac, gcs_esp, 6) == 0) || (memcmp(mac, drone_esp, 6) == 0) {
+    if (memcmp(senderMac, gcs_esp, 6) == 0 || memcmp(senderMac, drone_esp, 6) == 0) {
       // int32_t message;
       // memcpy(&message, incomingData, sizeof(message));
       // sendDataBvm("Batteries", message, sizeof(message)); // Currently does nothing, but will later on for different types of drones
