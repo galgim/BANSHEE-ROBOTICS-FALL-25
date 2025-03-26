@@ -21,7 +21,7 @@ float voltages[4] = {0, 0, 0, 0};
 float totalVoltage = 0;
 
 esp_adc_cal_characteristics_t adc_chars;
-int mode = 0
+int mode = 0;
 // Callback when data is sent to master
 void OnDataSent(const uint8_t *mac_addr, esp_now_send_status_t status) {
     Serial.print("Last Packet Send Status: ");
@@ -119,7 +119,8 @@ void loop() {
   voltages[2] = (ReadVoltage(batteryPin2)* 4.2)/(3.0);
   voltages[3] = (ReadVoltage(batteryPin3) * 4.2)/(420.0/133.0);
 
-  // Check if voltages between 0 and 4.2 volts, meaning its being charged. 
+  // Check if voltages between 0 and 4.2 volts, meaning its being charged.
+  totalVoltage =0; 
   for(int i=0; i < 4; i++){
     if(voltages[i] > 0.0 && voltages[i] < 4.3){
       voltages[i] -= 0.09;
