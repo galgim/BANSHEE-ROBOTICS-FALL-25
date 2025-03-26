@@ -16,7 +16,7 @@ def find_esp_port():
     serial_ports = glob.glob('/dev/serial/by-id/*')
 
     for port in serial_ports:
-        if "Solicon_Labs" in port:
+        if "Silicon_Labs" in port:
             print(f"Found esp port: {port}")
             return port
 
