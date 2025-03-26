@@ -100,7 +100,7 @@ class BVMNode(Node):
             self.ser.write((data + '\n').encode('utf-8'))
         self.ser.close()
         time.sleep(1)
-        self.ser.open()
+        self.ser = serial.Serial(find_esp_port(), 115200, timeout=None)
     
     # Logic of the program
     def bvmLogic(self):
