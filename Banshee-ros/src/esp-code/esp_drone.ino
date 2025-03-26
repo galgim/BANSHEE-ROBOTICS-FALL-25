@@ -15,16 +15,27 @@ void onDataSent(const uint8_t *mac_addr, esp_now_send_status_t status) {
     }
 }
 
+void onDataReceive(const esp_now_recv_info *info, const uint8_t *incomingData, int len) {
+    uint8_t senderMac[6];
+    memcpy(senderMac, info->src_addr, 6);
 
-void sendCommand(const char *command) {
-    esp_err_t result = esp_now_send(masterMacAddress, (uint8_t *)command, strlen(command) + 1); // Send data
-    if (result == ESP_OK) {
-        Serial.println("Command forwarded successfully!");
-    } else {
-        Serial.println("Error sending command.");
+    Serial.flush();
+
+    if (done == 0) {
+      // Print received MAC address
+      Serial.print("Received from: ");
+      for (int i = 0; i < 6; i++) {
+          Serial.printf("%02X", senderMac[i]);
+          if (i < 5) Serial.print(":");
+      }
+      Serial.println();
     }
-}
 
+    if (memcmp(mac, masterMacAddress, 6) == 0) {
+      Serial.println("Drone complete")
+      }
+    
+}
 
 void setup() {
   // put your setup code here, to run once:
@@ -53,6 +64,7 @@ void setup() {
       return;
   }
 
+  esp_now_register_recv_cb(onDataReceive);
   esp_now_register_send_cb(onDataSent);
 
 
@@ -66,7 +78,8 @@ void loop() {
 
     if (buttonState == HIGH) {
       Serial.println("Pressed!");
-      sendCommand("done");
+      uint32_t message = 1; // Will be number of batteries sent from drone pi to here
+      esp_err_t result = esp_now_send(masterMacAddress, (uint8_t *)command, strlen(command) + 1);
       delay(1000);
     }
 }
