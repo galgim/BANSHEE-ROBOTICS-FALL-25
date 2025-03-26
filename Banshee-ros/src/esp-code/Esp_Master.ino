@@ -148,9 +148,9 @@ void onDataReceive(const esp_now_recv_info *info, const uint8_t *incomingData, i
 //    }
     
     if (memcmp(mac, gcs_esp, 6) == 0) || (memcmp(mac, drone_esp, 6) == 0) {
-      int32_t message;
-      memcpy(&message, incomingData, sizeof(message));
-      sendDataBvm("Batteries", message, sizeof(message)); // Currently does nothing, but will later on for different types of drones
+      // int32_t message;
+      // memcpy(&message, incomingData, sizeof(message));
+      // sendDataBvm("Batteries", message, sizeof(message)); // Currently does nothing, but will later on for different types of drones
       sendDataBvm("Voltage", voltage, sizeof(voltage));
     }
     else {
