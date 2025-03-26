@@ -93,7 +93,6 @@ class BVMNode(Node):
 
     # Sends 2 new lines into ESP UART serial port
     def espSend(self, tag, data=None):
-        self.get_logger().info("test")
         tag = str(tag)
         self.ser.write((tag + '\n').encode('utf-8'))
         if data != None:
@@ -101,7 +100,7 @@ class BVMNode(Node):
             self.ser.write((data + '\n').encode('utf-8'))
         self.ser.close()
         time.sleep(1)
-        self.ser = serial.Serial(find_esp_port(), 115200, timeout=1)
+        self.ser.open()
     
     # Logic of the program
     def bvmLogic(self):
@@ -114,8 +113,11 @@ class BVMNode(Node):
                 aruco_ID = self.DroneMarkers[0]
             else:
                 aruco_ID = self.batteryChamber
-                self.espSend("Unlock", aruco_ID)
-                self.get_logger().info("Pull Unlock signal reached")
+                if self.ser.is_open:
+                    self.espSend("Unlock", aruco_ID)
+                    self.get_logger().info("Push Unlock signal reached")
+                else:
+                    self.get_logger().info("Unlock signal not reached")
             msg = Int8()
             msg.data = aruco_ID
             self.arucoPublisher.publish(msg)
@@ -126,8 +128,11 @@ class BVMNode(Node):
         elif self.mode == 2 and self.done == 0:
             if self.halfCycleComplete == 0:
                 aruco_ID = self.emptyChamber
-                self.espSend("Unlock", aruco_ID)
-                self.get_logger().info("Push Unlock signal reached")
+                if self.ser.is_open:
+                    self.espSend("Unlock", aruco_ID)
+                    self.get_logger().info("Push Unlock signal reached")
+                else:
+                    self.get_logger().info("Unlock signal not reached")
             else:
                 aruco_ID = self.DroneMarkers[0]
             msg = Int8()
