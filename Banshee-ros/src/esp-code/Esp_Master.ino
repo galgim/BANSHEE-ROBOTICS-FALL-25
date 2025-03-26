@@ -72,19 +72,10 @@ void readFromBvm() {
           chamber = message.toInt();
           int signal = 1;
           
-          memcpy(data, &signal, sizeof(signal));
+          memcpy(data, &signal, sizeof(signal))
           
           esp_err_t result = esp_now_send(minionsMacs[chamber], data, sizeof(data)); // Sends corresponding minion signal 1 to unlock battery chamber
         }
-        else if (tag == "Lock") {
-          String message = Serial.readStringUntil('\n');
-          chamber = message.toInt();
-          int signal = 0;
-          
-          memcpy(data, &signal, sizeof(signal));
-          
-          esp_err_t result = esp_now_send(minionsMacs[chamber], data, sizeof(data)); // Sends corresponding minion signal 1 to lock battery chamber
-          }
         else if (tag == "CycleComplete") {
           sendDataBvm("Voltage", voltage, sizeof(voltage));
           Serial.print("CycleComplete signal");

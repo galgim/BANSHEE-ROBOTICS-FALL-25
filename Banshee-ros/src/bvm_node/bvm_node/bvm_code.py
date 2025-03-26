@@ -4,12 +4,22 @@ from std_msgs.msg import Bool, Int8
 import serial
 import time
 import struct
+import glob
 #drone battery 4-5
 #battery columns 0-3
 #we get drone landed done from gcs node (mode 1)
 #voltage from esp and find lowest aruco with no voltage
 #find max voltage battery lowest aruco
 #back to drone aruco we previously
+def find_esp_port():
+    """Finds the correct Pixhawk serial port (if00)."""
+    serial_ports = glob.glob('/dev/serial/by-id/*')
+
+    for port in serial_ports:
+        if "Solicon_Labs" in port:
+            print(f"Found esp port: {port}")
+            return port
+
 class BVMNode(Node):
     def __init__(self):
         super().__init__("BVM_Node")
@@ -24,7 +34,7 @@ class BVMNode(Node):
         self.DroneMarkers = [8]
         self.batteryChamber = None # Full battery chamber
         self.emptyChamber = None # Empty battery chamber
-        self.ser = serial.Serial('/dev/ttyUSB1', 115200, timeout=1)
+        self.ser = serial.Serial(find_esp_port(), 115200, timeout=1)
 
 
         self.arucoPublisher = self.create_publisher(
@@ -89,9 +99,9 @@ class BVMNode(Node):
         if data != None:
             data = str(data)
             self.ser.write((data + '\n').encode('utf-8'))
-        # self.ser.close()
-        # time.sleep(1)
-        # self.ser.open()
+        self.ser.close()
+        time.sleep(1)
+        self.ser = serial.Serial(find_esp_port(), 115200, timeout=1)
     
     # Logic of the program
     def bvmLogic(self):
