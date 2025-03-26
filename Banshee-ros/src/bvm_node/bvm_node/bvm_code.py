@@ -34,7 +34,7 @@ class BVMNode(Node):
         self.DroneMarkers = [8]
         self.batteryChamber = None # Full battery chamber
         self.emptyChamber = None # Empty battery chamber
-        self.ser = serial.Serial(find_esp_port(), 115200, timeout=1)
+        self.ser = serial.Serial(find_esp_port(), 115200, timeout=None)
 
 
         self.arucoPublisher = self.create_publisher(
@@ -104,6 +104,11 @@ class BVMNode(Node):
     
     # Logic of the program
     def bvmLogic(self):
+        if self.ser.is_open:
+            pass
+        else:
+            self.ser = serial.Serial(find_esp_port(), 115200, timeout=None)
+
         if self.mode == 0:
             self.espRead()
         
