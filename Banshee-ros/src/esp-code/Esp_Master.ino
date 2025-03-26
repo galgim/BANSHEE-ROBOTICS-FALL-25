@@ -28,7 +28,6 @@ uint8_t data[2];  // 2 bytes for arduino int
 int done = 0;
 int droneDone = 0;
 int chamber = -1; // -1 will indicate when no chamber is selected
-char receivedCommand[32] = {0};
 
 // Used for testing purposes
 const int button = GPIO_NUM_35;
@@ -65,6 +64,7 @@ void minionVoltage(const uint8_t *mac, float voltageValue) {
 // Then we read the data in the next line
 void readFromBvm() {
     if (Serial.available()) {
+      digitalWrite(LED, HIGH);
         String tag = Serial.readStringUntil('\n');
         
         if (tag == "Unlock") {
@@ -72,7 +72,7 @@ void readFromBvm() {
           chamber = message.toInt();
           int signal = 1;
           
-          memcpy(data, &signal, sizeof(signal))
+          memcpy(data, &signal, sizeof(signal));
           
           esp_err_t result = esp_now_send(minionsMacs[chamber], data, sizeof(data)); // Sends corresponding minion signal 1 to unlock battery chamber
         }
@@ -116,15 +116,15 @@ void onDataReceive(const esp_now_recv_info *info, const uint8_t *incomingData, i
 
     Serial.flush();
 
-    if (done == 0) {
-      // Print received MAC address
-      Serial.print("Received from: ");
-      for (int i = 0; i < 6; i++) {
-          Serial.printf("%02X", senderMac[i]);
-          if (i < 5) Serial.print(":");
-      }
-      Serial.println();
-    }
+//    if (done == 0) {
+//      // Print received MAC address
+//      Serial.print("Received from: ");
+//      for (int i = 0; i < 6; i++) {
+//          Serial.printf("%02X", senderMac[i]);
+//          if (i < 5) Serial.print(":");
+//      }
+//      Serial.println();
+//    }
 
 //    Debugging: Print stored minion MACs
 //    Serial.println("Checking against stored minions:");
@@ -252,12 +252,11 @@ const unsigned long sendInterval = 5000;  // 5 seconds interval
 
 void loop() {
     unsigned long currentMillis = millis();
-    
     // Send data to server every 5 seconds
     if (currentMillis - lastSendTime >= sendInterval) {
         lastSendTime = currentMillis;
         
-
+        readFromBvm();
 //        if(droneDone == 1){
 //          Serial.println("Drone is ready")
 //          int count = 0;
