@@ -59,9 +59,17 @@ void onDataReceive(const esp_now_recv_info *info, const uint8_t *incomingData, i
 
     Serial.println("Received unlock signal");
     }
-
-  if (totalVoltage > 10.0) mode == 1;
-  if (totalVoltage < 10.0) mode == 2;
+  Serial.println("Received unlock signal");
+  Serial.println("Received unlock signal");
+  Serial.println("Received unlock signal");
+  Serial.println("Received unlock signal");
+  Serial.println("Received unlock signal");
+  if (totalVoltage > 10.0) {
+    mode == 1;
+    }
+  else {
+    mode == 2;
+    }
 }
 
 double ReadVoltage(byte pin){  
@@ -120,7 +128,7 @@ void loop() {
   voltages[3] = (ReadVoltage(batteryPin3) * 4.2)/(420.0/133.0);
 
   // Check if voltages between 0 and 4.2 volts, meaning its being charged.
-  totalVoltage =0; 
+  totalVoltage = 0; 
   for(int i=0; i < 4; i++){
     if(voltages[i] > 0.0 && voltages[i] < 4.3){
       voltages[i] -= 0.09;
@@ -139,13 +147,15 @@ void loop() {
       delay(3000);
       digitalWrite(solenoidPin, LOW);
       digitalWrite(solenoidPin2, LOW);
+      mode == 0;
       }
     }
-  else {
+  else if (mode == 2) {
     if (totalVoltage > 10.0) {
       delay(1000);
       digitalWrite(solenoidPin, LOW);
       digitalWrite(solenoidPin2, LOW);
+      mode == 0;
       }
     }
   // Send data to master ESP
