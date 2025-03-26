@@ -94,7 +94,8 @@ void readFromBvm() {
 
           memcpy(data, &signal, sizeof(signal));
           
-          esp_err_t result = esp_now_send(gcs_esp, data, sizeof(data)); // Sends done signal to GCS/DRONE esp
+          // esp_err_t result = esp_now_send(gcs_esp, data, sizeof(data)); // Sends done signal to GCS/DRONE esp
+          esp_err_t result = esp_now_send(drone_esp, data, sizeof(data));
           Serial.print("DroneComplete signal");
           }
         }
