@@ -231,10 +231,6 @@ void setup() {
     Serial.begin(115200);
     WiFi.mode(WIFI_STA);
 
-    // Testing
-    pinMode(LED, OUTPUT);
-  
-
     if (esp_now_init() != ESP_OK) {
         Serial.println("Error initializing ESP-NOW");
         return;

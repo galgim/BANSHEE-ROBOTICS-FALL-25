@@ -59,16 +59,12 @@ void onDataReceive(const esp_now_recv_info *info, const uint8_t *incomingData, i
 
     Serial.println("Received unlock signal");
     }
-  Serial.println("Received unlock signal");
-  Serial.println("Received unlock signal");
-  Serial.println("Received unlock signal");
-  Serial.println("Received unlock signal");
-  Serial.println("Received unlock signal");
+  
   if (totalVoltage > 10.0) {
-    mode == 1;
+    mode = 1;
     }
   else {
-    mode == 2;
+    mode = 2;
     }
 }
 
@@ -147,7 +143,7 @@ void loop() {
       delay(3000);
       digitalWrite(solenoidPin, LOW);
       digitalWrite(solenoidPin2, LOW);
-      mode == 0;
+      mode = 0;
       }
     }
   else if (mode == 2) {
@@ -155,7 +151,7 @@ void loop() {
       delay(1000);
       digitalWrite(solenoidPin, LOW);
       digitalWrite(solenoidPin2, LOW);
-      mode == 0;
+      mode = 0;
       }
     }
   // Send data to master ESP
