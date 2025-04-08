@@ -41,9 +41,6 @@ class BVMNode(Node):
         Int8, 'arucoID', 10)
         self.get_logger().info("ArucoID Publisher started")
 
-        self.resetstepperPublisher = self.create_publisher(
-        Int8, 'reset', 10)
-
         self.armSubscriber = self.create_subscription(
         Bool, 'ArmDone', self.modeComplete, 10)
 
@@ -55,13 +52,11 @@ class BVMNode(Node):
     # Function for testing purposes
     def arucoIDPublisher(self, aruco_ID):
         msg = Int8()
+        msg.data = int(input("Input Battery Chamber: "))
         msg.data = aruco_ID
         self.arucoPublisher.publish(msg)
-        self.get_logger().info(f"Sent marker: {msg.data}")
-        
-    def publish_reset_stepper(self):
-        self.resetstepperPublisher.publish()
-        self.get_logger().info("Reset signal sent")
+        self.get_logger().info('Sent marker: "%s"' % msg.data)
+        self.arucoIDPublisher()
     
     # Triggers when arm sends complete signal
     def modeComplete(self, msg):
@@ -162,13 +157,12 @@ class BVMNode(Node):
                 else:
                     self.espSend("DroneComplete")
                     self.DroneMarkers = [8] # Only 1 index since we do not have function to find batteries yet, and only 1 battery on drone for now.
-                    self.publish_reset_stepper()
                 self.mode = 0
                 self.halfCycleComplete = 0
             # determine whether to go to mode 1 or 0, based on drone array 
             # if drone array has number go to mode 1 and pull that number if drone array empty go to mode 0
             #drone array get rid of one index
-
+33
 
     
 def main(args=None):
