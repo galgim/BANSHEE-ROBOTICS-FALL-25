@@ -70,10 +70,10 @@ class StepperMotorNode(Node):
         addedSteps = distance * self.stepCoefficient
         self.run_motor_cycle(self.position + addedSteps)
 
-    def resetstepperSubscriber(self):
-        """Reset stepper motor position to 0"""
+    def resetstepperSubscriber(self, msg):
+        reset = msg.data
         self.get_logger().info("Resetting stepper motor position to 0.")
-        self.run_motor_cycle(RESET)
+        self.run_motor_cycle(reset)
         
 
     def run_motor_cycle(self, newPosition):
