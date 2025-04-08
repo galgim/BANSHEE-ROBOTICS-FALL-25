@@ -17,7 +17,7 @@ CCW = 0  # Counter Clockwise
 
 # Set Positions in BTP
 DRONE = 1481
-RESET = 100
+RESET = 0
 COLUMN1 = 500
 COLUMN2 = 1481
 COLUMN3 = 2492
@@ -39,6 +39,9 @@ class StepperMotorNode(Node):
 
         self.distanceSubscription = self.create_subscription(
             Float32, 'DestinationFalse', self.distanceSubscriber, 10)
+        
+        self.resetstepperSubscription = self.create_subscription(
+            Int8, 'reset', self.resetstepperSubscriber, 10)
 
         # ROS2 Publisher to signal completion
         self.done_publisher = self.create_publisher(Bool, 'stepperDone', 10)
@@ -66,6 +69,12 @@ class StepperMotorNode(Node):
         self.get_logger().info(f"Received distance: {distance}")
         addedSteps = distance * self.stepCoefficient
         self.run_motor_cycle(self.position + addedSteps)
+
+    def resetstepperSubscriber(self, msg):
+        """Reset stepper motor position to 0"""
+        self.get_logger().info("Resetting stepper motor position to 0.")
+        self.run_motor_cycle(RESET)
+        
 
     def run_motor_cycle(self, newPosition):
         """Main function to execute stepper motor movements"""
