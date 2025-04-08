@@ -60,11 +60,10 @@ class BVMNode(Node):
         self.get_logger().info(f"Sent marker: {msg.data}")
     
     def publish_reset_stepper(self):
-        msg = Int8()
-        msg.data = 0
+        msg = Int8()          
+        msg.data = 0          
         self.resetStepperPublisher.publish(msg)
         self.get_logger().info("Reset signal sent to stepper motor.")
-
 
     # Triggers when arm sends complete signal
     def modeComplete(self, msg):
