@@ -162,7 +162,6 @@ class BVMNode(Node):
             # determine whether to go to mode 1 or 0, based on drone array 
             # if drone array has number go to mode 1 and pull that number if drone array empty go to mode 0
             #drone array get rid of one index
-33
 
     
 def main(args=None):
