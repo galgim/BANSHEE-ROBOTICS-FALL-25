@@ -8,6 +8,11 @@ GPIO.setup(26, GPIO.OUT)
 while True:
     GPIO.output(26, GPIO.HIGH)
     time.sleep(5)
+<<<<<<< HEAD
     GPIO.output(26, GPIO.HIGH)
     time.sleep(5)
 
+=======
+    GPIO.output(26, GPIO.LOW)
+    time.sleep(5)
+>>>>>>> 60c8128 (Winson)
