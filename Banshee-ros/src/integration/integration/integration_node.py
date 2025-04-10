@@ -130,20 +130,18 @@ def Push_high():
 def Pull_high():    
     start_time = time.time()
     print("Pull out high sequence")
-    #motor.dxlSetVelo([30, 25, 25, 35], [1, 2, 3, 4])            # set initial velocity (old)
-    motor.dxlSetVelo([60, 102, 107, 5], [1, 2, 3, 4])            # set initial velocity (new)-reduced m.p 2 and 3 by 60
+    #motor.dxlSetVelo([30, 25, 25, 35], [1, 2, 3, 4])             # set initial velocity (old)
+    motor.dxlSetVelo([60, 102, 107, 5], [1, 2, 3, 4])             # set initial velocity (new)-reduced m.p 2 and 3 by 60
     print("remove chamber")
-    motor.simMotorRun([60, 180, 144],[2, 3, 4])                 # move arm to chamber position
-    Close()                                                     # grab battery
-    #motor.dxlSetVelo([17, 33, 15], [2, 3, 4])                   # set pull out velocity (old)
-    motor.dxlSetVelo([70, 140, 74], [2, 3, 4])                   # set pull out velocity (new)
-    motor.simMotorRun([130, 320, 70],[2, 3, 4])                 # middle position
-    motor.dxlSetVelo([30, 35, 20, 25], [1, 2, 3, 4])                   # set grab speed  (old) 
-    #motor.dxlSetVelo([30, 204, 14, 69], [1, 2, 3, 4])                   # set grab speed  (new/bad)                    
-    motor.simMotorRun([222, 334, 139],[2, 3, 4])                # pull battery out
-    startsetup()
+    motor.simMotorRun([60, 180, 144],[2, 3, 4])                   # move arm to chamber position
+    Close()                                                       # grab battery
+    #motor.dxlSetVelo([17, 33, 15], [2, 3, 4])                    # set pull out velocity (old)
+    motor.dxlSetVelo([70, 140, 74], [2, 3, 4])                    # set pull out velocity (new)
+    motor.simMotorRun([130, 320, 70],[2, 3, 4])                   # middle position
+    motor.dxlSetVelo([30, 35, 20, 25], [1, 2, 3, 4])              # set grab speed  (old) 
+    #motor.dxlSetVelo([30, 204, 14, 69], [1, 2, 3, 4])            # set grab speed  (new/bad)                    
+    motor.simMotorRun([222, 347, 139],[2, 3, 4])                  # pull battery out
     motor.simMotorRun([45], [1])                   
-
 
 # Push Battery into Drone
 def Drone_push():
