@@ -110,8 +110,7 @@ def Pull_low():
     motor.simMotorRun([100, 328, 43],[2, 3, 4])                      # move arm to middle position
     motor.dxlSetVelo([127, 19, 109], [2, 3, 4])                       # set grab speed                      
     startsetup()
-    motor.simMotorRun([45], [1]) 
-
+    Droneside()
 
 # Push Battery into top BVM
 def Push_high():    
@@ -141,7 +140,7 @@ def Pull_high():
     motor.dxlSetVelo([30, 35, 20, 25], [1, 2, 3, 4])              # set grab speed  (old) 
     #motor.dxlSetVelo([30, 204, 14, 69], [1, 2, 3, 4])            # set grab speed  (new/bad)                    
     motor.simMotorRun([222, 347, 139],[2, 3, 4])                  # pull battery out
-    motor.simMotorRun([45], [1])                   
+    Droneside()
 
 # Push Battery into Drone
 def Drone_push():
@@ -173,8 +172,7 @@ def Drone_pull():
     motor.dxlSetVelo([25, 15, 25], [2, 3, 4])                    # set grab speed                      
     #motor.simMotorRun([222, 334, 139],[2, 3, 4])                # pull battery out
     startsetup()
-    motor.simMotorRun([225], [1])    
-                   
+    BVMside()                   
 
 # Close Claw
 def Close():
