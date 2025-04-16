@@ -9,6 +9,7 @@ from integration import Movement_calc_v2 as calculation
 import numpy as np
 import time
 import cv2
+import glob
 
 # Define motor ID
 BASE_ID = 1
@@ -19,7 +20,16 @@ CLAW_ID = 0
 
 
 # Define port number for Raspberry Pi
-PORT_NUM = '/dev/ttyUSB0'  # for rpi
+def find_arm_port():
+    """Finds the correct Pixhawk serial port (if00)."""
+    serial_ports = glob.glob('/dev/serial/by-id/*')
+
+    for port in serial_ports:
+        if "FTDI_USB" in port:
+            print(f"Found esp port: {port}")
+            return port
+
+PORT_NUM = find_arm_port()  # for rpi
 
 
 # Define move mode and address for present position
