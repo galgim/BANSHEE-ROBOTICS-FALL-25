@@ -20,7 +20,7 @@ uint8_t minionsMacs[MAX_MINIONS][6] = {  // Master esp MAC {0xA0, 0xB7, 0x65, 0x
   // Add more here when ready
   };
 
-uint8_t gcs_esp[] = {0x24, 0x5F, 0x45, 0xE7, 0x49, 0x2C};
+uint8_t gcs_esp[] = {0x34, 0x5F, 0x45, 0xE7, 0x49, 0x2C};
 uint8_t drone_esp[] = {0xA0, 0xB7, 0x65, 0x26, 0xBE, 0x84}; 
 
 float voltage[8] = {0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0};
@@ -116,15 +116,13 @@ void onDataReceive(const esp_now_recv_info *info, const uint8_t *incomingData, i
 
     Serial.flush();
 
-//    if (done == 0) {
-//      // Print received MAC address
-//      Serial.print("Received from: ");
-//      for (int i = 0; i < 6; i++) {
-//          Serial.printf("%02X", senderMac[i]);
-//          if (i < 5) Serial.print(":");
-//      }
-//      Serial.println();
-//    }
+    // Print received MAC address
+    Serial.print("Received from: ");
+    for (int i = 0; i < 6; i++) {
+        Serial.printf("%02X", senderMac[i]);
+        if (i < 5) Serial.print(":");
+    }
+    Serial.println();
 
 //    Debugging: Print stored minion MACs
 //    Serial.println("Checking against stored minions:");
