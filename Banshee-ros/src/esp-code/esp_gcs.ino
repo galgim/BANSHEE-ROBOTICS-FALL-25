@@ -7,7 +7,6 @@
 #define Relayout2 26
 
 String RelayState = "0";
-3
 
 uint8_t masterMacAddress[] = {0xA0, 0xB7, 0x65, 0x25, 0xD4, 0xBC};
 
