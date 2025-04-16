@@ -1,9 +1,6 @@
 #ALL IMPORTS
 from dynamixel_sdk import *  # Uses Dynamixel SDK library
 import os
-from simple_pid import PID
-import time
-
 
 if os.name == 'nt':
     import msvcrt
@@ -116,10 +113,6 @@ def dxlPresAngle(dxlIDs):
     print("-------------------------------------")
     return (dxl_present_angle)
 
-# PID Gains (Tune values based on tests)
-Kp = 0.1
-Ki = 0.1
-Kd = 0.1
 
 def dxlSetVelo(vel_array, dxlIDs):
     if (len(vel_array) == len(dxlIDs)):
@@ -131,20 +124,6 @@ def dxlSetVelo(vel_array, dxlIDs):
     print("-------------------------------------")
     dxlGetVelo(dxlIDs)
 
-def pid_velocity_control(target_angle, current_angle, prev_error, integral):
-    """ Computes the velocity using a PID controller. """
-    error = target_angle - current_angle
-    integral += error
-    derivative = error - prev_error
-
-    # Compute velocity adjustment
-    velocity = (Kp * error) + (Ki * integral) + (Kd * derivative)
-
-    # Ensure velocity stays within reasonable limits
-    min_vel, max_vel = 20, 200  # Adjust these limits based on system capability
-    velocity = max(min_vel, min(velocity, max_vel))
-
-    return velocity, error, integral  # Return updated velocity, error, and integral for next iteration
 
 def dxlGetVelo(dxlIDs):
     idNum = len(dxlIDs)
@@ -156,6 +135,7 @@ def dxlGetVelo(dxlIDs):
     print("Velocities are ", dxl_present_velocity)
     print("-------------------------------------")
     return (dxl_present_velocity)
+
 
 def motorRunWithInputs(angle_inputs, dxlIDs):
     idNum = len(dxlIDs)
@@ -196,6 +176,7 @@ def motorRunWithInputs(angle_inputs, dxlIDs):
     else:
         print("ERROR: Number of angle inputs not matching with number of DXL ID inputs")
 
+
 def simMotorRun(angle_inputs, dxlIDs):
     idNum = len(dxlIDs)
 
@@ -207,10 +188,6 @@ def simMotorRun(angle_inputs, dxlIDs):
         dxl_end_angle = [0] * idNum
         movementStatus = [0] * idNum
 
-        # Initialize PID tracking variables
-        prev_error = [0] * idNum  
-        integral = [0] * idNum  
-        
         print("Motors are simultaneously rotating. DXL ID: ", dxlIDs)
 
         # Convert angle inputs into step units for movement
@@ -218,35 +195,20 @@ def simMotorRun(angle_inputs, dxlIDs):
             dxl_goal_inputs[id] = _map(dxl_goal_angle[id], 0, 360, 0, 4095)
         print("Goal angles are ", dxl_goal_angle)
 
-        # Initialize velocities
-        vel_array = [20] * idNum  # Start slow (minimum velocity)
-        dxlSetVelo(vel_array, dxlIDs)  # Set initial velocities
-
         # SyncWrite to move all motors to the goal positions
         simWrite(dxl_goal_inputs, dxlIDs)
 
         # Wait for all motors to finish moving
+        i = 0
         while True:
             dxl_end_position, movementStatus = simPosCheck(dxl_goal_inputs, dxlIDs)
-
-            # PID Control Loop
-            for id in range(idNum):
-                current_angle = _map(dxl_end_position[id], 0, 4095, 0, 360)
-
-                # Compute new velocity using PID
-                velocity, prev_error[id], integral[id] = pid_velocity_control(
-                    dxl_goal_angle[id], current_angle, prev_error[id], integral[id]
-                )
-                vel_array[id] = int(velocity)  # Ensure velocity is an integer
-
-            dxlSetVelo(vel_array, dxlIDs)  # Update velocities dynamically
-
-            if all(status == 1 for status in movementStatus):  # Stop condition
+            if all(status == 1 for status in movementStatus):
                 break
+            dxlSetVelo([i, i, i, i], [1, 2, 3, 4])
+            time.sleep(0.1)  # Short delay to prevent CPU overloading
+            i = i + 1
 
-            time.sleep(0.1)  # Short delay to prevent excessive CPU usage
-
-        # Check final angles
+        # Check the final positions and print the angles
         for id in range(idNum):
             dxl_end_angle[id] = _map(dxl_end_position[id], 0, 4095, 0, 360)
             print("Final angle for Dynamixel %03d: %03d" % (dxlIDs[id], dxl_end_angle[id]))
