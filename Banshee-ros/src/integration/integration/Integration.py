@@ -36,7 +36,7 @@ motor.portInitialization(PORT_NUM, ALL_IDs)
 def Push_low():    
     start_time = time.time()
     print("Push in low sequence")
-    motor.dxlSetVelo([117, 17, 94], [2, 3, 4])                    # set initial velocity (new)
+    motor.dxlSetVelo([40, 10, 30], [2, 3, 4])                    # set initial velocity (new)
     print("place chamber")
     motor.simMotorRun([105, 330, 45],[2, 3, 4])                   # move arm to first position (new)
     time.sleep(.5)
