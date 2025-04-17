@@ -40,8 +40,8 @@ def Push_low():
     print("place chamber")
     motor.simMotorRun([105, 330, 45],[2, 3, 4])                   # move arm to first position (new)
     time.sleep(.5)
-    motor.dxlSetVelo([25, 82, 50], [2, 3, 4])                     # set final velocity
-    motor.simMotorRun([74, 253, 92],[2, 3, 4])                    # move arm to chamber position (new)
+    motor.dxlSetVelo([20, 30, 10], [2, 3, 4])                     # set final velocity
+    motor.simMotorRun([92, 260, 95],[2, 3, 4])                    # move arm to chamber position (new)
     Open()                                                        # let go of battery
 
 # Pull Battery into low BVM
