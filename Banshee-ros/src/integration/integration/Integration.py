@@ -80,7 +80,7 @@ def Pull_high():
     print("remove chamber")
     motor.dxlSetVelo([20, 50, 30], [2, 3, 4])                    # set pull out velocity (new)
     motor.simMotorRun([130, 320, 70],[2, 3, 4])                   # middle position
-    motor.dxlSetVelo([30, 30, 30], [2, 3, 4])                     # startsetup
+    motor.dxlSetVelo([40, 10, 20], [2, 3, 4])                     # startsetup
     motor.simMotorRun([222, 347, 139], [2, 3, 4])    
     #Droneside()
 
