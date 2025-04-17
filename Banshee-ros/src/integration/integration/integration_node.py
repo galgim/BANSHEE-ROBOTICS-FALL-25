@@ -54,43 +54,6 @@ TOP_BVM = 0
 BOT_BVM = 1
 DRONE_BAT = 2
 
-# Upper BVM batteries when dev = 0
-# Lower BVM batteries when dev = 1
-# Drone batteries when dev = 2
-
-# def pull_out(dev):
-#     if dev == 0:
-#         motor.dxlSetVelo([30, 30, 30, 30, 10], [0, 1, 2, 3, 4])
-#         # motor.simMotorRun([x,x,x,x,x],[0,1,2,3,4])
-#         time.sleep(1)
-#     elif dev == 1:
-#         motor.dxlSetVelo([30, 30, 30, 30, 10], [0, 1, 2, 3, 4])
-#         # motor.simMotorRun([x,x,x,x,x],[0,1,2,3,4])
-#         time.sleep(1)
-#     elif dev == 2:
-#         motor.dxlSetVelo([30, 30, 30, 30, 10], [0, 1, 2, 3, 4])
-#         # motor.simMotorRun([x,x,x,x,x],[0,1,2,3,4])
-#         time.sleep(1)
-#     else:
-#         print("INVALID")
-
-# def push_in(dev):
-#     if dev == 0:
-#         motor.dxlSetVelo([30, 30, 30, 30, 10], [0, 1, 2, 3, 4])
-#         # motor.simMotorRun([x,x,x,x,x],[0,1,2,3,4])
-#         time.sleep(1)
-#     elif dev == 1:
-#         motor.dxlSetVelo([30, 30, 30, 30, 10], [0, 1, 2, 3, 4])
-#         # motor.simMotorRun([x,x,x,x,x],[0,1,2,3,4])
-#         time.sleep(1)
-#     elif dev == 2:
-#         motor.dxlSetVelo([30, 30, 30, 30, 10], [0, 1, 2, 3, 4])
-#         # motor.simMotorRun([x,x,x,x,x],[0,1,2,3,4])
-#         time.sleep(1)
-#     else:
-#         print("INVALID")
-
-# Push Battery into low BVM
 def Push_low():    
     start_time = time.time()
     print("Push in low sequence")
@@ -223,7 +186,7 @@ def BVMside():
 
 def Droneside():
     start_time = time.time()
-    print("BVMside")
+    print("Droneside")
     motor.dxlSetVelo([40], [1])
     motor.simMotorRun([45], [1])
     time.sleep(1)  
