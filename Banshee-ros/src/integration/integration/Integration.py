@@ -66,8 +66,8 @@ def Push_high():
     print("place chamber")
     motor.simMotorRun([130, 310, 90],[2, 3, 4])                   # move arm to first position
     time.sleep(0.5)
-    motor.dxlSetVelo([20, 40, 15], [2, 3, 4])                    # set final velocity (new)
-    motor.simMotorRun([87, 220, 123],[2, 3, 4])                   # move arm to chamber (new)
+    motor.dxlSetVelo([23, 72, 13], [2, 3, 4])                    # set final velocity (new)
+    motor.simMotorRun([87, 218, 123],[2, 3, 4])                   # move arm to chamber (new)
     Open()                                                        # let go
 
 # Pull Battery from top BVM
@@ -75,10 +75,10 @@ def Pull_high():
     start_time = time.time()
     print("Pull out high sequence")
     motor.dxlSetVelo([60, 30, 30, 5], [1, 2, 3, 4])             # set initial velocity (new)-reduced m.p 2 and 3 by 60
-    motor.simMotorRun([87, 220, 123],[2, 3, 4])                   # move arm to chamber (new)
+    motor.simMotorRun([87, 218, 123],[2, 3, 4])                   # move arm to chamber (new)
     Close()                                                       # grab battery
     print("remove chamber")
-    motor.dxlSetVelo([30, 100, 34], [2, 3, 4])                    # set pull out velocity (new)
+    motor.dxlSetVelo([23, 82, 33], [2, 3, 4])                    # set pull out velocity (new)
     motor.simMotorRun([130, 320, 70],[2, 3, 4])                   # middle position
     startsetup()
     #Droneside()
