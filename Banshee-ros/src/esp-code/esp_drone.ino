@@ -3,14 +3,11 @@
 
 
 uint8_t masterMacAddress[] = {0xA0, 0xB7, 0x65, 0x25, 0xD4, 0xBC};
-uint8_t gcsMacAddress[] = {0xA0, 0xB7, 0x65, 0x25, 0xC6, 0x7C};
-const int button = GPIO_NUM_35;
-uint8_t data[2];  // 2 bytes for arduino int
+const int button = GPIO_NUM_36;
 
 
-// Checks if data was sent successfully
 void onDataSent(const uint8_t *mac_addr, esp_now_send_status_t status) {
-    Serial.print("Last Packet Send Status:  ");
+    Serial.print("Last Packet Send Status: ");
     if (status == ESP_NOW_SEND_SUCCESS) {
         Serial.println("Delivery Success");
     } else {
@@ -18,25 +15,35 @@ void onDataSent(const uint8_t *mac_addr, esp_now_send_status_t status) {
     }
 }
 
+void onDataReceive(const esp_now_recv_info *info, const uint8_t *incomingData, int len) {
+    uint8_t senderMac[6];
+    memcpy(senderMac, info->src_addr, 6);
 
-// Sends integer command
-// void sendIntCommand(int command, uint8_t *macAddress) {
-//   esp_err_t result = esp_now_send(macAddress, (uint8_t *)&command, sizeof(command));
-//   if (result == ESP_OK) {
-//     Serial.println("Integer command sent successfully.");
-//   } else {
-//     Serial.println("Failed to send integer command.");
-//   }
-// }
+    Serial.flush();
 
+    if (done == 0) {
+      // Print received MAC address
+      Serial.print("Received from: ");
+      for (int i = 0; i < 6; i++) {
+          Serial.printf("%02X", senderMac[i]);
+          if (i < 5) Serial.print(":");
+      }
+      Serial.println();
+    }
 
+    if (memcmp(mac, masterMacAddress, 6) == 0) {
+      Serial.println("Drone complete")
+      }
+    
+}
 
 void setup() {
   // put your setup code here, to run once:
-   Serial.begin(115200); // Initialize serial monitor for debugging
-   WiFi.mode(WIFI_STA);  // Set ESP32 to station for ESP-NOW
-   delay(1000);          // Delay for stability
-   Serial.println(WiFi.macAddress()); // Print ESP32 MAC address
+  
+   Serial.begin(115200);
+   WiFi.mode(WIFI_STA);
+   delay(1000);
+   Serial.println(WiFi.macAddress());
 
    // Testing
    pinMode(button, INPUT);
@@ -48,44 +55,32 @@ void setup() {
         Serial.println("Success initializing ESP-NOW");
    }
 
-  // Monitors send status
-  esp_now_register_send_cb(onDataSent);
-
-  // Add GCS as a peer
-  esp_now_peer_info_t peerInfo = {};
-  memcpy(peerInfo.peer_addr, gcsMacAddress, 6);
-  peerInfo.channel = 0;
-  peerInfo.encrypt = false;
+   esp_now_peer_info_t peerInfo = {};
+   memcpy(peerInfo.peer_addr, masterMacAddress, 6);
+   peerInfo.channel = 0;
+   peerInfo.encrypt = false;
 
   if (esp_now_add_peer(&peerInfo) != ESP_OK) {
-    Serial.println("Failed to add GCS peer");
-    return;
+      Serial.print("Failed to add master peer: ");
+      return;
   }
-  
-  /*
-  // Used if need to send signal to Master
-  esp_now_peer_info_t masterPeer = {};
-  memcpy(masterPeer.peer_addr, masterMacAddress, 6);
-  masterPeer.channel = 0;
-  masterPeer.encrypt = false;
 
-  if (esp_now_add_peer(&masterPeer) != ESP_OK) {
-    Serial.println("Failed to add Master peer");
-    return;
-  }
-  */
-  
+  esp_now_register_recv_cb(onDataReceive);
+  esp_now_register_send_cb(onDataSent);
+
+
 }
 
 void loop() {
+  // put your main code here, to run repeatedly:
   
+
     int buttonState = digitalRead(button);
 
     if (buttonState == HIGH) {
       Serial.println("Pressed!");
-      int signal = 0;
-      memcpy(data, &signal, sizeof(signal));
-      esp_err_t result = esp_now_send(gcsMacAddress, data, sizeof(data));
+      uint32_t message = 1; // Will be number of batteries sent from drone pi to here
+      esp_err_t result = esp_now_send(masterMacAddress, (uint8_t *)command, strlen(command) + 1);
       delay(1000);
     }
 }
