@@ -66,7 +66,7 @@ def Push_high():
     print("Push in high sequence")
     motor.dxlSetVelo([40, 20, 25], [2, 3, 4])                     # set initial velocity (new)
     print("place chamber")
-    motor.simMotorRun([130, 310, 85],[2, 3, 4])                   # move arm to first position
+    motor.simMotorRun([140, 310, 75],[2, 3, 4])                   # move arm to first position
     time.sleep(0.5)
     motor.dxlSetVelo([20, 40, 15], [2, 3, 4])                    # set final velocity (new)
     motor.simMotorRun([83, 218, 123],[2, 3, 4])                   # move arm to chamber (new)
