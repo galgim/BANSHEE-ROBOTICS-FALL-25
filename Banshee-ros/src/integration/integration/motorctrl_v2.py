@@ -279,7 +279,7 @@ def portTermination():
 
 #Equation used to convert from angle degrees to positional units and vice versa
 #To go from angles to step positions, order of values is 0, 360, 0, 4095
-#To go from step positions to degrees, order of values is 0, 4095, 0, 360
+#To go from step positions to degrees, order of vamelues is 0, 4095, 0, 360
 #Inputs are angles or units you want to convert.
 #Outputs are the converted values of angles or units
 def _map(x, in_min, in_max, out_min, out_max):
@@ -414,7 +414,7 @@ def write(dxl_goal_inputs, dxlIDs):
     #Clear syncwrite parameter storage
     motor_sync_write.clearParam()
 
-def simPosCheck(dxl_goal_inputs, dxlIDs, timeout=5.0):
+def simPosCheck(dxl_goal_inputs, dxlIDs, timeout=1.0):
     import time
     idNum = len(dxlIDs)
 
