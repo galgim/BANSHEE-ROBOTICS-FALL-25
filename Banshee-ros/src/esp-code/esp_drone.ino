@@ -13,7 +13,7 @@ void onDataSent(const uint8_t *mac_addr, esp_now_send_status_t status) {
     } else {
         Serial.println("Delivery Fail");
     }
-}3235
+}
 
 void onDataReceive(const esp_now_recv_info *info, const uint8_t *incomingData, int len) {
     uint8_t senderMac[6];
