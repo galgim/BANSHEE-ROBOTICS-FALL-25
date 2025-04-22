@@ -103,7 +103,7 @@ def Drone_push():
 def Drone_pull():
     start_time = time.time()
     print("Drone pull sequence")
-    motor.dxlSetVelo([30, 50, 68, 13, 49], [0, 1, 2, 3, 4])       # set initial velocity (new)
+    motor.dxlSetVelo([30, 50, 68, 60, 49], [0, 1, 2, 3, 4])       # set initial velocity (new)
     print("remove drone bat")      
     # motor.simMotorRun([146, 325, 93],[2, 3, 4])                   # get to chamber position
     # motor.dxlSetVelo([59, 91, 22], [2, 3, 4])                     # set grab speed  (new)                    
@@ -111,7 +111,7 @@ def Drone_pull():
     # Close()  
     motor.simMotorRun([123, 250, 142],[2, 3, 4])                   # get to middle position
     motor.dxlSetVelo([25, 15, 25], [2, 3, 4])                     # set grab speed                      
-    startsetup()
+    # startsetup()
     #BVMside()                   
 
 # Close Claw
