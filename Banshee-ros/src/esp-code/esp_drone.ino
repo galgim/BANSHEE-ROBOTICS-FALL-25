@@ -18,18 +18,25 @@ void onDataSent(const uint8_t *mac_addr, esp_now_send_status_t status) {
     }
 }
 
+void onDataReceive(const esp_now_recv_info *info, const uint8_t *incomingData, int len) {
+    uint8_t senderMac[6];
+    memcpy(senderMac, info->src_addr, 6);
 
-// Sends integer command
-// void sendIntCommand(int command, uint8_t *macAddress) {
-//   esp_err_t result = esp_now_send(macAddress, (uint8_t *)&command, sizeof(command));
-//   if (result == ESP_OK) {
-//     Serial.println("Integer command sent successfully.");
-//   } else {
-//     Serial.println("Failed to send integer command.");
-//   }
-// }
+    Serial.flush();
 
+    // Print received MAC address
+    Serial.print("Received from: ");
+    for (int i = 0; i < 6; i++) {
+        Serial.printf("%02X", senderMac[i]);
+        if (i < 5) Serial.print(":");
+    }
+    Serial.println();
 
+    if (memcmp(mac, masterMacAddress, 6) == 0) {
+      Serial.println("Drone complete")
+      }
+    
+}
 
 void setup() {
   // put your setup code here, to run once:
