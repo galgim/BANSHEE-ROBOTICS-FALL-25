@@ -1,6 +1,6 @@
 #!/usr/bin/env python3
 import math
-import motorctrl_v3 as motor
+import motorctrl_v2 as motor
 import Movement_calc_v2 as calculation
 import numpy as np
 import time
@@ -76,20 +76,15 @@ def Push_high():
 def Pull_high():    
     start_time = time.time()
     print("Pull out high sequence")
-    #motor.dxlSetVelo([30, 25, 25, 35], [1, 2, 3, 4])             # set initial velocity (old)
-    motor.dxlSetVelo([60, 102, 107, 5], [1, 2, 3, 4])             # set initial velocity (new)-reduced m.p 2 and 3 by 60
-    print("remove chamber")
-    # motor.simMotorRun([60, 180, 144],[2, 3, 4])                 # move arm to chamber position (old)
-    motor.simMotorRun([73, 210, 123],[2, 3, 4])                   # move arm to chamber (new)
+    motor.dxlSetVelo([60, 30, 30, 5], [1, 2, 3, 4])             # set initial velocity (new)-reduced m.p 2 and 3 by 60
+    motor.simMotorRun([83, 218, 123],[2, 3, 4])                   # move arm to chamber (new)
     Close()                                                       # grab battery
-    #motor.dxlSetVelo([17, 33, 15], [2, 3, 4])                    # set pull out velocity (old)
-    motor.dxlSetVelo([70, 140, 74], [2, 3, 4])                    # set pull out velocity (new)
+    print("remove chamber")
+    motor.dxlSetVelo([20, 50, 30], [2, 3, 4])                    # set pull out velocity (new)
     motor.simMotorRun([130, 320, 70],[2, 3, 4])                   # middle position
-    motor.dxlSetVelo([30, 35, 20, 25], [1, 2, 3, 4])              # set grab speed  (old) 
-    #motor.dxlSetVelo([30, 204, 14, 69], [1, 2, 3, 4])            # set grab speed  (new/bad)                    
-    # motor.simMotorRun([222, 347, 139],[2, 3, 4])                # pull battery out
-    startsetup()
-    Droneside()
+    motor.dxlSetVelo([40, 10, 20], [2, 3, 4])                     # startsetup
+    motor.simMotorRun([222, 347, 139], [2, 3, 4])    
+    #Droneside()
 
 # Push Battery into Drone
 def Drone_push():
@@ -138,7 +133,7 @@ def Open():
 def startsetup():
     start_time = time.time()
     print("setting up")
-    motor.dxlSetVelo([100, 100, 80], [2, 3, 4])
+    motor.dxlSetVelo([60, 60, 50], [2, 3, 4])
     motor.simMotorRun([222, 347, 139], [2, 3, 4])
     time.sleep(1)
 
@@ -170,10 +165,7 @@ def main(args=None):
     BVMside()
     startsetup()
     Pull_low()
-    startsetup()
-    Pull_high()
-    startsetup()
-    # time.sleep(.5)
+    time.sleep(.5)
     Push_low()
     startsetup()
    
