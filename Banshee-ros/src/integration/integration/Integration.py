@@ -83,7 +83,7 @@ def Pull_high():
     motor.dxlSetVelo([20, 50, 30], [2, 3, 4])                    # set pull out velocity (new)
     motor.simMotorRun([130, 320, 70],[2, 3, 4])                   # middle position
     motor.dxlSetVelo([40, 10, 20], [2, 3, 4])                     # startsetup
-    motor.simMotorRun([222, 327, 139], [2, 3, 4])    
+    motor.simMotorRun([222, 347, 139], [2, 3, 4])    
     #Droneside()
 
 # Push Battery into Drone
@@ -134,7 +134,7 @@ def startsetup():
     start_time = time.time()
     print("setting up")
     motor.dxlSetVelo([60, 60, 50], [2, 3, 4])
-    motor.simMotorRun([222, 327, 139], [2, 3, 4])
+    motor.simMotorRun([222, 347, 139], [2, 3, 4])
     time.sleep(1)
 
 def BVMside():
@@ -165,7 +165,6 @@ def main(args=None):
     BVMside()
     startsetup()
     Pull_high()
-    startsetup()
     time.sleep(.5)
     Push_high()
     startsetup()
