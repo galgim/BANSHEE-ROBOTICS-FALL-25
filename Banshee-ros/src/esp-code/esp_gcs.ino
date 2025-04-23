@@ -13,6 +13,7 @@ uint8_t data[2];
 // GCS: A0:B7:65:25:C6:7C
 uint8_t masterMacAddress[] = {0xA0, 0xB7, 0x65, 0x25, 0xD4, 0xBC};
 uint8_t droneMacAddress[] = {0xA0, 0xB7, 0x65, 0x25, 0x16, 0x94};
+int extended = 0;
 
 
 // triggered every time ESP sends data via ESP-NOW
@@ -50,12 +51,13 @@ void relaystate(int state) {
       Serial.println("Extend back");
       break;
     case -1: // Don't move
-    default:
       digitalWrite(Relayin1, HIGH);
       digitalWrite(Relayout1, HIGH);
       digitalWrite(Relayin2, HIGH);
       digitalWrite(Relayout2, HIGH);
       Serial.println("Don't move");
+      break;
+    default:
       break;
   }
 }
@@ -89,15 +91,26 @@ void onDataReceive(const esp_now_recv_info *info, const uint8_t *incomingData, i
       Serial.println("Failed to send DONE signal.");
     }
 
+    extended = 0;
     relaystate(-1);   // Set relay to no movement
 
-  } else if (command == 0) {
+  } else if (command == 0 && extended == 0) {
       Serial.println("Received: Extend Command");
-      relaystate(1);
-      delay(18555);      // Wait 18.555 seconds
-      relaystate(-1);
-      relaystate(0);
-      delay(4000);
+      extended = 1;
+      for (int i = 0; i < 9100; i++) {
+        relaystate(1);
+        delay(1);
+        relaystate(-1);
+        delay(1);
+        }    // Wait 17.5 seconds
+        relaystate(0);
+        delay(4000);
+//       for (int i = 0; i < 2000; i++) {
+//        relaystate(0);
+//        delay(1);
+//        relaystate(-1);
+//        delay(1);
+//        }    // Wait 4 seconds
 
     // send integer signal (0 = done) to Master
     int doneSignal = 0;
@@ -110,10 +123,10 @@ void onDataReceive(const esp_now_recv_info *info, const uint8_t *incomingData, i
 
     relaystate(-1);   // Set relay to no movement
 
-  } else if (command = -2) { // Reset
+  } else if (command == -2) { // Reset
       relaystate(3);    // Retract
       relaystate(2);
-      delay(15000);      // Wait 15 seconds
+      delay(23000);      // Wait 23 seconds
       relaystate(-1);     // Don't move
   } else {
       Serial.println("Unknown command");
@@ -130,6 +143,7 @@ void setup() {
   pinMode(Relayout2, OUTPUT);
 
   // default relay state (all off)
+  relaystate(-1);
   relaystate(3);    // Retract
   relaystate(2);
   delay(23000);
