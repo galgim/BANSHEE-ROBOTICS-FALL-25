@@ -33,7 +33,7 @@ void onDataReceive(const esp_now_recv_info *info, const uint8_t *incomingData, i
     Serial.println();
 
     if (memcmp(mac, masterMacAddress, 6) == 0) {
-      Serial.println("Drone complete")
+      Serial.println("Drone complete");
       }
     
 }
@@ -85,7 +85,7 @@ void setup() {
 }
 
 void loop() {
-  
+
     int buttonState = digitalRead(button);
 
     if (buttonState == HIGH) {
