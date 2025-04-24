@@ -166,22 +166,11 @@ Command_dict = {
 
 def main(args=None):    
     BVMside()
-    # Droneside()
     startsetup()
-    # Open()
-    # Close()
-    # Drone_pull()
-    # Drone_push()
-    # startsetup()
-    # startsetup()
-    Pull_low()
-    # Pull_high()
-    # # startsetup()
-    # time.sleep(.5)
-    Push_low()
-    # # Push_high()
+    Pull_high()
+    time.sleep(0.5)
+    Push_high()
     startsetup()
-   
   
 
 if __name__ == '__main__':
