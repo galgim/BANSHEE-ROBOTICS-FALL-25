@@ -40,7 +40,7 @@ def Push_low():
     print("place chamber")
     motor.simMotorRun([105, 330, 45],[2, 3, 4])                   # move arm to first position (new)
     time.sleep(.5)
-    motor.dxlSetVelo([12, 42, 26], [2, 3, 4])                     # set final velocity
+    motor.dxlSetVelo([12, 47, 30], [2, 3, 4])                     # set final velocity
     motor.simMotorRun([88, 258, 92],[2, 3, 4])                    # move arm to chamber position (new)
     Open()                                                        # let go of battery
 
@@ -50,9 +50,9 @@ def Pull_low():
     print("Pull out low sequence")
     motor.dxlSetVelo([60, 30, 20, 20], [1, 2, 3, 4])             # set initial speed (new)
     print("remove chamber")
-    motor.simMotorRun([88, 258, 92],[2, 3, 4])                    # move arm to chamber position (new)
+    motor.simMotorRun([88, 255, 92],[2, 3, 4])                    # move arm to chamber position (new)
     Close()                                                       # grab battery
-    motor.dxlSetVelo([15, 78, 54], [2, 3, 4])                     # set pull out velocity
+    motor.dxlSetVelo([15, 78, 60], [2, 3, 4])                     # set pull out velocity
     motor.simMotorRun([100, 328, 43],[2, 3, 4])                   # move arm to middle position
     motor.dxlSetVelo([127, 19, 109], [2, 3, 4])                   # set grab speed                      
     
@@ -137,7 +137,7 @@ def startsetup():
     start_time = time.time()
     print("setting up")
     motor.dxlSetVelo([60, 40, 60], [2, 3, 4])
-    motor.simMotorRun([222, 347, 129], [2, 3, 4])
+    motor.simMotorRun([222, 347, 132], [2, 3, 4])
     time.sleep(1)
 
 def BVMside():
@@ -165,20 +165,20 @@ Command_dict = {
 }
 
 def main(args=None):    
-    # BVMside()
-    Droneside()
+    BVMside()
+    # Droneside()
     startsetup()
     # Open()
     # Close()
-    Drone_pull()
-    Drone_push()
+    # Drone_pull()
+    # Drone_push()
     # startsetup()
     # startsetup()
-    # Pull_low()
-    # # Pull_high()
+    Pull_low()
+    # Pull_high()
     # # startsetup()
     # time.sleep(.5)
-    # Push_low()
+    Push_low()
     # # Push_high()
     startsetup()
    
