@@ -3,8 +3,8 @@
 
 
 uint8_t masterMacAddress[] = {0xA0, 0xB7, 0x65, 0x25, 0xD4, 0xBC};
-uint8_t gcsMacAddress[] = {0xA0, 0xB7, 0x65, 0x25, 0xC6, 0x7C};
-const int button = GPIO_NUM_36;
+uint8_t gcsMacAddress[] = {0xA0, 0xB7, 0x65, 0x26, 0xBE, 0x84};
+const int button = GPIO_NUM_35;
 uint8_t data[2];  // 2 bytes for arduino int
 
 
@@ -18,25 +18,18 @@ void onDataSent(const uint8_t *mac_addr, esp_now_send_status_t status) {
     }
 }
 
-void onDataReceive(const esp_now_recv_info *info, const uint8_t *incomingData, int len) {
-    uint8_t senderMac[6];
-    memcpy(senderMac, info->src_addr, 6);
 
-    Serial.flush();
+// Sends integer command
+// void sendIntCommand(int command, uint8_t *macAddress) {
+//   esp_err_t result = esp_now_send(macAddress, (uint8_t *)&command, sizeof(command));
+//   if (result == ESP_OK) {
+//     Serial.println("Integer command sent successfully.");
+//   } else {
+//     Serial.println("Failed to send integer command.");
+//   }
+// }
 
-    // Print received MAC address
-    Serial.print("Received from: ");
-    for (int i = 0; i < 6; i++) {
-        Serial.printf("%02X", senderMac[i]);
-        if (i < 5) Serial.print(":");
-    }
-    Serial.println();
 
-    if (memcmp(mac, masterMacAddress, 6) == 0) {
-      Serial.println("Drone complete");
-      }
-    
-}
 
 void setup() {
   // put your setup code here, to run once:
@@ -85,7 +78,7 @@ void setup() {
 }
 
 void loop() {
-
+  
     int buttonState = digitalRead(button);
 
     if (buttonState == HIGH) {
