@@ -4,7 +4,7 @@
 
 uint8_t masterMacAddress[] = {0xA0, 0xB7, 0x65, 0x25, 0xD4, 0xBC};
 uint8_t gcsMacAddress[] = {0xA0, 0xB7, 0x65, 0x26, 0xBE, 0x84};
-const int button = GPIO_NUM_35;
+const int button = GPIO_NUM_36;
 uint8_t data[2];  // 2 bytes for arduino int
 
 
