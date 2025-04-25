@@ -72,6 +72,12 @@ def Push_high():
     motor.dxlSetVelo([20, 40, 15], [2, 3, 4])                    # set final velocity (new)
     motor.simMotorRun([83, 216, 122],[2, 3, 4])                   # move arm to chamber (new)
     Open()                                                        # let go
+
+# Pull Battery from top BVM
+def Pull_high():    
+    start_time = time.time()
+    print("Pull out high sequence")
+    motor.dxlSetVelo([60, 30, 30, 5], [1, 2, 3, 4])             # set initial velocity (new)-reduced m.p 2 and 3 by 60
     motor.simMotorRun([83, 216, 122],[2, 3, 4])                   # move arm to chamber (new)
     Close()                                                       # grab battery
     print("remove chamber")
