@@ -69,7 +69,7 @@ def Push_high():
     print("place chamber")
     motor.simMotorRun([130, 310, 85],[2, 3, 4])                   # move arm to first position
     time.sleep(0.5)
-    motor.dxlSetVelo([20, 40, 15], [2, 3, 4])                    # set final velocity (new)
+    motor.dxlSetVelo([20, 40, 17], [2, 3, 4])                    # set final velocity (new)
     motor.simMotorRun([84, 216, 126],[2, 3, 4])                   # move arm to chamber (new)
     Open()                                                        # let go
 
