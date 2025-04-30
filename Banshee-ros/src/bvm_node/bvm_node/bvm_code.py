@@ -99,15 +99,41 @@ class BVMNode(Node):
             self.get_logger().info(f"{values}")
 
     # Sends 2 new lines into ESP UART serial port
+    # def espSend(self, tag, data=None):
+    #     try:
+    #         self.ser = serial.Serial(find_esp_port(), 115200, timeout=None)
+    #     except:
+    #         self.ser.close()
+    #         time.sleep(1)
+    #         self.ser = serial.Serial(find_esp_port(), 115200, timeout=None)
+    #     tag = str(tag)
+    #     self.ser.write((tag + '\n').encode('utf-8'))
+    #     if data != None:
+    #         data = str(data)
+    #         self.ser.write((data + '\n').encode('utf-8'))
+    #     self.ser.close()
+    #     time.sleep(1)
+    #     self.ser = serial.Serial(find_esp_port(), 115200, timeout=None)
+
     def espSend(self, tag, data=None):
-        tag = str(tag)
-        self.ser.write((tag + '\n').encode('utf-8'))
-        if data != None:
-            data = str(data)
-            self.ser.write((data + '\n').encode('utf-8'))
-        self.ser.close()
-        time.sleep(1)
-        self.ser = serial.Serial(find_esp_port(), 115200, timeout=None)
+        if not self.ser.is_open:
+            self.ser.open()
+
+        try:
+            tag = str(tag)
+            self.ser.write((tag + '\n').encode('utf-8'))
+            time.sleep(0.1)  # Give the ESP time to process
+
+            if data is not None:
+                data = str(data)
+                self.ser.write((data + '\n').encode('utf-8'))
+                time.sleep(0.1)
+
+            self.ser.flush()
+            self.get_logger().info(f"Sent to ESP: {tag}, {data}")
+
+        except serial.SerialException as e:
+            self.get_logger().error(f"Serial write failed: {e}")
     
     # Logic of the program
     def bvmLogic(self):
