@@ -171,6 +171,7 @@ def main(args=None):
     # BVMside()
     Droneside()
     startsetup()
+    Close()
     # Pull_high()
     # Drone_pull()
     time.sleep(0.5)
