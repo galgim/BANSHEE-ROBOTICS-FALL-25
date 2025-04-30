@@ -3,9 +3,20 @@ from rclpy.node import Node
 from std_msgs.msg import Bool, Float32, Int8
 from time import sleep 
 from pinpong.board import Board, Pin
+import glob
+
+def find_arduino_port():
+    """Finds the correct Pixhawk serial port (if00)."""
+    serial_ports = glob.glob('/dev/serial/by-id/*')
+
+    for port in serial_ports:
+        if "Arduino_Leonardo" in port:
+            print(f"Found esp port: {port}")
+            return port
+
 
 # Initialize connection with Arduino Leonardo (Ensure correct port!)
-Board("leonardo", "/dev/ttyACM0").begin()
+Board("leonardo", find_arduino_port()).begin()
 
 # Pin Definitions
 DIR = Pin.D10  # Direction Pin (Dir+)
