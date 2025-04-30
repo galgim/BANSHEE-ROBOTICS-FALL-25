@@ -94,7 +94,7 @@ def Drone_push():
     start_time = time.time()
     print("Drone push sequence")
     motor.dxlSetVelo([50, 25, 60], [2, 3, 4])       # set initial velocity (new)  
-    motor.simMotorRun([140, 310, 80],[2, 3, 4])                   # get to chamber position
+    motor.simMotorRun([140, 310, 90],[2, 3, 4])                   # get to chamber position
     print("push drone bat")
     # motor.simMotorRun([45], [1])                                  # turn around
     # motor.simMotorRun([154, 334, 90],[2, 3, 4])                   # move arm to first position
@@ -172,7 +172,7 @@ def main(args=None):
     Droneside()
     startsetup()
     # Pull_high()
-    Drone_pull()
+    # Drone_pull()
     time.sleep(0.5)
     # Push_high
     Drone_push()
