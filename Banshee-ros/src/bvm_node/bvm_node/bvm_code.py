@@ -100,6 +100,12 @@ class BVMNode(Node):
 
     # Sends 2 new lines into ESP UART serial port
     def espSend(self, tag, data=None):
+        try:
+            self.ser = serial.Serial(find_esp_port(), 115200, timeout=None)
+        except:
+            self.ser.close()
+            time.sleep(1)
+            self.ser = serial.Serial(find_esp_port(), 115200, timeout=None)
         tag = str(tag)
         self.ser.write((tag + '\n').encode('utf-8'))
         if data != None:
