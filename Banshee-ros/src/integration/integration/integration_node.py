@@ -80,7 +80,7 @@ def Pull_low():
     
     motor.dxlSetVelo([40, 10, 30], [2, 3, 4])                     # startsetup
     motor.simMotorRun([222, 347, 132], [2, 3, 4])        
-    Droneside()
+    #Droneside()
 
 # Push Battery into top BVM
 def Push_high():    
@@ -90,7 +90,7 @@ def Push_high():
     print("place chamber")
     motor.simMotorRun([130, 310, 85],[2, 3, 4])                   # move arm to first position
     time.sleep(0.5)
-    motor.dxlSetVelo([20, 40, 15], [2, 3, 4])                    # set final velocity (new)
+    motor.dxlSetVelo([20, 40, 17], [2, 3, 4])                    # set final velocity (new)
     motor.simMotorRun([84, 216, 126],[2, 3, 4])                   # move arm to chamber (new)
     Open()                                                        # let go
 
@@ -103,24 +103,24 @@ def Pull_high():
     Close()                                                       # grab battery
     print("remove chamber")
     # motor.dxlSetVelo([20, 50, 30], [2, 3, 4])                    # set pull out velocity (new)
-    motor.dxlSetVelo([18, 48, 35], [2, 3, 4])                    # set pull out velocity (test)
+    motor.dxlSetVelo([20, 50, 30], [2, 3, 4])                    # set pull out velocity (test)
     motor.simMotorRun([130, 320, 70],[2, 3, 4])                   # middle position
     motor.dxlSetVelo([40, 10, 20], [2, 3, 4])                     # startsetup
     motor.simMotorRun([222, 347, 129], [2, 3, 4])    
     # startsetup()
-    Droneside()
+    #Droneside()
 
 # Push Battery into Drone
 def Drone_push():
     start_time = time.time()
     print("Drone push sequence")
-    motor.dxlSetVelo([50, 25, 60], [2, 3, 4])       # set initial velocity (new)  
-    motor.simMotorRun([140, 310, 80],[2, 3, 4])                   # get to chamber position
+    motor.dxlSetVelo([20, 20, 20], [2, 3, 4])       # set initial velocity (new)  
+    motor.simMotorRun([152, 312, 105],[2, 3, 4])                   # get to chamber position
     print("push drone bat")
     # motor.simMotorRun([45], [1])                                  # turn around
     # motor.simMotorRun([154, 334, 90],[2, 3, 4])                   # move arm to first position
-    motor.dxlSetVelo([36, 69, 36], [2, 3, 4])                     # set grab speed  (new)                    
-    motor.simMotorRun([88, 212, 130],[2, 3, 4])                   # move to battery position
+    motor.dxlSetVelo([47, 75, 30], [2, 3, 4])                     # set grab speed  (new)                    
+    motor.simMotorRun([88, 211, 135],[2, 3, 4])                   # move to battery position
     Open()                                                        # push battery
 
 # Pull Battery from Drone
@@ -128,16 +128,17 @@ def Drone_pull():
     start_time = time.time()
     print("Drone pull sequence")
     motor.dxlSetVelo([50, 25, 60], [2, 3, 4])       # set initial velocity (new)  
-    motor.simMotorRun([140, 310, 80],[2, 3, 4])                   # get to chamber position
+    motor.simMotorRun([140, 314, 80],[2, 3, 4])                   # get to chamber position
     # time.sleep(3)
     print("remove drone bat")    
     motor.dxlSetVelo([36, 69, 36], [2, 3, 4])                     # set grab speed  (new)                    
-    motor.simMotorRun([88, 212, 130],[2, 3, 4])                   # move to battery position
+    motor.simMotorRun([88, 211, 135],[2, 3, 4])                   # move to battery position
     Close()  
-    motor.simMotorRun([140, 310, 80],[2, 3, 4])                   # get to chamber position
+    motor.dxlSetVelo([36, 69, 30], [2, 3, 4])                     # set grab speed  (new)                    
+    motor.simMotorRun([140, 310, 90],[2, 3, 4])                   # get to chamber position
     motor.dxlSetVelo([25, 15, 25], [2, 3, 4])                     # set grab speed                      
     startsetup()
-    BVMside()                   
+    # BVMside()                   
 
 # Close Claw
 def Close():

@@ -35,7 +35,7 @@ RESET = 0
 COLUMN1 = 500
 COLUMN2 = 1481
 COLUMN3 = 2492
-COLUMN4 = 3510
+COLUMN4 = 3400
 
 
 class StepperMotorNode(Node):
