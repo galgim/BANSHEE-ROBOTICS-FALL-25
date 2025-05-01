@@ -1,8 +1,20 @@
 from pinpong.board import Board, Pin
 from time import sleep
+import glob
+
+
+def find_arduino_port():
+    """Finds the correct Pixhawk serial port (if00)."""
+    serial_ports = glob.glob('/dev/serial/by-id/*')
+
+    for port in serial_ports:
+        if "Arduino_Leonardo" in port:
+            print(f"Found esp port: {port}")
+            return port
 
 # Initialize connection with Arduino Leonardo (Ensure correct port!)
-Board("leonardo", "/dev/ttyACM1").begin()
+Board("leonardo", find_arduino_port()).begin()
+
 
 # Define Stepper Motor Pins
 DIR = Pin.D10  # Direction Pin
