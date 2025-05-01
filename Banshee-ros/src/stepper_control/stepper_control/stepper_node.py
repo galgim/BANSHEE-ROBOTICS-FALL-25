@@ -3,20 +3,23 @@ from rclpy.node import Node
 from std_msgs.msg import Bool, Float32, Int8
 from time import sleep 
 from pinpong.board import Board, Pin
-import glob
-
+from serial.tools import list_ports
 
 def find_arduino_port():
-    """Finds the correct Pixhawk serial port (if00)."""
-    serial_ports = glob.glob('/dev/serial/by-id/*')
+    """
+    Scan all /dev/ttyACM* ports and return the one
+    whose USB VID/PID (and/or description) matches
+    an Arduino Leonardo.
+    """
+    for port in list_ports.comports():
+        # Arduino SA Leonardo is VID=0x2341, PID=0x8036
+        if port.vid == 0x2341 and port.pid == 0x8036:
+            print(f"Found Leonardo on {port.device} ({port.description})")
+            return port.device
+    raise IOError("Arduino Leonardo not found")
 
-    for port in serial_ports:
-        if "Arduino_Leonardo" in port:
-            print(f"Found esp port: {port}")
-            return port
-
-# Initialize connection with Arduino Leonardo (Ensure correct port!)
-Board("leonardo", find_arduino_port()).begin()
+port = find_arduino_port()
+Board("leonardo", port).begin()
 
 # Pin Definitions
 DIR = Pin.D10  # Direction Pin (Dir+)
