@@ -7,20 +7,35 @@ import numpy as np
 import threading
 from std_msgs.msg import Int8, Float32, Bool
 
+def find_camera_device():
+    """Return the first /dev/video* device that OpenCV can open, or None."""
+    for dev in sorted(glob.glob('/dev/video*')):
+        cap = cv2.VideoCapture(dev, cv2.CAP_V4L2)
+        if cap.isOpened():
+            cap.release()
+            print(f"Using camera device: {dev}")
+            return dev
+        cap.release()
+    print("No camera device found")
+    return None
+
 def find_ftdi_port():
-    """Finds the FTDI USB-Serial Converter port under /dev/serial/by-id."""
     ports = glob.glob('/dev/serial/by-id/*FTDI_USB-Serial_Converter*')
-    if ports:
-        print(f"Found FTDI port: {ports[0]}")
-        return ports[0]
-    else:
-        print("No FTDI port found")
-        return None
+    return ports[0] if ports else None
 
 class CameraNode(Node):
     def __init__(self):
         super().__init__("camera_node")
-        # --- open FTDI serial port ---
+
+        # -- find & open camera --
+        cam_dev = find_camera_device()
+        if not cam_dev:
+            self.get_logger().error("No /dev/video* device available; exiting")
+            return
+        self.cap = cv2.VideoCapture(cam_dev, cv2.CAP_V4L2)
+        self.get_logger().info(f"Opened camera at {cam_dev}")
+
+        # -- find & open serial --
         port = find_ftdi_port()
         self.serial_conn = None
         if port:
@@ -28,109 +43,92 @@ class CameraNode(Node):
                 self.serial_conn = serial.Serial(port, 115200, timeout=1)
                 self.get_logger().info(f"Opened serial on {port}")
             except serial.SerialException as e:
-                self.get_logger().error(f"Failed to open serial {port}: {e}")
+                self.get_logger().error(f"Serial error on {port}: {e}")
         else:
-            self.get_logger().error("FTDI serial port not found; continuing without serial")
+            self.get_logger().warn("FTDI serial port not found")
 
-        # --- ROS subscriptions & publishers ---
+        # -- ROS pubs/subs --
         self.arucoID = None
         self.batteryChamber = None
         self.sendFrame = False
 
         self.create_subscription(Int8, 'arucoID', self.arucoSubscriber, 10)
         self.create_subscription(Bool, 'stepperDone', self.stepperSubscriber, 10)
-        self.destinationTrue = self.create_publisher(Int8, 'DestinationConfirm', 10)
-        self.destinationFalse = self.create_publisher(Float32, 'DestinationFalse', 10)
+        self.destinationTrue  = self.create_publisher(Int8,   'DestinationConfirm', 10)
+        self.destinationFalse = self.create_publisher(Float32,'DestinationFalse',   10)
 
-        # start camera thread
+        # -- start camera loop thread --
         self.camera_thread = threading.Thread(target=self.cameraRun, daemon=True)
         self.camera_thread.start()
         self.get_logger().info("Camera node initialized")
 
-    def arucoSubscriber(self, msg: Int8):
+    def arucoSubscriber(self, msg):
         self.sendFrame = False
         self.batteryChamber = int(msg.data)
-        # map batteryChamber to arucoID
-        if self.batteryChamber < 8:
-            self.arucoID = self.batteryChamber % 4
-        else:
-            self.arucoID = self.batteryChamber - 4
-        self.get_logger().info(f"Received Aruco ID: {self.arucoID}")
+        self.arucoID = (self.batteryChamber % 4 if self.batteryChamber < 8
+                        else self.batteryChamber - 4)
+        self.get_logger().info(f"Got Aruco ID → {self.arucoID}")
 
-    def stepperSubscriber(self, msg: Bool):
+    def stepperSubscriber(self, msg):
         if msg.data:
             self.sendFrame = True
-            self.get_logger().info("Stepper finished moving")
+            self.get_logger().info("Stepper done → sendFrame=True")
 
     def cameraRun(self):
-        aruco_dict = cv2.aruco.getPredefinedDictionary(cv2.aruco.DICT_5X5_100)
-        detector_params = cv2.aruco.DetectorParameters()
-        refine_params = cv2.aruco.RefineParameters()
-        cap = cv2.VideoCapture(0)
-        if not cap.isOpened():
-            self.get_logger().error("Cannot open camera")
-            return
+        aruco_dict   = cv2.aruco.getPredefinedDictionary(cv2.aruco.DICT_5X5_100)
+        det_params   = cv2.aruco.DetectorParameters()
+        refine_params= cv2.aruco.RefineParameters()
 
-        while cap.isOpened():
-            ret, frame = cap.read()
+        while self.cap.isOpened():
+            ret, frame = self.cap.read()
             if not ret:
-                self.get_logger().error("Can't receive frame. Exiting ...")
+                self.get_logger().error("Frame grab failed, exiting loop")
                 break
 
             h, w, _ = frame.shape
             box_size = 50
-            box_x = (w - box_size) // 2
-            box_y = (h - box_size) // 2
+            bx, by = (w - box_size)//2, (h - box_size)//2
 
-            detector = cv2.aruco.ArucoDetector(aruco_dict, detector_params, refine_params)
+            detector = cv2.aruco.ArucoDetector(aruco_dict, det_params, refine_params)
             corners_list, ids, _ = detector.detectMarkers(frame)
 
             if ids is not None and self.arucoID is not None:
-                direction = 1 if self.arucoID < 4 else -1
+                dir_sign = 1 if self.arucoID < 4 else -1
                 for mid, corners in zip(ids, corners_list):
                     if mid == self.arucoID:
-                        c1x = corners[0][0][0]
-                        c2x = corners[0][2][0]
-                        middle_x = (c1x + c2x) / 2
-                        distance = (w/2 - middle_x) * direction
+                        # compute distance…
+                        c1x, c2x = corners[0][0][0], corners[0][2][0]
+                        dist = (w/2 - (c1x+c2x)/2) * dir_sign
 
                         if self.sendFrame:
-                            if abs(distance) <= 1.5:
+                            if abs(dist) <= 1.5:
                                 out = Int8()
-                                if self.batteryChamber < 4:
-                                    out.data = 0
-                                elif self.batteryChamber < 8:
-                                    out.data = 1
-                                else:
-                                    out.data = 2
+                                out.data = (0 if self.batteryChamber<4
+                                            else 1 if self.batteryChamber<8
+                                            else 2)
                                 self.destinationTrue.publish(out)
-                                self.get_logger().info(f"Published DestinationConfirm: {out.data}")
-                                # notify Arduino via serial
                                 if self.serial_conn:
                                     self.serial_conn.write(b'C')
                             else:
                                 outf = Float32()
-                                outf.data = distance
+                                outf.data = dist
                                 self.destinationFalse.publish(outf)
                                 if self.serial_conn:
-                                    self.serial_conn.write(f"D{distance:.2f}\n".encode())
+                                    self.serial_conn.write(f"D{dist:.2f}\n".encode())
                             self.sendFrame = False
-                            self.get_logger().warn("sendFrame reset to False")
+                            self.get_logger().warn("sendFrame=False")
 
-                        cv2.putText(frame, f"dist: {distance:.1f}",
-                                    (10,30), cv2.FONT_HERSHEY_SIMPLEX,1,(255,255,255),2)
-
-                        # optional overlap ratio display omitted for brevity
+                        cv2.putText(frame, f"dist: {dist:.1f}", (10,30),
+                                    cv2.FONT_HERSHEY_SIMPLEX, 1, (255,255,255), 2)
 
             if ids is not None:
                 cv2.aruco.drawDetectedMarkers(frame, corners_list, ids)
-            cv2.rectangle(frame, (box_x,box_y),(box_x+box_size,box_y+box_size),(0,255,0),2)
+            cv2.rectangle(frame, (bx,by), (bx+box_size,by+box_size), (0,255,0),2)
             cv2.imshow("Camera live stream", frame)
-
             if cv2.waitKey(1) == ord('q'):
                 self.sendFrame = True
 
-        cap.release()
+        self.cap.release()
         cv2.destroyAllWindows()
 
     def destroy_node(self):
