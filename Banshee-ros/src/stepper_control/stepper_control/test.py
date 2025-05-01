@@ -2,7 +2,7 @@ from pinpong.board import Board, Pin
 from time import sleep
 
 # Initialize connection with Arduino Leonardo (Ensure correct port!)
-Board("leonardo", "/dev/ttyACM0").begin()
+Board("leonardo", "/dev/ttyACM1").begin()
 
 # Define Stepper Motor Pins
 DIR = Pin.D10  # Direction Pin
