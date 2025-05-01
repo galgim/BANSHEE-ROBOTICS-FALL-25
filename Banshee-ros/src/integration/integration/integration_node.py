@@ -167,14 +167,14 @@ def startsetup():
 def BVMside():
     start_time = time.time()
     print("BVMside")
-    motor.dxlSetVelo([80], [1])
+    motor.dxlSetVelo([40], [1])
     motor.simMotorRun([225], [1])
     time.sleep(1)
 
 def Droneside():
     start_time = time.time()
     print("Droneside")
-    motor.dxlSetVelo([80], [1])
+    motor.dxlSetVelo([40], [1])
     motor.simMotorRun([44], [1])
     time.sleep(1)  
 
