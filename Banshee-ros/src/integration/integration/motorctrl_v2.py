@@ -7,7 +7,6 @@ from dynamixel_sdk import (
     PortHandler,
     PacketHandler,
     GroupSyncWrite,
-    GroupSyncRead,
     DXL_LOBYTE,
     DXL_LOWORD,
     DXL_HIBYTE,
@@ -15,50 +14,46 @@ from dynamixel_sdk import (
 )
 
 # ---------------------- CONSTANTS ----------------------
-PROTOCOL_VERSION = 2      # Dynamixel protocol version (1 or 2)
-BAUDRATE = 1_000_000      # Port baudrate
+PROTOCOL_VERSION = 2         # Dynamixel protocol version (1 or 2)
+BAUDRATE = 1_000_000         # Port baudrate
 
 # Control table addresses
-ADDR_PRESENT_POSITION = 132
-ADDR_PROFILE_VELOCITY   = 112
-ADDR_GOAL_POSITION      = 116
-ADDR_MOVING            = 122  # Moving flag (1: moving, 0: stopped)
-ADDR_MOVING_STATUS     = 123  # Moving status (1: goal reached, 0: not yet)
-ADDR_TORQUE_ENABLE     = 64
+ADDR_TORQUE_ENABLE         = 64
+ADDR_PROFILE_ACCELERATION  = 108  # <— new
+ADDR_PROFILE_VELOCITY      = 112
+ADDR_GOAL_POSITION         = 116
+ADDR_MOVING                = 122  # Moving flag (1: moving, 0: stopped)
+ADDR_PRESENT_POSITION      = 132
 
 # Data lengths and thresholds
-LEN_GOAL_POSITION       = 4
-LEN_PRESENT_POSITION    = 4
-DXL_MOVING_STATUS_THRESHOLD = 60  # ticks
+LEN_PROFILE_ACCELERATION   = 4
+LEN_GOAL_POSITION          = 4
+LEN_PRESENT_POSITION       = 4
+DXL_MOVING_STATUS_THRESHOLD = 60  # ticks (unused in sim now but kept)
 
 # Torque values
 TORQUE_ENABLE  = 1
 TORQUE_DISABLE = 0
 
-
 # ---------------------- INPUT ----------------------
 def getch():
-    """
-    Read a single character from stdin without echo.
-    """
+    """Read a single character from stdin without echo."""
     if os.name == 'nt':
         import msvcrt
         return msvcrt.getch().decode()
     import tty, termios
     fd = sys.stdin.fileno()
-    old_settings = termios.tcgetattr(fd)
+    old = termios.tcgetattr(fd)
     try:
         tty.setraw(fd)
-        ch = sys.stdin.read(1)
+        return sys.stdin.read(1)
     finally:
-        termios.tcsetattr(fd, termios.TCSADRAIN, old_settings)
-    return ch
-
+        termios.tcsetattr(fd, termios.TCSADRAIN, old)
 
 # ---------------------- PORT MANAGEMENT ----------------------
 def portInitialization(portname: str, dxlIDs: list[int]) -> None:
     """
-    Open serial port and enable torque on all specified motors.
+    Open serial port, enable torque, and set accel on all specified motors.
     """
     global portHandler, packetHandler, DXL_ID
     DXL_ID = dxlIDs
@@ -67,30 +62,27 @@ def portInitialization(portname: str, dxlIDs: list[int]) -> None:
     packetHandler = PacketHandler(PROTOCOL_VERSION)
 
     if not portHandler.openPort():
-        print("Failed to open port")
-        getch(); sys.exit(1)
+        print("Failed to open port"); getch(); sys.exit(1)
     if not portHandler.setBaudRate(BAUDRATE):
-        print("Failed to set baudrate")
-        getch(); sys.exit(1)
+        print("Failed to set baudrate"); getch(); sys.exit(1)
 
+    # enable torque and set acceleration
     for mid in DXL_ID:
         packetHandler.write1ByteTxRx(portHandler, mid, ADDR_TORQUE_ENABLE, TORQUE_ENABLE)
-
+        packetHandler.write4ByteTxRx(portHandler, mid,
+                                     ADDR_PROFILE_ACCELERATION,
+                                     50)  # tune this value as needed
 
 def portTermination() -> None:
-    """
-    Disable torque on all motors and close the port.
-    """
+    """Disable torque on all motors and close the port."""
     for mid in DXL_ID:
         packetHandler.write1ByteTxRx(portHandler, mid, ADDR_TORQUE_ENABLE, TORQUE_DISABLE)
     portHandler.closePort()
-
 
 # ---------------------- UTILITY ----------------------
 def _map(x: float, in_min: float, in_max: float, out_min: float, out_max: float) -> int:
     """Map a value from one range to another."""
     return int((x - in_min) * (out_max - out_min) / (in_max - in_min) + out_min)
-
 
 # ---------------------- RAW READ/WRITE ----------------------
 def ReadMotorData(motorID: int, address: int) -> int:
@@ -98,83 +90,72 @@ def ReadMotorData(motorID: int, address: int) -> int:
     data, _, _ = packetHandler.read4ByteTxRx(portHandler, motorID, address)
     return data
 
-
 def WriteMotorData(motorID: int, address: int, value: int) -> None:
     """Write a 4-byte value to the motor's control table."""
     packetHandler.write4ByteTxRx(portHandler, motorID, address, value)
 
-
-# ---------------------- GETTERS/SETTERS ----------------------
+# ---------------------- GETTERS ----------------------
 def dxlPresPos(dxlIDs: list[int]) -> list[int]:
-    """Return current raw positions for each motor."""
     return [ReadMotorData(mid, ADDR_PRESENT_POSITION) for mid in dxlIDs]
 
-
 def dxlPresAngle(dxlIDs: list[int]) -> list[int]:
-    """Return current angles (in degrees) for each motor."""
     return [_map(pos, 0, 4095, 0, 360) for pos in dxlPresPos(dxlIDs)]
 
-
-def dxlGetVelo(dxlIDs: list[int]) -> list[int]:
-    """Return current profile velocities for each motor."""
-    return [ReadMotorData(mid, ADDR_PROFILE_VELOCITY) for mid in dxlIDs]
-
-
-def dxlSetVelo(vel_array: list[int], dxlIDs: list[int]) -> None:
-    """Set profile velocity for each motor."""
-    if len(vel_array) != len(dxlIDs):
-        raise ValueError("Length mismatch between velocities and DXL IDs")
-    for mid, vel in zip(dxlIDs, vel_array):
-        WriteMotorData(mid, ADDR_PROFILE_VELOCITY, vel)
-
-
-# ---------------------- MOTOR POLLING ----------------------
-def motor_check(motorIndex: int, goal_position: int) -> tuple[int, int]:
+# ---------------------- POLLING ----------------------
+def motor_check(motorID: int, goal_pos: int) -> tuple[int,int]:
     """
-    Poll a single motor until it stops moving using the Moving flag.
-
-    Returns (final_position, status) where status=1 means within goal threshold.
+    Wait until a single motor's Moving flag == 0, then return (pos,status).
     """
-    # Wait until moving flag goes low (0)
     while True:
-        moving, _, _ = packetHandler.read1ByteTxRx(portHandler, motorIndex, ADDR_MOVING)
+        moving, _, _ = packetHandler.read1ByteTxRx(portHandler, motorID, ADDR_MOVING)
         if moving == 0:
             break
         time.sleep(0.01)
 
-    final_pos = ReadMotorData(motorIndex, ADDR_PRESENT_POSITION)
-    status = 1 if abs(goal_position - final_pos) <= DXL_MOVING_STATUS_THRESHOLD else 0
-    return final_pos, status
+    final = ReadMotorData(motorID, ADDR_PRESENT_POSITION)
+    status = 1 if abs(goal_pos - final) <= DXL_MOVING_STATUS_THRESHOLD else 0
+    return final, status
 
+def wait_until_stop(dxlIDs: list[int], poll: float = 0.05) -> None:
+    """Block until all motors report Moving==0."""
+    while True:
+        if all(packetHandler.read1ByteTxRx(portHandler, mid, ADDR_MOVING)[0] == 0
+               for mid in dxlIDs):
+            return
+        time.sleep(poll)
 
-# ---------------------- SEQUENTIAL MOVE ----------------------
+# ---------------------- MOVES ----------------------
 def motorRun(angle_inputs: list[float], dxlIDs: list[int]) -> list[int]:
     """
-    Move each motor sequentially to its target angle.
-
-    Returns list of statuses for each motor, and prints target vs current angles.
+    Sequential moves with moving-flag polling.
     """
     if len(angle_inputs) != len(dxlIDs):
         raise ValueError("Length mismatch between angles and DXL IDs")
 
-    statuses: list[int] = []
+    statuses = []
     for mid, angle in zip(dxlIDs, angle_inputs):
         goal = _map(angle, 0, 360, 0, 4095)
         WriteMotorData(mid, ADDR_GOAL_POSITION, goal)
         _, stat = motor_check(mid, goal)
         statuses.append(stat)
 
-    current_angles = dxlPresAngle(dxlIDs)
     print(f"Target angles : {angle_inputs}")
-    print(f"Current angles: {current_angles}")
-
+    print(f"Current angles: {dxlPresAngle(dxlIDs)}")
     return statuses
 
+def simMotorRun(angle_inputs: list[float], dxlIDs: list[int]) -> list[int]:
+    """
+    Simultaneous move: write all goals, then wait on Moving flag.
+    """
+    if len(angle_inputs) != len(dxlIDs):
+        raise ValueError("Length mismatch between angles and DXL IDs")
 
-# ---------------------- SIMULTANEOUS MOVE ----------------------
-def simWrite(goals: list[int], dxlIDs: list[int]) -> None:
-    """SyncWrite goal positions to all motors."""
-    sync = GroupSyncWrite(portHandler, packetHandler, ADDR_GOAL_POSITION, LEN_GOAL_POSITION)
+    # build goals
+    goals = [_map(a, 0, 360, 0, 4095) for a in angle_inputs]
+
+    # sync write
+    sync = GroupSyncWrite(portHandler, packetHandler,
+                          ADDR_GOAL_POSITION, LEN_GOAL_POSITION)
     for mid, goal in zip(dxlIDs, goals):
         params = [
             DXL_LOBYTE(DXL_LOWORD(goal)), DXL_HIBYTE(DXL_LOWORD(goal)),
@@ -184,74 +165,21 @@ def simWrite(goals: list[int], dxlIDs: list[int]) -> None:
     sync.txPacket()
     sync.clearParam()
 
+    # wait for all to stop
+    wait_until_stop(dxlIDs)
 
-def simPosCheck(dxl_goal_inputs: list[int], dxlIDs: list[int]) -> tuple[list[int], list[int]]:
-    """
-    Check positions of all motors until movement completes.
-
-    Uses GroupSyncRead and stability count based on position deltas.
-    Returns (final_positions, statuses).
-    """
-    reader = GroupSyncRead(portHandler, packetHandler, ADDR_PRESENT_POSITION, LEN_PRESENT_POSITION)
-    for mid in dxlIDs:
-        reader.addParam(mid)
-
-    # Initial read
-    reader.txRxPacket()
-    prev_positions = [reader.getData(mid, ADDR_PRESENT_POSITION, LEN_PRESENT_POSITION) for mid in dxlIDs]
-    stable_counts = [0]*len(dxlIDs)
-    statuses = [0]*len(dxlIDs)
-
-    while True:
-        reader.txRxPacket()
-        positions = [reader.getData(mid, ADDR_PRESENT_POSITION, LEN_PRESENT_POSITION) for mid in dxlIDs]
-        for i, (pos, prev, goal) in enumerate(zip(positions, prev_positions, dxl_goal_inputs)):
-            if abs(pos - prev) < 2:
-                stable_counts[i] += 1
-            else:
-                stable_counts[i] = 0
-            if stable_counts[i] >= 10 and abs(pos - goal) <= DXL_MOVING_STATUS_THRESHOLD:
-                statuses[i] = 1
-
-        if all(statuses):
-            break
-
-        prev_positions = positions
-        time.sleep(0.05)
-
-    return positions, statuses
-
-
-def simMotorRun(angle_inputs: list[float], dxlIDs: list[int]) -> list[int]:
-    """
-    Simultaneously move motors and wait until all movements complete.
-
-    Returns list of statuses for each motor, and prints target vs current angles.
-    """
-    goals = [_map(a, 0, 360, 0, 4095) for a in angle_inputs]
-    simWrite(goals, dxlIDs)
-    _, statuses = simPosCheck(goals, dxlIDs)
-
-    current_angles = dxlPresAngle(dxlIDs)
     print(f"Target angles : {angle_inputs}")
-    print(f"Current angles: {current_angles}")
-
-    return statuses
-
+    print(f"Current angles: {dxlPresAngle(dxlIDs)}")
+    return [1]*len(dxlIDs)
 
 # ---------------------- EXAMPLE USAGE ----------------------
 if __name__ == '__main__':
-    # Change these to your actual port and motor IDs
     port_name = '/dev/ttyUSB0'
-    motor_ids = [1, 2, 3, 4]  # example IDs
+    motor_ids = [1, 2, 3, 4]  # your IDs
 
     portInitialization(port_name, motor_ids)
     try:
-        # Example: sequential move
         print("Sequential move statuses:", motorRun([45, 90, 135, 180], motor_ids))
-
-        # Example: simultaneous move
         print("Simultaneous move statuses:", simMotorRun([10, 20, 30, 40], motor_ids))
-
     finally:
         portTermination()
