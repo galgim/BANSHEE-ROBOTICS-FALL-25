@@ -13,6 +13,8 @@ FOREARM_ID = 3
 WRIST_ID = 4
 CLAW_ID = 0
 
+# Define motor start positions
+MOTOR_START_POSITIONS[5] = {180, 270, 0, 180, 0} 
 
 # Define port number for Raspberry Pi
 def find_arm_port():
@@ -155,22 +157,26 @@ def Open():
 def startsetup():
     start_time = time.time()
     print("setting up")
-    motor.dxlSetVelo([60, 40, 60], [2, 3, 4])
-    motor.simMotorRun([222, 347, 132], [2, 3, 4])
+    motor.dxlSetVelo([60, 40, 60], [1, 2, 3])
+    motor.simMotorRun(
+        [MOTOR_START_POSITIONS[1],
+        MOTOR_START_POSITIONS[2],
+        MOTOR_START_POSITIONS[3]],
+        [1, 2, 3])
     time.sleep(1)
 
 def BVMside():
     start_time = time.time()
     print("BVMside")
-    motor.dxlSetVelo([40], [1])
-    motor.simMotorRun([225], [1])
+    motor.dxlSetVelo([40], [0])
+    motor.simMotorRun([MOTOR_START_POSITIONS[0] + 180], [0])
     time.sleep(1)
 
 def Droneside():
     start_time = time.time()
     print("Droneside")
-    motor.dxlSetVelo([40], [1])
-    motor.simMotorRun([44], [1])
+    motor.dxlSetVelo([40], [0])
+    motor.simMotorRun([MOTOR_START_POSITION[0]], [0])
     time.sleep(1)  
 
 # Dictionary mapping commands to functions
