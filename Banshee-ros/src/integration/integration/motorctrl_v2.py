@@ -88,6 +88,7 @@ def _map(x: float, in_min: float, in_max: float, out_min: float, out_max: float)
 def ReadMotorData(motorID: int, address: int) -> int:
     """Read a 4-byte value from the motor's control table."""
     data, _, _ = packetHandler.read4ByteTxRx(portHandler, motorID, address)
+    print(f"Data: {data}")
     return data
 
 def WriteMotorData(motorID: int, address: int, value: int) -> None:
@@ -100,6 +101,15 @@ def dxlPresPos(dxlIDs: list[int]) -> list[int]:
 
 def dxlPresAngle(dxlIDs: list[int]) -> list[int]:
     return [_map(pos, 0, 4095, 0, 360) for pos in dxlPresPos(dxlIDs)]
+
+def dxlSetVelo(vel_array, dxlIDs):
+    if (len(vel_array) == len(dxlIDs)):
+        idNum = len(dxlIDs)
+        for id in range(idNum):
+                    WriteMotorData(dxlIDs[id], ADDR_PROFILE_VELOCITY, vel_array[id])
+    else:
+        print("ERROR: Number of velocity inputs not matching with number of DXL ID inputs!")
+    print("-------------------------------------")
 
 # ---------------------- POLLING ----------------------
 def motor_check(motorID: int, goal_pos: int) -> tuple[int,int]:
@@ -143,6 +153,7 @@ def motorRun(angle_inputs: list[float], dxlIDs: list[int]) -> list[int]:
     print(f"Current angles: {dxlPresAngle(dxlIDs)}")
     return statuses
 
+
 def simMotorRun(angle_inputs: list[float], dxlIDs: list[int]) -> list[int]:
     """
     Simultaneous move: write all goals, then wait on Moving flag.
@@ -156,7 +167,12 @@ def simMotorRun(angle_inputs: list[float], dxlIDs: list[int]) -> list[int]:
     # sync write
     sync = GroupSyncWrite(portHandler, packetHandler,
                           ADDR_GOAL_POSITION, LEN_GOAL_POSITION)
+    co = int(dxlPresAngle(dxlIDs)[0] / 360)
     for mid, goal in zip(dxlIDs, goals):
+        if mid == 0:
+            goal = goal + 4096 * co
+        # print(mid)
+        # print(goal)
         params = [
             DXL_LOBYTE(DXL_LOWORD(goal)), DXL_HIBYTE(DXL_LOWORD(goal)),
             DXL_LOBYTE(DXL_HIWORD(goal)), DXL_HIBYTE(DXL_HIWORD(goal))
@@ -169,7 +185,7 @@ def simMotorRun(angle_inputs: list[float], dxlIDs: list[int]) -> list[int]:
     wait_until_stop(dxlIDs)
 
     print(f"Target angles : {angle_inputs}")
-    print(f"Current angles: {dxlPresAngle(dxlIDs)}")
+    # print(f"Current angles: {dxlPresAngle(dxlIDs)}")
     return [1]*len(dxlIDs)
 
 # ---------------------- EXAMPLE USAGE ----------------------

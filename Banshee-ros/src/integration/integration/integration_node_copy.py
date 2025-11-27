@@ -6,21 +6,29 @@ from integration import Movement_calc_v2 as calculation
 import time
 import glob
 
-# Define motor ID 
-BASE_ID = 1
-BICEP_ID = 2
-FOREARM_ID = 3
-WRIST_ID = 4
-CLAW_ID = 0
+class MOTOR:
+   BASE_MOTOR = 0
+   MOTOR_2    = 1
+   MOTOR_3    = 2
+   MOTOR_4    = 3
+   CLAW_MOTOR = 4
 
-# class MOTOR:
-#    BASE_MOTOR = 0
-#    MOTOR_2    = 1
-#    MOTOR_3    = 3
-#    CLAW_ID    = 4
 
-# Define motor start positions
-MOTOR_START_POSITIONS = [180, 270, 0, 180, 0]
+class MOTOR_START_DEGREE:
+   BASE_MOTOR = 180
+   MOTOR_2    = 270
+   MOTOR_3    = 0
+   MOTOR_4    = 180
+   CLAW_MOTOR = 0
+
+# Define motor start positions (degrees)
+MOTOR_START_POSITIONS = [
+   MOTOR_START_DEGREE.BASE_MOTOR,
+   MOTOR_START_DEGREE.MOTOR_2, 
+   MOTOR_START_DEGREE.MOTOR_3,
+   MOTOR_START_DEGREE.MOTOR_4,
+   MOTOR_START_DEGREE.CLAW_MOTOR
+]
 
 # Define port number for Raspberry Pi
 def find_arm_port():
@@ -41,8 +49,13 @@ ADDR_PRESENT_POSITION = 132
 
 
 # List of all motor IDs
-ALL_IDs = [BASE_ID, BICEP_ID, FOREARM_ID, WRIST_ID, CLAW_ID]
-MOVE_IDs = [BASE_ID, BICEP_ID, FOREARM_ID, WRIST_ID, CLAW_ID]
+ALL_IDs = [MOTOR.BASE_MOTOR,
+           MOTOR.MOTOR_2,
+           MOTOR.MOTOR_3,
+           MOTOR.MOTOR_4,
+           MOTOR.CLAW_MOTOR]
+
+MOVE_IDs = ALL_IDs
 
 
 # Initialize motor port
@@ -57,29 +70,90 @@ TOP_BVM = 0
 BOT_BVM = 1
 DRONE_BAT = 2
 
+
+
+# 11-26-25 TODO: simMotorRun move-to-degree positions NEED to be changed
 def Push_low():    
     start_time = time.time()
     print("Push in low sequence")
-    motor.dxlSetVelo([20, 5, 15], [2, 3, 4])                    # set initial velocity (new)
+
+    motor.dxlSetVelo(
+       [20, 5, 15], 
+
+       [MOTOR.MOTOR_3,
+        MOTOR.MOTOR_4, 
+        MOTOR.CLAW_MOTOR])                    # set initial velocity (new)
+
     print("place chamber")
-    motor.simMotorRun([105, 330, 45],[2, 3, 4])                   # move arm to first position (new)
+
+    motor.simMotorRun(
+       [105, 330, 45],
+
+       [MOTOR.MOTOR_3,
+        MOTOR.MOTOR_4,
+        MOTOR.CLAW_MOTOR])                   # move arm to first position (new)
+
     time.sleep(.5)
-    motor.dxlSetVelo([10, 40, 30], [2, 3, 4])                     # set final velocity
-    motor.simMotorRun([88, 257, 93],[2, 3, 4])                    # move arm to chamber position (new)
+
+    motor.dxlSetVelo(
+       [10, 40, 30], 
+       
+       [MOTOR.MOTOR_3,
+        MOTOR.MOTOR_4,
+        MOTOR.CLAW_MOTOR])                     # set final velocity
+
+    motor.simMotorRun(
+       [88, 257, 93],
+       
+       [MOTOR.MOTOR_3,
+        MOTOR.MOTOR_4,
+        MOTOR.CLAW_MOTOR])                    # move arm to chamber position (new)
+
     Open()                                                        # let go of battery
 
 # Pull Battery into low BVM
+# 11-26-25 TODO: simMotorRun move-to-degree positions NEED to be changed 
 def Pull_low():    
     start_time = time.time()
     print("Pull out low sequence")
-    motor.dxlSetVelo([60, 30, 20, 20], [1, 2, 3, 4])             # set initial speed (new)
+
+    motor.dxlSetVelo(
+       [60, 30, 20, 20], 
+
+       [MOTOR.MOTOR_2,
+        MOTOR.MOTOR_3,
+        MOTOR.MOTOR_4,
+        MOTOR.CLAW_MOTOR])             # set initial speed (new)
+
     print("remove chamber")
-    motor.simMotorRun([88, 257, 93],[2, 3, 4])                    # move arm to chamber position (new)
+
+    motor.simMotorRun(
+       [88, 257, 93],
+       
+       [MOTOR.MOTOR_3,
+        MOTOR.MOTOR_4,
+        MOTOR.CLAW_MOTOR])                    # move arm to chamber position (new)
+
     Close()                                                       # grab battery
+
     # motor.dxlSetVelo([15, 78, 60], [2, 3, 4])                     # set pull out velocity (old)
-    motor.dxlSetVelo([15, 78, 60], [2, 3, 4])                     # set pull out velocity
-    motor.simMotorRun([100, 328, 43],[2, 3, 4])                   # move arm to middle position
-    motor.dxlSetVelo([127, 19, 109], [2, 3, 4])                   # set grab speed                      
+
+    motor.dxlSetVelo(
+       [15, 78, 60], 
+
+       [MOTOR.MOTOR_3,
+        MOTOR.MOTOR_4,
+        MOTOR.CLAW_MOTOR])                     # set pull out velocity
+
+    motor.simMotorRun(
+       [100, 328, 43],
+       
+       [MOTOR.MOTOR_3,
+        MOTOR.MOTOR_4,
+        MOTOR.CLAW_MOTOR])                   # move arm to middle position
+
+    motor.dxlSetVelo(
+       [127, 19, 109], [2, 3, 4])                   # set grab speed                      
     
     motor.dxlSetVelo([40, 10, 30], [2, 3, 4])                     # startsetup
     motor.simMotorRun([222, 347, 132], [2, 3, 4])        
@@ -89,7 +163,12 @@ def Pull_low():
 def Push_high():    
     start_time = time.time()
     print("Push in high sequence")
-    motor.dxlSetVelo([32, 20, 30], [2, 3, 4])                     # set initial velocity (new)
+
+    motor.dxlSetVelo(
+       [32, 20, 30], 
+
+       [2, 3, 4])                     # set initial velocity (new)
+
     print("place chamber")
     motor.simMotorRun([130, 310, 85],[2, 3, 4])                   # move arm to first position
     time.sleep(0.5)
@@ -154,35 +233,60 @@ def Close():
 #Open Claw
 def Open():
     start_time = time.time()
-    print("open claw")
-    motor.dxlSetVelo([20], [4])
-    motor.simMotorRun([MOTOR_START_POSITIONS[4]],[4])
+    print("opening claw")
+
+    motor.dxlSetVelo(
+       [20], 
+       [MOTOR.CLAW_MOTOR])
+
+    motor.simMotorRun(
+       [MOTOR_START_POSITIONS[MOTOR.CLAW_MOTOR]],
+       [MOTOR.CLAW_MOTOR])
+
     time.sleep(1)
 
 # Setup initial motor positions
 def startsetup():
     start_time = time.time()
     print("setting up")
-    motor.dxlSetVelo([60, 40, 60], [1, 2, 3])
+    motor.dxlSetVelo([5, 5, 5], [1, 2, 3])
     motor.simMotorRun(
-        [MOTOR_START_POSITIONS[1],
-        MOTOR_START_POSITIONS[2],
-        MOTOR_START_POSITIONS[3]],
+        [
+          MOTOR_START_POSITIONS[1],
+          MOTOR_START_POSITIONS[2],
+          MOTOR_START_POSITIONS[3]
+        ],
         [1, 2, 3])
+    
     time.sleep(1)
 
 def BVMside():
     start_time = time.time()
-    print("BVMside")
-    motor.dxlSetVelo([40], [0])
-    motor.simMotorRun([MOTOR_START_POSITIONS[0] + 180], [0])
+    print("Moving Base Motor to BVMside")
+
+    motor.dxlSetVelo(
+       [40], 
+       [MOTOR.BASE_MOTOR])
+
+    motor.simMotorRun(
+       [MOTOR_START_POSITIONS[MOTOR.BASE_MOTOR] + 180], 
+       [MOTOR.BASE_MOTOR])
+
     time.sleep(1)
+
 
 def Droneside():
     start_time = time.time()
-    print("Droneside")
-    motor.dxlSetVelo([40], [0])
-    motor.simMotorRun([MOTOR_START_POSITIONS[0]], [0])
+    print("Moving Base Motor To Droneside")
+
+    motor.dxlSetVelo(
+       [40], 
+       [MOTOR.BASE_MOTOR])
+
+    motor.simMotorRun(
+       [MOTOR_START_POSITIONS[MOTOR.BASE_MOTOR]], 
+       [MOTOR.BASE_MOTOR])
+       
     time.sleep(1)  
 
 # Dictionary mapping commands to functions

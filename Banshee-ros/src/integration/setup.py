@@ -21,6 +21,7 @@ setup(
     entry_points={
         'console_scripts': [
             'integration_node = integration.integration_node:main',
+            'integration_node_copy = integration.integration_node_copy:main'
         ],
     },
 )
