@@ -1,7 +1,7 @@
 #include <WiFi.h>
 #include <esp_now.h>
 #include <Arduino.h> 
-#include "esp_adc_cal.h"
+#include <esp_adc_cal.h>
 
 // Define the GPIO pin to control the solenoid
 const int solenoidPin = GPIO_NUM_2;
@@ -23,7 +23,9 @@ float totalVoltage = 0;
 esp_adc_cal_characteristics_t adc_chars;
 int mode = 0;
 // Callback when data is sent to master
-void OnDataSent(const uint8_t *mac_addr, esp_now_send_status_t status) {
+void OnDataSent(const wifi_tx_info_t *info, esp_now_send_status_t status) {
+    (void)info;  // avoid "unused parameter" warning, or use info->peer_addr if you want
+
     Serial.print("Last Packet Send Status: ");
     if (status == ESP_NOW_SEND_SUCCESS) {
         Serial.println("Delivery Success");
@@ -59,7 +61,11 @@ void onDataReceive(const esp_now_recv_info *info, const uint8_t *incomingData, i
 
     Serial.println("Received unlock signal");
     }
-  
+  Serial.println("Received unlock signal");
+  Serial.println("Received unlock signal");
+  Serial.println("Received unlock signal");
+  Serial.println("Received unlock signal");
+  Serial.println("Received unlock signal");
   if (totalVoltage > 10.0) {
     mode = 1;
     }
