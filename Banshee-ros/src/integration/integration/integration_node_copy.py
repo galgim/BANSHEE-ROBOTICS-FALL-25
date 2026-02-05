@@ -1,8 +1,10 @@
 import rclpy
 from rclpy.node import Node
 from std_msgs.msg import Bool, Int8  # Import message type for the 'done' signal
-from integration import motorctrl_v2 as motor
-from integration import Movement_calc_v2 as calculation
+import motorctrl_v2 as motor
+import Movement_calc_v2 as calculation
+# from integration import motorctrl_v2 as motor
+# from integration import Movement_calc_v2 as calculation
 import time
 import glob
 
@@ -15,11 +17,11 @@ class MOTOR:
 
 
 class MOTOR_START_DEGREE:
-   BASE_MOTOR = 180
+   BASE_MOTOR = 90
    MOTOR_1    = 270
-   MOTOR_2    = 0
+   MOTOR_2    = 90
    MOTOR_3    = 180
-   CLAW_MOTOR = 0
+   CLAW_MOTOR = 180
 
 # Define motor start positions (degrees)
 MOTOR_START_POSITIONS = [
