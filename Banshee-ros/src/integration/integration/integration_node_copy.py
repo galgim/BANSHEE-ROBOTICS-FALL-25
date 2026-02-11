@@ -80,7 +80,7 @@ def Push_low():
     print("Push in low sequence")
 
     motor.dxlSetVelo(
-       [20, 5, 15], 
+       [5, 5, 5], 
 
        [MOTOR.MOTOR_1,
         MOTOR.MOTOR_2, 
@@ -89,7 +89,9 @@ def Push_low():
     print("place chamber")
 
     motor.simMotorRun(
-       [105, 330, 45],
+       [MOTOR_START_POSITIONS[MOTOR.MOTOR_1] - 131.25, 
+        MOTOR_START_POSITIONS[MOTOR.MOTOR_2] - 22.15,
+        MOTOR_START_POSITIONS[MOTOR.MOTOR_3] - 111.75],
 
        [MOTOR.MOTOR_1,
         MOTOR.MOTOR_2,
@@ -105,7 +107,9 @@ def Push_low():
         MOTOR.MOTOR_3])                     # set final velocity
 
     motor.simMotorRun(
-       [88, 257, 93],
+       [MOTOR_START_POSITIONS[MOTOR.MOTOR_1] - 135, 
+        MOTOR_START_POSITIONS[MOTOR.MOTOR_2] + 72, 
+        MOTOR_START_POSITIONS[MOTOR.MOTOR_3] + 70],
        
        [MOTOR.MOTOR_1,
         MOTOR.MOTOR_2,
@@ -355,7 +359,7 @@ class IntegrationNode(Node):
 
         startsetup()
         time.sleep(0.5)
-        Push_high()
+        Push_low()
         # Droneside() # testing
         # startsetup()
         # Open() # testing
