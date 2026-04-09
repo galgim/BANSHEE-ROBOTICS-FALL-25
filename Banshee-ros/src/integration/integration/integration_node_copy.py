@@ -72,7 +72,32 @@ TOP_BVM = 0
 BOT_BVM = 1
 DRONE_BAT = 2
 
+# Experimental
+def runMotorsSmoothly(goals, motors, seconds):
+    if not isinstance(goals, list):
+       raise TypeError("Parameter 'goals' must be a list")
+    if not isinstance(motors, list):
+       raise TypeError("Parameter 'motors' must be a list")
 
+    velocities = []
+    for i in range(len(motors)):
+        velocity = calculation.angular_velocity_calc(
+           goals[i],
+           motor.dxlPresAngleForSingleMotor(motors[i]),
+           seconds
+        )
+        velocities.append(velocity)
+
+    motor.dxlSetVelo(
+      velocities,
+      motors
+   )
+    
+    motor.simMotorRun(
+      goals,
+      motors
+   )
+        
 
 # 11-26-25 TODO: simMotorRun move-to-degree positions NEED to be changed
 def Push_low():    
@@ -89,15 +114,47 @@ def Push_low():
     print("place chamber")
 
     motor.simMotorRun(
-       [MOTOR_START_POSITIONS[MOTOR.MOTOR_1] - 131.25, 
-        MOTOR_START_POSITIONS[MOTOR.MOTOR_2] - 22.15,
-        MOTOR_START_POSITIONS[MOTOR.MOTOR_3] - 111.75],
+       [MOTOR_START_POSITIONS[MOTOR.MOTOR_3] - 2],
 
-       [MOTOR.MOTOR_1,
+       [MOTOR.MOTOR_3])
+
+    time.sleep(5)
+
+    motor.simMotorRun(
+       [MOTOR_START_POSITIONS[MOTOR.MOTOR_1] - 84, 
+        MOTOR_START_POSITIONS[MOTOR.MOTOR_2] + 1.5, 
+        MOTOR_START_POSITIONS[MOTOR.MOTOR_3] + 74.5],
+        
+        [MOTOR.MOTOR_1,
         MOTOR.MOTOR_2,
-        MOTOR.MOTOR_3])                   # move arm to first position (new)
+        MOTOR.MOTOR_3])
 
-    time.sleep(.5)
+    # temp = 0
+    # while True:
+    #   if temp == 0:
+    #     motor.simMotorRun(
+    #     [MOTOR_START_POSITIONS[MOTOR.MOTOR_1] - 131.25],
+    #     [MOTOR.MOTOR_1])
+    #   if temp == 3500:
+    #      motor.simMotorRun(
+    #     [MOTOR_START_POSITIONS[MOTOR.MOTOR_2] + 22.15,
+    #     MOTOR_START_POSITIONS[MOTOR.MOTOR_3] + 111.75],
+    #     [MOTOR.MOTOR_2,
+    #     MOTOR.MOTOR_3])
+    #      break
+    #   temp = temp + 1
+    #   time.sleep(0.001)
+
+    # motor.simMotorRun(
+    #    [MOTOR_START_POSITIONS[MOTOR.MOTOR_1] - 131.25, 
+    #     MOTOR_START_POSITIONS[MOTOR.MOTOR_2] - 22.15,
+    #     MOTOR_START_POSITIONS[MOTOR.MOTOR_3] + 111.75],
+
+    #    [MOTOR.MOTOR_1,
+    #     MOTOR.MOTOR_2,
+    #     MOTOR.MOTOR_3])                   # move arm to first position (new)
+
+    time.sleep(100)
 
     motor.dxlSetVelo(
        [10, 40, 30], 
@@ -228,6 +285,63 @@ def Pull_high():
     # startsetup()
     Droneside()
 
+def Pull_high_BVMSIDE():
+    start_time = time.time()
+    print("Pulling battery out of top battery chamber")
+
+    #motor.dxlSetVelo(
+    #   [5, 5, 5], 
+    #   [MOTOR.MOTOR_1, MOTOR.MOTOR_2, MOTOR.MOTOR_3]
+    #
+    #  
+    #motor.simMotorRun(
+    #   [MOTOR_START_POSITIONS[MOTOR.MOTOR_1] - 141, 
+    #    MOTOR_START_POSITIONS[MOTOR.MOTOR_2] + 119, 
+    #    MOTOR_START_POSITIONS[MOTOR.MOTOR_3] + 30]
+    #  ,[MOTOR.MOTOR_1, 
+    #    MOTOR.MOTOR_2 , 
+    #    MOTOR.MOTOR_3]
+    #    )
+    #
+    #time.sleep(20)
+#     time_that_i_want_it_to_move_seconds = 3
+
+#     goal_pos_mtr1 = 187
+#     velocity_mtr1 = calculation.angular_velocity_calc(
+#        goal_pos_mtr1, 
+#        motor.dxlPresAngleForSingleMotor(MOTOR.MOTOR_1), 
+#        time_that_i_want_it_to_move_seconds)
+    
+#     goal_pos_mtr2 = 110
+#     velocity_mtr2 = calculation.angular_velocity_calc(
+#        goal_pos_mtr2,
+#        motor.dxlPresAngleForSingleMotor(MOTOR.MOTOR_2),
+#        time_that_i_want_it_to_move_seconds
+#     )
+
+#     goal_pos_mtr3 = 253
+#     velocity_mtr3 = calculation.angular_velocity_calc(
+#        goal_pos_mtr3,
+#        motor.dxlPresAngleForSingleMotor(MOTOR.MOTOR_3),
+#        time_that_i_want_it_to_move_seconds
+#     )
+
+#     motor.dxlSetVelo(
+#       [velocity_mtr1, velocity_mtr2, velocity_mtr3], #TODO: test the velocity functions
+#       [MOTOR.MOTOR_1, MOTOR.MOTOR_2, MOTOR.MOTOR_3]
+#    )
+
+#     motor.simMotorRun(
+#       [goal_pos_mtr1, goal_pos_mtr2, goal_pos_mtr3],
+#       [MOTOR.MOTOR_1, MOTOR.MOTOR_2, MOTOR.MOTOR_3]
+#    )
+
+    runMotorsSmoothly(
+        [187, 110, 253],
+        [MOTOR.MOTOR_1, MOTOR.MOTOR_2, MOTOR.MOTOR_3],
+        3)
+
+
 # Push Battery into Drone
 def Drone_push():
     start_time = time.time()
@@ -305,7 +419,7 @@ def BVMside():
        [MOTOR.BASE_MOTOR])
 
     motor.simMotorRun(
-       [MOTOR_START_POSITIONS[MOTOR.BASE_MOTOR] + 180], 
+       [MOTOR_START_POSITIONS[MOTOR.BASE_MOTOR]], 
        [MOTOR.BASE_MOTOR])
 
     time.sleep(1)
@@ -320,7 +434,7 @@ def Droneside():
        [MOTOR.BASE_MOTOR])
 
     motor.simMotorRun(
-       [MOTOR_START_POSITIONS[MOTOR.BASE_MOTOR]], 
+       [MOTOR_START_POSITIONS[MOTOR.BASE_MOTOR] + 180], 
        [MOTOR.BASE_MOTOR])
        
     time.sleep(1)  
@@ -357,9 +471,12 @@ class IntegrationNode(Node):
         self.start_signal_received = False
         self.batteryLevel = None
 
+        BVMside()
         startsetup()
-        time.sleep(0.5)
-        Push_low()
+        Push_high()
+        time.sleep(20)
+        Pull_high_BVMSIDE()
+
         # Droneside() # testing
         # startsetup()
         # Open() # testing

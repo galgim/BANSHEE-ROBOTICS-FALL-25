@@ -26,6 +26,14 @@ ELBOW_L_LIMIT = -180                                            # Lower Physical
 WRIST_H_LIMIT = 90                                              # Upper Physical Limit of the Wrist Motor Theoretical Value
 WRIST_L_LIMIT = -90                                             # Lower Physical Limit of the Wrist Motor Theoretical Value
 
+def angular_velocity_calc(
+        pos_init, 
+        pos_final, 
+        time):
+    
+    return ((int((pos_final-pos_init)/time)))
+
+
 def angle_Calc(coor, CLAW_MODE):                                # coor[] = [Px, Py, Pz]
     if (CLAW_MODE == 0):
         phi = 0                                                 # claw parallel to the ground

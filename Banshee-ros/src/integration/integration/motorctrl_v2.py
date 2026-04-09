@@ -99,8 +99,14 @@ def WriteMotorData(motorID: int, address: int, value: int) -> None:
 def dxlPresPos(dxlIDs: list[int]) -> list[int]:
     return [ReadMotorData(mid, ADDR_PRESENT_POSITION) for mid in dxlIDs]
 
+def dxlPresPosForSingleMotor(dxlID: int) -> int:
+    return ReadMotorData(dxlID, ADDR_PRESENT_POSITION)
+    
 def dxlPresAngle(dxlIDs: list[int]) -> list[int]:
     return [_map(pos, 0, 4095, 0, 360) for pos in dxlPresPos(dxlIDs)]
+
+def dxlPresAngleForSingleMotor(dxlID: int) -> int:
+    return _map((dxlPresPosForSingleMotor(dxlID)), 0, 4095, 0, 360)
 
 def dxlSetVelo(vel_array, dxlIDs):
     if (len(vel_array) == len(dxlIDs)):

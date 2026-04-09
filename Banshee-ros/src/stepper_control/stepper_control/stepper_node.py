@@ -56,6 +56,8 @@ class StepperMotorNode(Node):
         
         self.resetstepperSubscription = self.create_subscription(
             Int8, 'reset', self.resetstepperSubscriber, 10)
+        
+        self.run_motor_cycle(500) # temp added
 
         # ROS2 Publisher to signal completion
         self.done_publisher = self.create_publisher(Bool, 'stepperDone', 10)
